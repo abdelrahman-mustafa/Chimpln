@@ -1,0 +1,46 @@
+<resources>
+    <string name="app_name">ChimpIn</string>
+    <string name="signIN">Sign in</string>
+    <string name="userSign">User Sign up</string>
+    <string name="proSign">Professional Sign up</string>
+    <string name="logInUser">User name or Email</string>
+    <string name="pass">Password</string>
+    <string name="signUp">Sign Up</string>
+    <string name="remMe">Remember me</string>
+    <string name="forgPass">Forget Password</string>
+    <string name="Email">Email</string>
+    <string name="userName">User Name</string>
+    <string name="signFace">Sign up with Facebook</string>
+    <string name="mobile">Phone Number</string>
+    <string name="createAccount">Create Account</string>
+    <string name="confirmPass">Confirm Password</string>
+    <string name="userAccount">User Account</string>
+    <string name="proAccount">Professional Account</string>
+    <string name="confirmNum">Confirm number</string>
+    <string name="resendCode">Resend Code</string>
+    <string name="enterCode">Enter code here</string>
+    <string name="enterCodeSent">We have sent you an access code /n via sms for mobile number verification</string>
+    <string name="photos">photos</string>
+    <string name="event">Events</string>
+    <string name="shareOption">Share Option</string>
+    <string name="selectEvDate">Select event date</string>
+    <string name="selectEvType">Select event type</string>
+    <string name="city">City</string>
+    <string name="search">Search</string>
+    <string name="gender">Gender</string>
+    <string name="selectEvCity">Select City</string>
+    <string name="selectEvGender">Select Gender</string>
+    <string name="bottom_menu_last_work">LAST WORK</string>
+    <string name="bottom_menu_events">EVENTS</string>
+    <string name="bottom_menu_packages">PACKAGES</string>
+    <string name="bottom_menu_profile">PROFILE</string>
+    <string name="hello_blank_fragment">Hello blank fragment</string>
+    <string name="packName">Package Name</string>
+    <string name="packDesc">Package Description</string>
+    <string name="packPrice">Package Price</string>
+    <string name="packCreate">Create Package</string>
+    <string name="selectPackTy">Select Event Type</string>
+    <string name="selectPackTyime">Select Event Timee</string>
+
+
+</resources>

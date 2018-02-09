@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="utf-8"?>
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    android:background="@drawable/bg"
+    android:orientation="vertical"
+    tools:context="com.indeves.chmplinapp.MainActivity">
+
+    <ImageView
+        android:layout_width="200dp"
+        android:layout_height="100dp"
+        android:layout_gravity="center"
+        android:layout_margin="30dp"
+        android:layout_weight="1"
+        android:background="@drawable/logo" />
+    <LinearLayout
+        android:gravity="bottom"
+        android:layout_weight="1"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_margin="30dp"
+        android:orientation="vertical">
+
+        <Button
+            android:textColor="@color/colorWhite"
+            android:text="@string/signIN"
+            android:id="@+id/splash_button_signIn"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/button" />
+
+        <Button
+            android:textColor="@color/colorWhite"
+            android:text="@string/userSign"
+            android:id="@+id/splash_button_userSignUp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:background="@drawable/button" />
+
+        <Button
+            android:textColor="@color/colorWhite"
+            android:id="@+id/splash_button_ProSignUp"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:text="@string/proSign"
+            android:background="@drawable/button" />
+    </LinearLayout>
+</LinearLayout>

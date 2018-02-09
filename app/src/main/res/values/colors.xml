@@ -1,0 +1,16 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <color name="colorPrimary">#3F51B5</color>
+    <color name="colorPrimaryDark">#303F9F</color>
+    <color name="colorAccent">#FF4081</color>
+    <color name="colorPur">#941b80</color>
+    <color name="colorWhite">#ffff</color>
+    <color name="colorNum">#9e9e9e</color>
+    <color name="colorProfile">#545454</color>
+    <color name="colorTab">#c4bdbd</color>
+    <color name="colorPrice">#ef4545</color>
+    <color name="colorPack">#947988</color>
+
+
+
+</resources>
