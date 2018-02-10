@@ -5,64 +5,13 @@
     android:id="@+id/Content_homePage"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-    android:layout_marginLeft="30dp"
-    android:layout_marginRight="30dp"
+
     android:orientation="vertical">
 
-    <LinearLayout
-
+    <FrameLayout
+        android:id="@+id/container"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="30dp"
-        android:layout_marginRight="30dp"
-        android:layout_marginTop="20dp"
-        android:orientation="vertical">
-
-        <Spinner
-
-            android:id="@+id/userProfile_phot_spinner_event_date"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/colorProfile" />
-
-        <Spinner
-            android:id="@+id/userProfile_phot_spinner_event_type"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/colorProfile" />
-
-        <Spinner
-
-            android:id="@+id/userProfile_phot_spinner_gender"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/colorProfile" />
-
-        <Spinner
-            android:id="@+id/userProfile_phot_spinner_city"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_marginTop="20dp" />
-
-        <View
-            android:layout_width="match_parent"
-            android:layout_height="1dp"
-            android:background="@color/colorProfile" />
-    </LinearLayout>
+        android:layout_height="wrap_content" />
 
     <Button
         android:id="@+id/userProfile_button_search"
@@ -75,5 +24,6 @@
         android:layout_marginRight="20dp"
         android:background="@drawable/button"
         android:text="@string/search"
-        android:textColor="@color/colorWhite" />
+        android:textColor="@color/colorWhite"
+        android:visibility="visible" />
 </RelativeLayout>

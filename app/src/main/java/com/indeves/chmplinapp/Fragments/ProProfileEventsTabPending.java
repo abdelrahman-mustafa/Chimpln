@@ -33,12 +33,13 @@ public class ProProfileEventsTabPending extends android.support.v4.app.Fragment 
         GRID_LAYOUT_MANAGER,
         LINEAR_LAYOUT_MANAGER
     }
+    protected RecyclerView.LayoutManager mLayoutManager;
 
     protected LayoutManagerType mCurrentLayoutManagerType;
 
     UserProfEventsAdaptor userProfEventsAdaptor;
     private RecyclerView recyclerView;
-    protected RecyclerView.LayoutManager mLayoutManager;
+
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
