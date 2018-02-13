@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="utf-8"?>
+<menu xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools">
+    <item
+        android:id="@+id/action_lastWork"
+        android:enabled="true"
+        android:icon="@android:drawable/ic_menu_compass"
+        android:title="@string/bottom_menu_last_work"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/action_events"
+        android:enabled="true"
+        android:icon="@android:drawable/btn_star"
+        android:title="@string/bottom_menu_events"
+        app:showAsAction="always" />
+
+</menu>

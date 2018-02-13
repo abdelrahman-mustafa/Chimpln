@@ -9,12 +9,12 @@
 
     <LinearLayout
 
-        android:paddingBottom="15dp"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="0"
         android:background="@color/colorProfile"
-        android:orientation="horizontal">
+        android:orientation="horizontal"
+        android:paddingBottom="15dp">
 
         <ImageView
             android:id="@+id/userProfile_pic"
@@ -24,9 +24,9 @@
             android:layout_weight="5" />
 
         <LinearLayout
-            android:layout_margin="10dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_margin="10dp"
             android:layout_weight="2"
             android:orientation="vertical">
 
@@ -112,22 +112,22 @@
 
     </LinearLayout>
 
-    <android.support.design.widget.TabLayout
-        android:id="@+id/tabs"
-        android:background="@color/colorProfile"
-        android:layout_width="match_parent"
-        app:tabMode="fixed"
-        android:tabStripEnabled="false"
-        android:layout_height="wrap_content">
-    </android.support.design.widget.TabLayout>
-    <android.support.v4.view.ViewPager
 
+    <FrameLayout
         android:id="@+id/container"
         android:layout_width="match_parent"
         android:layout_height="match_parent"
         android:layout_marginTop="1dp"
         android:layout_weight="1"
         android:background="#FFFF" />
+
+    <android.support.design.widget.BottomNavigationView
+        android:id="@+id/navigation"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        app:itemBackground="@android:color/transparent"
+        app:menu="@menu/bottom_menu_user" />
 
 
 </LinearLayout>
