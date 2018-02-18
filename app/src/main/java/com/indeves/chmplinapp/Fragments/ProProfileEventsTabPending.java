@@ -9,37 +9,26 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Spinner;
-import android.widget.Toast;
 
 import com.indeves.chmplinapp.Adapters.UserProfEventsAdaptor;
-import com.indeves.chmplinapp.Controllers.PhotographerData;
+import com.indeves.chmplinapp.Models.PhotographerData;
 import com.indeves.chmplinapp.R;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class ProProfileEventsTabPending extends android.support.v4.app.Fragment {
-    PhotographerData photographerData;
-    private List<PhotographerData> list ;
-    private ViewPager viewPager;
-
     private static final String TAG = "RecyclerViewFragment";
     private static final String KEY_LAYOUT_MANAGER = "layoutManager";
     private static final int SPAN_COUNT = 2;
     private static final int DATASET_COUNT = 60;
-
-    private enum LayoutManagerType {
-        GRID_LAYOUT_MANAGER,
-        LINEAR_LAYOUT_MANAGER
-    }
     protected RecyclerView.LayoutManager mLayoutManager;
-
     protected LayoutManagerType mCurrentLayoutManagerType;
-
+    PhotographerData photographerData;
     UserProfEventsAdaptor userProfEventsAdaptor;
+    private List<PhotographerData> list;
+    private ViewPager viewPager;
     private RecyclerView recyclerView;
-
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -72,7 +61,6 @@ public class ProProfileEventsTabPending extends android.support.v4.app.Fragment 
         setRecyclerViewLayoutManager(mCurrentLayoutManagerType);
         userProfEventsAdaptor = new UserProfEventsAdaptor(list);
         recyclerView.setAdapter(userProfEventsAdaptor);
-        Toast.makeText(getContext(), "Hi", Toast.LENGTH_LONG).show();
 
         return rootView;
     }
@@ -102,5 +90,10 @@ public class ProProfileEventsTabPending extends android.support.v4.app.Fragment 
 
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.scrollToPosition(scrollPosition);
+    }
+
+    private enum LayoutManagerType {
+        GRID_LAYOUT_MANAGER,
+        LINEAR_LAYOUT_MANAGER
     }
 }

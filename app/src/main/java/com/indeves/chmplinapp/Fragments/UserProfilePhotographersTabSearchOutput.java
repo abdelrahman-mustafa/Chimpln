@@ -8,19 +8,25 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
-import android.widget.Button;
-import android.widget.Spinner;
 import android.widget.TextView;
 
 import com.indeves.chmplinapp.Adapters.UserAccPhotographersAdaptor;
-import com.indeves.chmplinapp.Controllers.UserAccPhotographerData;
+import com.indeves.chmplinapp.Models.UserAccPhotographerData;
 import com.indeves.chmplinapp.R;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class UserProfilePhotographersTabSearchOutput extends android.support.v4.app.Fragment {
+
+    private static final String KEY_LAYOUT_MANAGER = "layoutManager";
+    private static final int SPAN_COUNT = 2;
+    protected RecyclerView.LayoutManager mLayoutManager;
+    protected LayoutManagerType mCurrentLayoutManagerType;
+    TextView date, location, numEvents;
+    private RecyclerView recyclerView;
+    private UserAccPhotographersAdaptor userAccPhotographersAdaptor;
+    private List<UserAccPhotographerData> list;
 
     public UserProfilePhotographersTabSearchOutput() {
     }
@@ -29,24 +35,6 @@ public class UserProfilePhotographersTabSearchOutput extends android.support.v4.
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
-
-
-    private static final String KEY_LAYOUT_MANAGER = "layoutManager";
-    private static final int SPAN_COUNT = 2;
-
-
-    private enum LayoutManagerType {
-        GRID_LAYOUT_MANAGER,
-        LINEAR_LAYOUT_MANAGER
-    }
-
-    protected RecyclerView.LayoutManager mLayoutManager;
-
-    protected LayoutManagerType mCurrentLayoutManagerType;
-    private RecyclerView recyclerView;
-    private UserAccPhotographersAdaptor userAccPhotographersAdaptor;
-    private List<UserAccPhotographerData> list;
-    TextView date, location, numEvents;
 
     @Nullable
     @Override
@@ -166,6 +154,11 @@ public class UserProfilePhotographersTabSearchOutput extends android.support.v4.
 
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.scrollToPosition(scrollPosition);
+    }
+
+    private enum LayoutManagerType {
+        GRID_LAYOUT_MANAGER,
+        LINEAR_LAYOUT_MANAGER
     }
 
 

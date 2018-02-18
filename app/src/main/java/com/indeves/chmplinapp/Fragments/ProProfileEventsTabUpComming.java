@@ -2,43 +2,36 @@ package com.indeves.chmplinapp.Fragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
-import android.support.v4.view.ViewPager;
+
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
+import android.widget.TextView;
 
 import com.indeves.chmplinapp.Adapters.UserProfEventsAdaptor;
-import com.indeves.chmplinapp.Controllers.PhotographerData;
+import com.indeves.chmplinapp.Models.PhotographerData;
 import com.indeves.chmplinapp.R;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class ProProfileEventsTabUpComming extends android.support.v4.app.Fragment {
-    PhotographerData photographerData;
-    private List<PhotographerData> list ;
-    private ViewPager viewPager;
-
-
     private static final String TAG = "RecyclerViewFragment";
     private static final String KEY_LAYOUT_MANAGER = "layoutManager";
     private static final int SPAN_COUNT = 2;
     private static final int DATASET_COUNT = 60;
-
-    private enum LayoutManagerType {
-        GRID_LAYOUT_MANAGER,
-        LINEAR_LAYOUT_MANAGER
-    }
-
     protected LayoutManagerType mCurrentLayoutManagerType;
-
-    UserProfEventsAdaptor userProfEventsAdaptor;
-    private RecyclerView recyclerView;
     protected RecyclerView.LayoutManager mLayoutManager;
+    PhotographerData photographerData;
+    //    private ViewPager viewPager;
+    TextView sortDate, sortLocation, sortType;
+    int textDefaultColor;
+    UserProfEventsAdaptor userProfEventsAdaptor;
+    private List<PhotographerData> list;
+    private RecyclerView recyclerView;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -49,10 +42,12 @@ public class ProProfileEventsTabUpComming extends android.support.v4.app.Fragmen
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.activity_user_profile_tab_events_upcoming, container, false);
-        recyclerView = rootView.findViewById(R.id.userProfile_event_recycler_view);
-
-
+        View rootView = inflater.inflate(R.layout.pro_profile_up_coming_events_tab, container, false);
+        recyclerView = rootView.findViewById(R.id.proProfile_event_recycler_view);
+        sortLocation = rootView.findViewById(R.id.proProfile_phot_search_location);
+        sortDate = rootView.findViewById(R.id.proProfile_phot_search_date);
+        sortType = rootView.findViewById(R.id.proProfile_phot_search_number_events);
+        textDefaultColor = sortDate.getCurrentTextColor();
         photographerData = new PhotographerData("Ahmed", "Wedding", "10:00am  3:00pm", "6", "Feb", "no");
         list = new ArrayList<PhotographerData>();
         list.add(photographerData);
@@ -71,7 +66,68 @@ public class ProProfileEventsTabUpComming extends android.support.v4.app.Fragmen
         setRecyclerViewLayoutManager(mCurrentLayoutManagerType);
         userProfEventsAdaptor = new UserProfEventsAdaptor(list);
         recyclerView.setAdapter(userProfEventsAdaptor);
-        Toast.makeText(getContext(), "Hi", Toast.LENGTH_LONG).show();
+
+        sortLocation.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                PhotographerData data = new PhotographerData("Ahmed", "Wedding", "10:00am  3:00pm", "6", "Feb", "no");
+                list = new ArrayList<PhotographerData>();
+                list.add(data);
+
+                sortDate.setBackgroundColor(getResources().getColor(R.color.colorWhite));
+                sortDate.setTextColor(textDefaultColor);
+                sortLocation.setTextColor(getResources().getColor(R.color.colorWhite));
+                sortLocation.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+                sortType.setBackgroundColor(getResources().getColor(R.color.colorWhite));
+                sortType.setTextColor(textDefaultColor);
+
+                setRecyclerViewLayoutManager(mCurrentLayoutManagerType);
+                userProfEventsAdaptor = new UserProfEventsAdaptor(list);
+                recyclerView.setAdapter(userProfEventsAdaptor);
+            }
+        });
+        sortType.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                PhotographerData data = new PhotographerData("Ahmed", "Wedding", "10:00am  3:00pm", "6", "Feb", "no");
+
+                list = new ArrayList<PhotographerData>();
+                list.add(data);
+                list.add(data);
+                sortType.setTextColor(getResources().getColor(R.color.colorWhite));
+                sortType.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+                sortLocation.setBackgroundColor(getResources().getColor(R.color.colorWhite));
+                sortLocation.setTextColor(textDefaultColor);
+                sortDate.setBackgroundColor(getResources().getColor(R.color.colorWhite));
+                sortDate.setTextColor(textDefaultColor);
+                setRecyclerViewLayoutManager(mCurrentLayoutManagerType);
+                userProfEventsAdaptor = new UserProfEventsAdaptor(list);
+                recyclerView.setAdapter(userProfEventsAdaptor);
+            }
+        });
+        sortDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                PhotographerData data = new PhotographerData("Ahmed", "Wedding", "10:00am  3:00pm", "6", "Feb", "no");
+                list = new ArrayList<PhotographerData>();
+
+                sortDate.setTextColor(getResources().getColor(R.color.colorWhite));
+                sortDate.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+                sortLocation.setBackgroundColor(getResources().getColor(R.color.colorWhite));
+                sortLocation.setTextColor(textDefaultColor);
+                sortType.setBackgroundColor(getResources().getColor(R.color.colorWhite));
+                sortType.setTextColor(textDefaultColor);
+                list.add(data);
+                list.add(data);
+                list.add(data);
+                list.add(data);
+
+                setRecyclerViewLayoutManager(mCurrentLayoutManagerType);
+                userProfEventsAdaptor = new UserProfEventsAdaptor(list);
+                recyclerView.setAdapter(userProfEventsAdaptor);
+            }
+        });
+
 
         return rootView;
     }
@@ -101,5 +157,10 @@ public class ProProfileEventsTabUpComming extends android.support.v4.app.Fragmen
 
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.scrollToPosition(scrollPosition);
+    }
+
+    private enum LayoutManagerType {
+        GRID_LAYOUT_MANAGER,
+        LINEAR_LAYOUT_MANAGER
     }
 }

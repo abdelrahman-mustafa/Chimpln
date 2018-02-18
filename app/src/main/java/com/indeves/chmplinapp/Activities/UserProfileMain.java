@@ -25,12 +25,11 @@ import java.util.ArrayList;
 import java.util.List;
 
 public class UserProfileMain extends AppCompatActivity {
+    BottomNavigationView bottomNavigation;
   //  private ViewPager viewPager;
   //  private TabLayout tabLayout;
     private ImageView imageView;
     private RatingBar ratingBar;
-    BottomNavigationView bottomNavigation;
-
     private android.support.v4.app.Fragment fragment,initialFragment;
     private FragmentManager fragmentManager;
 

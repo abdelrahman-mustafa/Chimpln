@@ -1,4 +1,4 @@
-package com.indeves.chmplinapp.Controllers;
+package com.indeves.chmplinapp.Models;
 
 import android.os.Bundle;
 import android.support.v7.app.AppCompatActivity;

@@ -10,7 +10,7 @@
     <color name="colorTab">#c4bdbd</color>
     <color name="colorPrice">#ef4545</color>
     <color name="colorPack">#947988</color>
-
+    <color name="black">#000</color>
 
 
 </resources>

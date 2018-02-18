@@ -18,8 +18,8 @@
             android:id="@+id/userProfile_phot_search_pic"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:layout_weight="4"
             android:layout_gravity="center"
+            android:layout_weight="4"
             android:background="@drawable/user" />
 
         <LinearLayout
@@ -44,8 +44,8 @@
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
                     android:text="Photographer Name"
-                    android:textStyle="bold"
-                    android:textSize="18sp"/>
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/userProfile_phot_search_location"
@@ -66,26 +66,26 @@
             <LinearLayout
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:layout_marginRight="10dp"
+                android:layout_weight="1"
                 android:orientation="vertical">
 
                 <TextView
                     android:id="@+id/userProfile_phot_search_price"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
-                    android:layout_weight="1"
                     android:layout_gravity="right"
+                    android:layout_weight="1"
                     android:text="5000"
                     android:textColor="@color/colorPrice"
                     android:textSize="50sp"
                     android:textStyle="bold" />
 
                 <TextView
-                    android:layout_gravity="right"
                     android:id="@+id/userProfile_phot_search_currency"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="right"
                     android:layout_weight="1"
                     android:text="EGP"
                     android:textSize="15sp"

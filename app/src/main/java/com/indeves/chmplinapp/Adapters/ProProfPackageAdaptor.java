@@ -6,34 +6,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.indeves.chmplinapp.Controllers.MyPackageData;
-import com.indeves.chmplinapp.Controllers.PhotographerData;
+import com.indeves.chmplinapp.Models.MyPackageData;
 import com.indeves.chmplinapp.R;
 
 import java.util.List;
 
 public class ProProfPackageAdaptor extends RecyclerView.Adapter<ProProfPackageAdaptor.MyViewHolder> {
-    List<MyPackageData> list;
+    private List<MyPackageData> list;
 
     public ProProfPackageAdaptor(List<MyPackageData> list) {
         this.list = list;
-    }
-
-    public class MyViewHolder extends RecyclerView.ViewHolder {
-
-       public TextView packageName, packageType,packageCondition,packagePrice,packageCurrency,packageSpecs;
-
-        public MyViewHolder(View view) {
-            super(view);
-            packageName = view.findViewById(R.id.proProfile_myPackage_packageName);
-            packageType = view.findViewById(R.id.proProfile_myPackage_type);
-            packageCondition = view.findViewById(R.id.proProfile_myPackage_condition);
-            packageCurrency = view.findViewById(R.id.proProfile_myPackage_currency);
-            packageSpecs = view.findViewById(R.id.proProfile_myPackage_specs);
-            packagePrice = view.findViewById(R.id.proProfile_myPackage_price);
-
-
-        }
     }
 
     @Override
@@ -59,5 +41,22 @@ public class ProProfPackageAdaptor extends RecyclerView.Adapter<ProProfPackageAd
     public int getItemCount() {
 
         return list.size();
+    }
+
+    public class MyViewHolder extends RecyclerView.ViewHolder {
+
+        public TextView packageName, packageType, packageCondition, packagePrice, packageCurrency, packageSpecs;
+
+        public MyViewHolder(View view) {
+            super(view);
+            packageName = view.findViewById(R.id.proProfile_myPackage_packageName);
+            packageType = view.findViewById(R.id.proProfile_myPackage_type);
+            packageCondition = view.findViewById(R.id.proProfile_myPackage_condition);
+            packageCurrency = view.findViewById(R.id.proProfile_myPackage_currency);
+            packageSpecs = view.findViewById(R.id.proProfile_myPackage_specs);
+            packagePrice = view.findViewById(R.id.proProfile_myPackage_price);
+
+
+        }
     }
 }

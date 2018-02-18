@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/bg"
     android:orientation="vertical"
-    tools:context="com.indeves.chmplinapp.MainActivity">
+    tools:context="com.indeves.chmplinapp.Activities.MainActivity">
 
     <ImageView
         android:layout_width="200dp"
@@ -16,38 +16,38 @@
         android:layout_weight="1"
         android:background="@drawable/logo" />
     <LinearLayout
-        android:gravity="bottom"
-        android:layout_weight="1"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="30dp"
+        android:layout_weight="1"
+        android:gravity="bottom"
         android:orientation="vertical">
 
         <Button
-            android:textColor="@color/colorWhite"
-            android:text="@string/signIN"
             android:id="@+id/splash_button_signIn"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
-            android:background="@drawable/button" />
+            android:background="@drawable/button"
+            android:text="@string/signIN"
+            android:textColor="@color/colorWhite" />
 
         <Button
-            android:textColor="@color/colorWhite"
-            android:text="@string/userSign"
             android:id="@+id/splash_button_userSignUp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
-            android:background="@drawable/button" />
+            android:background="@drawable/button"
+            android:text="@string/userSign"
+            android:textColor="@color/colorWhite" />
 
         <Button
-            android:textColor="@color/colorWhite"
             android:id="@+id/splash_button_ProSignUp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
+            android:background="@drawable/button"
             android:text="@string/proSign"
-            android:background="@drawable/button" />
+            android:textColor="@color/colorWhite" />
     </LinearLayout>
 </LinearLayout>

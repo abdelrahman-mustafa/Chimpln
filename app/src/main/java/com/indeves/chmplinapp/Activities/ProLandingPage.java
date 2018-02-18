@@ -18,17 +18,16 @@ import com.indeves.chmplinapp.R;
 
 public class ProLandingPage extends AppCompatActivity implements ProEvents.OnFragmentInteractionListener,ProLastWork.OnFragmentInteractionListener,ProPackages.OnFragmentInteractionListener,ProProfile.OnFragmentInteractionListener {
     private static final String TAG = MainActivity.class.getSimpleName();
-    private BottomNavigationView bottomNavigation;
-    private Fragment fragment,initialFragment;
+    private Fragment fragment;
     private FragmentManager fragmentManager;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_pro_landing_page);
-        bottomNavigation = (BottomNavigationView) findViewById(R.id.bottom_navigation);
+        BottomNavigationView bottomNavigation = (BottomNavigationView) findViewById(R.id.bottom_navigation);
         fragmentManager = getSupportFragmentManager();
-        initialFragment = new ProLastWork();
+        Fragment initialFragment = new ProLastWork();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.replace(R.id.main_container, initialFragment).commit();
 
@@ -59,6 +58,11 @@ public class ProLandingPage extends AppCompatActivity implements ProEvents.OnFra
 
     @Override
     public void onFragmentInteraction(Uri uri) {
+
+    }
+
+    @Override
+    public void onPhotoClicked(String url) {
 
     }
 }

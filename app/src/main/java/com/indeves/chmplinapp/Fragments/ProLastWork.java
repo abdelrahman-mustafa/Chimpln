@@ -1,6 +1,7 @@
 package com.indeves.chmplinapp.Fragments;
 
 import android.content.Context;
+import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.NonNull;
@@ -96,9 +97,9 @@ public class ProLastWork extends Fragment {
     }
 
     // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
+    public void onImageClicked(String url) {
         if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
+            mListener.onPhotoClicked(url);
         }
     }
 
@@ -131,6 +132,6 @@ public class ProLastWork extends Fragment {
      */
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
+        void onPhotoClicked(String url);
     }
 }

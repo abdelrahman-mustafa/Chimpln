@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/bg"
     android:orientation="vertical"
-    tools:context="com.indeves.chmplinapp.MainActivity">
+    tools:context="com.indeves.chmplinapp.Activities.LogIn">
 
     <ScrollView
         android:layout_width="match_parent"

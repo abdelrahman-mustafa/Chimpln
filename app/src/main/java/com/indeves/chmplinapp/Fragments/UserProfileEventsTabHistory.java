@@ -11,34 +11,25 @@ import android.view.View;
 import android.view.ViewGroup;
 
 import com.indeves.chmplinapp.Adapters.UserProfEventsAdaptor;
-import com.indeves.chmplinapp.Controllers.PhotographerData;
+import com.indeves.chmplinapp.Models.PhotographerData;
 import com.indeves.chmplinapp.R;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class UserProfileEventsTabHistory extends android.support.v4.app.Fragment {
-    PhotographerData photographerData;
-    private List<PhotographerData> list= new ArrayList<PhotographerData>();
-    private ViewPager viewPager;
-
-
     private static final String TAG = "RecyclerViewFragment";
     private static final String KEY_LAYOUT_MANAGER = "layoutManager";
     private static final int SPAN_COUNT = 2;
     private static final int DATASET_COUNT = 60;
-
-    private enum LayoutManagerType {
-        GRID_LAYOUT_MANAGER,
-        LINEAR_LAYOUT_MANAGER
-    }
-
-
     protected LayoutManagerType mCurrentLayoutManagerType;
-
-    UserProfEventsAdaptor userProfEventsAdaptor;
-    private RecyclerView recyclerView;
     protected RecyclerView.LayoutManager mLayoutManager;
+    PhotographerData photographerData;
+    UserProfEventsAdaptor userProfEventsAdaptor;
+    private List<PhotographerData> list = new ArrayList<PhotographerData>();
+    private ViewPager viewPager;
+    private RecyclerView recyclerView;
+
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -69,6 +60,7 @@ public class UserProfileEventsTabHistory extends android.support.v4.app.Fragment
         recyclerView.setAdapter(userProfEventsAdaptor);
         return rootView;
     }
+
     public void setRecyclerViewLayoutManager(LayoutManagerType layoutManagerType) {
         int scrollPosition = 0;
 
@@ -94,5 +86,10 @@ public class UserProfileEventsTabHistory extends android.support.v4.app.Fragment
 
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.scrollToPosition(scrollPosition);
+    }
+
+    private enum LayoutManagerType {
+        GRID_LAYOUT_MANAGER,
+        LINEAR_LAYOUT_MANAGER
     }
 }

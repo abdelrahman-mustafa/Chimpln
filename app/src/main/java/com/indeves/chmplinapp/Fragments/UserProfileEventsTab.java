@@ -20,8 +20,8 @@ import java.util.List;
 
 public class UserProfileEventsTab extends android.support.v4.app.Fragment {
 
-    private ViewPager viewPager;
     TabLayout tabLayout;
+    private ViewPager viewPager;
     public UserProfileEventsTab() {
     }
 

@@ -1,11 +1,10 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/Content_homePage"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
-
     android:orientation="vertical">
 
     <LinearLayout
@@ -19,14 +18,14 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:gravity="left"
+            android:gravity="start"
             android:padding="6dp"
             android:text="@string/sort"
             android:textSize="17sp"
             android:textStyle="bold" />
 
         <TextView
-            android:id="@+id/userProfile_phot_search_date"
+            android:id="@+id/proProfile_phot_search_date"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -36,7 +35,7 @@
             android:textSize="17sp" />
 
         <TextView
-            android:id="@+id/userProfile_phot_search_location"
+            android:id="@+id/proProfile_phot_search_location"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
@@ -46,29 +45,22 @@
             android:textSize="17sp" />
 
         <TextView
-            android:id="@+id/userProfile_phot_search_number_events"
+            android:id="@+id/proProfile_phot_search_number_events"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:layout_weight="1"
             android:gravity="center"
             android:padding="6dp"
-            android:text="@string/sortNumEvents"
+            android:text="@string/sort_parameter_type"
             android:textSize="17sp" />
 
 
     </LinearLayout>
 
-    <View
-        android:id="@+id/view1"
-        android:layout_width="fill_parent"
-        android:layout_height="1dp"
-        android:layout_below="@id/view"
-        android:background="@color/colorProfile" />
-
     <android.support.v7.widget.RecyclerView
-        android:id="@+id/userProfile_pho_recycler_view"
+        android:id="@+id/proProfile_event_recycler_view"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_below="@id/view1"
-        android:layout_marginTop="10dp" />
-</RelativeLayout>
+        android:layout_height="wrap_content" />
+
+
+</LinearLayout>

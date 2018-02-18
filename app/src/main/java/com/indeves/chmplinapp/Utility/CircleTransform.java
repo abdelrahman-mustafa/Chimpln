@@ -1,4 +1,4 @@
-package com.indeves.chmplinapp.Controllers;
+package com.indeves.chmplinapp.Utility;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapShader;

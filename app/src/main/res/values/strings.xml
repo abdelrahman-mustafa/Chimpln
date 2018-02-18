@@ -45,6 +45,7 @@
     <string name="sortDate">Date</string>
     <string name="sortLocation">Location</string>
     <string name="sortNumEvents">Number of Events</string>
+    <string name="sort_parameter_type">Type</string>
 
 
 

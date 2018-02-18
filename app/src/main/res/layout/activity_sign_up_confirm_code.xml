@@ -6,7 +6,7 @@
     android:layout_height="match_parent"
     android:background="@drawable/bg"
     android:orientation="vertical"
-    tools:context="com.indeves.chmplinapp.MainActivity">
+    tools:context="com.indeves.chmplinapp.Activities.MainActivity">
 
     <ScrollView
         android:layout_width="match_parent"
@@ -17,98 +17,91 @@
             android:layout_height="wrap_content"
             android:orientation="vertical">
     <ImageView
-        android:layout_gravity="center"
-        android:background="@drawable/logo"
-        android:layout_margin="30dp"
         android:layout_width="170dp"
         android:layout_height="170dp"
+        android:layout_gravity="center"
+        android:layout_margin="30dp"
         android:layout_weight="1"
+        android:background="@drawable/logo"
         />
 
     <LinearLayout
-        android:layout_weight="3"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_margin="30dp"
+        android:layout_weight="3"
         android:orientation="vertical">
         <TextView
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
             android:layout_margin="30dp"
             android:gravity="center"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:textColor="@color/colorWhite"
-            android:text="@string/enterCodeSent"/>
+            android:text="@string/enterCodeSent"
+            android:textColor="@color/colorWhite" />
 
         <TextView
-            android:gravity="center"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
-            android:textColor="@color/colorWhite"
-            android:text="@string/enterCode"/>
+            android:gravity="center"
+            android:text="@string/enterCode"
+            android:textColor="@color/colorWhite" />
+
         <LinearLayout
-            android:layout_marginBottom="40dp"
-            android:layout_marginRight="30dp"
-            android:layout_marginLeft="30dp"
-            android:orientation="horizontal"
             android:layout_width="match_parent"
-            android:layout_height="wrap_content">
-
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="40dp"
+            android:layout_marginLeft="30dp"
+            android:layout_marginRight="30dp"
+            android:orientation="horizontal">
 
 
             <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginLeft="5dp"
-                android:background="@color/colorNum"
                 android:layout_weight="1"
+                android:background="@color/colorNum"
                 android:inputType="number"
-                android:textSize="50sp"
-                android:textColorHint="@color/colorWhite"
                 android:textColor="@color/colorWhite"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
+                android:textColorHint="@color/colorWhite"
+                android:textSize="50sp" />
 
 
             <EditText
-                android:background="@color/colorNum"
-                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
                 android:layout_marginLeft="10dp"
-                android:inputType="number"
-                android:textSize="50sp"
-                android:textColorHint="@color/colorWhite"
-                android:textColor="@color/colorWhite"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
-
-
-
-
-            <EditText
-                android:background="@color/colorNum"
                 android:layout_weight="1"
-                android:layout_marginLeft="10dp"
+                android:background="@color/colorNum"
                 android:inputType="number"
-                android:textSize="50sp"
-                android:textColorHint="@color/colorWhite"
                 android:textColor="@color/colorWhite"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
-
+                android:textColorHint="@color/colorWhite"
+                android:textSize="50sp" />
 
 
             <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
+                android:layout_weight="1"
+                android:background="@color/colorNum"
+                android:inputType="number"
+                android:textColor="@color/colorWhite"
+                android:textColorHint="@color/colorWhite"
+                android:textSize="50sp" />
+
+
+            <EditText
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="10dp"
                 android:layout_marginRight="5dp"
-                android:background="@color/colorNum"
                 android:layout_weight="1"
-                android:layout_marginLeft="10dp"
+                android:background="@color/colorNum"
                 android:inputType="number"
-                android:textSize="50sp"
-                android:textColorHint="@color/colorWhite"
                 android:textColor="@color/colorWhite"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content" />
-
+                android:textColorHint="@color/colorWhite"
+                android:textSize="50sp" />
 
 
         </LinearLayout>
@@ -116,23 +109,23 @@
 
 
         <Button
-            android:textColor="@color/colorWhite"
-            android:text="@string/confirmNum"
             android:id="@+id/confirm_code"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
-            android:background="@drawable/button" />
+            android:background="@drawable/button"
+            android:text="@string/confirmNum"
+            android:textColor="@color/colorWhite" />
 
 
         <Button
-            android:textColor="@color/colorPrimary"
             android:id="@+id/resend_code"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_marginBottom="8dp"
+            android:background="@drawable/button_white"
             android:text="@string/resendCode"
-            android:background="@drawable/button_white" />
+            android:textColor="@color/colorPrimary" />
     </LinearLayout>
         </LinearLayout>
     </ScrollView>

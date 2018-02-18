@@ -19,6 +19,8 @@ import java.util.List;
 
 public class UserProfilePhotographersTabSearch extends android.support.v4.app.Fragment {
 
+    Button search;
+
     public UserProfilePhotographersTabSearch() {
     }
 
@@ -27,9 +29,6 @@ public class UserProfilePhotographersTabSearch extends android.support.v4.app.Fr
         super.onCreate(savedInstanceState);
     }
 
-
-
-    Button search;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {

@@ -28,9 +28,9 @@
                 android:layout_marginBottom="0dp"
                 android:layout_weight="1"
                 android:text="5"
-                android:textStyle="bold"
                 android:textColor="@color/colorProfile"
-                android:textSize="50sp" />
+                android:textSize="50sp"
+                android:textStyle="bold" />
 
             <TextView
                 android:id="@+id/userProfile_event_month"
@@ -39,15 +39,15 @@
                 android:layout_marginTop="0dp"
                 android:layout_weight="1"
                 android:text="Jan"
-                android:textStyle="bold"
                 android:textColor="@color/colorProfile"
-                android:textSize="30sp" />
+                android:textSize="30sp"
+                android:textStyle="bold" />
         </LinearLayout>
 
         <LinearLayout
-            android:layout_marginTop="8dp"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:layout_marginTop="8dp"
             android:layout_weight="1"
             android:orientation="vertical">
 
@@ -109,19 +109,19 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:textSize="16dp"
-                    android:paddingRight="5dp"
-                    android:layout_weight="0"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_weight="0"
+                    android:paddingRight="5dp"
                     android:text="@string/shareOption"
+                    android:textSize="16dp"
                     android:textStyle="bold" />
 
                 <TextView
                     android:id="@+id/userProfile_event_shareOption"
-                    android:layout_weight="1"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:layout_weight="1"
                     android:text="share photos"
                     android:textStyle="normal" />
             </LinearLayout>
@@ -130,8 +130,8 @@
 
     </LinearLayout>
     <View
-        android:background="@color/colorProfile"
-        android:layout_below="@id/view"
         android:layout_width="match_parent"
-        android:layout_height="1dp"/>
+        android:layout_height="1dp"
+        android:layout_below="@id/view"
+        android:background="@color/colorProfile" />
 </RelativeLayout>

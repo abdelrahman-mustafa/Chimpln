@@ -1,4 +1,4 @@
-package com.indeves.chmplinapp.Controllers;
+package com.indeves.chmplinapp.Models;
 
 public class MyPackageData {
     private String packageName;

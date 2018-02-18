@@ -6,8 +6,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.indeves.chmplinapp.Controllers.MyPackageData;
-import com.indeves.chmplinapp.Controllers.UserAccPhotographerData;
+import com.indeves.chmplinapp.Models.UserAccPhotographerData;
 import com.indeves.chmplinapp.R;
 
 import java.util.List;
@@ -17,21 +16,6 @@ public class UserAccPhotographersAdaptor extends RecyclerView.Adapter<UserAccPho
 
     public UserAccPhotographersAdaptor(List<UserAccPhotographerData> list) {
         this.list = list;
-    }
-
-    public class MyViewHolder extends RecyclerView.ViewHolder {
-
-       public TextView Name, Location,Gender,Price,Currency;
-
-        public MyViewHolder(View view) {
-            super(view);
-            Name = view.findViewById(R.id.userProfile_phot_search_name);
-            Gender = view.findViewById(R.id.userProfile_phot_search_gender);
-            Location = view.findViewById(R.id.userProfile_phot_search_location);
-            Currency = view.findViewById(R.id.userProfile_phot_search_currency);
-            Price = view.findViewById(R.id.userProfile_phot_search_price);
-
-        }
     }
 
     @Override
@@ -56,5 +40,20 @@ public class UserAccPhotographersAdaptor extends RecyclerView.Adapter<UserAccPho
     public int getItemCount() {
 
         return list.size();
+    }
+
+    public class MyViewHolder extends RecyclerView.ViewHolder {
+
+        public TextView Name, Location, Gender, Price, Currency;
+
+        public MyViewHolder(View view) {
+            super(view);
+            Name = view.findViewById(R.id.userProfile_phot_search_name);
+            Gender = view.findViewById(R.id.userProfile_phot_search_gender);
+            Location = view.findViewById(R.id.userProfile_phot_search_location);
+            Currency = view.findViewById(R.id.userProfile_phot_search_currency);
+            Price = view.findViewById(R.id.userProfile_phot_search_price);
+
+        }
     }
 }

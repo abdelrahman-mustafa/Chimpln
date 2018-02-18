@@ -18,6 +18,9 @@ import java.util.List;
 
 public class UserProfilePhotographersTab extends android.support.v4.app.Fragment {
 
+    private ViewPager viewPager;
+    private TabLayout tabLayout;
+
     public UserProfilePhotographersTab() {
     }
 
@@ -25,9 +28,6 @@ public class UserProfilePhotographersTab extends android.support.v4.app.Fragment
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
-
-    private ViewPager viewPager;
-    private TabLayout tabLayout;
 
     @Nullable
     @Override

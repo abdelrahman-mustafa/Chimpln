@@ -16,6 +16,9 @@ import java.util.List;
 
 public class UserProfilePhotographersTabSearchSelect extends android.support.v4.app.Fragment {
 
+    Spinner spinner1, spinner2, spinner3, spinner4;
+    Button search;
+
     public UserProfilePhotographersTabSearchSelect() {
     }
 
@@ -23,9 +26,6 @@ public class UserProfilePhotographersTabSearchSelect extends android.support.v4.
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
-
-    Spinner spinner1, spinner2, spinner3, spinner4;
-    Button search;
 
     @Nullable
     @Override

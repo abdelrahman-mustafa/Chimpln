@@ -9,36 +9,26 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.Toast;
 
 import com.indeves.chmplinapp.Adapters.UserProfEventsAdaptor;
-import com.indeves.chmplinapp.Controllers.PhotographerData;
+import com.indeves.chmplinapp.Models.PhotographerData;
 import com.indeves.chmplinapp.R;
 
 import java.util.ArrayList;
 import java.util.List;
 
 public class UserProfileEventsTabUpComming extends android.support.v4.app.Fragment {
-    PhotographerData photographerData;
-    private List<PhotographerData> list = new ArrayList<PhotographerData>();
-    private ViewPager viewPager;
-
-
     private static final String TAG = "RecyclerViewFragment";
     private static final String KEY_LAYOUT_MANAGER = "layoutManager";
     private static final int SPAN_COUNT = 2;
     private static final int DATASET_COUNT = 60;
-
-    private enum LayoutManagerType {
-        GRID_LAYOUT_MANAGER,
-        LINEAR_LAYOUT_MANAGER
-    }
-
     protected LayoutManagerType mCurrentLayoutManagerType;
-
-    UserProfEventsAdaptor userProfEventsAdaptor;
-    private RecyclerView recyclerView;
     protected RecyclerView.LayoutManager mLayoutManager;
+    PhotographerData photographerData;
+    UserProfEventsAdaptor userProfEventsAdaptor;
+    private List<PhotographerData> list = new ArrayList<PhotographerData>();
+    private ViewPager viewPager;
+    private RecyclerView recyclerView;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -51,7 +41,7 @@ public class UserProfileEventsTabUpComming extends android.support.v4.app.Fragme
         View rootView = inflater.inflate(R.layout.activity_user_profile_tab_events_upcoming, container, false);
 
 
-        Toast.makeText(getContext(), "Hi", Toast.LENGTH_LONG).show();
+
         recyclerView = rootView.findViewById(R.id.userProfile_event_recycler_view);
         photographerData = new PhotographerData("Ahmed", "Wedding", "10:00am  3:00pm", "6", "Feb", "no");
         list.add(photographerData);
@@ -98,5 +88,10 @@ public class UserProfileEventsTabUpComming extends android.support.v4.app.Fragme
 
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.scrollToPosition(scrollPosition);
+    }
+
+    private enum LayoutManagerType {
+        GRID_LAYOUT_MANAGER,
+        LINEAR_LAYOUT_MANAGER
     }
 }
