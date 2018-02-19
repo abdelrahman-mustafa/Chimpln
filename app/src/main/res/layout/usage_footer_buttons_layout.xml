@@ -6,28 +6,15 @@
     android:layout_alignParentBottom="true"
     android:orientation="horizontal">
 
-    <Button
-        android:id="@+id/btnBack"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="10dp"
-        android:layout_marginRight="5dp"
-        android:layout_weight="0.5"
-        android:background="#DB0082"
-        android:text="Back"
-        android:textColor="#ffffff" />
 
-
-    <Button
-        android:id="@+id/btnNext"
-        android:layout_width="0dp"
-        android:layout_height="wrap_content"
-        android:layout_marginLeft="5dp"
-        android:layout_marginRight="10dp"
-        android:layout_weight="0.5"
-        android:background="#DB0082"
-        android:text="Next"
-        android:textColor="#ffffff" />
-
+    <TextView
+        android:id="@+id/stepbar_textView"
+        android:layout_width="wrap_content"
+        android:layout_height="30sp"
+        android:layout_weight="1"
+        android:autoText="true"
+        android:text="Long Tap on Address"
+        android:textSize="15sp"
+        android:textStyle="normal" />
 </LinearLayout>
 

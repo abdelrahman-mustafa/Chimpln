@@ -1,0 +1,59 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    app:layout_behavior="@string/appbar_scrolling_view_behavior"
+    tools:context="com.indeves.chmplinapp.Activities.Contactpro"
+    tools:showIn="@layout/activity_contactpro">
+    <include
+        layout="@layout/usage_stateprogressbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/include" />
+
+    <Button
+        android:id="@+id/button4"
+        android:layout_width="150sp"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_centerHorizontal="true"
+        android:layout_marginBottom="44dp"
+        android:background="@color/colorPrimary"
+        android:text="Contact"
+        android:textColor="@color/colorWhite"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="117dp"
+        tools:layout_editor_absoluteY="360dp" />
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/include"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="67dp"
+        android:text="Thanks"
+        android:textColor="@color/black"
+        android:textSize="50sp"
+        android:textStyle="bold"
+        tools:ignore="MissingConstraints"
+        tools:layout_editor_absoluteX="109dp"
+        tools:layout_editor_absoluteY="47dp" />
+
+    <EditText
+        android:id="@+id/editText"
+        android:layout_width="300sp"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/textView"
+        android:layout_centerHorizontal="true"
+        android:layout_marginTop="113dp"
+        android:ems="10"
+        android:inputType="textPersonName"
+        android:text="the pro accepted your event you can now contact the pro"
+        tools:layout_editor_absoluteX="42dp"
+        tools:layout_editor_absoluteY="157dp" />
+
+
+</RelativeLayout>
