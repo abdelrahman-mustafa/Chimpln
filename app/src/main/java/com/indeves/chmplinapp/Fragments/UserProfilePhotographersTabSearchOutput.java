@@ -1,11 +1,20 @@
 package com.indeves.chmplinapp.Fragments;
 
+import android.content.Context;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
+import android.support.design.widget.BottomNavigationView;
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.GestureDetector;
+import android.view.GestureDetector.SimpleOnGestureListener;
 import android.view.LayoutInflater;
+import android.view.MenuItem;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -13,6 +22,7 @@ import android.widget.TextView;
 import com.indeves.chmplinapp.Adapters.UserAccPhotographersAdaptor;
 import com.indeves.chmplinapp.Models.UserAccPhotographerData;
 import com.indeves.chmplinapp.R;
+import com.indeves.chmplinapp.Utility.ClickListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -27,6 +37,9 @@ public class UserProfilePhotographersTabSearchOutput extends android.support.v4.
     private RecyclerView recyclerView;
     private UserAccPhotographersAdaptor userAccPhotographersAdaptor;
     private List<UserAccPhotographerData> list;
+
+    private android.support.v4.app.Fragment fragment;
+    private FragmentManager fragmentManager;
 
     public UserProfilePhotographersTabSearchOutput() {
     }
@@ -122,6 +135,25 @@ public class UserProfilePhotographersTabSearchOutput extends android.support.v4.
             }
         });
 
+        recyclerView.addOnItemTouchListener(new RecyclerTouchListener(this,
+                recyclerView, new ClickListener() {
+            @Override
+            public void onClick(View view, final int position) {
+                //Values are passing to activity & to fragment as well
+                fragmentManager = getChildFragmentManager();
+                fragment = new UserProfilePhotographersTabSearchOutputSelectPhotographer();
+                FragmentTransaction transaction = fragmentManager.beginTransaction();
+                transaction.replace(R.id.container, fragment).commit();
+
+            }
+            @Override
+            public void onLongClick(View view, int position) {
+                fragmentManager = getChildFragmentManager();
+                fragment = new UserProfilePhotographersTabSearchOutputSelectPhotographer();
+                FragmentTransaction transaction = fragmentManager.beginTransaction();
+                transaction.replace(R.id.container, fragment).commit();
+            }
+        }));
 
         setRecyclerViewLayoutManager(mCurrentLayoutManagerType);
         userAccPhotographersAdaptor = new UserAccPhotographersAdaptor(list);
@@ -162,4 +194,48 @@ public class UserProfilePhotographersTabSearchOutput extends android.support.v4.
     }
 
 
+    class RecyclerTouchListener implements RecyclerView.OnItemTouchListener{
+
+        private ClickListener clicklistener;
+        private GestureDetector gestureDetector;
+
+        public RecyclerTouchListener(UserProfilePhotographersTabSearchOutput context, final RecyclerView recycleView, final ClickListener clicklistener){
+
+            this.clicklistener=clicklistener;
+            gestureDetector=new GestureDetector(getContext(),new SimpleOnGestureListener(){
+                @Override
+                public boolean onSingleTapUp(MotionEvent e) {
+                    return true;
+                }
+
+                @Override
+                public void onLongPress(MotionEvent e) {
+                    View child=recycleView.findChildViewUnder(e.getX(),e.getY());
+                    if(child!=null && clicklistener!=null){
+                        clicklistener.onLongClick(child,recycleView.getChildAdapterPosition(child));
+                    }
+                }
+            });
+        }
+
+        @Override
+        public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent e) {
+            View child=rv.findChildViewUnder(e.getX(),e.getY());
+            if(child!=null && clicklistener!=null && gestureDetector.onTouchEvent(e)){
+                clicklistener.onClick(child,rv.getChildAdapterPosition(child));
+            }
+
+            return false;
+        }
+
+        @Override
+        public void onTouchEvent(RecyclerView rv, MotionEvent e) {
+
+        }
+
+        @Override
+        public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
+
+        }
+    }
 }

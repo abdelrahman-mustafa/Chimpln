@@ -58,11 +58,14 @@ public class UserProfileMain extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 int id = item.getItemId();
                 switch (id) {
-                    case R.id.action_lastWork:
+                    case R.id.action_events:
                         fragment = new UserProfileEventsTab();
                         break;
-                    case R.id.action_events:
+                    case R.id.action_photographers:
                         fragment = new UserProfilePhotographersTab();
+                        break;
+                    case R.id.action_profile:
+                        fragment = new UserProfileEditProfileTab();
                         break;
                 }
                 final FragmentTransaction transaction = fragmentManager.beginTransaction();
