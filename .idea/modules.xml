@@ -2,7 +2,8 @@
 <project version="4">
   <component name="ProjectModuleManager">
     <modules>
-      <module fileurl="file://$PROJECT_DIR$/Chimpln.iml" filepath="$PROJECT_DIR$/Chimpln.iml" />
+      <module fileurl="file://D:\Okhtub app\ChmplinAPP\Chimpln.iml" filepath="D:\Okhtub app\ChmplinAPP\Chimpln.iml" />
+      <module fileurl="file://$PROJECT_DIR$/ChmplinAPP.iml" filepath="$PROJECT_DIR$/ChmplinAPP.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>
