@@ -6,7 +6,7 @@ import android.os.Bundle;
 import android.view.View;
 import android.widget.Button;
 
-import com.indeves.chmplinapp.R;
+import com.indeves.chmplinapp.*;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -21,7 +21,7 @@ public class MainActivity extends AppCompatActivity {
         button1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(MainActivity.this,Booking.class));
+                startActivity(new Intent(MainActivity.this, LogIn.class));
             }
         });
         button2.setOnClickListener(new View.OnClickListener() {

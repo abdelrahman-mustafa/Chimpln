@@ -25,7 +25,6 @@ public class SignUp extends AppCompatActivity {
         radioButton2 = findViewById(R.id.signUp_radio_pro_account);
         // get selected radio button from radioGroup
 
-
         // find the radiobutton by returned id
         createAccount.setOnClickListener(new View.OnClickListener() {
             @Override

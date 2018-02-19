@@ -47,6 +47,9 @@
     <string name="sortNumEvents">Number of Events</string>
     <string name="sort_parameter_type">Type</string>
     <string name="title_activity_booking">Booking</string>
+    <string name="title_activity_maps">Map</string>
+    <string name="title_activity_approval">Approval</string>
+    <string name="title_activity_contactpro">Contactpro</string>
 
 
 </resources>
