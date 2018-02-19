@@ -33,7 +33,7 @@ public class UserProfilePhotographersTab extends android.support.v4.app.Fragment
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.activity_user_profile_tab_photographers, container, false);
-        viewPager = (ViewPager) rootView.findViewById(R.id.container);
+        viewPager = (ViewPager) rootView.findViewById(R.id.container_special);
         setupViewPager(viewPager);
         tabLayout= rootView.findViewById(R.id.tabs);
         tabLayout.setSelectedTabIndicatorHeight(0);

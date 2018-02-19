@@ -11,7 +11,7 @@ import android.widget.RadioGroup;
 import com.indeves.chmplinapp.R;
 
 public class SignUp extends AppCompatActivity {
-    RadioButton radioButton,radioButton2;
+    RadioButton radioButton,radioButton2,radioButton3;
     RadioGroup radioGroup;
     Button createAccount;
 
@@ -23,6 +23,8 @@ public class SignUp extends AppCompatActivity {
         createAccount = findViewById(R.id.signUp_button_createAccount);
         radioButton = findViewById(R.id.signUp_radio_user_account);
         radioButton2 = findViewById(R.id.signUp_radio_pro_account);
+        radioButton3 = findViewById(R.id.signUp_radio_stu_account);
+
         // get selected radio button from radioGroup
 
         // find the radiobutton by returned id
@@ -35,11 +37,15 @@ public class SignUp extends AppCompatActivity {
                     Intent intent = new Intent(SignUp.this, SignUpConfirmCode.class);
                     intent.putExtra("accountType","user");
                     startActivity(intent);
-                }else {
+                }else if (radioButton2.isChecked()) {
                     Intent intent = new Intent(SignUp.this, SignUpConfirmCode.class);
                     intent.putExtra("accountType","pro");
                     startActivity(intent);
 
+                }else {
+                    Intent intent = new Intent(SignUp.this, SignUpConfirmCode.class);
+                    intent.putExtra("accountType","stu");
+                    startActivity(intent);
                 }
             }
         });

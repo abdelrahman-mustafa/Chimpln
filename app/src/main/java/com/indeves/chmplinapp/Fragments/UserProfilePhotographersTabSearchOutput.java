@@ -17,6 +17,7 @@ import android.view.MenuItem;
 import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 
 import com.indeves.chmplinapp.Adapters.UserAccPhotographersAdaptor;
@@ -49,6 +50,7 @@ public class UserProfilePhotographersTabSearchOutput extends android.support.v4.
         super.onCreate(savedInstanceState);
     }
 
+    LinearLayout linearLayout;
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
@@ -58,7 +60,7 @@ public class UserProfilePhotographersTabSearchOutput extends android.support.v4.
         location = rootView.findViewById(R.id.userProfile_phot_search_location);
         date = rootView.findViewById(R.id.userProfile_phot_search_date);
         numEvents = rootView.findViewById(R.id.userProfile_phot_search_number_events);
-
+        linearLayout = rootView.findViewById(R.id.view);
         UserAccPhotographerData data = new UserAccPhotographerData("Ahmed Mohamed", "Cairo, Egypt", "EGP", "2000", "Male");
 
         list = new ArrayList<UserAccPhotographerData>();
@@ -99,16 +101,13 @@ public class UserProfilePhotographersTabSearchOutput extends android.support.v4.
             @Override
             public void onClick(View view) {
                 UserAccPhotographerData data = new UserAccPhotographerData("Ahmed Mohamed", "Cairo, Egypt", "EGP", "2000", "Male");
-
                 list = new ArrayList<UserAccPhotographerData>();
                 list.add(data);
                 list.add(data);
                 numEvents.setTextColor(getResources().getColor(R.color.colorWhite));
-
                 numEvents.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
                 location.setBackgroundColor(getResources().getColor(R.color.colorWhite));
                 date.setBackgroundColor(getResources().getColor(R.color.colorWhite));
-
                 setRecyclerViewLayoutManager(mCurrentLayoutManagerType);
                 userAccPhotographersAdaptor = new UserAccPhotographersAdaptor(list);
                 recyclerView.setAdapter(userAccPhotographersAdaptor);
@@ -128,7 +127,6 @@ public class UserProfilePhotographersTabSearchOutput extends android.support.v4.
                 list.add(data);
                 list.add(data);
                 list.add(data);
-
                 setRecyclerViewLayoutManager(mCurrentLayoutManagerType);
                 userAccPhotographersAdaptor = new UserAccPhotographersAdaptor(list);
                 recyclerView.setAdapter(userAccPhotographersAdaptor);
@@ -140,18 +138,19 @@ public class UserProfilePhotographersTabSearchOutput extends android.support.v4.
             @Override
             public void onClick(View view, final int position) {
                 //Values are passing to activity & to fragment as well
-                fragmentManager = getChildFragmentManager();
-                fragment = new UserProfilePhotographersTabSearchOutputSelectPhotographer();
+                linearLayout.setVisibility(View.GONE);
+                fragmentManager = getActivity().getSupportFragmentManager();
+                 UserProfilePhotographersTabSearchOutputSelectPhotographer frag = new UserProfilePhotographersTabSearchOutputSelectPhotographer();
                 FragmentTransaction transaction = fragmentManager.beginTransaction();
-                transaction.replace(R.id.container, fragment).commit();
+                transaction.replace(R.id.container_o, frag).commit();
 
             }
             @Override
             public void onLongClick(View view, int position) {
-                fragmentManager = getChildFragmentManager();
-                fragment = new UserProfilePhotographersTabSearchOutputSelectPhotographer();
+                linearLayout.setVisibility(View.GONE);
+                UserProfilePhotographersTabSearchOutputSelectPhotographer frag = new UserProfilePhotographersTabSearchOutputSelectPhotographer();
                 FragmentTransaction transaction = fragmentManager.beginTransaction();
-                transaction.replace(R.id.container, fragment).commit();
+                transaction.replace(R.id.container, frag).commit();
             }
         }));
 

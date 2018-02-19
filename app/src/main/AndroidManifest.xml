@@ -41,6 +41,9 @@
             android:name=".Activities.ProLandingPage"
             tools:ignore="InnerclassSeparator" />
         <activity
+            android:name=".Activities.StuLandingPage"
+            tools:ignore="InnerclassSeparator" />
+        <activity
             android:name=".Activities.Booking"
             android:label="@string/title_activity_booking"
             android:theme="@style/AppTheme.NoActionBar" />

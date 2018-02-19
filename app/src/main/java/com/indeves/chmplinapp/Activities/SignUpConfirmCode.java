@@ -24,6 +24,8 @@ public class SignUpConfirmCode extends AppCompatActivity {
                     startActivity(new Intent(SignUpConfirmCode.this, UserProfileMain.class));
                 } else if (getIntent().getStringExtra("accountType").equals("pro")) {
                     startActivity(new Intent(SignUpConfirmCode.this, ProLandingPage.class));
+                } else {
+                    startActivity(new Intent(SignUpConfirmCode.this, StuLandingPage.class));
                 }
             }
         });
