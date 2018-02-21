@@ -13,7 +13,7 @@
         android:id="@+id/action_photographers"
         android:enabled="true"
         android:icon="@mipmap/packages_default"
-        android:title="@string/bottom_menu_packages"
+        android:title="Photographers"
         app:showAsAction="always" />
     <item
         android:id="@+id/action_profile"

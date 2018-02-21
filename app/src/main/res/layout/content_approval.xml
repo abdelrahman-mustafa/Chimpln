@@ -18,9 +18,7 @@
         <RelativeLayout
             android:layout_width="300sp"
             android:layout_height="wrap_content"
-            android:layout_marginLeft="40sp"
-            android:layout_marginRight="20sp"
-            android:layout_marginTop="30sp"
+
             android:gravity="center_vertical|center_horizontal|clip_horizontal"
             android:paddingLeft="10sp"
             android:paddingRight="10sp"
@@ -168,14 +166,15 @@
         </RelativeLayout>
 
         <Button
+            android:layout_marginLeft="20dp"
+            android:layout_marginRight="20dp"
+            android:layout_alignParentBottom="true"
             android:id="@+id/approvalbtnn"
-            android:layout_width="150sp"
+            android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_alignStart="@+id/relativeLayout"
             android:layout_below="@+id/relativeLayout"
-            android:layout_marginStart="60dp"
-            android:layout_marginTop="43dp"
-            android:background="@color/colorPrimary"
+            android:background="@drawable/button_package"
             android:text="Pending Event"
             android:textColor="@color/colorWhite" />
 

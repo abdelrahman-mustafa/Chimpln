@@ -142,7 +142,7 @@ public class Booking extends StepProgressBar implements View.OnClickListener,Ada
     @Override
     public void onClick(View v) {
         if (v==proceed)
-        { sAddress=addressLine.getText().toString();
+        { /*sAddress=addressLine.getText().toString();
             if (sAddress.length()>5){boolAddress=true;}
             Log.i("14",String.valueOf(boolAddress));
             Log.i("1",String.valueOf(boolDate));
@@ -175,11 +175,12 @@ public class Booking extends StepProgressBar implements View.OnClickListener,Ada
                 intent.putExtra("type",sType);
                 stateprogressbar.checkStateCompleted(true);
                 startActivity(intent);
-
+*/
+            startActivity(new Intent(Booking.this,Approval.class));
 
 
         }
-        else Toast.makeText(this, "Check Your data", Toast.LENGTH_SHORT).show();}
+        //else Toast.makeText(this, "Check Your data", Toast.LENGTH_SHORT).show();}
         if (v==eDate)
         {
 

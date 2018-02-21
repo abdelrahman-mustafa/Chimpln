@@ -14,8 +14,8 @@
     <string name="mobile">Phone Number</string>
     <string name="createAccount">Create Account</string>
     <string name="confirmPass">Confirm Password</string>
-    <string name="userAccount">User Account</string>
-    <string name="proAccount">Professional Account</string>
+    <string name="userAccount">User</string>
+    <string name="proAccount">Professional</string>
     <string name="confirmNum">Confirm number</string>
     <string name="resendCode">Resend Code</string>
     <string name="enterCode">Enter code here</string>

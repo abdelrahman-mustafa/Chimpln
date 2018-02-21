@@ -51,7 +51,7 @@ public class UserProfileMain extends AppCompatActivity {
         fragmentManager = getSupportFragmentManager();
         initialFragment = new UserProfileEventsTab();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.replace(R.id.container, initialFragment).commit();
+        transaction.replace(R.id.container_o, initialFragment).commit();
 
         bottomNavigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -69,7 +69,7 @@ public class UserProfileMain extends AppCompatActivity {
                         break;
                 }
                 final FragmentTransaction transaction = fragmentManager.beginTransaction();
-                transaction.replace(R.id.container, fragment).commit();
+                transaction.replace(R.id.container_o, fragment).commit();
                 return true;
             }
         });

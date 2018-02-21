@@ -49,21 +49,31 @@
 
                     <RadioButton
                         android:id="@+id/signUp_radio_user_account"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
-                        android:layout_marginRight="35dp"
+                        android:layout_marginRight="25dp"
                         android:layout_weight="2"
                         android:text="@string/userAccount"
                         android:textColor="@color/colorWhite" />
 
                     <RadioButton
                         android:id="@+id/signUp_radio_pro_account"
-                        android:layout_width="match_parent"
+                        android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_weight="1"
                         android:gravity="center"
+                        android:layout_marginRight="25dp"
                         android:text="@string/proAccount"
                         android:textColor="@color/colorWhite" />
+
+                        <RadioButton
+                            android:id="@+id/signUp_radio_stu_account"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_weight="1"
+                            android:gravity="center"
+                            android:text="Studio"
+                            android:textColor="@color/colorWhite" />
                     </RadioGroup>
                 </LinearLayout>
 
