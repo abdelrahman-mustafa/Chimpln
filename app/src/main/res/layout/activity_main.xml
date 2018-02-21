@@ -9,6 +9,7 @@
     tools:context="com.indeves.chmplinapp.Activities.MainActivity">
 
     <ImageView
+        android:id="@+id/splash"
         android:layout_width="150dp"
         android:layout_height="150dp"
         android:layout_gravity="center"
