@@ -33,7 +33,8 @@ dependencies {
     compile 'com.android.support:multidex:1.0.2'
     compile 'com.squareup.picasso:picasso:2.5.2'
     compile 'com.kofigyan.stateprogressbar:stateprogressbar:0.0.6'
-
+    compile 'com.android.support:cardview-v7:27.0.2'
+    compile 'com.github.florent37:viewanimator:1.0.5'
 }
 
 

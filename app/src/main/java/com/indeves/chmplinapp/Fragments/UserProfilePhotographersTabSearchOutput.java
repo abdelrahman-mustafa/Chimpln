@@ -90,6 +90,8 @@ public class UserProfilePhotographersTabSearchOutput extends android.support.v4.
                 numEvents.setBackgroundColor(getResources().getColor(R.color.colorWhite));
                 location.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
                 location.setTextColor(getResources().getColor(R.color.colorWhite));
+                numEvents.setTextColor(getResources().getColor(R.color.colorProfile));
+                date.setTextColor(getResources().getColor(R.color.colorProfile));
                 date.setBackgroundColor(getResources().getColor(R.color.colorWhite));
 
                 setRecyclerViewLayoutManager(mCurrentLayoutManagerType);
@@ -105,6 +107,8 @@ public class UserProfilePhotographersTabSearchOutput extends android.support.v4.
                 list.add(data);
                 list.add(data);
                 numEvents.setTextColor(getResources().getColor(R.color.colorWhite));
+                date.setTextColor(getResources().getColor(R.color.colorProfile));
+                location.setTextColor(getResources().getColor(R.color.colorProfile));
                 numEvents.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
                 location.setBackgroundColor(getResources().getColor(R.color.colorWhite));
                 date.setBackgroundColor(getResources().getColor(R.color.colorWhite));
@@ -119,10 +123,14 @@ public class UserProfilePhotographersTabSearchOutput extends android.support.v4.
                 UserAccPhotographerData data = new UserAccPhotographerData("Ahmed Mohamed", "Cairo, Egypt", "EGP", "2000", "Male");
                 list = new ArrayList<UserAccPhotographerData>();
 
-                date.setTextColor(getResources().getColor(R.color.colorWhite));
+
                 numEvents.setBackgroundColor(getResources().getColor(R.color.colorWhite));
                 location.setBackgroundColor(getResources().getColor(R.color.colorWhite));
                 date.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
+                numEvents.setTextColor(getResources().getColor(R.color.colorProfile));
+                location.setTextColor(getResources().getColor(R.color.colorProfile));
+                date.setTextColor(getResources().getColor(R.color.colorWhite));
+
                 list.add(data);
                 list.add(data);
                 list.add(data);
