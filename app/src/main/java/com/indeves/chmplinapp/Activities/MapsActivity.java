@@ -43,17 +43,15 @@ import java.util.Locale;
 public class MapsActivity extends StepProgressBar implements View.OnClickListener, OnMapReadyCallback, GoogleMap.OnMapLongClickListener {
     public static final int MY_PERMISSIONS_REQUEST_LOCATION = 99;
     private static final int REQUEST_TAKE_poster_PHOTO = 1;
-
-
-    private GoogleMap mMap;
     String label = null;
     double latitude = 0, longitude = 0;
     Button button, j;
     LocationManager locationManager;
     String provider;
-    GPSTracker gps = new GPSTracker(this);
+    //K.A: what's the purpose of this line? if you want it to display user location in the start you should put it in onCreate
+//    GPSTracker gps = new GPSTracker(this);
     Geocoder geocoder;
-
+    private GoogleMap mMap;
 
     @RequiresApi(api = Build.VERSION_CODES.M)
     @Override
@@ -63,8 +61,8 @@ public class MapsActivity extends StepProgressBar implements View.OnClickListene
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("Map");
         toolbar.setTitleTextColor(getColor(R.color.colorWhite));
-  stateprogressbar.setCurrentStateNumber(StateProgressBar.StateNumber.ONE);
-            stateprogressbar.setAllStatesCompleted(false);
+        stateprogressbar.setCurrentStateNumber(StateProgressBar.StateNumber.ONE);
+        stateprogressbar.setAllStatesCompleted(false);
         //      button = findViewById(R.id.btnNext);
 //        button.setOnClickListener(this);
         checkLocationPermission();
@@ -163,7 +161,8 @@ public class MapsActivity extends StepProgressBar implements View.OnClickListene
         mMap.setMyLocationEnabled(true);
 
         GPSTracker gps = new GPSTracker(this);
-        if (gps.isGPSEnabled) { latitude = gps.getLatitude();
+        if (gps.isGPSEnabled) {
+            latitude = gps.getLatitude();
             longitude = gps.getLongitude();
             LatLng currentCoordinates = new LatLng(
                     latitude,
@@ -179,12 +178,7 @@ public class MapsActivity extends StepProgressBar implements View.OnClickListene
     }
 
 
-
-
-
     //your code
-
-
 
 
     // Add a marker in Sydney and move the camera
@@ -194,12 +188,12 @@ public class MapsActivity extends StepProgressBar implements View.OnClickListene
 
     @Override
     public void onClick(View v) {
-        if (v==button) {
+        if (v == button) {
             stateprogressbar.checkStateCompleted(true);
             Toast.makeText(this, label, Toast.LENGTH_SHORT).show();
 
         }
-        if (v==j) {
+        if (v == j) {
 
         }
 
@@ -245,6 +239,7 @@ public class MapsActivity extends StepProgressBar implements View.OnClickListene
         }
 
     }
+
     private boolean isNetworkAvailable() {
         ConnectivityManager connectivityManager
                 = (ConnectivityManager) getSystemService(Context.CONNECTIVITY_SERVICE);
@@ -280,7 +275,6 @@ public class MapsActivity extends StepProgressBar implements View.OnClickListene
             }
 
         }
-
 
 
     }
