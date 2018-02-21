@@ -1,15 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     android:background="@drawable/bg"
-    android:orientation="vertical"
+    android:orientation="vertical">
 
-    tools:context="com.indeves.chmplinapp.MainActivity">
-
-    <ScrollView
+    <RelativeLayout
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
@@ -36,16 +34,11 @@
                 android:gravity="bottom"
                 android:orientation="vertical">
 
-                <LinearLayout
-
-                    android:layout_width="wrap_content"
+                <RadioGroup
+                    android:id="@+id/signUp_radio_group"
+                    android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:orientation="horizontal">
-                    <RadioGroup
-                        android:id="@+id/signUp_radio_group"
-                        android:layout_width="match_parent"
-                        android:layout_height="wrap_content"
-                        android:orientation="horizontal">
 
                     <RadioButton
                         android:id="@+id/signUp_radio_user_account"
@@ -60,22 +53,21 @@
                         android:id="@+id/signUp_radio_pro_account"
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
+                        android:layout_marginRight="25dp"
                         android:layout_weight="1"
                         android:gravity="center"
-                        android:layout_marginRight="25dp"
                         android:text="@string/proAccount"
                         android:textColor="@color/colorWhite" />
 
-                        <RadioButton
-                            android:id="@+id/signUp_radio_stu_account"
-                            android:layout_width="wrap_content"
-                            android:layout_height="wrap_content"
-                            android:layout_weight="1"
-                            android:gravity="center"
-                            android:text="Studio"
-                            android:textColor="@color/colorWhite" />
-                    </RadioGroup>
-                </LinearLayout>
+                    <RadioButton
+                        android:id="@+id/signUp_radio_stu_account"
+                        android:layout_width="wrap_content"
+                        android:layout_height="wrap_content"
+                        android:layout_weight="1"
+                        android:gravity="center"
+                        android:text="Studio"
+                        android:textColor="@color/colorWhite" />
+                </RadioGroup>
 
                 <LinearLayout
 
@@ -125,7 +117,9 @@
                         android:id="@+id/signUp_button_createAccount"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:layout_gravity="bottom"
                         android:layout_marginBottom="8dp"
+                        android:layout_marginTop="40dp"
                         android:background="@drawable/button"
                         android:text="@string/createAccount"
                         android:textColor="@color/colorWhite" />
@@ -141,5 +135,5 @@
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>
-    </ScrollView>
-</LinearLayout>
+    </RelativeLayout>
+</ScrollView>
