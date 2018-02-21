@@ -12,8 +12,7 @@ import com.kofigyan.stateprogressbar.StateProgressBar;
  */
 
 public abstract class StepProgressBar extends FragmentActivity implements View.OnClickListener {  protected String[] descriptionData = {"Info", "Approval", "Booked"};
-     protected Button nextBtn;
-     protected Button backBtn;
+
      protected StateProgressBar stateprogressbar;
 
 
