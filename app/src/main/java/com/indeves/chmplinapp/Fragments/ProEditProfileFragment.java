@@ -1,46 +1,40 @@
 package com.indeves.chmplinapp.Fragments;
 
 import android.content.Context;
-import android.graphics.Color;
 import android.net.Uri;
 import android.os.Bundle;
-import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 
 import com.indeves.chmplinapp.Activities.ProLandingPage;
 import com.indeves.chmplinapp.R;
 
-import java.util.ArrayList;
-import java.util.List;
-
 /**
  * A simple {@link Fragment} subclass.
  * Activities that contain this fragment must implement the
- * {@link ProPackages.OnFragmentInteractionListener} interface
+ * {@link ProEditProfileFragment.OnFragmentInteractionListener} interface
  * to handle interaction events.
- * Use the {@link ProPackages#newInstance} factory method to
+ * Use the {@link ProEditProfileFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ProPackages extends Fragment {
+public class ProEditProfileFragment extends Fragment {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-    TabLayout tabLayout;
     Context attachedActivityContext;
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-    private ViewPager viewPager;
     private OnFragmentInteractionListener mListener;
 
-    public ProPackages() {
+    public ProEditProfileFragment() {
         // Required empty public constructor
     }
 
@@ -50,11 +44,11 @@ public class ProPackages extends Fragment {
      *
      * @param param1 Parameter 1.
      * @param param2 Parameter 2.
-     * @return A new instance of fragment ProPackages.
+     * @return A new instance of fragment ProEditProfileFragment.
      */
     // TODO: Rename and change types and number of parameters
-    public static ProPackages newInstance(String param1, String param2) {
-        ProPackages fragment = new ProPackages();
+    public static ProEditProfileFragment newInstance(String param1, String param2) {
+        ProEditProfileFragment fragment = new ProEditProfileFragment();
         Bundle args = new Bundle();
         args.putString(ARG_PARAM1, param1);
         args.putString(ARG_PARAM2, param2);
@@ -75,34 +69,42 @@ public class ProPackages extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View rootView = inflater.inflate(R.layout.activity_user_profile_tab_events, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_pro_edit_profile, container, false);
+        setHasOptionsMenu(true);
         if (attachedActivityContext != null && ((ProLandingPage) attachedActivityContext).getSupportActionBar() != null) {
-            ((ProLandingPage) attachedActivityContext).getSupportActionBar().setDisplayShowHomeEnabled(false);
-            ((ProLandingPage) attachedActivityContext).getSupportActionBar().setDisplayHomeAsUpEnabled(false);
-            ((ProLandingPage) attachedActivityContext).getSupportActionBar().setTitle(getResources().getString(R.string.fragment_title_packages));
+            ((ProLandingPage) attachedActivityContext).getSupportActionBar().setDisplayShowHomeEnabled(true);
+            ((ProLandingPage) attachedActivityContext).getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+            ((ProLandingPage) attachedActivityContext).getSupportActionBar().setTitle(getResources().getString(R.string.fragment_title_edit_profile));
+
         }
 
-        viewPager = (ViewPager) rootView.findViewById(R.id.container);
 
-        setupViewPager(viewPager);
-
-        tabLayout = rootView.findViewById(R.id.tabs);
-        tabLayout.setupWithViewPager(viewPager);
-        //tabLayout.setSelectedTabIndicatorHeight(0);
-
-        tabLayout.setTabTextColors(Color.parseColor("#727272"), Color.parseColor("#545454"));
-        setupViewPager(viewPager);
         return rootView;
     }
 
-    private void setupViewPager(ViewPager viewPager) {
-        ViewPagerAdapter adapter = new ViewPagerAdapter(getChildFragmentManager());
-        adapter.addFragment(new ProProfilePackageTabMyPackages(), "My Packages");
-        adapter.addFragment(new ProProfilePackageTabAddPackage(), "+ Add New Package");
-        viewPager.setAdapter(adapter);
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.pro_edit_profile_save, menu);
+        super.onCreateOptionsMenu(menu, inflater);
     }
 
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.pro_profile_menu_save) {
+            FragmentManager fragmentManager = getFragmentManager();
+            if (fragmentManager != null) {
+                fragmentManager.popBackStack();
+            }
+            return true;
+        } else {
+            return super.onOptionsItemSelected(item);
+        }
+
+    }
+
+
     // TODO: Rename method, update argument and hook method into UI event
+
     public void onButtonPressed(Uri uri) {
         if (mListener != null) {
             mListener.onFragmentInteraction(uri);
@@ -140,34 +142,5 @@ public class ProPackages extends Fragment {
     public interface OnFragmentInteractionListener {
         // TODO: Update argument type and name
         void onFragmentInteraction(Uri uri);
-    }
-
-    class ViewPagerAdapter extends FragmentPagerAdapter {
-        private final List<Fragment> mFragmentList = new ArrayList<>();
-        private final List<String> mFragmentTitleList = new ArrayList<>();
-
-        public ViewPagerAdapter(FragmentManager manager) {
-            super(manager);
-        }
-
-        @Override
-        public android.support.v4.app.Fragment getItem(int position) {
-            return mFragmentList.get(position);
-        }
-
-        @Override
-        public int getCount() {
-            return mFragmentList.size();
-        }
-
-        public void addFragment(android.support.v4.app.Fragment fragment, String title) {
-            mFragmentList.add(fragment);
-            mFragmentTitleList.add(title);
-        }
-
-        @Override
-        public CharSequence getPageTitle(int position) {
-            return mFragmentTitleList.get(position);
-        }
     }
 }

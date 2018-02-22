@@ -5,13 +5,14 @@
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
-    android:layout_height="fill_parent">
+    android:layout_height="match_parent">
 
 
     <RelativeLayout
         android:id="@+id/relativeLayout"
         android:layout_width="fill_parent"
-        android:layout_height="wrap_content">
+        android:layout_height="wrap_content"
+        android:padding="20dp">
 
         <LinearLayout
             android:id="@+id/view"
@@ -55,7 +56,6 @@
                 android:layout_marginTop="4dp"
                 android:layout_weight=".1"
                 android:animateLayoutChanges="true"
-                android:background="#fff"
                 android:baselineAligned="true"
                 android:showDividers="end"
                 android:splitMotionEvents="true"
@@ -82,7 +82,7 @@
                         android:layout_width="wrap_content"
                         android:layout_height="wrap_content"
                         android:layout_column="2"
-                        android:layout_gravity="right"
+                        android:layout_gravity="end"
                         android:layout_marginEnd="13dp"
                         android:text="Edit"
                         android:textSize="17sp" />
@@ -212,17 +212,17 @@
         android:id="@+id/splash_button_signIn"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_marginBottom="64dp"
+        android:layout_marginBottom="20dp"
         android:layout_marginEnd="32dp"
         android:layout_marginStart="32dp"
         android:layout_marginTop="8dp"
         android:background="@drawable/button_package"
-        android:text="@string/signIN"
+        android:text="@string/fragment_title_edit_profile"
         android:textColor="@color/colorWhite"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/relativeLayout"
-        app:layout_constraintVertical_bias="1.0" />
+
+        />
 </android.support.constraint.ConstraintLayout>

@@ -2,6 +2,7 @@ package com.indeves.chmplinapp.Fragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -58,6 +59,9 @@ public class ProProfileEventsTabHistory extends android.support.v4.app.Fragment 
         setRecyclerViewLayoutManager(mCurrentLayoutManagerType);
         userProfEventsAdaptor = new ProEventHistoryAdapter(eventsList, getContext());
         recyclerView.setAdapter(userProfEventsAdaptor);
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(),
+                DividerItemDecoration.HORIZONTAL);
+        recyclerView.addItemDecoration(dividerItemDecoration);
 
         return rootView;
     }
