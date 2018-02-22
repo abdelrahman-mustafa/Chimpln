@@ -1,0 +1,55 @@
+{
+  "project_info": {
+    "project_number": "358451666456",
+    "firebase_url": "https://chimpin-2519b.firebaseio.com",
+    "project_id": "chimpin-2519b",
+    "storage_bucket": "chimpin-2519b.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:358451666456:android:5dbd071fe17ea79b",
+        "android_client_info": {
+          "package_name": "com.indeves.chmplinapp"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "358451666456-33k81860s2d9phee23nhb415j1nfu5ch.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.indeves.chmplinapp",
+            "certificate_hash": "c973e97fc83dd7802238deb25df3217914809dfe"
+          }
+        },
+        {
+          "client_id": "358451666456-nalbb28li2ju6tsrqd096pctf1qga6ik.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyDOWiqXa4U2WtSJBXP6j2worBtYyLYyAs4"
+        }
+      ],
+      "services": {
+        "analytics_service": {
+          "status": 1
+        },
+        "appinvite_service": {
+          "status": 2,
+          "other_platform_oauth_client": [
+            {
+              "client_id": "358451666456-nalbb28li2ju6tsrqd096pctf1qga6ik.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        },
+        "ads_service": {
+          "status": 2
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
