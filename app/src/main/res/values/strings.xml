@@ -50,6 +50,12 @@
     <string name="title_activity_maps">Map</string>
     <string name="title_activity_approval">Approval</string>
     <string name="title_activity_contactpro">Contactpro</string>
-
+    <string name="menu_title_edit">Edit</string>
+    <string name="fragment_title_last_work">Last work</string>
+    <string name="fragment_title_events">Events</string>
+    <string name="fragment_title_packages">Packages</string>
+    <string name="fragment_title_my_profile">My profile</string>
+    <string name="fragment_title_edit_profile">Edit profile</string>
+    <string name="button_save">Save</string>
 
 </resources>

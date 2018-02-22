@@ -1,6 +1,8 @@
 package com.indeves.chmplinapp.Adapters;
 
 import android.content.Context;
+import android.graphics.Color;
+import android.support.annotation.Nullable;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.ArrayAdapter;
@@ -11,6 +13,7 @@ import android.widget.TextView;
  */
 public class SpinnerCustomArrayAdapter extends ArrayAdapter {
     String one ;
+
     public SpinnerCustomArrayAdapter(Context context, int resource) {
     super(context, resource);
 }
@@ -29,6 +32,11 @@ public class SpinnerCustomArrayAdapter extends ArrayAdapter {
     @Override
     public int getCount() {
         return super.getCount()-1; // you dont display last item. It is used as hint.
+    }
+
+    @Override
+    public int getPosition(@Nullable Object item) {
+        return super.getPosition(item);
     }
 
 }

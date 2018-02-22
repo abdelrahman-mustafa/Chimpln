@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.indeves.chmplinapp.Activities.ProLandingPage;
 import com.indeves.chmplinapp.R;
 
 import java.util.ArrayList;
@@ -32,11 +33,11 @@ public class ProEvents extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
     TabLayout tabLayout;
+    Context attachedActivityContext;
     // TODO: Rename and change types of parameters
     private String mParam1;
     private ViewPager viewPager;
     private String mParam2;
-
     private OnFragmentInteractionListener mListener;
 
     public ProEvents() {
@@ -75,6 +76,11 @@ public class ProEvents extends Fragment {
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.activity_user_profile_tab_events, container, false);
+        if (attachedActivityContext != null && ((ProLandingPage) attachedActivityContext).getSupportActionBar() != null) {
+            ((ProLandingPage) attachedActivityContext).getSupportActionBar().setDisplayShowHomeEnabled(false);
+            ((ProLandingPage) attachedActivityContext).getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+            ((ProLandingPage) attachedActivityContext).getSupportActionBar().setTitle(getResources().getString(R.string.fragment_title_events));
+        }
 
 
         viewPager = (ViewPager) rootView.findViewById(R.id.container);
@@ -109,6 +115,7 @@ public class ProEvents extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+        this.attachedActivityContext = context;
         if (context instanceof OnFragmentInteractionListener) {
             mListener = (OnFragmentInteractionListener) context;
         } else {

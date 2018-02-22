@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.indeves.chmplinapp.Activities.ProLandingPage;
 import com.indeves.chmplinapp.Adapters.LastWorkImagesAdapter;
 import com.indeves.chmplinapp.R;
 
@@ -31,11 +32,10 @@ public class ProLastWork extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-
+    Context attachedActivityContext;
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-
     private OnFragmentInteractionListener mListener;
 
     public ProLastWork() {
@@ -78,6 +78,11 @@ public class ProLastWork extends Fragment {
         recyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getContext(), 2);
         recyclerView.setLayoutManager(layoutManager);
+        if (attachedActivityContext != null && ((ProLandingPage) attachedActivityContext).getSupportActionBar() != null) {
+            ((ProLandingPage) attachedActivityContext).getSupportActionBar().setDisplayShowHomeEnabled(false);
+            ((ProLandingPage) attachedActivityContext).getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+            ((ProLandingPage) attachedActivityContext).getSupportActionBar().setTitle(getResources().getString(R.string.fragment_title_last_work));
+        }
 
         ArrayList<String> images = new ArrayList<>();
         images.add("http://api.learn2crack.com/android/images/donut.png");
@@ -106,6 +111,7 @@ public class ProLastWork extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+        this.attachedActivityContext = context;
         if (context instanceof OnFragmentInteractionListener) {
             mListener = (OnFragmentInteractionListener) context;
         } else {

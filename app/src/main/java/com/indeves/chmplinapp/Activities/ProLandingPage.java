@@ -10,13 +10,14 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
 
+import com.indeves.chmplinapp.Fragments.ProEditProfileFragment;
 import com.indeves.chmplinapp.Fragments.ProEvents;
 import com.indeves.chmplinapp.Fragments.ProLastWork;
 import com.indeves.chmplinapp.Fragments.ProPackages;
 import com.indeves.chmplinapp.Fragments.ProProfile;
 import com.indeves.chmplinapp.R;
 
-public class ProLandingPage extends AppCompatActivity implements ProEvents.OnFragmentInteractionListener,ProLastWork.OnFragmentInteractionListener,ProPackages.OnFragmentInteractionListener,ProProfile.OnFragmentInteractionListener {
+public class ProLandingPage extends AppCompatActivity implements ProEditProfileFragment.OnFragmentInteractionListener, ProEvents.OnFragmentInteractionListener, ProLastWork.OnFragmentInteractionListener, ProPackages.OnFragmentInteractionListener, ProProfile.OnFragmentInteractionListener {
     private static final String TAG = MainActivity.class.getSimpleName();
     private Fragment fragment;
     private FragmentManager fragmentManager;
@@ -64,5 +65,20 @@ public class ProLandingPage extends AppCompatActivity implements ProEvents.OnFra
     @Override
     public void onPhotoClicked(String url) {
 
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                FragmentManager fm = getSupportFragmentManager();
+                if (fm.getBackStackEntryCount() > 0) {
+                    fm.popBackStack();
+                }
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 }

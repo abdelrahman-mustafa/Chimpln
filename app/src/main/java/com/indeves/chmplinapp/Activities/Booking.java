@@ -7,10 +7,7 @@ import android.app.Dialog;
 import android.app.TimePickerDialog;
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.Handler;
-import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
-import android.util.Log;
 import android.view.View;
 import android.widget.AdapterView;
 import android.widget.Button;
@@ -21,8 +18,6 @@ import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.TimePicker;
-import android.widget.Toast;
-
 import com.indeves.chmplinapp.Adapters.SpinnerCustomArrayAdapter;
 import com.indeves.chmplinapp.R;
 import com.indeves.chmplinapp.Utility.StepProgressBar;
@@ -32,7 +27,6 @@ import java.util.Calendar;
 import java.util.Date;
 
 import static com.indeves.chmplinapp.R.id.booking_time_layout;
-import static com.indeves.chmplinapp.R.id.start;
 
 public class Booking extends StepProgressBar implements View.OnClickListener,AdapterView.OnItemSelectedListener{
     Spinner eTime,eType,photoShare,eLoction;
@@ -45,6 +39,8 @@ public class Booking extends StepProgressBar implements View.OnClickListener,Ada
     LinearLayout layout;
     String sDate,sTime,sType,sShareable,sAddress,sNote;
     Boolean boolDate=false,booltime=false,boolType=false,boolAddress=false,fromto=true,from=false,to=false,boolshareable=false;
+    SpinnerCustomArrayAdapter photoShareSpinner;
+
 
 
 
@@ -112,7 +108,7 @@ public class Booking extends StepProgressBar implements View.OnClickListener,Ada
         eType.setAdapter(eTypeSpinner);
         eType.setSelection(eTypeSpinner.getCount());
         photoShare.setOnItemSelectedListener(this);
-        SpinnerCustomArrayAdapter photoShareSpinner = new SpinnerCustomArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item);
+        photoShareSpinner = new SpinnerCustomArrayAdapter(this, android.R.layout.simple_spinner_dropdown_item);
 
         photoShareSpinner.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         photoShareSpinner.add("Let pro share photos");
@@ -130,6 +126,7 @@ public class Booking extends StepProgressBar implements View.OnClickListener,Ada
         loctionSpinner.add("Select location option");
         eLoction.setAdapter(loctionSpinner);
         eLoction.setSelection(loctionSpinner.getCount());
+
 
 
 
@@ -268,8 +265,12 @@ public class Booking extends StepProgressBar implements View.OnClickListener,Ada
 
     @SuppressLint("ResourceAsColor")
     @Override
+
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        switch(parent.getId()) {
+
+
+
+              switch(parent.getId()) {
             case R.id.booking_spinner_etime:
             {
                 String eTimedata;

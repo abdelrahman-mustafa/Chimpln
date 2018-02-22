@@ -8,15 +8,26 @@
     tools:context="com.indeves.chmplinapp.Activities.Booking"
     tools:showIn="@layout/activity_booking">
 
-    <LinearLayout
+    <include
+        layout="@layout/usage_stateprogressbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:layout_marginTop="13dp" />
+
+    <android.support.design.widget.CoordinatorLayout
         android:layout_width="match_parent"
         android:layout_height="match_parent"
-        android:orientation="vertical">
+        android:layout_gravity="center"
+        android:layout_marginBottom="0dp"
+        android:layout_marginLeft="50dp"
+        android:layout_marginRight="50dp"
+        android:layout_marginTop="70dp"
+        android:orientation="vertical"
+        tools:layout_editor_absoluteX="40dp"
+        tools:layout_editor_absoluteY="21dp">
 
-        <include
-            layout="@layout/usage_stateprogressbar"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content" />
 
         <LinearLayout
             android:layout_width="match_parent"
@@ -24,101 +35,99 @@
             android:layout_marginLeft="20sp"
             android:layout_marginRight="20sp"
             android:layout_marginTop="10sp"
-            android:orientation="horizontal"
-            android:gravity="center_horizontal|fill_horizontal">
+            android:gravity="center_horizontal|fill_horizontal"
+            android:orientation="horizontal">
 
 
-                <ImageView
-                    android:id="@+id/booking_imageView_prophoto"
-                    android:layout_width="20dp"
-                    android:layout_height="40dp"
-                    android:layout_gravity="center"
-                    android:layout_weight="1"
-                    android:background="@drawable/user"
-                     />
+            <ImageView
+                android:id="@+id/booking_imageView_prophoto"
+                android:layout_width="40sp"
+                android:layout_height="40dp"
+                android:layout_gravity="left"
+                android:layout_weight=".5"
+                android:background="@drawable/user" />
 
-                <TextView
-                    android:id="@+id/booking_textView_proname"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center|top"
-                    android:layout_weight="1"
-                    android:text="Ahmed"
-                    android:textColor="@color/background_color"
-                    android:textSize="17sp"
-                    android:textStyle="bold" />
+            <TextView
+                android:id="@+id/booking_textView_proname"
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:paddingLeft="15sp"
+                android:text="Ahmed"
+                android:textColor="@color/background_color"
+                android:textSize="17sp"
+                android:textStyle="bold" />
 
-                <TextView
-                    android:id="@+id/booking_textview_prodetails"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:paddingLeft="10sp"
-                    android:layout_weight="1"
-                    android:gravity="center|top"
-                    android:text="cairo-male" />
+            <TextView
+                android:id="@+id/booking_textview_prodetails"
+                android:layout_width="93dp"
+                android:layout_height="fill_parent"
+                android:paddingLeft="15sp"
 
-                <Button
-                    android:id="@+id/booking_button_edit"
-                    style="?android:attr/borderlessButtonStyle"
-                    android:layout_width="wrap_content"
-                    android:layout_height="wrap_content"
-                    android:gravity="center|top"
-                    android:text="Edit"
-                    android:layout_weight="1"
-                    android:textColor="@color/colorAccent"
-                    android:textDirection="inherit"
-                    android:textSize="15sp"
-                    android:textStyle="normal" />
+                android:text="cairo-male" />
+
+            <Button
+                android:id="@+id/booking_button_edit"
+                style="?android:attr/borderlessButtonStyle"
+                android:layout_width="wrap_content"
+                android:layout_height="fill_parent"
+                android:layout_gravity="right"
+                android:layout_weight="1"
+                android:text="Edit"
+                android:textColor="@color/colorAccent"
+                android:textDirection="inherit"
+                android:textSize="15sp"
+                android:textStyle="normal" />
 
 
         </LinearLayout>
 
         <View
-            android:layout_marginTop="5dp"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
             android:layout_marginLeft="20dp"
             android:layout_marginRight="20dp"
-            android:background="@color/colorProfile"
-            android:layout_width="match_parent"
-            android:layout_height="1dp"/>
-        <LinearLayout
             android:layout_marginTop="5dp"
+            android:background="@color/colorProfile" />
 
-            android:layout_width="match_parent"
-            android:layout_height="match_parent"
+        <LinearLayout
+            android:layout_width="fill_parent"
+
+            android:layout_height="fill_parent"
             android:layout_gravity="left|right|center"
-            android:layout_marginLeft="20sp"
-            android:layout_marginRight="20sp"
-            android:layout_weight="1"
-            android:gravity="center_horizontal|fill_horizontal"
-            android:orientation="vertical"
-            android:paddingHorizontal="10sp"
-            android:weightSum="1">
+            android:layout_marginTop="50sp"
+
+            android:orientation="vertical">
 
             <TextView
                 android:id="@+id/booking_textview_edate"
                 android:layout_width="120sp"
                 android:layout_height="30sp"
                 android:layout_marginLeft="5sp"
+                android:layout_marginTop="10sp"
                 android:clickable="true"
-                android:textStyle="bold"
-
-android:textSize="20sp"                android:text="Event Date" />
+                android:text="Event Date"
+                android:textSize="20sp"
+                android:textStyle="bold" />
 
             <Spinner
                 android:id="@+id/booking_spinner_etime"
                 android:layout_width="match_parent"
                 android:layout_height="30sp"
+                android:layout_marginTop="10sp"
                 android:clickable="true"
                 android:text="Event Time" />
+
             <View
-                android:layout_marginTop="5dp"
-                android:background="@color/colorProfile"
                 android:layout_width="match_parent"
-                android:layout_height="1dp"/>
+                android:layout_height="1dp"
+                android:layout_marginTop="5dp"
+                android:background="@color/colorProfile" />
+
             <LinearLayout
                 android:id="@+id/booking_time_layout"
                 android:layout_width="match_parent"
                 android:layout_height="40sp"
+                android:layout_marginTop="10sp"
                 android:orientation="horizontal"
                 android:visibility="gone">
 
@@ -127,6 +136,7 @@ android:textSize="20sp"                android:text="Event Date" />
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_marginLeft="5sp"
+                    android:layout_marginTop="10sp"
                     android:layout_weight="2"
                     android:clickable="true"
                     android:text="From"
@@ -136,6 +146,7 @@ android:textSize="20sp"                android:text="Event Date" />
                     android:id="@+id/booking_textview_to"
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
+                    android:layout_marginTop="10sp"
                     android:layout_weight="2"
                     android:text="To"
                     android:visibility="gone" />
@@ -147,8 +158,9 @@ android:textSize="20sp"                android:text="Event Date" />
                     android:layout_height="match_parent"
                     android:layout_gravity="right"
 
-                    android:layout_weight=".7"
+                    android:layout_marginTop="10sp"
 
+                    android:layout_weight=".7"
                     android:text="edit"
                     android:textColor="@color/colorAccent"
                     android:textDirection="inherit"
@@ -159,71 +171,83 @@ android:textSize="20sp"                android:text="Event Date" />
 
             <Spinner
                 android:id="@+id/booking_spiner_etype"
-                android:layout_width="match_parent"
+                android:layout_width="fill_parent"
                 android:layout_height="30sp"
+                android:layout_marginTop="10sp"
                 android:clickable="true"
                 android:text="Event Time" />
+
             <View
-                android:layout_marginTop="5dp"
-                android:background="@color/colorProfile"
                 android:layout_width="match_parent"
-                android:layout_height="1dp"/>
+                android:layout_height="1dp"
+                android:layout_marginTop="5sp"
+                android:background="@color/colorProfile"
+                />
 
             <Spinner
                 android:id="@+id/booking_spinner_photoshare"
                 android:layout_width="match_parent"
                 android:layout_height="30sp"
+                android:layout_marginTop="10sp"
                 android:clickable="true"
                 android:text="Event Time" />
 
             <View
-                android:layout_marginTop="5dp"
-                android:background="@color/colorProfile"
                 android:layout_width="match_parent"
-                android:layout_height="1dp"/>
+                android:layout_height="1dp"
+                android:layout_marginTop="5dp"
+                android:background="@color/colorProfile" />
 
             <Spinner
                 android:id="@+id/booking_spinner_eloction"
                 android:layout_width="match_parent"
                 android:layout_height="30sp"
+                android:layout_marginTop="10sp"
                 android:clickable="true"
                 android:text="Event Time" />
 
             <View
-                android:layout_marginTop="5dp"
-                android:background="@color/colorProfile"
                 android:layout_width="match_parent"
-                android:layout_height="1dp"/>
+                android:layout_height="1dp"
+                android:layout_marginTop="5dp"
+                android:background="@color/colorProfile" />
 
             <EditText
                 android:id="@+id/booking_edittext_insertaddrres"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:layout_marginTop="2sp"
                 android:hint="Address line "
                 android:inputType="text" />
 
             <EditText
                 android:id="@+id/booking_editText_note"
                 android:layout_width="match_parent"
-                android:layout_height="80sp"
+                android:layout_height="60sp"
+                android:layout_marginTop="2sp"
                 android:ems="10"
                 android:hint="Note to pro"
                 android:inputType="textPersonName" />
+            <Button
+                android:id="@+id/booking_proceed_button"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_gravity="bottom"
+                android:autoText="true"
+                android:background="@drawable/button_package"
+                android:text="Proceed"
+                android:textColor="@color/colorWhite"
+                />
+
+
+
 
         </LinearLayout>
 
-    </LinearLayout>
 
-    <Button
-        android:id="@+id/booking_proceed_button"
-        android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_alignParentEnd="true"
-        android:layout_margin="20dp"
-        android:layout_alignParentBottom="true"
-        android:textColor="@color/colorWhite"
-        android:background="@drawable/button_package"
-        android:text="Proceed" />
+
+    </android.support.design.widget.CoordinatorLayout>
+
 </RelativeLayout>
 
 
