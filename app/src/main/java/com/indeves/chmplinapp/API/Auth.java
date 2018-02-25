@@ -19,13 +19,6 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
-import com.indeves.chmplinapp.Activities.LogIn;
-import com.indeves.chmplinapp.Activities.ProLandingPage;
-import com.indeves.chmplinapp.Activities.SignUp;
-import com.indeves.chmplinapp.Activities.SignUpConfirmCode;
-import com.indeves.chmplinapp.Activities.StuLandingPage;
-import com.indeves.chmplinapp.Activities.UserProfileMain;
-import com.indeves.chmplinapp.Models.UserData;
 
 import java.util.concurrent.TimeUnit;
 
