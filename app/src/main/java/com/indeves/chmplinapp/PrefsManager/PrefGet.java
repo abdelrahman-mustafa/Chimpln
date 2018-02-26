@@ -9,25 +9,21 @@ import android.preference.PreferenceManager;
  */
 
 public class PrefGet {
-    Context context;
+    private SharedPreferences mypreference;
 
     public PrefGet(Context context) {
-        this.context = context;
+        this.mypreference = PreferenceManager.getDefaultSharedPreferences(context);
     }
 
-    public String getId (){
-        SharedPreferences mypreference = PreferenceManager.getDefaultSharedPreferences(context);
-        String userId = mypreference.getString("user id", "");
-        return userId;
+    public String getId() {
+        return mypreference.getString("user_id", null);
     }
-    public Boolean getLogStatus(){
-        SharedPreferences mypreference = PreferenceManager.getDefaultSharedPreferences(context);
-        Boolean status = mypreference.getBoolean("user id", false);
-        return status;
+
+    public Boolean getLogInStatus() {
+        return mypreference.getBoolean("LoggedIn", false);
     }
-    public String getUserType(){
-        SharedPreferences mypreference = PreferenceManager.getDefaultSharedPreferences(context);
-        String type = mypreference.getString("user type", "");
-        return type;
+
+    public String getUserType() {
+        return mypreference.getString("user_type", null);
     }
 }

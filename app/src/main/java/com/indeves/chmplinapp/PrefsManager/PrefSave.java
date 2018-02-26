@@ -11,22 +11,21 @@ import com.indeves.chmplinapp.Activities.LogIn;
  */
 
 public class PrefSave {
-    Context context;
+    private SharedPreferences mypreference;
 
     public PrefSave(Context context) {
-        this.context = context;
+        mypreference = PreferenceManager.getDefaultSharedPreferences(context);
     }
 
-    private void saveId(String userId){
-        SharedPreferences mypreference = PreferenceManager.getDefaultSharedPreferences(context);
-        mypreference.edit().putString("user id", userId).apply();
+    private void saveId(String userId) {
+        mypreference.edit().putString("user_id", userId).apply();
     }
-    private void saveLogStatus(Boolean status){
-        SharedPreferences mypreference = PreferenceManager.getDefaultSharedPreferences(context);
-        mypreference.edit().putBoolean("Log", status).apply();
+
+    private void saveLogInStatus(Boolean status) {
+        mypreference.edit().putBoolean("LoggedIn", status).apply();
     }
-    private void saveUserType(String type){
-        SharedPreferences mypreference = PreferenceManager.getDefaultSharedPreferences(context);
-        mypreference.edit().putString("user type", type).apply();
+
+    private void saveUserType(String type) {
+        mypreference.edit().putString("user_type", type).apply();
     }
 }

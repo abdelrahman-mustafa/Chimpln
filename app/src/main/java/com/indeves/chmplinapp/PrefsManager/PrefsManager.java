@@ -18,14 +18,17 @@ import com.indeves.chmplinapp.Activities.UserProfileMain;
 
 public class PrefsManager extends AppCompatActivity {
     Context context;
-    PrefGet prefGet = new PrefGet(context);
+    PrefGet prefGet;
 
     public PrefsManager(Context context) {
         this.context = context;
+        //put initialization in constructor so you can use passed context.
+        this.prefGet = new PrefGet(context);
     }
 
     public Boolean checkLogIn() {
-        if (prefGet.getLogStatus()) {
+        if (prefGet.getLogInStatus()) {
+            //K.A: what difference does this make rather than calling getLogInStatus() from its class directly?
             return true;
         } else {
             return false;
