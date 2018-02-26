@@ -3,6 +3,7 @@ package com.indeves.chmplinapp.Activities;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
@@ -36,6 +37,8 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.indeves.chmplinapp.API.Auth;
 import com.indeves.chmplinapp.Models.UserData;
 import com.indeves.chmplinapp.R;
+import com.indeves.chmplinapp.Utility.CheckError;
+import com.wang.avi.AVLoadingIndicatorView;
 
 import java.util.concurrent.TimeUnit;
 
@@ -48,6 +51,7 @@ public class SignUp extends AppCompatActivity {
 
     private FirebaseAuth mAuth;
     FirebaseDatabase k;
+    com.wang.avi.AVLoadingIndicatorView avi;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -60,6 +64,7 @@ public class SignUp extends AppCompatActivity {
         radioButton3 = findViewById(R.id.signUp_radio_stu_account);
         mail = findViewById(R.id.signUp_email);
         phone = findViewById(R.id.signUp_phone);
+        avi = (AVLoadingIndicatorView)findViewById(R.id.indicator);
         pass = findViewById(R.id.signUp_pass);
         confirmPass = findViewById(R.id.signUp_confirm_pass);
 
@@ -73,6 +78,7 @@ public class SignUp extends AppCompatActivity {
         );
         animatorSet.setDuration(2000);
         animatorSet.start();
+        stopAnim();
 
 
         // create account
@@ -82,26 +88,48 @@ public class SignUp extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Log.d("mail", mail.getText().toString());
+               // startAnim();
                 final String email = mail.getText().toString();
                 Auth auth = new Auth(mAuth, k);
                 final String password = pass.getText().toString();
                 phoneNum = phone.getText().toString();
+                String confirmpass = confirmPass.getText().toString();
+                CheckError checkError = new CheckError();
+                if (!checkError.checkEmpty(email,phoneNum,password,confirmpass)){
+                    // toast error
+                }else if (!checkError.checkPassMatch(password,confirmpass)){
+                    // toast error
 
-                if (radioButton.isChecked()) {
-                    auth.createNewAccount(email, password, phoneNum, "user", SignUp.this);
+                }else {
+                    if (radioButton.isChecked()) {
+                        auth.createNewAccount(email, password, phoneNum, "user", SignUp.this);
 
-                } else if (radioButton2.isChecked()) {
-                    auth.createNewAccount(email, password, phoneNum, "pro", SignUp.this);
+                    } else if (radioButton2.isChecked()) {
+                        auth.createNewAccount(email, password, phoneNum, "pro", SignUp.this);
 
-                } else {
-                    auth.createNewAccount(email, password, phoneNum, "stu", SignUp.this);
+                    } else if (radioButton3.isChecked()) {
+                        auth.createNewAccount(email, password, phoneNum, "stu", SignUp.this);
 
+                    }else {
+                        // toast error
+
+                    }
                 }
+
+
 
 
             }
         });
     }
+    void startAnim(){
+        avi.show();
+        // or avi.smoothToShow();
+    }
 
+    void stopAnim(){
+        avi.hide();
+        // or avi.smoothToHide();
+    }
 
 }

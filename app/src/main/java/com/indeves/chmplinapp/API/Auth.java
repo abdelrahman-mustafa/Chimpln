@@ -27,6 +27,7 @@ import com.indeves.chmplinapp.PrefsManager.PrefGet;
 import com.indeves.chmplinapp.PrefsManager.PrefSave;
 import com.indeves.chmplinapp.PrefsManager.PrefsManager;
 
+import java.util.concurrent.Executor;
 import java.util.concurrent.TimeUnit;
 
 /**
@@ -51,7 +52,7 @@ public class Auth {
 
     public void veifyphone() {
 
-        activity = (Activity)context;
+        activity = (Activity) context;
         final PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallBacks = new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
             @Override
             public void onVerificationCompleted(PhoneAuthCredential phoneAuthCredential) {
@@ -90,7 +91,6 @@ public class Auth {
                 context.startActivity(intent);
 
 
-
             }
         };
         PhoneAuthProvider.getInstance().verifyPhoneNumber(
@@ -111,19 +111,19 @@ public class Auth {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
-                            userData = new UserData("",email, phone,type);
-                            Log.d("user",userData.email);
-                            Log.d("user",userData.phone);
-                            Log.d("user",userData.type);
+                            userData = new UserData("", email, phone, type);
+                            Log.d("user", userData.email);
+                            Log.d("user", userData.phone);
+                            Log.d("user", userData.type);
                             WriteData writeData = new WriteData();
-                            writeData.writeNewUserInfo(userData,mAuth);
+                            writeData.writeNewUserInfo(userData, mAuth);
                             String userId = mAuth.getCurrentUser().getUid();
-                            Log.d("user",userId);
+                            Log.d("user", userId);
                             PrefSave prefSave = new PrefSave(context);
                             prefSave.saveId(userId);
                             PrefGet prefGet = new PrefGet(context);
                             prefGet.getUserType();
-                            Log.d("user",prefGet.getUserType());
+                            Log.d("user", prefGet.getUserType());
                             prefSave.saveLogInStatus(true);
                             prefSave.saveUserType(type);
                             PrefsManager prefsManager = new PrefsManager(context);
@@ -139,13 +139,14 @@ public class Auth {
                     }
                 });
     }
-    public void createNewAccount (String email, String password, final String phone,String type ,final Context context){
+
+    public void createNewAccount(String email, String password, final String phone, String type, final Context context) {
         this.context = context;
-        this.type=type;
+        this.type = type;
         this.email = email;
-        this.password=password;
-        this.phone=phone;
-        Activity activity=(Activity)context;
+        this.password = password;
+        this.phone = phone;
+        Activity activity = (Activity) context;
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(activity, new OnCompleteListener<AuthResult>() {
                     @Override
@@ -165,13 +166,14 @@ public class Auth {
 
 
     }
-    public   void login (String email, String password,final Context context){
-        Activity activity=(Activity)context;
+
+    public void login(String email, String password, final Context context) {
+        Activity activity = (Activity) context;
         this.email = email;
-        this.password=password;
-        Log.d("email",email.toString());
-        Log.d("pass",password.toString());
-        Log.d("pass",activity.toString());
+        this.password = password;
+        Log.d("email", email.toString());
+        Log.d("pass", password.toString());
+        Log.d("pass", activity.toString());
         mAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(activity, new OnCompleteListener<AuthResult>() {
                     @SuppressLint("CommitPrefEdits")
@@ -184,7 +186,7 @@ public class Auth {
                             prefSave.saveId(userId);
                             prefSave.saveLogInStatus(true);
                             ReadData readData = new ReadData();
-                            readData.readUserInfo(userId,context);
+                            readData.readUserInfo(userId, context);
 
                         } else {
                             // If sign in fails, display a message to the user.
@@ -195,5 +197,49 @@ public class Auth {
                     }
                 });
 
+    }
+
+    private void resendVerificationCode(String phoneNumber,
+                                        PhoneAuthProvider.ForceResendingToken token, final Context context) {
+        activity = (Activity) context;
+        final PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallBacks = new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
+            @Override
+            public void onVerificationCompleted(PhoneAuthCredential phoneAuthCredential) {
+                Log.d("JEJE", "onVerificationCompleted:" + phoneAuthCredential);
+                signInWithPhoneAuthCredential(phoneAuthCredential);
+
+
+            }
+
+            @Override
+            public void onVerificationFailed(FirebaseException e) {
+                Log.w("JEJE", "onVerificationFailed", e);
+                if (e instanceof FirebaseAuthInvalidCredentialsException) {
+                    Log.d("JEJE", "INVALID REQUEST");
+                } else if (e instanceof FirebaseTooManyRequestsException) {
+                    Log.d("JEJE", "Too many Request");
+                }
+            }
+
+            @Override
+            public void onCodeSent(String VerficationID, PhoneAuthProvider.ForceResendingToken forceResendingToken) {
+                super.onCodeSent(VerficationID, forceResendingToken);
+                Log.d("JEJE", "onCodeSent:" + VerficationID);
+                String userId = mAuth.getCurrentUser().getUid().toString();
+                PrefSave prefSave = new PrefSave(context);
+                prefSave.saveId(userId);
+                prefSave.saveLogInStatus(true);
+                prefSave.saveUserType(type);
+
+
+            }
+        };
+        PhoneAuthProvider.getInstance().verifyPhoneNumber(
+                phoneNumber,        // Phone number to verify
+                60,                 // Timeout duration
+                TimeUnit.SECONDS,   // Unit of timeout
+                activity,               // Activity (for callback binding)
+                mCallBacks,         // OnVerificationStateChangedCallbacks
+                token);             // ForceResendingToken from callbacks
     }
 }

@@ -136,5 +136,17 @@
                 </LinearLayout>
             </LinearLayout>
         </LinearLayout>
+        <com.wang.avi.AVLoadingIndicatorView
+            android:layout_centerVertical="true"
+            android:layout_centerInParent="true"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:id="@+id/indicator"
+            app:indicatorColor="@color/usage_pink"
+            app:indicatorName="BallPulseIndicator"
+            style="@style/AVLoadingIndicatorView"
+            />
     </RelativeLayout>
+
+
 </ScrollView>
