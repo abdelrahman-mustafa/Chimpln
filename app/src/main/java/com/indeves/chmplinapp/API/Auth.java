@@ -19,6 +19,13 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
+import com.google.firebase.database.FirebaseDatabase;
+import com.indeves.chmplinapp.Activities.SignUp;
+import com.indeves.chmplinapp.Activities.SignUpConfirmCode;
+import com.indeves.chmplinapp.Models.UserData;
+import com.indeves.chmplinapp.PrefsManager.PrefGet;
+import com.indeves.chmplinapp.PrefsManager.PrefSave;
+import com.indeves.chmplinapp.PrefsManager.PrefsManager;
 
 import java.util.concurrent.TimeUnit;
 
@@ -27,17 +34,29 @@ import java.util.concurrent.TimeUnit;
  */
 
 public class Auth {
+    private Context context;
+    private Activity activity;
+    private String type;
+    private String email;
+    private String password;
+    private String phone;
+    private UserData userData;
     private FirebaseAuth mAuth;
-    Context context;
-    Activity activity;
+    private FirebaseDatabase k;
 
+    public Auth(FirebaseAuth mAuth, FirebaseDatabase k) {
+        this.mAuth = mAuth;
+        this.k = k;
+    }
 
-    public void veifyphone(String phone) {
+    public void veifyphone() {
 
+        activity = (Activity)context;
         final PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallBacks = new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
             @Override
             public void onVerificationCompleted(PhoneAuthCredential phoneAuthCredential) {
                 Log.d("JEJE", "onVerificationCompleted:" + phoneAuthCredential);
+                signInWithPhoneAuthCredential(phoneAuthCredential);
 
 
             }
@@ -56,6 +75,21 @@ public class Auth {
             public void onCodeSent(String VerficationID, PhoneAuthProvider.ForceResendingToken forceResendingToken) {
                 super.onCodeSent(VerficationID, forceResendingToken);
                 Log.d("JEJE", "onCodeSent:" + VerficationID);
+                String userId = mAuth.getCurrentUser().getUid().toString();
+                PrefSave prefSave = new PrefSave(context);
+                prefSave.saveId(userId);
+                prefSave.saveLogInStatus(true);
+                prefSave.saveUserType(type);
+
+                Intent intent = new Intent(context, SignUpConfirmCode.class);
+                intent.putExtra("accountType", type);
+                intent.putExtra("Verfication ID", VerficationID);
+                intent.putExtra("mail", email);
+                intent.putExtra("pass", password);
+                intent.putExtra("resend", forceResendingToken);
+                context.startActivity(intent);
+
+
 
             }
         };
@@ -68,7 +102,8 @@ public class Auth {
     }
 
 
-    private void signInWithPhoneAuthCredential(PhoneAuthCredential credential) {
+    public void signInWithPhoneAuthCredential(PhoneAuthCredential credential) {
+
         mAuth.getCurrentUser().linkWithCredential(credential)
                 .addOnCompleteListener(activity, new OnCompleteListener<AuthResult>() {
                     @SuppressLint("CommitPrefEdits")
@@ -76,7 +111,23 @@ public class Auth {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
-
+                            userData = new UserData("",email, phone,type);
+                            Log.d("user",userData.email);
+                            Log.d("user",userData.phone);
+                            Log.d("user",userData.type);
+                            WriteData writeData = new WriteData();
+                            writeData.writeNewUserInfo(userData,mAuth);
+                            String userId = mAuth.getCurrentUser().getUid();
+                            Log.d("user",userId);
+                            PrefSave prefSave = new PrefSave(context);
+                            prefSave.saveId(userId);
+                            PrefGet prefGet = new PrefGet(context);
+                            prefGet.getUserType();
+                            Log.d("user",prefGet.getUserType());
+                            prefSave.saveLogInStatus(true);
+                            prefSave.saveUserType(type);
+                            PrefsManager prefsManager = new PrefsManager(context);
+                            prefsManager.goMainProfile(context);
                             // ...
                         } else {
                             // Sign in failed, display a message and update the UI
@@ -88,7 +139,13 @@ public class Auth {
                     }
                 });
     }
-    private void createNewAccount (String email,String password){
+    public void createNewAccount (String email, String password, final String phone,String type ,final Context context){
+        this.context = context;
+        this.type=type;
+        this.email = email;
+        this.password=password;
+        this.phone=phone;
+        Activity activity=(Activity)context;
         mAuth.createUserWithEmailAndPassword(email, password)
                 .addOnCompleteListener(activity, new OnCompleteListener<AuthResult>() {
                     @Override
@@ -101,14 +158,20 @@ public class Auth {
                                     Toast.LENGTH_SHORT).show();
                         } else {
 
-
+                            veifyphone();
                         }
                     }
                 });
 
 
     }
-    private  void login (String email,String password){
+    public   void login (String email, String password,final Context context){
+        Activity activity=(Activity)context;
+        this.email = email;
+        this.password=password;
+        Log.d("email",email.toString());
+        Log.d("pass",password.toString());
+        Log.d("pass",activity.toString());
         mAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(activity, new OnCompleteListener<AuthResult>() {
                     @SuppressLint("CommitPrefEdits")
@@ -116,11 +179,16 @@ public class Auth {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
-
-
+                            String userId = mAuth.getCurrentUser().getUid();
+                            PrefSave prefSave = new PrefSave(context);
+                            prefSave.saveId(userId);
+                            prefSave.saveLogInStatus(true);
+                            ReadData readData = new ReadData();
+                            readData.readUserInfo(userId,context);
 
                         } else {
                             // If sign in fails, display a message to the user.
+
                         }
 
                         // ...

@@ -1,5 +1,6 @@
 package com.indeves.chmplinapp.API;
 
+import android.content.Context;
 import android.content.Intent;
 import android.util.Log;
 
@@ -14,6 +15,8 @@ import com.indeves.chmplinapp.Activities.ProLandingPage;
 import com.indeves.chmplinapp.Activities.StuLandingPage;
 import com.indeves.chmplinapp.Activities.UserProfileMain;
 import com.indeves.chmplinapp.Models.UserData;
+import com.indeves.chmplinapp.PrefsManager.PrefSave;
+import com.indeves.chmplinapp.PrefsManager.PrefsManager;
 
 /**
  * Created by boda on 2/25/18.
@@ -21,23 +24,25 @@ import com.indeves.chmplinapp.Models.UserData;
 
 public class ReadData {
     UserData user;
-    FirebaseAuth mAuth;
 
-    private UserData readUserInfo(String userId) {
+    public void readUserInfo(String userId, final Context context) {
+
         DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference("users");
         mDatabase.child(userId).addValueEventListener(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 user = dataSnapshot.getValue(UserData.class);
+                PrefSave prefSave = new PrefSave(context);
+                prefSave.saveUserType(user.type.trim());
+                PrefsManager prefsManager = new PrefsManager(context);
+                prefsManager.goMainProfile(context);
 
             }
-
             @Override
             public void onCancelled(DatabaseError error) {
                 // Failed to read value
             }
         });
-        return user;
     }
 
 }

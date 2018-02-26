@@ -63,6 +63,7 @@
         <activity
             android:name=".Activities.MapsActivity"
             android:label="@string/title_activity_maps" />
+
         <activity
             android:name=".Activities.Approval"
             android:label="@string/title_activity_approval"
@@ -70,7 +71,7 @@
         <activity
             android:name=".Activities.Contactpro"
             android:label="@string/title_activity_contactpro"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
+            android:theme="@style/AppTheme.NoActionBar"/>
     </application>
 
 </manifest>

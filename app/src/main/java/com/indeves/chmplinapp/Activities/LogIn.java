@@ -27,6 +27,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
+import com.indeves.chmplinapp.API.Auth;
 import com.indeves.chmplinapp.Models.UserData;
 import com.indeves.chmplinapp.R;
 
@@ -38,7 +39,7 @@ public class LogIn extends AppCompatActivity {
     private FirebaseAuth mAuth;
     String TAG = "This Activiy";
 
-
+FirebaseDatabase k;
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -46,27 +47,13 @@ public class LogIn extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         final ImageView splash = (ImageView) findViewById(R.id.splash);
         //splash.startAnimation(anim);
+        k = FirebaseDatabase.getInstance();
         AnimatorSet animatorSet = new AnimatorSet();
         animatorSet.playTogether(
                 ObjectAnimator.ofFloat(splash, "translationY", -1000, 0),
                 ObjectAnimator.ofFloat(splash, "alpha", 0, 1)
         );
         animatorSet.setDuration(2000);
-       /* animatorSet.addListener(new AnimatorListenerAdapter(){
-            @Override public void onAnimationEnd(Animator animation) {
-
-                AnimatorSet animatorSet2 = new AnimatorSet();
-                animatorSet2.playTogether(
-                        ObjectAnimator.ofFloat(splash,"scaleX", 1f, 0.5f, 1f),
-                        ObjectAnimator.ofFloat(splash,"scaleY", 1f, 0.5f, 1f)
-                );
-                animatorSet2.setInterpolator(new AccelerateInterpolator());
-                animatorSet2.setDuration(1000);
-                animatorSet2.start();
-
-            }
-        });
-       */
         animatorSet.start();
 
 
@@ -90,62 +77,13 @@ public class LogIn extends AppCompatActivity {
                 String email = mail.getText().toString().trim();
                 String passw = pass.getText().toString().trim();
 
-                mAuth.signInWithEmailAndPassword(email, passw)
-                        .addOnCompleteListener(LogIn.this, new OnCompleteListener<AuthResult>() {
-                            @SuppressLint("CommitPrefEdits")
-                            @Override
-                            public void onComplete(@NonNull Task<AuthResult> task) {
-                                if (task.isSuccessful()) {
-                                    // Sign in success, update UI with the signed-in user's information
-                                    String userId = mAuth.getCurrentUser().getUid();
-                                    Log.d("uid", userId);
-                                    SharedPreferences mypreference = PreferenceManager.getDefaultSharedPreferences(LogIn.this);
-                                    mypreference.edit().putBoolean("Log In", true);
-                                    mypreference.edit().putString("user id", userId);
-                                    readData(userId);
-
-
-                                } else {
-                                    // If sign in fails, display a message to the user.
-                                    Log.w(TAG, "signInWithEmail:failure", task.getException());
-                                }
-
-                                // ...
-                            }
-                        });
+                Auth auth = new Auth(mAuth,k);
+                auth.login(email, passw, LogIn.this);
 
 
             }
         });
 
-
-    }
-
-    private void readData(String userId) {
-        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference("users");
-        mDatabase.child(userId).addValueEventListener(new ValueEventListener() {
-            @Override
-            public void onDataChange(DataSnapshot dataSnapshot) {
-                user = dataSnapshot.getValue(UserData.class);
-                Log.d("h", user.toString());
-                if (user.type.equals("user")) {
-                    Intent intent = new Intent(LogIn.this, UserProfileMain.class);
-                    startActivity(intent);
-                } else if (user.type.equals("pro")) {
-                    Intent intent = new Intent(LogIn.this, ProLandingPage.class);
-                    startActivity(intent);
-                } else {
-                    Intent intent = new Intent(LogIn.this, StuLandingPage.class);
-                    startActivity(intent);
-                }
-            }
-
-            @Override
-            public void onCancelled(DatabaseError error) {
-                // Failed to read value
-                Log.w(TAG, "Failed to read value.", error.toException());
-            }
-        });
 
     }
 }

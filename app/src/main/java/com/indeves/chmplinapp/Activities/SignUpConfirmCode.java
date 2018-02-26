@@ -24,6 +24,7 @@ import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.indeves.chmplinapp.API.Auth;
 import com.indeves.chmplinapp.Models.UserData;
 import com.indeves.chmplinapp.R;
 
@@ -34,7 +35,7 @@ public class SignUpConfirmCode extends AppCompatActivity {
     Button button;
     private FirebaseAuth mAuth;
     UserData userData;
-
+    FirebaseDatabase k;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -43,13 +44,16 @@ public class SignUpConfirmCode extends AppCompatActivity {
         button = findViewById(R.id.confirm_code);
         mAuth = FirebaseAuth.getInstance();
         codeEdit = findViewById(R.id.signup_verfication_code);
+        k = FirebaseDatabase.getInstance();
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 String verificationId = getIntent().getExtras().getString("Verfication ID");
                 String code = codeEdit.getText().toString().trim();
                 PhoneAuthCredential credential = PhoneAuthProvider.getCredential(verificationId, code);
-                signInWithPhoneAuthCredential(credential);
+                //  signInWithPhoneAuthCredential(credential);
+                Auth auth = new Auth(mAuth,k);
+                auth.signInWithPhoneAuthCredential(credential);
 
             }
         });
@@ -57,17 +61,17 @@ public class SignUpConfirmCode extends AppCompatActivity {
 
     private void signInWithPhoneAuthCredential(PhoneAuthCredential credential) {
 
-        mAuth.getCurrentUser().linkWithCredential(credential).addOnCompleteListener(SignUpConfirmCode.this, new OnCompleteListener<AuthResult>(){
+        mAuth.getCurrentUser().linkWithCredential(credential).addOnCompleteListener(SignUpConfirmCode.this, new OnCompleteListener<AuthResult>() {
             @SuppressLint("CommitPrefEdits")
             @Override
             public void onComplete(@NonNull Task<AuthResult> task) {
-                if(task.isSuccessful()){
-                    Log.d(TAG,"linkWithCredential:success");
+                if (task.isSuccessful()) {
+                    Log.d(TAG, "linkWithCredential:success");
                     String userId = mAuth.getCurrentUser().getUid().toString();
-                    Log.d("uid",userId);
+                    Log.d("uid", userId);
                     SharedPreferences mypreference = PreferenceManager.getDefaultSharedPreferences(SignUpConfirmCode.this);
-                    mypreference.edit().putBoolean("Log In",true);
-                    mypreference.edit().putString("user id",userId);
+                    mypreference.edit().putBoolean("Log In", true);
+                    mypreference.edit().putString("user id", userId);
                     if (getIntent().getStringExtra("accountType").equals("user")) {
                         startActivity(new Intent(SignUpConfirmCode.this, UserProfileMain.class));
                     } else if (getIntent().getStringExtra("accountType").equals("pro")) {
@@ -75,13 +79,14 @@ public class SignUpConfirmCode extends AppCompatActivity {
                     } else {
                         startActivity(new Intent(SignUpConfirmCode.this, StuLandingPage.class));
                     }
-                }else{
-                    Log.w(TAG,"linkWithCredential:failure",task.getException());
+                } else {
+                    Log.w(TAG, "linkWithCredential:failure", task.getException());
                 }
             }
         });
     }
-    private void writeData (UserData userData){
+
+    private void writeData(UserData userData) {
         DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference("users");
 
         String userId = mDatabase.push().getKey();

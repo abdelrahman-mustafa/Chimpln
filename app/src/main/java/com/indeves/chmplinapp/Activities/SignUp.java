@@ -3,6 +3,7 @@ package com.indeves.chmplinapp.Activities;
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.preference.PreferenceManager;
@@ -32,6 +33,7 @@ import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.indeves.chmplinapp.API.Auth;
 import com.indeves.chmplinapp.Models.UserData;
 import com.indeves.chmplinapp.R;
 
@@ -39,19 +41,13 @@ import java.util.concurrent.TimeUnit;
 
 public class SignUp extends AppCompatActivity {
     RadioButton radioButton, radioButton2, radioButton3;
-    RadioGroup radioGroup;
     Button createAccount;
     private static String phoneNum;
     EditText mail, phone, pass, confirmPass;
     private static final String TAG = "EmailPassword";
-    private PhoneAuthProvider.ForceResendingToken mResendToken;
-
-    //  private PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallbacks;
 
     private FirebaseAuth mAuth;
-    private String mVerificationId;
-    PhoneAuthCredential p;
-    UserData userData;
+    FirebaseDatabase k;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -82,87 +78,25 @@ public class SignUp extends AppCompatActivity {
         // create account
         mAuth = FirebaseAuth.getInstance();
 
-
-        // get selected radio button from radioGroup
-
-        // find the radiobutton by returned id
-
         createAccount.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
                 Log.d("mail", mail.getText().toString());
                 final String email = mail.getText().toString();
+                Auth auth = new Auth(mAuth, k);
                 final String password = pass.getText().toString();
-                mAuth.createUserWithEmailAndPassword(email, password)
-                        .addOnCompleteListener(SignUp.this, new OnCompleteListener<AuthResult>() {
-                            @Override
-                            public void onComplete(@NonNull Task<AuthResult> task) {
-                                Toast.makeText(SignUp.this, "createUserWithEmail:onComplete:" + task.isSuccessful(), Toast.LENGTH_SHORT).show();
-                                // If sign in fails, display a message to the user. If sign in succeeds
-                                // the auth state listener will be notified and logic to handle the
-                                // signed in user can be handled in the listener.
-                                if (!task.isSuccessful()) {
-                                    Toast.makeText(SignUp.this, "Authentication failed." + task.getException(),
-                                            Toast.LENGTH_SHORT).show();
-                                } else {
+                phoneNum = phone.getText().toString();
 
+                if (radioButton.isChecked()) {
+                    auth.createNewAccount(email, password, phoneNum, "user", SignUp.this);
 
-                                    final PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallBacks = new PhoneAuthProvider.OnVerificationStateChangedCallbacks() {
-                                        @Override
-                                        public void onVerificationCompleted(PhoneAuthCredential phoneAuthCredential) {
-                                            Log.d("JEJE", "onVerificationCompleted:" + phoneAuthCredential);
-                                            signInWithPhoneAuthCredential(phoneAuthCredential);
+                } else if (radioButton2.isChecked()) {
+                    auth.createNewAccount(email, password, phoneNum, "pro", SignUp.this);
 
+                } else {
+                    auth.createNewAccount(email, password, phoneNum, "stu", SignUp.this);
 
-                                        }
-
-                                        @Override
-                                        public void onVerificationFailed(FirebaseException e) {
-                                            Log.w("JEJE", "onVerificationFailed", e);
-                                            if (e instanceof FirebaseAuthInvalidCredentialsException) {
-                                                Log.d("JEJE", "INVALID REQUEST");
-                                            } else if (e instanceof FirebaseTooManyRequestsException) {
-                                                Log.d("JEJE", "Too many Request");
-                                            }
-                                        }
-
-                                        @Override
-                                        public void onCodeSent(String VerficationID, PhoneAuthProvider.ForceResendingToken forceResendingToken) {
-                                            super.onCodeSent(VerficationID, forceResendingToken);
-                                            Log.d("JEJE", "onCodeSent:" + VerficationID);
-                                            mResendToken = forceResendingToken;
-                                            phoneNum = phone.getText().toString();
-                                            // pass the verfication id and phomne number to check code
-                                            if (radioButton.isChecked()) {
-                                                Intent intent = new Intent(SignUp.this, SignUpConfirmCode.class);
-                                                intent.putExtra("accountType", "user");
-                                                intent.putExtra("Verfication ID", VerficationID);
-                                                intent.putExtra("mail", email);
-                                                intent.putExtra("pass", password);
-                                                startActivity(intent);
-                                            } else if (radioButton2.isChecked()) {
-                                                Intent intent = new Intent(SignUp.this, SignUpConfirmCode.class);
-                                                intent.putExtra("accountType", "pro");
-                                                intent.putExtra("Verfication ID", VerficationID);
-                                                intent.putExtra("mail", email);
-                                                intent.putExtra("pass", password);
-                                                startActivity(intent);
-
-                                            } else {
-                                                Intent intent = new Intent(SignUp.this, SignUpConfirmCode.class);
-                                                intent.putExtra("accountType", "stu");
-                                                intent.putExtra("Verfication ID", VerficationID);
-                                                intent.putExtra("mail", email);
-                                                intent.putExtra("pass", password);
-                                                startActivity(intent);
-                                            }
-                                        }
-                                    };
-                                    verifyPhone(phone.getText().toString().trim(), mCallBacks);
-
-                                }
-                            }
-                        });
+                }
 
 
             }
@@ -170,72 +104,4 @@ public class SignUp extends AppCompatActivity {
     }
 
 
-    public void verifyPhone(String phoneNumber, PhoneAuthProvider.OnVerificationStateChangedCallbacks mCallbacks) {
-        PhoneAuthProvider.getInstance().verifyPhoneNumber(
-                phoneNumber,        // Phone number to verify
-                60,                 // Timeout duration
-                TimeUnit.SECONDS,   // Unit of timeout
-                this,               // Activity (for callback binding)
-                mCallbacks);        // OnVerificationStateChangedCallback
-    }
-
-
-    private void signInWithPhoneAuthCredential(PhoneAuthCredential credential) {
-        mAuth.getCurrentUser().linkWithCredential(credential)
-                .addOnCompleteListener(this, new OnCompleteListener<AuthResult>() {
-                    @SuppressLint("CommitPrefEdits")
-                    @Override
-                    public void onComplete(@NonNull Task<AuthResult> task) {
-                        if (task.isSuccessful()) {
-                            // Sign in success, update UI with the signed-in user's information
-                            Log.d("PhoneVERifier", "signInWithCredential:success");
-                            String userId = mAuth.getCurrentUser().getUid().toString();
-                            Log.d("uid",userId);
-                            SharedPreferences mypreference = PreferenceManager.getDefaultSharedPreferences(SignUp.this);
-                            mypreference.edit().putBoolean("Log In",true);
-                            mypreference.edit().putString("user id",userId);
-
-                           if (radioButton.isChecked()) {
-                                mypreference.edit().putString("user type","user").apply();
-                               userData = new UserData("",mail.getText().toString(),phone.getText().toString(),"user");
-
-                                startActivity(new Intent(SignUp.this,UserProfileMain.class));
-
-                            } else if (radioButton2.isChecked()) {
-                                mypreference.edit().putString("user type","pro").apply();
-                               userData = new UserData("",mail.getText().toString(),phone.getText().toString(),"pro");
-                               startActivity(new Intent(SignUp.this,ProLandingPage.class));
-
-
-                            } else {
-                                mypreference.edit().putString("user type","stu").apply();
-                               userData = new UserData("",mail.getText().toString(),phone.getText().toString(),"stu");
-
-                               startActivity(new Intent(SignUp.this,StuLandingPage.class));
-
-                            }
-                            writeData(userData);
-
-
-                            // ...
-                        } else {
-                            // Sign in failed, display a message and update the UI
-                            Log.w("PhoneVERifier", "signInWithCredential:failure", task.getException());
-                            if (task.getException() instanceof FirebaseAuthInvalidCredentialsException) {
-                                // The verification code entered was invalid
-                            }
-                        }
-                    }
-                });
-    }
-
-    private void writeData (UserData userData){
-        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference("users");
-        String userId = mAuth.getCurrentUser().getUid().toString();
-
-       // String userId = mDatabase.push().getKey();
-
-// pushing user to 'users' node using the userId
-        mDatabase.child(userId).setValue(userData);
-    }
 }
