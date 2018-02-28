@@ -15,6 +15,7 @@ import android.view.animation.RotateAnimation;
 import android.widget.Button;
 import android.widget.ImageView;
 
+import com.google.firebase.database.FirebaseDatabase;
 import com.indeves.chmplinapp.*;
 
 public class MainActivity extends AppCompatActivity {
@@ -31,7 +32,8 @@ public class MainActivity extends AppCompatActivity {
         anim.setInterpolator(new LinearInterpolator());
         anim.setRepeatCount(Animation.INFINITE);
         anim.setDuration(700);
-
+        //K.A: enable offline sync in app
+        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
 // Start animating the image
         final ImageView splash = (ImageView) findViewById(R.id.splash);
         //splash.startAnimation(anim);

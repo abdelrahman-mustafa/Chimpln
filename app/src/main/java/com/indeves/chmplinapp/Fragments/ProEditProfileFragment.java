@@ -11,8 +11,13 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
+import com.google.firebase.database.DataSnapshot;
+import com.indeves.chmplinapp.API.FirebaseEventsListener;
+import com.indeves.chmplinapp.API.WriteData;
 import com.indeves.chmplinapp.Activities.ProLandingPage;
+import com.indeves.chmplinapp.Models.UserData;
 import com.indeves.chmplinapp.R;
 
 /**
@@ -23,7 +28,7 @@ import com.indeves.chmplinapp.R;
  * Use the {@link ProEditProfileFragment#newInstance} factory method to
  * create an instance of this fragment.
  */
-public class ProEditProfileFragment extends Fragment {
+public class ProEditProfileFragment extends Fragment implements FirebaseEventsListener {
     // TODO: Rename parameter arguments, choose names that match
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
@@ -91,10 +96,20 @@ public class ProEditProfileFragment extends Fragment {
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.pro_profile_menu_save) {
-            FragmentManager fragmentManager = getFragmentManager();
-            if (fragmentManager != null) {
-                fragmentManager.popBackStack();
+            WriteData writeData = new WriteData(ProEditProfileFragment.this);
+            UserData userData = new UserData();
+            userData.setPhone("+201003471292");
+            userData.setBirthDate("15-9-1990");
+            try {
+                writeData.updateUserProfileData(userData);
+            } catch (Exception e) {
+                Toast.makeText(attachedActivityContext, "You are not authenticated", Toast.LENGTH_SHORT).show();
+                e.printStackTrace();
             }
+//            FragmentManager fragmentManager = getFragmentManager();
+//            if (fragmentManager != null) {
+//                fragmentManager.popBackStack();
+//            }
             return true;
         } else {
             return super.onOptionsItemSelected(item);
@@ -127,6 +142,20 @@ public class ProEditProfileFragment extends Fragment {
     public void onDetach() {
         super.onDetach();
         mListener = null;
+    }
+
+    @Override
+    public void onWriteDataCompleted(boolean writeSuccessful) {
+        if (writeSuccessful) {
+            Toast.makeText(attachedActivityContext, "Profile updated successfully", Toast.LENGTH_SHORT).show();
+        } else {
+            Toast.makeText(attachedActivityContext, "Profile is not updated ", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    public void onReadDataResponse(DataSnapshot dataSnapshot) {
+
     }
 
     /**

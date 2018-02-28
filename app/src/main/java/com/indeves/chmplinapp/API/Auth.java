@@ -19,6 +19,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
+import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.FirebaseDatabase;
 import com.indeves.chmplinapp.Activities.SignUp;
 import com.indeves.chmplinapp.Activities.SignUpConfirmCode;
@@ -34,7 +35,7 @@ import java.util.concurrent.TimeUnit;
  * Created by boda on 2/24/18.
  */
 
-public class Auth {
+public class Auth implements FirebaseEventsListener {
     private Context context;
     private Activity activity;
     private String type;
@@ -44,10 +45,19 @@ public class Auth {
     private UserData userData;
     private FirebaseAuth mAuth;
     private FirebaseDatabase k;
+    private AuthenticationInterface.SignInWithPhoneAuthCredentialListener signInWithPhoneAuthCredentialListener;
 
     public Auth(FirebaseAuth mAuth, FirebaseDatabase k) {
         this.mAuth = mAuth;
         this.k = k;
+    }
+
+    //K.A: overloading constructor to avoid making any conflict with existing code
+    public Auth(AuthenticationInterface.SignInWithPhoneAuthCredentialListener signInWithPhoneAuthCredentialListener) {
+        //no need to pass FirebaseAuth instance between classes as it's a signletone class
+        this.mAuth = FirebaseAuth.getInstance();
+        this.signInWithPhoneAuthCredentialListener = signInWithPhoneAuthCredentialListener;
+
     }
 
     public void veifyphone() {
@@ -101,7 +111,6 @@ public class Auth {
                 mCallBacks);        // OnVerificationStateChangedCallback
     }
 
-
     public void signInWithPhoneAuthCredential(PhoneAuthCredential credential) {
 
         mAuth.getCurrentUser().linkWithCredential(credential)
@@ -111,29 +120,38 @@ public class Auth {
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
                             // Sign in success, update UI with the signed-in user's information
-                            userData = new UserData("", email, phone, type);
-                            Log.d("user", userData.email);
-                            Log.d("user", userData.phone);
-                            Log.d("user", userData.type);
-                            WriteData writeData = new WriteData();
-                            writeData.writeNewUserInfo(userData, mAuth);
-                            String userId = mAuth.getCurrentUser().getUid();
-                            Log.d("user", userId);
-                            PrefSave prefSave = new PrefSave(context);
-                            prefSave.saveId(userId);
-                            PrefGet prefGet = new PrefGet(context);
-                            prefGet.getUserType();
-                            Log.d("user", prefGet.getUserType());
-                            prefSave.saveLogInStatus(true);
-                            prefSave.saveUserType(type);
-                            PrefsManager prefsManager = new PrefsManager(context);
-                            prefsManager.goMainProfile(context);
+                            userData = new UserData(email, phone, type, mAuth.getCurrentUser().getUid());
+                            Log.d("userMail", userData.email);
+                            Log.d("userPhone", userData.phone);
+                            Log.d("userType", userData.type);
+                            WriteData writeData = new WriteData(Auth.this);
+                            writeData.writeNewUserInfo(userData);
+
+                            //K.A: this is an example for using one of authentication listeners
+                            if (signInWithPhoneAuthCredentialListener != null) {
+                                signInWithPhoneAuthCredentialListener.onSignInWithPhoneAuthCredentialCompleted(true);
+                            } else {
+                                //K.A: this condition to deal with other caller methods in this class which doesn't implement the listener
+                                // to solve this use other interfaces in their activities and call this method appropriately.
+                                String userId = mAuth.getCurrentUser().getUid();
+                                Log.d("userID", userId);
+                                PrefSave prefSave = new PrefSave(context);
+                                prefSave.saveId(userId);
+                                // K.A: why do you get user type and then set it again?
+                                PrefGet prefGet = new PrefGet(context);
+                                prefGet.getUserType();
+                                Log.d("user", prefGet.getUserType());
+                                prefSave.saveLogInStatus(true);
+                                prefSave.saveUserType(type);
+                                PrefsManager prefsManager = new PrefsManager(context);
+                                prefsManager.goMainProfile(context);
+                            }
                             // ...
                         } else {
                             // Sign in failed, display a message and update the UI
                             Log.w("PhoneVERifier", "signInWithCredential:failure", task.getException());
-                            if (task.getException() instanceof FirebaseAuthInvalidCredentialsException) {
-                                // The verification code entered was invalid
+                            if (signInWithPhoneAuthCredentialListener != null) {
+                                signInWithPhoneAuthCredentialListener.onSignInWithPhoneAuthCredentialCompleted(false);
                             }
                         }
                     }
@@ -155,8 +173,11 @@ public class Auth {
                         // the auth state listener will be notified and logic to handle the
                         // signed in user can be handled in the listener.
                         if (!task.isSuccessful()) {
-                            Toast.makeText(context, "Authentication failed." + task.getException(),
-                                    Toast.LENGTH_SHORT).show();
+                            if (task.getException() != null) {
+                                Toast.makeText(context, "Authentication failed." + task.getException(),
+                                        Toast.LENGTH_SHORT).show();
+                                Log.e("FBAuthenticationError", task.getException().toString());
+                            }
                         } else {
 
                             veifyphone();
@@ -171,9 +192,9 @@ public class Auth {
         Activity activity = (Activity) context;
         this.email = email;
         this.password = password;
-        Log.d("email", email.toString());
-        Log.d("pass", password.toString());
-        Log.d("pass", activity.toString());
+        Log.d("email", email);
+        Log.d("pass", password);
+        Log.d("acitivity", activity.toString());
         mAuth.signInWithEmailAndPassword(email, password)
                 .addOnCompleteListener(activity, new OnCompleteListener<AuthResult>() {
                     @SuppressLint("CommitPrefEdits")
@@ -242,4 +263,17 @@ public class Auth {
                 mCallBacks,         // OnVerificationStateChangedCallbacks
                 token);             // ForceResendingToken from callbacks
     }
+
+    @Override
+    public void onWriteDataCompleted(boolean writeSuccessful) {
+        if (writeSuccessful) {
+            Log.v("Aut", "Adding new user done successfully");
+        }
+    }
+
+    @Override
+    public void onReadDataResponse(DataSnapshot dataSnapshot) {
+
+    }
+
 }

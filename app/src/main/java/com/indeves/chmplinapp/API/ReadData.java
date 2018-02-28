@@ -23,26 +23,81 @@ import com.indeves.chmplinapp.PrefsManager.PrefsManager;
  */
 
 public class ReadData {
-    UserData user;
+    private UserData user;
+    private FirebaseEventsListener firebaseEventsListener;
 
-    public void readUserInfo(String userId, final Context context) {
+    public ReadData() {
+
+    }
+
+    public ReadData(FirebaseEventsListener firebaseEventsListener) {
+        this.firebaseEventsListener = firebaseEventsListener;
+    }
+
+    public void readUserInfo(final String userId, final Context context) {
 
         DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference("users");
-        mDatabase.child(userId).addValueEventListener(new ValueEventListener() {
+        mDatabase.child(userId).addListenerForSingleValueEvent(new ValueEventListener() {
+            //changed it to single value event to disable firing this code again if user's data is changed in edit profile
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 user = dataSnapshot.getValue(UserData.class);
+                if (user != null)
+                    Log.i("MyUserData", user.toString());
                 PrefSave prefSave = new PrefSave(context);
                 prefSave.saveUserType(user.type.trim());
                 PrefsManager prefsManager = new PrefsManager(context);
                 prefsManager.goMainProfile(context);
 
             }
+
             @Override
             public void onCancelled(DatabaseError error) {
                 // Failed to read value
             }
         });
     }
+
+    public void getUserInfoById(String userId) {
+        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference("users");
+        mDatabase.child(userId).addListenerForSingleValueEvent(new ValueEventListener() {
+            //changed it to single value event to disable firing this code again if user's data is changed in edit profile
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                if (firebaseEventsListener != null) {
+                    firebaseEventsListener.onReadDataResponse(dataSnapshot);
+                }
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                // Failed to read value
+                if (firebaseEventsListener != null) {
+                    firebaseEventsListener.onReadDataResponse(null);
+                }
+            }
+        });
+    }
+
+
+    //K.A: just for testing
+    public void getAllUsers() {
+        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference("type");
+        mDatabase.equalTo("pro").addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Log.v("AllUsers", dataSnapshot.toString());
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                // Failed to read value
+                Log.v("AllUsers_error", error.toString());
+            }
+        });
+    }
+
 
 }

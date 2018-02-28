@@ -11,6 +11,7 @@ import android.util.Log;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
@@ -25,17 +26,22 @@ import com.google.firebase.auth.PhoneAuthProvider;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.indeves.chmplinapp.API.Auth;
+import com.indeves.chmplinapp.API.AuthenticationInterface;
 import com.indeves.chmplinapp.Models.UserData;
+import com.indeves.chmplinapp.PrefsManager.PrefGet;
+import com.indeves.chmplinapp.PrefsManager.PrefSave;
+import com.indeves.chmplinapp.PrefsManager.PrefsManager;
 import com.indeves.chmplinapp.R;
 
-public class SignUpConfirmCode extends AppCompatActivity {
+public class SignUpConfirmCode extends AppCompatActivity implements AuthenticationInterface.SignInWithPhoneAuthCredentialListener {
 
-    EditText codeEdit;
     private static final String TAG = "PhoneAuthActivity";
+    EditText codeEdit;
     Button button;
-    private FirebaseAuth mAuth;
     UserData userData;
     FirebaseDatabase k;
+    String accountType;
+    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(final Bundle savedInstanceState) {
@@ -45,6 +51,7 @@ public class SignUpConfirmCode extends AppCompatActivity {
         mAuth = FirebaseAuth.getInstance();
         codeEdit = findViewById(R.id.signup_verfication_code);
         k = FirebaseDatabase.getInstance();
+        accountType = getIntent().getStringExtra("accountType");
         button.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -52,46 +59,31 @@ public class SignUpConfirmCode extends AppCompatActivity {
                 String code = codeEdit.getText().toString().trim();
                 PhoneAuthCredential credential = PhoneAuthProvider.getCredential(verificationId, code);
                 //  signInWithPhoneAuthCredential(credential);
-                Auth auth = new Auth(mAuth,k);
+                Auth auth = new Auth(SignUpConfirmCode.this);
                 auth.signInWithPhoneAuthCredential(credential);
 
             }
         });
     }
 
-    private void signInWithPhoneAuthCredential(PhoneAuthCredential credential) {
+    @Override
+    public void onSignInWithPhoneAuthCredentialCompleted(boolean codeVerified) {
+        if (codeVerified) {
+            String userId = mAuth.getCurrentUser().getUid();
+            Log.d("userID", userId);
+            PrefSave prefSave = new PrefSave(this);
+            prefSave.saveId(userId);
+            // K.A: why do you get user type and then set it again?
+            PrefGet prefGet = new PrefGet(this);
+            prefGet.getUserType();
+            Log.d("user", prefGet.getUserType());
+            prefSave.saveLogInStatus(true);
+            prefSave.saveUserType(accountType);
+            PrefsManager prefsManager = new PrefsManager(this);
+            prefsManager.goMainProfile(this);
+        } else {
+            Toast.makeText(this, "Invalid verification code", Toast.LENGTH_SHORT).show();
+        }
 
-        mAuth.getCurrentUser().linkWithCredential(credential).addOnCompleteListener(SignUpConfirmCode.this, new OnCompleteListener<AuthResult>() {
-            @SuppressLint("CommitPrefEdits")
-            @Override
-            public void onComplete(@NonNull Task<AuthResult> task) {
-                if (task.isSuccessful()) {
-                    Log.d(TAG, "linkWithCredential:success");
-                    String userId = mAuth.getCurrentUser().getUid().toString();
-                    Log.d("uid", userId);
-                    SharedPreferences mypreference = PreferenceManager.getDefaultSharedPreferences(SignUpConfirmCode.this);
-                    mypreference.edit().putBoolean("Log In", true);
-                    mypreference.edit().putString("user id", userId);
-                    if (getIntent().getStringExtra("accountType").equals("user")) {
-                        startActivity(new Intent(SignUpConfirmCode.this, UserProfileMain.class));
-                    } else if (getIntent().getStringExtra("accountType").equals("pro")) {
-                        startActivity(new Intent(SignUpConfirmCode.this, ProLandingPage.class));
-                    } else {
-                        startActivity(new Intent(SignUpConfirmCode.this, StuLandingPage.class));
-                    }
-                } else {
-                    Log.w(TAG, "linkWithCredential:failure", task.getException());
-                }
-            }
-        });
-    }
-
-    private void writeData(UserData userData) {
-        DatabaseReference mDatabase = FirebaseDatabase.getInstance().getReference("users");
-
-        String userId = mDatabase.push().getKey();
-
-// pushing user to 'users' node using the userId
-        mDatabase.child(userId).setValue(userData);
     }
 }

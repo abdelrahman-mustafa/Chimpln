@@ -15,6 +15,14 @@
       },
       "oauth_client": [
         {
+          "client_id": "358451666456-l0avv9iekmblvgk2a0la18f37ua9q956.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.indeves.chmplinapp",
+            "certificate_hash": "e26af389b0c272b25e445b753d760bb75f2ec796"
+          }
+        },
+        {
           "client_id": "358451666456-33k81860s2d9phee23nhb415j1nfu5ch.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {

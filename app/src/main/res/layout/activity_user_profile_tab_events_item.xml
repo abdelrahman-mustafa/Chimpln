@@ -1,11 +1,13 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<android.support.v7.widget.CardView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:id="@+id/Content_homePage"
-    android:layout_width="wrap_content"
+    android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:orientation="vertical">
+    android:layout_marginBottom="5dp"
+    android:layout_marginTop="5dp"
+    android:elevation="3dp">
 
     <LinearLayout
         android:id="@+id/view"
@@ -25,7 +27,6 @@
                 android:id="@+id/userProfile_event_day"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
                 android:text="5"
                 android:textColor="@color/colorProfile"
                 android:textSize="50sp"
@@ -35,8 +36,6 @@
                 android:id="@+id/userProfile_event_month"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_marginTop="0dp"
-                android:layout_weight="1"
                 android:text="Jan"
                 android:textColor="@color/colorProfile"
                 android:textSize="30sp"
@@ -59,12 +58,12 @@
                 android:textStyle="bold" />
 
             <TextView
-                android:textColor="#afabab"
-                android:shadowColor="#d7d3d3"
                 android:id="@+id/userProfile_event_type"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
+                android:shadowColor="#d7d3d3"
                 android:text="Photo session"
+                android:textColor="#afabab"
                 android:textSize="15sp"
                 android:textStyle="normal" />
 
@@ -84,9 +83,9 @@
                         android:id="@+id/userProfile_event_location"
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
+                        android:shadowColor="#d7d3d3"
                         android:text="Event Location"
                         android:textColor="#afabab"
-                        android:shadowColor="#d7d3d3"
                         android:textSize="15sp" />
                 </LinearLayout>
 
@@ -132,10 +131,10 @@
         </LinearLayout>
 
     </LinearLayout>
-    <View
-        android:layout_marginTop="5dp"
-        android:layout_width="match_parent"
-        android:layout_height="1dp"
-        android:layout_below="@id/view"
-        android:background="@color/colorProfile" />
-</RelativeLayout>
+    <!--<View-->
+    <!--android:layout_marginTop="5dp"-->
+    <!--android:layout_width="match_parent"-->
+    <!--android:layout_height="1dp"-->
+    <!--android:layout_below="@id/view"-->
+    <!--android:background="@color/colorProfile" />-->
+</android.support.v7.widget.CardView>
