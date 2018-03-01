@@ -43,11 +43,17 @@ public class ReadData {
             public void onDataChange(DataSnapshot dataSnapshot) {
                 user = dataSnapshot.getValue(UserData.class);
                 if (user != null)
+                {
                     Log.i("MyUserData", user.toString());
                 PrefSave prefSave = new PrefSave(context);
-                prefSave.saveUserType(user.type.trim());
-                PrefsManager prefsManager = new PrefsManager(context);
-                prefsManager.goMainProfile(context);
+                if (user.type != null) {
+                    prefSave.saveUserType(user.type.trim());
+                    PrefsManager prefsManager = new PrefsManager(context);
+                    prefsManager.goMainProfile(context);
+                }
+                }else {
+                    //TODO delete the account in the auth
+                }
 
             }
 

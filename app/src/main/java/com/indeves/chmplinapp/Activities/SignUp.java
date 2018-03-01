@@ -35,40 +35,48 @@ import com.google.firebase.auth.PhoneAuthProvider;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.indeves.chmplinapp.API.Auth;
+import com.indeves.chmplinapp.API.AuthenticationInterface;
 import com.indeves.chmplinapp.Models.UserData;
+import com.indeves.chmplinapp.PrefsManager.PrefGet;
+import com.indeves.chmplinapp.PrefsManager.PrefSave;
+import com.indeves.chmplinapp.PrefsManager.PrefsManager;
 import com.indeves.chmplinapp.R;
 import com.indeves.chmplinapp.Utility.CheckError;
+import com.indeves.chmplinapp.Utility.Toasts;
 import com.wang.avi.AVLoadingIndicatorView;
 
 import java.util.concurrent.TimeUnit;
 
-public class SignUp extends AppCompatActivity {
+public class SignUp extends AppCompatActivity implements AuthenticationInterface.SinUpListener, AuthenticationInterface.PhoneVerificationListener, AuthenticationInterface.SignInWithPhoneAuthCredentialListener {
     RadioButton radioButton, radioButton2, radioButton3;
     Button createAccount;
     private static String phoneNum;
     EditText mail, phone, pass, confirmPass;
     private static final String TAG = "EmailPassword";
-
+    private Toasts toasts;
     private FirebaseAuth mAuth;
     FirebaseDatabase k;
-    com.wang.avi.AVLoadingIndicatorView avi;
+    String email;
+    String password;
 
+    com.wang.avi.AVLoadingIndicatorView avi;
+    Auth auth = new Auth(SignUp.this, SignUp.this);
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
-
+auth.setContext(SignUp.this);
         createAccount = findViewById(R.id.signUp_button_createAccount);
         radioButton = findViewById(R.id.signUp_radio_user_account);
         radioButton2 = findViewById(R.id.signUp_radio_pro_account);
         radioButton3 = findViewById(R.id.signUp_radio_stu_account);
         mail = findViewById(R.id.signUp_email);
         phone = findViewById(R.id.signUp_phone);
-        avi = (AVLoadingIndicatorView)findViewById(R.id.indicator);
+        avi = (AVLoadingIndicatorView) findViewById(R.id.indicator);
         pass = findViewById(R.id.signUp_pass);
         confirmPass = findViewById(R.id.signUp_confirm_pass);
 
-
+        toasts = new Toasts(SignUp.this);
         final ImageView splash = (ImageView) findViewById(R.id.splash);
         //splash.startAnimation(anim);
         AnimatorSet animatorSet = new AnimatorSet();
@@ -88,19 +96,24 @@ public class SignUp extends AppCompatActivity {
             @Override
             public void onClick(View view) {
                 Log.d("mail", mail.getText().toString());
-               // startAnim();
-                final String email = mail.getText().toString();
-                Auth auth = new Auth(mAuth, k);
-                final String password = pass.getText().toString();
+                 startAnim();
+                email = mail.getText().toString();
+                password = pass.getText().toString();
                 phoneNum = phone.getText().toString();
                 String confirmpass = confirmPass.getText().toString();
                 CheckError checkError = new CheckError();
-                if (!checkError.checkEmpty(email,phoneNum,password,confirmpass)){
+                if (!checkError.checkEmpty(email, phoneNum, password, confirmpass)) {
                     // toast error
-                }else if (!checkError.checkPassMatch(password,confirmpass)){
-                    // toast error
+                    stopAnim();
 
-                }else {
+                    toasts.completeData();
+                } else if (!checkError.checkPassMatch(password, confirmpass)) {
+                    // toast error
+                    stopAnim();
+
+                    toasts.passDismatch();
+
+                } else {
                     if (radioButton.isChecked()) {
                         auth.createNewAccount(email, password, phoneNum, "user", SignUp.this);
 
@@ -110,26 +123,87 @@ public class SignUp extends AppCompatActivity {
                     } else if (radioButton3.isChecked()) {
                         auth.createNewAccount(email, password, phoneNum, "stu", SignUp.this);
 
-                    }else {
+                    } else {
                         // toast error
+                        toasts.noType();
+                        stopAnim();
 
                     }
                 }
 
 
-
-
             }
         });
     }
-    void startAnim(){
+
+    void startAnim() {
         avi.show();
         // or avi.smoothToShow();
     }
 
-    void stopAnim(){
+    void stopAnim() {
         avi.hide();
         // or avi.smoothToHide();
+    }
+
+    @Override
+    public void onSignUpWithEmailAndPasswordComplete(boolean signUpSuccessful) {
+
+        if (signUpSuccessful) {
+            auth.veifyphone();
+        } else {
+            stopAnim();
+        }
+    }
+
+    @Override
+    public void onVerificationCompleted(PhoneAuthCredential phoneAuthCredential) {
+        auth.signInWithPhoneAuthCredential(phoneAuthCredential);
+    }
+
+    @Override
+    public void onCodeSent(String VerficationID, PhoneAuthProvider.ForceResendingToken forceResendingToken) {
+        Log.d("JEJE", "onCodeSent:" + VerficationID);
+        String userId = mAuth.getCurrentUser().getUid().toString();
+        PrefSave prefSave = new PrefSave(SignUp.this);
+        prefSave.saveId(userId);
+        prefSave.saveLogInStatus(true);
+        prefSave.saveUserType(auth.getType());
+
+        Context context = SignUp.this;
+        Intent intent = new Intent(context, SignUpConfirmCode.class);
+        intent.putExtra("accountType", auth.getType());
+        intent.putExtra("Verfication ID", VerficationID);
+        intent.putExtra("mail", auth.getEmail());
+        intent.putExtra("pass", auth.getPassword());
+        intent.putExtra("resend", forceResendingToken);
+        intent.putExtra("phone",auth.getPhone());
+        context.startActivity(intent);
+
+    }
+
+    @Override
+    public void onVerificationFailed(FirebaseException e) {
+        stopAnim();
+
+    }
+
+    @Override
+    public void onSignInWithPhoneAuthCredentialCompleted(boolean codeVerified) {
+        if (codeVerified) {
+            String userId = mAuth.getCurrentUser().getUid();
+            Log.d("userID", userId);
+            PrefSave prefSave = new PrefSave(this);
+            prefSave.saveId(userId);
+            prefSave.saveLogInStatus(true);
+            prefSave.saveUserType(auth.getType());
+            PrefsManager prefsManager = new PrefsManager(this);
+            prefsManager.goMainProfile(this);
+        } else {
+            Toast.makeText(this, "Invalid verification code", Toast.LENGTH_SHORT).show();
+            stopAnim();
+
+        }
     }
 
 }

@@ -83,6 +83,7 @@
                         android:layout_height="wrap_content"
                         android:hint="@string/mobile"
                         android:textColor="@color/colorWhite"
+                        android:inputType="phone"
                         android:textColorHint="@color/colorWhite"
                         android:textSize="16sp" />
 
@@ -91,6 +92,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/Email"
+                        android:inputType="textEmailAddress"
                         android:textColor="@color/colorWhite"
                         android:textColorHint="@color/colorWhite"
                         android:textSize="16sp" />
@@ -100,6 +102,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/pass"
+                        android:inputType="textPassword"
                         android:textColor="@color/colorWhite"
                         android:textColorHint="@color/colorWhite"
                         android:textSize="16sp" />
@@ -109,6 +112,7 @@
                         android:layout_width="match_parent"
                         android:layout_height="wrap_content"
                         android:hint="@string/confirmPass"
+                        android:inputType="textPassword"
                         android:textColor="@color/colorWhite"
                         android:textColorHint="@color/colorWhite"
                         android:textSize="16sp" />

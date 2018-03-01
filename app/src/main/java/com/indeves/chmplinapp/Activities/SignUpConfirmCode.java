@@ -60,6 +60,11 @@ public class SignUpConfirmCode extends AppCompatActivity implements Authenticati
                 PhoneAuthCredential credential = PhoneAuthProvider.getCredential(verificationId, code);
                 //  signInWithPhoneAuthCredential(credential);
                 Auth auth = new Auth(SignUpConfirmCode.this);
+                auth.setContext(SignUpConfirmCode.this);
+                auth.setEmail(getIntent().getExtras().getString("mail"));
+                auth.setPassword(getIntent().getExtras().getString("pass"));
+                auth.setPhone(getIntent().getExtras().getString("phone"));
+                auth.setType(getIntent().getExtras().getString("accountType"));
                 auth.signInWithPhoneAuthCredential(credential);
 
             }
@@ -73,10 +78,6 @@ public class SignUpConfirmCode extends AppCompatActivity implements Authenticati
             Log.d("userID", userId);
             PrefSave prefSave = new PrefSave(this);
             prefSave.saveId(userId);
-            // K.A: why do you get user type and then set it again?
-            PrefGet prefGet = new PrefGet(this);
-            prefGet.getUserType();
-            Log.d("user", prefGet.getUserType());
             prefSave.saveLogInStatus(true);
             prefSave.saveUserType(accountType);
             PrefsManager prefsManager = new PrefsManager(this);

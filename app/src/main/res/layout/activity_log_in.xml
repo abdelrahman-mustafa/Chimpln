@@ -12,10 +12,14 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content">
 
-        <LinearLayout
+        <RelativeLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:orientation="vertical">
+            <LinearLayout
+                android:orientation="vertical"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content">
             <ImageView
                 android:layout_width="150dp"
                 android:layout_height="150dp"
@@ -35,6 +39,7 @@
                     android:id="@+id/logIn_userName"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
+                    android:inputType="textEmailAddress"
                     android:hint="@string/logInUser"
                     android:textColor="@color/colorWhite"
                     android:textColorHint="@color/colorWhite"
@@ -45,8 +50,8 @@
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
                     android:hint="@string/pass"
+                    android:inputType="textPassword"
                     android:textColor="@color/colorWhite"
-
                     android:textColorHint="@color/colorWhite"
                     android:textSize="16sp" />
 
@@ -93,6 +98,17 @@
                     android:text="@string/signUp"
                     android:textColor="@color/colorPrimary" />
             </LinearLayout>
-        </LinearLayout>
+            </LinearLayout>
+            <com.wang.avi.AVLoadingIndicatorView
+                android:layout_centerVertical="true"
+                android:layout_centerInParent="true"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:id="@+id/indicator"
+                app:indicatorColor="@color/usage_pink"
+                app:indicatorName="BallPulseIndicator"
+                style="@style/AVLoadingIndicatorView"
+                />
+        </RelativeLayout>
     </ScrollView>
 </LinearLayout>

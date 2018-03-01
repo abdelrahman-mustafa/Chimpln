@@ -57,5 +57,13 @@
     <string name="fragment_title_my_profile">My profile</string>
     <string name="fragment_title_edit_profile">Edit profile</string>
     <string name="button_save">Save</string>
+    <string name="complete_signup">Please complete the required information</string>
+    <string name="check_pass">The password is very weak, please write new one</string>
+    <string name="check_pass_match">The password does not match the confirm one</string>
+    <string name="check_type">Please select your account type</string>
+    <string name="wrong_message">The process is failed, please try later</string>
+    <string name="invalid_code">Invalid Verification code</string>
+
+
 
 </resources>
