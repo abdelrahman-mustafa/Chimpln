@@ -1,6 +1,6 @@
 package com.indeves.chmplinapp.Fragments;
 
-import android.content.Intent;
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.view.LayoutInflater;
@@ -37,6 +37,7 @@ public class UserProfilePhotographersTabSearchOutputSelectPhotographer extends a
         spinner1 = rootView.findViewById(R.id.userProfile_phot_spinner_type);
         search = rootView.findViewById(R.id.userProfile_button_create);
 
+
         // Spinner Drop down elements
         List<String> categories = new ArrayList<String>();
         categories.add(getResources().getString(R.string.selectEvType));
@@ -47,10 +48,15 @@ public class UserProfilePhotographersTabSearchOutputSelectPhotographer extends a
         dataAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinner1.setAdapter(dataAdapter);
         search.setOnClickListener(new View.OnClickListener() {
+            @SuppressLint("ResourceType")
             @Override
             public void onClick(View view) {
+                getActivity().findViewById(R.id.userProfile_LinearLayout).setVisibility(View.GONE);
                 //  go to booking  activity
-                startActivity(new Intent(getContext(), Booking.class));
+                Booking output = new Booking();
+                android.support.v4.app.FragmentTransaction transaction = getFragmentManager().beginTransaction();
+
+                transaction.replace(R.id.container_o, output).commit();
             }
         });
         return rootView;

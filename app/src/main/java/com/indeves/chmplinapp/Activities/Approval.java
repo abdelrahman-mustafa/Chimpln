@@ -1,12 +1,16 @@
 package com.indeves.chmplinapp.Activities;
 
+import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.view.LayoutInflater;
 import android.view.View;
+import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
 
@@ -18,23 +22,27 @@ public class Approval extends StepProgressBar {
     TextView date,time,type,share,pro,note,location;
     String sdate,stime,stype,sshare,spro,snote,slocation;
     Button approvalbtn;
+    public Approval() {
+        // Required empty public constructor
+    }
 
     @Override
-    protected void onCreate(Bundle savedInstanceState) {
+    public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        setContentView(R.layout.activity_approval);
-        Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
-        toolbar.setTitle("Approval");
-        stateprogressbar.setCurrentStateNumber(StateProgressBar.StateNumber.TWO);
-
-        date=(TextView)findViewById(R.id.approval_date_textView);
-        time=(TextView)findViewById(R.id.approval_time);
-        type=(TextView)findViewById(R.id.approval_type);
-        share=(TextView)findViewById(R.id.approval_sharing);
-        pro=(TextView)findViewById(R.id.approval__pro);
-        note=(TextView)findViewById(R.id.approval_notes);
-        location=(TextView)findViewById(R.id.approval_location);
-        Intent intent=getIntent();
+    }
+    @Nullable
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        View rootview=inflater.inflate(R.layout.activity_approval, container, false);
+        date=(TextView)rootview.findViewById(R.id.approval_date_textView);
+        time=(TextView)rootview.findViewById(R.id.approval_time);
+        type=(TextView)rootview.findViewById(R.id.approval_type);
+        share=(TextView)rootview.findViewById(R.id.approval_sharing);
+        pro=(TextView)rootview.findViewById(R.id.approval__pro);
+        note=(TextView)rootview.findViewById(R.id.approval_notes);
+        location=(TextView)rootview.findViewById(R.id.approval_location);
+      /*  Intent intent=getIntent();
         slocation=intent.getStringExtra("address");
         sdate=intent.getStringExtra("date");
         stime=intent.getStringExtra("time");
@@ -47,22 +55,36 @@ public class Approval extends StepProgressBar {
         share.setText(sshare);
         pro.setText("ahmed"+"\"n"+"cairo-male");
         note.setText(snote);
-        location.setText(slocation);
-        approvalbtn=(Button)findViewById(R.id.approvalbtnn);
+        location.setText(slocation);*/
+        approvalbtn=(Button)rootview.findViewById(R.id.approvalbtnn);
         approvalbtn.setOnClickListener(this);
 
 
-
-
-
-
+        return rootview;
     }
     @Override
+    public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
+        super.onViewCreated(view, savedInstanceState);
+        stateprogressbar.setCurrentStateNumber(StateProgressBar.StateNumber.TWO);
+        stateprogressbar.setAllStatesCompleted(false);
+
+
+
+
+
+    }
+
+
+
+   @Override
     public void onClick(View v) {
         stateprogressbar.checkStateCompleted(true);
-        Intent intent = new Intent(getApplicationContext(), Contactpro.class);
-        startActivity(intent);
-    }
+       Contactpro output = new Contactpro();
+       android.support.v4.app.FragmentTransaction transaction = getFragmentManager().beginTransaction();
+
+       transaction.replace(R.id.container_o, output).commit();
+
+   }
 
 
 }

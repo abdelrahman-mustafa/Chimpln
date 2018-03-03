@@ -15,6 +15,7 @@ import android.os.Build;
 import android.support.annotation.RequiresApi;
 import android.support.v4.app.ActivityCompat;
 import android.os.Bundle;
+import android.support.v4.app.FragmentActivity;
 import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AlertDialog;
 import android.support.v7.widget.Toolbar;
@@ -40,7 +41,7 @@ import java.io.Serializable;
 import java.util.List;
 import java.util.Locale;
 
-public class MapsActivity extends StepProgressBar implements View.OnClickListener, OnMapReadyCallback, GoogleMap.OnMapLongClickListener {
+public class MapsActivity extends FragmentActivity implements View.OnClickListener, OnMapReadyCallback, GoogleMap.OnMapLongClickListener {
     public static final int MY_PERMISSIONS_REQUEST_LOCATION = 99;
     private static final int REQUEST_TAKE_poster_PHOTO = 1;
     String label = null;
@@ -61,8 +62,8 @@ public class MapsActivity extends StepProgressBar implements View.OnClickListene
         Toolbar toolbar = (Toolbar) findViewById(R.id.toolbar);
         toolbar.setTitle("Map");
         toolbar.setTitleTextColor(getColor(R.color.colorWhite));
-        stateprogressbar.setCurrentStateNumber(StateProgressBar.StateNumber.ONE);
-        stateprogressbar.setAllStatesCompleted(false);
+        //stateprogressbar.setCurrentStateNumber(StateProgressBar.StateNumber.ONE);
+      //  stateprogressbar.setAllStatesCompleted(false);
         //      button = findViewById(R.id.btnNext);
 //        button.setOnClickListener(this);
         checkLocationPermission();
@@ -189,7 +190,7 @@ public class MapsActivity extends StepProgressBar implements View.OnClickListene
     @Override
     public void onClick(View v) {
         if (v == button) {
-            stateprogressbar.checkStateCompleted(true);
+          //  stateprogressbar.checkStateCompleted(true);
             Toast.makeText(this, label, Toast.LENGTH_SHORT).show();
 
         }

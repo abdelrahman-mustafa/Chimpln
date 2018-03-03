@@ -15,6 +15,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.ImageView;
+import android.widget.LinearLayout;
 import android.widget.RatingBar;
 
 import com.indeves.chmplinapp.Fragments.*;
@@ -33,6 +34,7 @@ public class UserProfileMain extends AppCompatActivity {
     private RatingBar ratingBar;
     private android.support.v4.app.Fragment fragment, initialFragment;
     private FragmentManager fragmentManager;
+    LinearLayout userProLayout;
 
 
     @Override
@@ -48,6 +50,7 @@ public class UserProfileMain extends AppCompatActivity {
         ratingBar = findViewById(R.id.userProfile_rating);
         ratingBar.setNumStars(5);
         ratingBar.setRating(3);
+         userProLayout=(LinearLayout)findViewById(R.id.userProfile_LinearLayout) ;
 
         fragmentManager = getSupportFragmentManager();
         initialFragment = new UserProfileEventsTab();

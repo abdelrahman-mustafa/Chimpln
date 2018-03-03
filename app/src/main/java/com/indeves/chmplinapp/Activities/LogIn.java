@@ -37,6 +37,7 @@ import com.indeves.chmplinapp.Utility.CheckError;
 import com.indeves.chmplinapp.Utility.Toasts;
 import com.wang.avi.AVLoadingIndicatorView;
 
+
 public class LogIn extends AppCompatActivity implements AuthenticationInterface.LoginListener {
 
     EditText mail, pass;
