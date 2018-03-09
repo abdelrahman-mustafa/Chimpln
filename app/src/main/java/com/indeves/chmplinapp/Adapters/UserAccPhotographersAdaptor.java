@@ -6,15 +6,16 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
+import com.indeves.chmplinapp.Models.ProUserModel;
 import com.indeves.chmplinapp.Models.UserAccPhotographerData;
 import com.indeves.chmplinapp.R;
 
 import java.util.List;
 
 public class UserAccPhotographersAdaptor extends RecyclerView.Adapter<UserAccPhotographersAdaptor.MyViewHolder> {
-    List<UserAccPhotographerData> list;
+    List<ProUserModel> list;
 
-    public UserAccPhotographersAdaptor(List<UserAccPhotographerData> list) {
+    public UserAccPhotographersAdaptor(List<ProUserModel> list) {
         this.list = list;
     }
 
@@ -28,12 +29,14 @@ public class UserAccPhotographersAdaptor extends RecyclerView.Adapter<UserAccPho
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
-        UserAccPhotographerData pData = list.get(position);
+        ProUserModel pData = list.get(position);
         holder.Name.setText(pData.getName());
-        holder.Location.setText(pData.getLocation());
-        holder.Price.setText(pData.getPrice());
+        holder.Location.setText(pData.getCity());
+        holder.Price.setVisibility(View.INVISIBLE);
+        holder.Price.setText(" ");
         holder.Gender.setText(pData.getGender());
-        holder.Currency.setText(pData.getCurrency());
+        holder.Currency.setText("");
+        holder.Currency.setVisibility(View.INVISIBLE);
     }
 
     @Override

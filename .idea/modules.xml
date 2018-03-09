@@ -3,7 +3,6 @@
   <component name="ProjectModuleManager">
     <modules>
       <module fileurl="file://$PROJECT_DIR$/Chimpln.iml" filepath="$PROJECT_DIR$/Chimpln.iml" />
-      <module fileurl="file://C:\Users\HP\Documents\GitHub\Chimpln\Chimpln-git.iml" filepath="C:\Users\HP\Documents\GitHub\Chimpln\Chimpln-git.iml" />
       <module fileurl="file://$PROJECT_DIR$/app/app.iml" filepath="$PROJECT_DIR$/app/app.iml" />
     </modules>
   </component>
