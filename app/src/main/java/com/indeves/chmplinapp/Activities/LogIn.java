@@ -29,6 +29,7 @@ import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.ValueEventListener;
 import com.indeves.chmplinapp.API.Auth;
 import com.indeves.chmplinapp.API.AuthenticationInterface;
+import com.indeves.chmplinapp.API.FirebaseEventsListener;
 import com.indeves.chmplinapp.API.ReadData;
 import com.indeves.chmplinapp.Models.UserData;
 import com.indeves.chmplinapp.PrefsManager.PrefSave;
@@ -38,16 +39,16 @@ import com.indeves.chmplinapp.Utility.Toasts;
 import com.wang.avi.AVLoadingIndicatorView;
 
 
-public class LogIn extends AppCompatActivity implements AuthenticationInterface.LoginListener {
+public class LogIn extends AppCompatActivity implements AuthenticationInterface.LoginListener, FirebaseEventsListener {
 
     EditText mail, pass;
     UserData user;
     Button signUp, login;
-    private FirebaseAuth mAuth;
     String TAG = "This Activiy";
     com.wang.avi.AVLoadingIndicatorView avi;
     Toasts toasts;
     FirebaseDatabase k;
+    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -110,10 +111,11 @@ public class LogIn extends AppCompatActivity implements AuthenticationInterface.
     public void onUserLoginComplete(boolean loginSuccessful) {
         if (loginSuccessful) {
             String userId = mAuth.getCurrentUser().getUid();
+            Log.v("LoggedInUID", userId);
             PrefSave prefSave = new PrefSave(LogIn.this);
             prefSave.saveId(userId);
             prefSave.saveLogInStatus(true);
-            ReadData readData = new ReadData();
+            ReadData readData = new ReadData(this);
             readData.readUserInfo(userId, LogIn.this);
         } else {
             toasts.wrongMe();
@@ -132,4 +134,17 @@ public class LogIn extends AppCompatActivity implements AuthenticationInterface.
     }
 
 
+    @Override
+    public void onWriteDataCompleted(boolean writeSuccessful) {
+
+    }
+
+    @Override
+    public void onReadDataResponse(DataSnapshot dataSnapshot) {
+        if (dataSnapshot == null) {
+            toasts.wrongMe();
+            stopAnim();
+        }
+
+    }
 }

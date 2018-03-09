@@ -13,13 +13,18 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
+import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.indeves.chmplinapp.API.ReadData;
 import com.indeves.chmplinapp.Fragments.*;
 import com.indeves.chmplinapp.Fragments.UserProfileEventsTab;
+import com.indeves.chmplinapp.Models.ProUserModel;
 import com.indeves.chmplinapp.R;
 import com.squareup.picasso.Picasso;
 
@@ -28,14 +33,14 @@ import java.util.List;
 
 public class UserProfileMain extends AppCompatActivity {
     BottomNavigationView bottomNavigation;
+    LinearLayout userProLayout;
+    TextView userName;
     //  private ViewPager viewPager;
     //  private TabLayout tabLayout;
     private ImageView imageView;
     private RatingBar ratingBar;
     private android.support.v4.app.Fragment fragment, initialFragment;
     private FragmentManager fragmentManager;
-    LinearLayout userProLayout;
-
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -44,13 +49,14 @@ public class UserProfileMain extends AppCompatActivity {
         //  viewPager = (ViewPager) findViewById(R.id.container);
         imageView = findViewById(R.id.userProfile_pic);
         bottomNavigation = (BottomNavigationView) findViewById(R.id.navigation);
-
+        userName = findViewById(R.id.userProfile_name);
+        userName.setText(FirebaseAuth.getInstance().getCurrentUser().getEmail());
         Picasso.with(this).load(String.valueOf(getResources().getDrawable(R.drawable.user))).placeholder(getResources().getDrawable(R.drawable.user)).resize(40, 40).into(imageView);
 
         ratingBar = findViewById(R.id.userProfile_rating);
         ratingBar.setNumStars(5);
         ratingBar.setRating(3);
-         userProLayout=(LinearLayout)findViewById(R.id.userProfile_LinearLayout) ;
+        userProLayout = (LinearLayout) findViewById(R.id.userProfile_LinearLayout);
 
         fragmentManager = getSupportFragmentManager();
         initialFragment = new UserProfileEventsTab();
@@ -75,6 +81,14 @@ public class UserProfileMain extends AppCompatActivity {
                 final FragmentTransaction transaction = fragmentManager.beginTransaction();
                 transaction.replace(R.id.container_o, fragment).commit();
                 return true;
+            }
+        });
+        ReadData readData = new ReadData();
+        readData.getAllPros(new ReadData.AllProsListener() {
+            @Override
+            public void onProsResponse(ArrayList<ProUserModel> pros) {
+                //deal with pros
+                Log.v("ALlPros", pros.toString());
             }
         });
 

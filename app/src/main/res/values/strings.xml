@@ -63,6 +63,8 @@
     <string name="check_type">Please select your account type</string>
     <string name="wrong_message">The process is failed, please try later</string>
     <string name="invalid_code">Invalid Verification code</string>
+    <string name="not_set">Not set</string>
+    <string name="error_not_authenticated">You are not authenticated</string>
 
 
 </resources>

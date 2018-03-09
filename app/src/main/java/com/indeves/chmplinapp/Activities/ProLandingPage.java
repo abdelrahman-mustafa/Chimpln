@@ -18,7 +18,7 @@ import com.indeves.chmplinapp.Fragments.ProPackages;
 import com.indeves.chmplinapp.Fragments.ProProfile;
 import com.indeves.chmplinapp.R;
 
-public class ProLandingPage extends AppCompatActivity implements ProEditProfileFragment.OnFragmentInteractionListener, ProEvents.OnFragmentInteractionListener, ProLastWork.OnFragmentInteractionListener, ProPackages.OnFragmentInteractionListener, ProProfile.OnFragmentInteractionListener {
+public class ProLandingPage extends AppCompatActivity implements ProEvents.OnFragmentInteractionListener, ProLastWork.OnFragmentInteractionListener, ProPackages.OnFragmentInteractionListener {
     private static final String TAG = MainActivity.class.getSimpleName();
     private Fragment fragment;
     private FragmentManager fragmentManager;
@@ -82,6 +82,7 @@ public class ProLandingPage extends AppCompatActivity implements ProEditProfileF
                 return super.onOptionsItemSelected(item);
         }
     }
+
     @Override
     public void onBackPressed() {
         super.onBackPressed();

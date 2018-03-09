@@ -1,228 +1,234 @@
 <?xml version="1.0" encoding="utf-8"?>
 
-<android.support.constraint.ConstraintLayout
-    xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-
-    <RelativeLayout
-        android:id="@+id/relativeLayout"
-        android:layout_width="fill_parent"
-        android:layout_height="wrap_content"
-        android:padding="20dp">
-
-        <LinearLayout
-            android:id="@+id/view"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:orientation="horizontal">
-
-            <TextView
-                android:id="@+id/email"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:padding="13dp"
-                android:text="user@chimpln.com"
-                android:textSize="18sp"
-                android:textStyle="bold" />
-
-            <TextView
-                android:id="@+id/phone"
-                android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                android:layout_weight="1"
-                android:gravity="center_horizontal"
-                android:padding="13dp"
-                android:text="+010000000"
-                android:textSize="18sp"
-                android:textStyle="bold" />
-
-        </LinearLayout>
-
-        <LinearLayout
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:layout_below="@id/view"
-            android:orientation="vertical">
-
-            <TableLayout
-                android:id="@+id/myProfile"
-                android:layout_width="match_parent"
-                android:layout_height="0dp"
-                android:layout_marginTop="4dp"
-                android:layout_weight=".1"
-                android:animateLayoutChanges="true"
-                android:baselineAligned="true"
-                android:showDividers="end"
-                android:splitMotionEvents="true"
-                android:stretchColumns="0,1,2,3">
-
-                <TableRow
-                    android:id="@+id/gender_row"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginTop="10dp">
-
-
-                    <TextView
-                        android:id="@+id/editProf_TextView_first_name"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_column="0"
-                        android:paddingEnd="30dp"
-                        android:paddingStart="20dp"
-                        android:text="First Name"
-                        android:textSize="17sp" />
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_column="2"
-                        android:layout_gravity="end"
-                        android:layout_marginEnd="13dp"
-                        android:text="Edit"
-                        android:textSize="17sp" />
-
-
-                </TableRow>
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_gravity="bottom"
-                    android:layout_marginTop="17dp"
-                    android:background="#dad5d5" />
-
-                <TableRow
-                    android:id="@+id/height_row"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginTop="10dp">
-
-
-                    <TextView
-                        android:id="@+id/editProf_TextView_last_name"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:paddingEnd="30dp"
-                        android:paddingStart="20dp"
-                        android:text="Last Name"
-                        android:textSize="17sp" />
-
-
-                    <TextView
-                        android:id="@+id/editProf_TextView_hight"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_column="2"
-                        android:layout_gravity="end"
-                        android:layout_marginEnd="13dp"
-                        android:text="Edit"
-                        android:textSize="17sp" />
-
-                </TableRow>
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_gravity="bottom"
-                    android:layout_marginTop="17dp"
-                    android:background="#dad5d5" />
-
-                <TableRow
-                    android:id="@+id/skin_color_row"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginTop="10dp">
-
-
-                    <TextView
-                        android:id="@+id/editProf_TextView_location"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:paddingEnd="30dp"
-                        android:paddingStart="20dp"
-                        android:text="Location"
-                        android:textSize="17sp" />
-
-
-                    <TextView
-                        android:id="@+id/editProf_TextView_SkinColor"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_column="2"
-                        android:layout_gravity="end"
-                        android:layout_marginEnd="13dp"
-                        android:text="Edit"
-                        android:textSize="17sp" />
-
-                </TableRow>
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_gravity="bottom"
-                    android:layout_marginTop="17dp"
-                    android:background="#dad5d5" />
-
-                <TableRow
-                    android:id="@+id/body_fit_row"
-                    android:layout_width="match_parent"
-                    android:layout_height="match_parent"
-                    android:layout_marginTop="10dp">
-
-
-                    <TextView
-                        android:id="@+id/editProf_TextView_gender"
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:paddingEnd="30dp"
-                        android:paddingStart="20dp"
-                        android:text="Gender"
-                        android:textSize="17sp" />
-
-
-                    <TextView
-                        android:layout_width="wrap_content"
-                        android:layout_height="wrap_content"
-                        android:layout_column="2"
-                        android:layout_gravity="end"
-                        android:layout_marginEnd="13dp"
-                        android:text="Edit"
-                        android:textSize="17sp" />
-
-                </TableRow>
-
-                <View
-                    android:layout_width="match_parent"
-                    android:layout_height="1dp"
-                    android:layout_gravity="bottom"
-                    android:layout_marginTop="17dp"
-                    android:background="#dad5d5" />
-
-            </TableLayout>
-        </LinearLayout>
-    </RelativeLayout>
-
-    <Button
-        android:id="@+id/splash_button_signIn"
+    <android.support.constraint.ConstraintLayout
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
-        android:layout_marginBottom="20dp"
-        android:layout_marginEnd="32dp"
-        android:layout_marginStart="32dp"
-        android:layout_marginTop="8dp"
-        android:background="@drawable/button_package"
-        android:text="@string/fragment_title_edit_profile"
-        android:textColor="@color/colorWhite"
-        app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent"
-        app:layout_constraintHorizontal_bias="0.0"
-        app:layout_constraintStart_toStartOf="parent"
+        android:layout_height="wrap_content">
 
-        />
-</android.support.constraint.ConstraintLayout>
+        <RelativeLayout
+            android:id="@+id/relativeLayout"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:padding="20dp">
+
+            <LinearLayout
+                android:id="@+id/view"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:orientation="horizontal">
+
+                <TextView
+                    android:id="@+id/email"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:padding="13dp"
+                    android:text="user@chimpln.com"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+                <TextView
+                    android:id="@+id/userMobileNumber_textView"
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:layout_weight="1"
+                    android:gravity="center_horizontal"
+                    android:padding="13dp"
+                    android:text="+010000000"
+                    android:textSize="18sp"
+                    android:textStyle="bold" />
+
+            </LinearLayout>
+
+            <LinearLayout
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_below="@id/view"
+                android:orientation="vertical">
+
+                <TableLayout
+                    android:id="@+id/myProfile"
+                    android:layout_width="match_parent"
+                    android:layout_height="0dp"
+                    android:layout_marginTop="4dp"
+                    android:layout_weight=".1"
+                    android:animateLayoutChanges="true"
+                    android:baselineAligned="true"
+                    android:showDividers="end"
+                    android:splitMotionEvents="true"
+                    android:stretchColumns="0,1,2,3">
+
+                    <TableRow
+                        android:id="@+id/gender_row"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="10dp"
+                        android:baselineAligned="true">
+
+
+                        <EditText
+                            android:id="@+id/editProf_TextView_first_name"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_column="0"
+                            android:background="@android:color/transparent"
+                            android:hint="First Name"
+                            android:paddingEnd="30dp"
+                            android:paddingStart="20dp"
+                            android:textSize="17sp" />
+
+                        <TextView
+                            android:id="@+id/editFirstName_textView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_column="2"
+                            android:layout_gravity="end"
+                            android:layout_marginEnd="13dp"
+                            android:text="Edit"
+                            android:textSize="17sp" />
+
+
+                    </TableRow>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_gravity="bottom"
+                        android:layout_marginTop="17dp"
+                        android:background="#dad5d5" />
+
+                    <TableRow
+                        android:id="@+id/height_row"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="10dp">
+
+
+                        <EditText
+                            android:id="@+id/editProf_TextView_last_name"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@android:color/transparent"
+                            android:hint="Last Name"
+                            android:paddingEnd="30dp"
+                            android:paddingStart="20dp"
+                            android:textSize="17sp" />
+
+
+                        <TextView
+                            android:id="@+id/editLastName_textView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_column="2"
+                            android:layout_gravity="end"
+                            android:layout_marginEnd="13dp"
+                            android:text="Edit"
+                            android:textSize="17sp" />
+
+                    </TableRow>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_gravity="bottom"
+                        android:layout_marginTop="17dp"
+                        android:background="#dad5d5" />
+
+                    <TableRow
+                        android:id="@+id/skin_color_row"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="10dp">
+
+
+                        <EditText
+                            android:id="@+id/editProf_TextView_location"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@android:color/transparent"
+                            android:hint="Location"
+                            android:paddingEnd="30dp"
+                            android:paddingStart="20dp"
+                            android:textSize="17sp" />
+
+
+                        <TextView
+                            android:id="@+id/editLocation_textView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_column="2"
+                            android:layout_gravity="end"
+                            android:layout_marginEnd="13dp"
+                            android:text="Edit"
+                            android:textSize="17sp" />
+
+                    </TableRow>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_gravity="bottom"
+                        android:layout_marginTop="17dp"
+                        android:background="#dad5d5" />
+
+                    <TableRow
+                        android:id="@+id/body_fit_row"
+                        android:layout_width="match_parent"
+                        android:layout_height="match_parent"
+                        android:layout_marginTop="10dp">
+
+
+                        <EditText
+                            android:id="@+id/editProf_TextView_gender"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:background="@android:color/transparent"
+                            android:hint="Gender"
+                            android:paddingEnd="30dp"
+                            android:paddingStart="20dp"
+                            android:textSize="17sp" />
+
+
+                        <TextView
+                            android:id="@+id/editGender_textView"
+                            android:layout_width="wrap_content"
+                            android:layout_height="wrap_content"
+                            android:layout_column="2"
+                            android:layout_gravity="end"
+                            android:layout_marginEnd="13dp"
+                            android:text="Edit"
+                            android:textSize="17sp" />
+
+                    </TableRow>
+
+                    <View
+                        android:layout_width="match_parent"
+                        android:layout_height="1dp"
+                        android:layout_gravity="bottom"
+                        android:layout_marginTop="17dp"
+                        android:background="#dad5d5" />
+
+                </TableLayout>
+            </LinearLayout>
+        </RelativeLayout>
+
+        <Button
+            android:id="@+id/userEditProfile_save_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginEnd="32dp"
+            android:layout_marginStart="32dp"
+            android:layout_marginTop="16dp"
+            android:background="@drawable/button_package"
+            android:text="@string/button_save"
+            android:textColor="@color/colorWhite"
+            app:layout_constraintTop_toBottomOf="@+id/relativeLayout"
+
+            />
+    </android.support.constraint.ConstraintLayout>
+</ScrollView>

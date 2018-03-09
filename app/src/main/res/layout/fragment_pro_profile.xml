@@ -65,7 +65,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:gravity="center"
-                android:text="2200"
+                android:text="0"
                 android:textSize="20sp"
                 android:textStyle="bold" />
 
@@ -97,7 +97,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:gravity="center"
-                android:text="200"
+                android:text="0"
                 android:textSize="20sp"
                 android:textStyle="bold" />
 
@@ -122,6 +122,7 @@
         android:rating="5"
         android:stepSize="1"
         android:theme="@style/RatingBar"
+        android:visibility="invisible"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.5"
         app:layout_constraintStart_toStartOf="parent"

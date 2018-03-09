@@ -11,7 +11,7 @@ import java.util.Map;
 public class UserData {
 
 
-    public String name, email, phone, type, lastName, birthDate, gender, uid, profilePicUrl;
+    public String name, email, phone, type, lastName, birthDate, gender, uid, profilePicUrl, location;
     private List<String> eventsIds;
 
 
@@ -27,7 +27,7 @@ public class UserData {
         this.uid = uid;
     }
 
-    public UserData(String name, String email, String phone, String type, String lastName, String birthDate, String gender, String uid, List<String> eventsIds, String profilePicUrl) {
+    public UserData(String name, String email, String phone, String type, String lastName, String birthDate, String gender, String uid, String profilePicUrl, String location, List<String> eventsIds) {
         this.name = name;
         this.email = email;
         this.phone = phone;
@@ -36,8 +36,9 @@ public class UserData {
         this.birthDate = birthDate;
         this.gender = gender;
         this.uid = uid;
-        this.eventsIds = eventsIds;
         this.profilePicUrl = profilePicUrl;
+        this.location = location;
+        this.eventsIds = eventsIds;
     }
 
     public String getName() {
@@ -120,6 +121,14 @@ public class UserData {
         this.profilePicUrl = profilePicUrl;
     }
 
+    public String getLocation() {
+        return location;
+    }
+
+    public void setLocation(String location) {
+        this.location = location;
+    }
+
     @Override
     public String toString() {
         return "name: " + this.name + " & email: " + this.email + " & type: " + this.type + " & phone: " + this.phone;
@@ -146,6 +155,8 @@ public class UserData {
             result.put("profilePicUrl", profilePicUrl);
         if (eventsIds != null)
             result.put("eventsIds", eventsIds);
+        if (location != null)
+            result.put("location", location);
         return result;
     }
 

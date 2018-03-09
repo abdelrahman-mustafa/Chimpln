@@ -9,6 +9,7 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.indeves.chmplinapp.Models.ProUserModel;
 import com.indeves.chmplinapp.Models.UserData;
 
 /**
@@ -45,6 +46,25 @@ public class WriteData {
     }
 
     public void updateUserProfileData(UserData userData) throws Exception {
+        if (mAuth.getCurrentUser() != null) {
+            mDatabaseUserReference.child(mAuth.getCurrentUser().getUid()).updateChildren(userData.toMap()).addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+                    if (task.isSuccessful()) {
+                        firebaseEventsListener.onWriteDataCompleted(true);
+                    } else {
+                        firebaseEventsListener.onWriteDataCompleted(false);
+                    }
+                }
+            });
+        } else {
+            throw new Exception("user is not authenticated");
+        }
+
+
+    }
+
+    public void updateUserProfileData(ProUserModel userData) throws Exception {
         if (mAuth.getCurrentUser() != null) {
             mDatabaseUserReference.child(mAuth.getCurrentUser().getUid()).updateChildren(userData.toMap()).addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override

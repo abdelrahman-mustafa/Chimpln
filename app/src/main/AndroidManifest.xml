@@ -37,6 +37,7 @@
             tools:ignore="InnerclassSeparator" />
         <activity
             android:name=".Activities.UserProfileMain"
+            android:windowSoftInputMode="adjustNothing"
             tools:ignore="InnerclassSeparator" />
         <activity
             android:name=".Activities.ProLandingPage"

@@ -20,27 +20,28 @@ import com.indeves.chmplinapp.*;
 
 public class MainActivity extends AppCompatActivity {
 
-    Button button1,button2,button3;
+    Button button1, button2, button3;
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
-        button1=findViewById(R.id.splash_button_signIn);
-        button2=findViewById(R.id.splash_button_ProSignUp);
-        button3=findViewById(R.id.splash_button_userSignUp);
+        button1 = findViewById(R.id.splash_button_signIn);
+        button2 = findViewById(R.id.splash_button_ProSignUp);
+        button3 = findViewById(R.id.splash_button_userSignUp);
         RotateAnimation anim = new RotateAnimation(0f, 350f, 15f, 15f);
         anim.setInterpolator(new LinearInterpolator());
         anim.setRepeatCount(Animation.INFINITE);
         anim.setDuration(700);
         //K.A: enable offline sync in app
-        FirebaseDatabase.getInstance().setPersistenceEnabled(true);
+        FirebaseDatabase.getInstance().setPersistenceEnabled(false);
 // Start animating the image
         final ImageView splash = (ImageView) findViewById(R.id.splash);
         //splash.startAnimation(anim);
         AnimatorSet animatorSet = new AnimatorSet();
         animatorSet.playTogether(
-                ObjectAnimator.ofFloat(splash,"translationY",-1000,0),
-                ObjectAnimator.ofFloat(splash,"alpha",0,1)
+                ObjectAnimator.ofFloat(splash, "translationY", -1000, 0),
+                ObjectAnimator.ofFloat(splash, "alpha", 0, 1)
         );
         animatorSet.setDuration(2000);
        /* animatorSet.addListener(new AnimatorListenerAdapter(){
@@ -57,25 +58,26 @@ public class MainActivity extends AppCompatActivity {
 
             }
         });
-       */ animatorSet.start();
+       */
+        animatorSet.start();
 
 // Later.. stop the animation
         button1.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(MainActivity.this, LogIn. class));
+                startActivity(new Intent(MainActivity.this, LogIn.class));
             }
         });
         button2.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(MainActivity.this,SignUp.class));
+                startActivity(new Intent(MainActivity.this, SignUp.class));
             }
         });
         button3.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                startActivity(new Intent(MainActivity.this,SignUp.class));
+                startActivity(new Intent(MainActivity.this, SignUp.class));
             }
         });
     }
