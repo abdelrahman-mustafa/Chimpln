@@ -1,6 +1,7 @@
 package com.indeves.chmplinapp.Fragments;
 
 import android.app.DatePickerDialog;
+import android.app.ProgressDialog;
 import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
@@ -28,17 +29,41 @@ import com.indeves.chmplinapp.Models.ProUserModel;
 import com.indeves.chmplinapp.Models.UserData;
 import com.indeves.chmplinapp.R;
 
+import java.util.Calendar;
+
 
 public class ProEditProfileFragment extends Fragment implements FirebaseEventsListener, View.OnClickListener {
 
     Context attachedActivityContext;
     EditText firstName, lastName, birthDate, gender, experience, country, city, area;
     TextView editFirstName, editLastName, editBirthDate, editGender, editExperience, editCountry, editCity, editArea, email, mobileNumber;
+    ProgressDialog progressDialog;
+    private int year;
+    private int month;
+    private int day;
+    private DatePickerDialog.OnDateSetListener datePickerListener
+            = new DatePickerDialog.OnDateSetListener() {
+
+        // when dialog box is closed, below method will be called.
+        public void onDateSet(DatePicker view, int selectedYear,
+                              int selectedMonth, int selectedDay) {
+            year = selectedYear;
+            month = selectedMonth;
+            day = selectedDay;
+
+            // set selected date into textview
+            birthDate.setText(new StringBuilder().append(day)
+                    .append("-").append(month + 1).append("-").append(year)
+                    .append(" "));
+
+
+        }
+    };
+
 
     public ProEditProfileFragment() {
         // Required empty public constructor
     }
-
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
@@ -91,8 +116,17 @@ public class ProEditProfileFragment extends Fragment implements FirebaseEventsLi
         editCity.setOnClickListener(this);
         editArea.setOnClickListener(this);
         editGender.setOnClickListener(this);
+        progressDialog = new ProgressDialog(getContext());
+        progressDialog.setMessage("Loading profile data");
+        progressDialog.setCanceledOnTouchOutside(false);
+        progressDialog.show();
         ReadData readData = new ReadData(this);
         readData.getUserInfoById(FirebaseAuth.getInstance().getCurrentUser().getUid());
+
+        final Calendar c = Calendar.getInstance();
+        year = c.get(Calendar.YEAR);
+        month = c.get(Calendar.MONTH);
+        day = c.get(Calendar.DAY_OF_MONTH);
 
         return rootView;
     }
@@ -138,7 +172,6 @@ public class ProEditProfileFragment extends Fragment implements FirebaseEventsLi
 
     }
 
-
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
@@ -167,9 +200,12 @@ public class ProEditProfileFragment extends Fragment implements FirebaseEventsLi
 
     @Override
     public void onReadDataResponse(DataSnapshot dataSnapshot) {
+        progressDialog.dismiss();
         if (dataSnapshot != null && dataSnapshot.getValue() != null) {
             ProUserModel proUserModel = dataSnapshot.getValue(ProUserModel.class);
             displayUserInfo(proUserModel);
+        } else {
+            Toast.makeText(getContext(), "Failed to load your data", Toast.LENGTH_SHORT).show();
         }
 
     }
@@ -189,7 +225,7 @@ public class ProEditProfileFragment extends Fragment implements FirebaseEventsLi
             if (proUserModel.getGender() != null)
                 gender.setText(proUserModel.getGender());
             if (proUserModel.getExperience() != null)
-                gender.setText(proUserModel.getExperience());
+                experience.setText(proUserModel.getExperience());
             if (proUserModel.getCountry() != null)
                 country.setText(proUserModel.getCountry());
             if (proUserModel.getCity() != null)
@@ -203,36 +239,36 @@ public class ProEditProfileFragment extends Fragment implements FirebaseEventsLi
     @Override
     public void onClick(View v) {
         if (v == editFirstName) {
-            editFirstName.setEnabled(true);
-            editFirstName.requestFocus();
+            firstName.setEnabled(true);
+            firstName.requestFocus();
 
         } else if (v == editLastName) {
-            editLastName.setEnabled(true);
-            editLastName.requestFocus();
+            lastName.setEnabled(true);
+            lastName.requestFocus();
 
         } else if (v == editBirthDate) {
-
+            DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(), datePickerListener, year, month, day);
+            datePickerDialog.show();
 
         } else if (v == editGender) {
-            editGender.setEnabled(true);
-            editGender.requestFocus();
+            gender.setEnabled(true);
+            gender.requestFocus();
         } else if (v == editExperience) {
-            editExperience.setEnabled(true);
-            editExperience.requestFocus();
+            experience.setEnabled(true);
+            experience.requestFocus();
 
         } else if (v == editCountry) {
-            editCountry.setEnabled(true);
-            editCountry.requestFocus();
+            country.setEnabled(true);
+            country.requestFocus();
 
         } else if (v == editCity) {
-            editCity.setEnabled(true);
-            editCity.requestFocus();
+            city.setEnabled(true);
+            city.requestFocus();
 
 
         } else if (v == editArea) {
-            editArea.setEnabled(true);
-            editArea.requestFocus();
-
+            area.setEnabled(true);
+            area.requestFocus();
         }
 
     }
