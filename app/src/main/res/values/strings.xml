@@ -38,9 +38,9 @@
     <string name="packName">Package Name</string>
     <string name="packDesc">Package Description</string>
     <string name="packPrice">Package Price</string>
-    <string name="packCreate">Create Package</string>
+    <string name="packCreate">Add Package</string>
     <string name="selectPackTy">Select Event Type</string>
-    <string name="selectPackTyime">Select Event Timee</string>
+    <string name="selectPackTyime">Select Event Time</string>
     <string name="sort">Sorted By</string>
     <string name="sortDate">Date</string>
     <string name="sortLocation">Location</string>

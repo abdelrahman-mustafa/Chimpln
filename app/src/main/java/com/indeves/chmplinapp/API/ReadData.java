@@ -1,20 +1,15 @@
 package com.indeves.chmplinapp.API;
 
 import android.content.Context;
-import android.content.Intent;
 import android.util.Log;
 
-import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.ValueEventListener;
-import com.indeves.chmplinapp.Activities.LogIn;
-import com.indeves.chmplinapp.Activities.ProLandingPage;
-import com.indeves.chmplinapp.Activities.StuLandingPage;
-import com.indeves.chmplinapp.Activities.UserProfileMain;
+import com.indeves.chmplinapp.Models.LookUpModel;
 import com.indeves.chmplinapp.Models.ProUserModel;
 import com.indeves.chmplinapp.Models.UserData;
 import com.indeves.chmplinapp.PrefsManager.PrefSave;
@@ -121,12 +116,49 @@ public class ReadData {
             public void onCancelled(DatabaseError error) {
                 // Failed to read value
                 Log.v("AllUsers_error", error.toString());
+                if (allProsListener != null) {
+                    allProsListener.onProsResponse(null);
+                }
             }
         });
     }
 
+    public void getLookupsByType(String type, final LookUpsListener lookUpsListener) {
+        mDatabase = FirebaseDatabase.getInstance().getReference(type);
+        mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Log.v("EventTypesResponse", dataSnapshot.toString());
+                if (dataSnapshot.getValue() != null) {
+                    GenericTypeIndicator<List<LookUpModel>> t = new GenericTypeIndicator<List<LookUpModel>>() {
+                    };
+                    List<LookUpModel> lookUpModels = dataSnapshot.getValue(t);
+                    if (lookUpsListener != null) {
+                        lookUpsListener.onLookUpsResponse(lookUpModels);
+                    }
+                }
+
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                // Failed to read value
+                Log.v("DB_error", error.toString());
+                if (lookUpsListener != null) {
+                    lookUpsListener.onLookUpsResponse(null);
+                }
+            }
+        });
+
+    }
+
     public interface AllProsListener {
         void onProsResponse(ArrayList<ProUserModel> pros);
+    }
+
+    public interface LookUpsListener {
+        void onLookUpsResponse(List<LookUpModel> eventTypeLookups);
     }
 
 

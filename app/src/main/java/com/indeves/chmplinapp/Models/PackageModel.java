@@ -5,17 +5,18 @@ package com.indeves.chmplinapp.Models;
  */
 
 public class PackageModel {
-    private String packageTitle, packageDescription, packagePrice, eventType, eventTime;
+    private String packageTitle, packageDescription;
+    private int eventTypeId, eventTimeId, price;
 
     public PackageModel() {
     }
 
-    public PackageModel(String packageTitle, String packageDescription, String packagePrice, String eventType, String eventTime) {
+    public PackageModel(String packageTitle, String packageDescription, int eventTypeId, int eventTimeId, int price) {
         this.packageTitle = packageTitle;
         this.packageDescription = packageDescription;
-        this.packagePrice = packagePrice;
-        this.eventType = eventType;
-        this.eventTime = eventTime;
+        this.eventTypeId = eventTypeId;
+        this.eventTimeId = eventTimeId;
+        this.price = price;
     }
 
     public String getPackageTitle() {
@@ -34,27 +35,27 @@ public class PackageModel {
         this.packageDescription = packageDescription;
     }
 
-    public String getPackagePrice() {
-        return packagePrice;
+    public int getEventTypeId() {
+        return eventTypeId;
     }
 
-    public void setPackagePrice(String packagePrice) {
-        this.packagePrice = packagePrice;
+    public void setEventTypeId(int eventTypeId) {
+        this.eventTypeId = eventTypeId;
     }
 
-    public String getEventType() {
-        return eventType;
+    public int getEventTimeId() {
+        return eventTimeId;
     }
 
-    public void setEventType(String eventType) {
-        this.eventType = eventType;
+    public void setEventTimeId(int eventTimeId) {
+        this.eventTimeId = eventTimeId;
     }
 
-    public String getEventTime() {
-        return eventTime;
+    public int getPrice() {
+        return price;
     }
 
-    public void setEventTime(String eventTime) {
-        this.eventTime = eventTime;
+    public void setPrice(int price) {
+        this.price = price;
     }
 }

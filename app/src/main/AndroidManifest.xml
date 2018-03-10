@@ -37,13 +37,15 @@
             tools:ignore="InnerclassSeparator" />
         <activity
             android:name=".Activities.UserProfileMain"
-            android:windowSoftInputMode="adjustNothing"
+            android:windowSoftInputMode="adjustPan"
             tools:ignore="InnerclassSeparator" />
         <activity
             android:name=".Activities.ProLandingPage"
+            android:windowSoftInputMode="adjustPan"
             tools:ignore="InnerclassSeparator" />
         <activity
             android:name=".Activities.StuLandingPage"
+            android:windowSoftInputMode="adjustPan"
             tools:ignore="InnerclassSeparator" />
 
         <!--
