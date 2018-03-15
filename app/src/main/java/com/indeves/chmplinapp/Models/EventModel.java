@@ -12,6 +12,7 @@ public class EventModel implements Serializable {
     //eventStatus is one of these values "pending, accepted, rejected, finished"
     private String eventStatus;
     private int typeId, timeId, sharingOptionId;
+    //A7a
 
     public EventModel() {
     }
