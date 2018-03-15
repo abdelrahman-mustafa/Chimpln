@@ -9,6 +9,8 @@ import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.indeves.chmplinapp.Models.EventModel;
+import com.indeves.chmplinapp.Models.PackageModel;
 import com.indeves.chmplinapp.Models.ProUserModel;
 import com.indeves.chmplinapp.Models.UserData;
 
@@ -80,6 +82,14 @@ public class WriteData {
             throw new Exception("user is not authenticated");
         }
 
+
+    }
+
+    public void addNewProPackage(final PackageModel packageModel) {
+        //firstly, get pro data to
+    }
+
+    public void bookNewEvent(final EventModel eventModel) {
 
     }
 

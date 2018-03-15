@@ -1,45 +1,37 @@
 package com.indeves.chmplinapp.Models;
 
+import java.io.Serializable;
+
 /**
  * Created by khalid on 26/02/18.
  */
 
-public class EventModel {
-    private String bookerUserId, photographerId, eventDate, eventType, bookerUserName, photographerName, eventTime, shareOption, noteToPro;
+public class EventModel implements Serializable {
+    private String bookerUserId, photographerId, eventDate, bookerUserName, photographerName, startTime, endTime, noteToPro, eventCity;
     private long eventLocationLong, eventLocationLat;
     //eventStatus is one of these values "pending, accepted, rejected, finished"
     private String eventStatus;
+    private int typeId, timeId, sharingOptionId;
 
     public EventModel() {
     }
 
-    public EventModel(String bookerUserId, String photographerId, String eventDate, String eventType, String bookerUserName, String photographerName, String eventTime, String shareOption, String noteToPro, long eventLocationLong, long eventLocationLat, String eventStatus) {
+    public EventModel(String bookerUserId, String photographerId, String eventDate, String bookerUserName, String photographerName, String startTime, String endTime, String noteToPro, String eventCity, long eventLocationLong, long eventLocationLat, String eventStatus, int typeId, int timeId, int sharingOptionId) {
         this.bookerUserId = bookerUserId;
         this.photographerId = photographerId;
         this.eventDate = eventDate;
-        this.eventType = eventType;
         this.bookerUserName = bookerUserName;
         this.photographerName = photographerName;
-        this.eventTime = eventTime;
-        this.shareOption = shareOption;
+        this.startTime = startTime;
+        this.endTime = endTime;
         this.noteToPro = noteToPro;
+        this.eventCity = eventCity;
         this.eventLocationLong = eventLocationLong;
         this.eventLocationLat = eventLocationLat;
         this.eventStatus = eventStatus;
-    }
-
-    public EventModel(String bookerUserId, String photographerId, String eventDate, String eventType, String bookerUserName, String photographerName, String eventTime, String shareOption, long eventLocationLong, long eventLocationLat, String eventStatus) {
-        this.bookerUserId = bookerUserId;
-        this.photographerId = photographerId;
-        this.eventDate = eventDate;
-        this.eventType = eventType;
-        this.bookerUserName = bookerUserName;
-        this.photographerName = photographerName;
-        this.eventTime = eventTime;
-        this.shareOption = shareOption;
-        this.eventLocationLong = eventLocationLong;
-        this.eventLocationLat = eventLocationLat;
-        this.eventStatus = eventStatus;
+        this.typeId = typeId;
+        this.timeId = timeId;
+        this.sharingOptionId = sharingOptionId;
     }
 
     public String getBookerUserId() {
@@ -66,14 +58,6 @@ public class EventModel {
         this.eventDate = eventDate;
     }
 
-    public String getEventType() {
-        return eventType;
-    }
-
-    public void setEventType(String eventType) {
-        this.eventType = eventType;
-    }
-
     public String getBookerUserName() {
         return bookerUserName;
     }
@@ -90,20 +74,36 @@ public class EventModel {
         this.photographerName = photographerName;
     }
 
-    public String getEventTime() {
-        return eventTime;
+    public String getStartTime() {
+        return startTime;
     }
 
-    public void setEventTime(String eventTime) {
-        this.eventTime = eventTime;
+    public void setStartTime(String startTime) {
+        this.startTime = startTime;
     }
 
-    public String getShareOption() {
-        return shareOption;
+    public String getEndTime() {
+        return endTime;
     }
 
-    public void setShareOption(String shareOption) {
-        this.shareOption = shareOption;
+    public void setEndTime(String endTime) {
+        this.endTime = endTime;
+    }
+
+    public String getNoteToPro() {
+        return noteToPro;
+    }
+
+    public void setNoteToPro(String noteToPro) {
+        this.noteToPro = noteToPro;
+    }
+
+    public String getEventCity() {
+        return eventCity;
+    }
+
+    public void setEventCity(String eventCity) {
+        this.eventCity = eventCity;
     }
 
     public long getEventLocationLong() {
@@ -130,11 +130,27 @@ public class EventModel {
         this.eventStatus = eventStatus;
     }
 
-    public String getNoteToPro() {
-        return noteToPro;
+    public int getTypeId() {
+        return typeId;
     }
 
-    public void setNoteToPro(String noteToPro) {
-        this.noteToPro = noteToPro;
+    public void setTypeId(int typeId) {
+        this.typeId = typeId;
+    }
+
+    public int getTimeId() {
+        return timeId;
+    }
+
+    public void setTimeId(int timeId) {
+        this.timeId = timeId;
+    }
+
+    public int getSharingOptionId() {
+        return sharingOptionId;
+    }
+
+    public void setSharingOptionId(int sharingOptionId) {
+        this.sharingOptionId = sharingOptionId;
     }
 }

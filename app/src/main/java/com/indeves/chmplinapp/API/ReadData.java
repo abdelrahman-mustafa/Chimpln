@@ -158,7 +158,7 @@ public class ReadData {
     }
 
     public interface LookUpsListener {
-        void onLookUpsResponse(List<LookUpModel> eventTypeLookups);
+        void onLookUpsResponse(List<LookUpModel> lookups);
     }
 
 
