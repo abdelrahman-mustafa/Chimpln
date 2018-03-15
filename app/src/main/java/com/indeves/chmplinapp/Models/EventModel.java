@@ -7,12 +7,11 @@ import java.io.Serializable;
  */
 
 public class EventModel implements Serializable {
-    private String bookerUserId, photographerId, eventDate, bookerUserName, photographerName, startTime, endTime, noteToPro, eventCity;
+    private String bookerUserId, photographerId, eventDate, bookerUserName, photographerName, startTime, endTime, noteToPro, eventCity, eventId;
     private long eventLocationLong, eventLocationLat;
     //eventStatus is one of these values "pending, accepted, rejected, finished"
     private String eventStatus;
     private int typeId, timeId, sharingOptionId;
-    //A7a
 
     public EventModel() {
     }
@@ -27,6 +26,25 @@ public class EventModel implements Serializable {
         this.endTime = endTime;
         this.noteToPro = noteToPro;
         this.eventCity = eventCity;
+        this.eventLocationLong = eventLocationLong;
+        this.eventLocationLat = eventLocationLat;
+        this.eventStatus = eventStatus;
+        this.typeId = typeId;
+        this.timeId = timeId;
+        this.sharingOptionId = sharingOptionId;
+    }
+
+    public EventModel(String bookerUserId, String photographerId, String eventDate, String bookerUserName, String photographerName, String startTime, String endTime, String noteToPro, String eventCity, String eventId, long eventLocationLong, long eventLocationLat, String eventStatus, int typeId, int timeId, int sharingOptionId) {
+        this.bookerUserId = bookerUserId;
+        this.photographerId = photographerId;
+        this.eventDate = eventDate;
+        this.bookerUserName = bookerUserName;
+        this.photographerName = photographerName;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.noteToPro = noteToPro;
+        this.eventCity = eventCity;
+        this.eventId = eventId;
         this.eventLocationLong = eventLocationLong;
         this.eventLocationLat = eventLocationLat;
         this.eventStatus = eventStatus;
@@ -153,5 +171,13 @@ public class EventModel implements Serializable {
 
     public void setSharingOptionId(int sharingOptionId) {
         this.sharingOptionId = sharingOptionId;
+    }
+
+    public String getEventId() {
+        return eventId;
+    }
+
+    public void setEventId(String eventId) {
+        this.eventId = eventId;
     }
 }

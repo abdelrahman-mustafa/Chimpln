@@ -21,12 +21,15 @@ import com.indeves.chmplinapp.Models.UserData;
 public class WriteData {
     private FirebaseEventsListener firebaseEventsListener;
     private FirebaseAuth mAuth;
-    private DatabaseReference mDatabaseUserReference = FirebaseDatabase.getInstance().getReference("users");
+    private DatabaseReference mDatabaseUserReference;
+    private DatabaseReference eventsDatabaseReference;
     private String userId;
 
     public WriteData(FirebaseEventsListener firebaseEventsListener) {
         this.firebaseEventsListener = firebaseEventsListener;
         this.mAuth = FirebaseAuth.getInstance();
+        this.mDatabaseUserReference = FirebaseDatabase.getInstance().getReference("users");
+        this.eventsDatabaseReference = FirebaseDatabase.getInstance().getReference("events");
     }
 
     public void writeNewUserInfo(UserData userData) {
@@ -89,7 +92,25 @@ public class WriteData {
         //firstly, get pro data to
     }
 
-    public void bookNewEvent(final EventModel eventModel) {
+    public void bookNewEvent(final EventModel eventModel) throws Exception {
+        if (mAuth.getCurrentUser() != null) {
+            String eventId = eventsDatabaseReference.push().getKey();
+            eventModel.setEventId(eventId);
+            eventsDatabaseReference.child(eventId).setValue(eventModel).addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+                    if (task.isSuccessful()) {
+                        firebaseEventsListener.onWriteDataCompleted(true);
+                    } else {
+                        firebaseEventsListener.onWriteDataCompleted(false);
+                    }
+                }
+            });
+
+
+        } else {
+            throw new Exception("user is not authenticated");
+        }
 
     }
 

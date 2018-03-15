@@ -1,6 +1,7 @@
 package com.indeves.chmplinapp.Fragments;
 
 import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.util.Log;
@@ -12,9 +13,15 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.indeves.chmplinapp.API.FirebaseEventsListener;
 import com.indeves.chmplinapp.API.ReadData;
+import com.indeves.chmplinapp.API.WriteData;
 import com.indeves.chmplinapp.Activities.Booking;
+import com.indeves.chmplinapp.Models.EventModel;
 import com.indeves.chmplinapp.Models.LookUpModel;
 import com.indeves.chmplinapp.Models.ProUserModel;
 import com.indeves.chmplinapp.R;
@@ -27,6 +34,13 @@ public class UserProfilePhotographersTabSearchOutputSelectPhotographer extends a
 
 
     ProUserModel pros = new ProUserModel();
+    //    ProgressDialog progressDialog;
+    Spinner eventTypeSpinner;
+    List<LookUpModel> eventTypesList = new ArrayList<>();
+    ArrayAdapter<LookUpModel> eventTypeArrayAdapter;
+    Button createEvent;
+    TextView name, about, events, photos;
+
     @SuppressLint("ValidFragment")
     public UserProfilePhotographersTabSearchOutputSelectPhotographer(ProUserModel pros) {
         this.pros = pros;
@@ -37,13 +51,6 @@ public class UserProfilePhotographersTabSearchOutputSelectPhotographer extends a
         super.onCreate(savedInstanceState);
     }
 
-
-    Spinner eventTypeSpinner;
-    List<LookUpModel> eventTypesList = new ArrayList<>();
-    ArrayAdapter<LookUpModel> eventTypeArrayAdapter;
-
-    Button createEvent;
-    TextView name , about, events, photos;
     @SuppressLint("SetTextI18n")
     @Nullable
     @Override
@@ -87,7 +94,6 @@ public class UserProfilePhotographersTabSearchOutputSelectPhotographer extends a
         });
 
 
-
         createEvent.setOnClickListener(new View.OnClickListener() {
             @SuppressLint("ResourceType")
             @Override
@@ -98,8 +104,39 @@ public class UserProfilePhotographersTabSearchOutputSelectPhotographer extends a
                 android.support.v4.app.FragmentTransaction transaction = getFragmentManager().beginTransaction();
 
                 transaction.replace(R.id.container_o, output).commit();
+
+
+                //Khalid, example of creating booking event
+//                progressDialog = new ProgressDialog(getContext());
+//                progressDialog.setMessage("Please wait...");
+//                progressDialog.setCanceledOnTouchOutside(false);
+//                progressDialog.show();
+//                EventModel eventModel = new EventModel(FirebaseAuth.getInstance().getCurrentUser().getUid(), pros.getUid(), "19-11-2018", "Mostafa", pros.getName(), null, null, "Hey", "Giza", 35, 35, "pending", 1, 1, 1);
+//                WriteData writeData = new WriteData(firebaseEventsListener);
+//                try {
+//                    writeData.bookNewEvent(eventModel);
+//                } catch (Exception e) {
+//                    //User is not authenticated
+//                    e.printStackTrace();
+//                }
+
             }
         });
         return rootView;
     }
+
+//    private FirebaseEventsListener firebaseEventsListener = new FirebaseEventsListener() {
+//        @Override
+//        public void onWriteDataCompleted(boolean writeSuccessful) {
+//            progressDialog.dismiss();
+//            if (writeSuccessful) {
+//                Toast.makeText(getContext(), "Done", Toast.LENGTH_LONG).show();
+//            }
+//        }
+//
+//        @Override
+//        public void onReadDataResponse(DataSnapshot dataSnapshot) {
+//
+//        }
+//    };
 }
