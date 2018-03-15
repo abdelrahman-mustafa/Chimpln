@@ -14,6 +14,8 @@ import android.support.v4.view.ViewPager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
+import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -52,7 +54,6 @@ public class UserProfileMain extends AppCompatActivity {
         userName = findViewById(R.id.userProfile_name);
         userName.setText(FirebaseAuth.getInstance().getCurrentUser().getEmail());
         Picasso.with(this).load(String.valueOf(getResources().getDrawable(R.drawable.user))).placeholder(getResources().getDrawable(R.drawable.user)).resize(40, 40).into(imageView);
-
         ratingBar = findViewById(R.id.userProfile_rating);
         ratingBar.setNumStars(5);
         ratingBar.setRating(3);
@@ -104,4 +105,28 @@ public class UserProfileMain extends AppCompatActivity {
         finish();
         System.exit(0);
     }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.pro_profile_fragment_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.pro_profile_menu_edit) {
+            //Go to edit screen4
+            fragmentManager = getSupportFragmentManager();
+            fragment = new UserProfileEditProfileTab();
+            FragmentTransaction transaction = fragmentManager.beginTransaction();
+            transaction.replace(R.id.container_o, fragment).commit();
+
+            return true;
+        } else {
+            return super.onOptionsItemSelected(item);
+        }
+
+    }
+
 }
