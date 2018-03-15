@@ -11,7 +11,7 @@
 
 
     <TextView
-        android:id="@+id/stu_profile_name"
+        android:id="@+id/userProfile_pro_name"
         android:layout_width="176dp"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
@@ -26,7 +26,7 @@
         tools:ignore="MissingConstraints" />
 
     <TextView
-        android:id="@+id/stu_profile_about"
+        android:id="@+id/userProfile_pro_about"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
@@ -35,7 +35,7 @@
         android:text="Male,Haram.36 years"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/stu_profile_name" />
+        app:layout_constraintTop_toBottomOf="@+id/userProfile_pro_name" />
 
     <LinearLayout
         android:id="@+id/linearLayout3"
@@ -58,7 +58,7 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/stu_profile_photos"
+                android:id="@+id/userProfile_pro_photos"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -90,7 +90,7 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/stu__profile_events"
+                android:id="@+id/userProfile_pro_events"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
@@ -109,7 +109,7 @@
     </LinearLayout>
 
     <RatingBar
-        android:id="@+id/stu_profile_rating"
+        android:id="@+id/userProfile_pro_rating"
         style="?android:attr/ratingBarStyleSmall"
         android:layout_width="wrap_content"
         android:layout_height="0dp"
@@ -119,10 +119,11 @@
         android:numStars="5"
         android:rating="5"
         android:stepSize="1"
+        android:visibility="gone"
         android:theme="@style/RatingBar"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/stu_profile_about"
+        app:layout_constraintTop_toBottomOf="@+id/userProfile_pro_about"
         tools:ignore="MissingConstraints" />
 
 
@@ -138,7 +139,7 @@
         app:layout_constraintBottom_toTopOf="@+id/userProfile_button_create"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
-        app:layout_constraintTop_toBottomOf="@+id/stu_profile_rating"
+        app:layout_constraintTop_toBottomOf="@+id/userProfile_pro_rating"
         app:layout_constraintVertical_bias="0.0"
         tools:ignore="MissingConstraints" />
 
