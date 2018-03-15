@@ -65,6 +65,7 @@
     <string name="invalid_code">Invalid Verification code</string>
     <string name="not_set">Not set</string>
     <string name="error_not_authenticated">You are not authenticated</string>
+    <string name="button_logout">logout</string>
     <string name="error_field_missing">Please fill this field</string>
 
 

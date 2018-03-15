@@ -32,6 +32,7 @@ import com.google.android.gms.common.GooglePlayServicesRepairableException;
 import com.google.android.gms.location.places.Place;
 import com.google.android.gms.location.places.ui.PlacePicker;
 import com.indeves.chmplinapp.Adapters.SpinnerCustomArrayAdapter;
+import com.indeves.chmplinapp.Models.ProUserModel;
 import com.indeves.chmplinapp.R;
 import com.indeves.chmplinapp.Utility.StepProgressBar;
 import com.kofigyan.stateprogressbar.StateProgressBar;
@@ -66,8 +67,14 @@ public class Booking extends StepProgressBar implements View.OnClickListener,Ada
 
 
 
-
+    ProUserModel pro;
+    String type;
     Button button;
+
+    @SuppressLint("ValidFragment")
+    public Booking(ProUserModel pro, String type) {
+        this.pro = pro;
+    }
 
     public Booking() {
         // Required empty public constructor
