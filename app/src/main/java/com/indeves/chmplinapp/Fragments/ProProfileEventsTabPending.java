@@ -10,24 +10,31 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.indeves.chmplinapp.API.FirebaseEventsListener;
+import com.indeves.chmplinapp.API.ReadData;
+import com.indeves.chmplinapp.Adapters.ProEventsArrayAdapter;
 import com.indeves.chmplinapp.Adapters.UserProfEventsAdaptor;
+import com.indeves.chmplinapp.Models.EventModel;
 import com.indeves.chmplinapp.Models.PhotographerData;
+import com.indeves.chmplinapp.Models.ProUserModel;
+import com.indeves.chmplinapp.Models.UserData;
 import com.indeves.chmplinapp.R;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ProProfileEventsTabPending extends android.support.v4.app.Fragment {
-    private static final String TAG = "RecyclerViewFragment";
+public class ProProfileEventsTabPending extends android.support.v4.app.Fragment implements FirebaseEventsListener {
+    private static final String TAG = "PendingEvents";
     private static final String KEY_LAYOUT_MANAGER = "layoutManager";
     private static final int SPAN_COUNT = 2;
-    private static final int DATASET_COUNT = 60;
     protected RecyclerView.LayoutManager mLayoutManager;
     protected LayoutManagerType mCurrentLayoutManagerType;
-    PhotographerData photographerData;
-    UserProfEventsAdaptor userProfEventsAdaptor;
-    private List<PhotographerData> list;
-    private ViewPager viewPager;
+
+    ProEventsArrayAdapter userProfEventsAdaptor;
+    private List<EventModel> eventModels;
+    //    private ViewPager viewPager;
     private RecyclerView recyclerView;
 
     @Override
@@ -42,14 +49,8 @@ public class ProProfileEventsTabPending extends android.support.v4.app.Fragment 
         View rootView = inflater.inflate(R.layout.activity_user_profile_tab_events_upcoming, container, false);
         recyclerView = rootView.findViewById(R.id.userProfile_event_recycler_view);
 
-
-        photographerData = new PhotographerData("Ramez", "Wedding", "10:00am  3:00pm", "16", "Nov", "no");
-        list = new ArrayList<PhotographerData>();
-        list.add(photographerData);
-        list.add(photographerData);
-        list.add(photographerData);
-        list.add(photographerData);
         mLayoutManager = new LinearLayoutManager(getActivity());
+        eventModels = new ArrayList<>();
 
         mCurrentLayoutManagerType = LayoutManagerType.LINEAR_LAYOUT_MANAGER;
 
@@ -59,9 +60,9 @@ public class ProProfileEventsTabPending extends android.support.v4.app.Fragment 
                     .getSerializable(KEY_LAYOUT_MANAGER);
         }
         setRecyclerViewLayoutManager(mCurrentLayoutManagerType);
-        userProfEventsAdaptor = new UserProfEventsAdaptor(list);
-        recyclerView.setAdapter(userProfEventsAdaptor);
-
+        userProfEventsAdaptor = new ProEventsArrayAdapter(eventModels);
+        ReadData readData = new ReadData(this);
+        readData.getAllEvents();
         return rootView;
     }
 
@@ -90,6 +91,27 @@ public class ProProfileEventsTabPending extends android.support.v4.app.Fragment 
 
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.scrollToPosition(scrollPosition);
+    }
+
+    @Override
+    public void onWriteDataCompleted(boolean writeSuccessful) {
+
+    }
+
+    @Override
+    public void onReadDataResponse(DataSnapshot dataSnapshot) {
+        if (dataSnapshot != null) {
+
+            for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
+                EventModel eventModel = dataSnapshot1.getValue(EventModel.class);
+                if (eventModel != null && eventModel.getPhotographerId().equals(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
+                    eventModels.add(eventModel);
+
+                }
+            }
+            recyclerView.setAdapter(userProfEventsAdaptor);
+            userProfEventsAdaptor.notifyDataSetChanged();
+        }
     }
 
     private enum LayoutManagerType {

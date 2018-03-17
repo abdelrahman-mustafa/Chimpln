@@ -75,16 +75,16 @@ public class ProPackages extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View rootView = inflater.inflate(R.layout.activity_user_profile_tab_events, container, false);
+        View rootView = inflater.inflate(R.layout.pro_packages_tab, container, false);
         if (attachedActivityContext != null && ((ProLandingPage) attachedActivityContext).getSupportActionBar() != null) {
             ((ProLandingPage) attachedActivityContext).getSupportActionBar().setDisplayShowHomeEnabled(false);
             ((ProLandingPage) attachedActivityContext).getSupportActionBar().setDisplayHomeAsUpEnabled(false);
             ((ProLandingPage) attachedActivityContext).getSupportActionBar().setTitle(getResources().getString(R.string.fragment_title_packages));
         }
 
-        viewPager = (ViewPager) rootView.findViewById(R.id.container);
+        viewPager = (ViewPager) rootView.findViewById(R.id.packages_container);
 
-        setupViewPager(viewPager);
+//        setupViewPager(viewPager);
 
         tabLayout = rootView.findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);

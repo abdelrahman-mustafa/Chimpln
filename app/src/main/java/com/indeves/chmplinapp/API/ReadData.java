@@ -123,6 +123,30 @@ public class ReadData {
         });
     }
 
+    public void getAllEvents() {
+        mDatabase = FirebaseDatabase.getInstance().getReference("events");
+        mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Log.v("AllEvents", dataSnapshot.toString());
+                if (firebaseEventsListener != null) {
+                    firebaseEventsListener.onReadDataResponse(dataSnapshot);
+                }
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                // Failed to read value
+                Log.v("AllEvents_error", error.toString());
+                if (firebaseEventsListener != null) {
+                    firebaseEventsListener.onReadDataResponse(null);
+                }
+            }
+        });
+
+    }
+
     public void getLookupsByType(String type, final LookUpsListener lookUpsListener) {
         mDatabase = FirebaseDatabase.getInstance().getReference(type);
         mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {

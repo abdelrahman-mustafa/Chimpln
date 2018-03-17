@@ -32,25 +32,25 @@
                 android:textStyle="bold" />
 
             <TextView
-                android:id="@+id/proProfile_myPackage_type"
+                android:id="@+id/proProfile_myPackage_eventTime"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="Full day event"
+                android:text="Event time"
                 android:textSize="15sp"
                 android:textStyle="normal" />
 
 
             <TextView
 
-                android:id="@+id/proProfile_myPackage_specs"
+                android:id="@+id/proProfile_myPackage_eventType"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:text="3 photo sessions, wedding"
+                android:text="Event Type"
                 android:textSize="15sp" />
 
             <TextView
 
-                android:id="@+id/proProfile_myPackage_condition"
+                android:id="@+id/proProfile_myPackage_desc"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:text="photo and videos"
@@ -67,9 +67,9 @@
 
             <TextView
                 android:id="@+id/proProfile_myPackage_price"
-                android:layout_width="match_parent"
+                android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                android:layout_weight="1"
+                android:layout_gravity="center_horizontal"
                 android:text="5000"
                 android:textColor="@color/colorPrice"
                 android:textSize="50sp"

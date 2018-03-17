@@ -3,6 +3,7 @@ package com.indeves.chmplinapp.Fragments;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -87,6 +88,7 @@ public class ProProfilePackageTabAddPackage extends android.support.v4.app.Fragm
             }
         });
         eventTypeSpinner.setOnItemSelectedListener(this);
+        eventTimeSpinner.setOnItemSelectedListener(this);
 
         return rootView;
     }
@@ -98,17 +100,21 @@ public class ProProfilePackageTabAddPackage extends android.support.v4.app.Fragm
             if (validatePackageForm()) {
                 PackageModel packageModel = new PackageModel(packageTitle.getText().toString(), packageDescription.getText().toString(), selectedEventType.getId(), selectedEventTime.getId(), Integer.parseInt(packagePrice.getText().toString()));
                 WriteData writeData = new WriteData(this);
-                writeData.addNewProPackage(packageModel);
+                try {
+                    writeData.addNewProPackage(packageModel);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
         }
     }
 
     boolean validatePackageForm() {
         boolean formIsValid = true;
-        if (selectedEventType.getId() == 0) {
+        if (selectedEventType == null || selectedEventType.getId() == 0) {
             Toast.makeText(getContext(), "Please select event type", Toast.LENGTH_SHORT).show();
             formIsValid = false;
-        } else if (selectedEventTime.getId() == 0) {
+        } else if (selectedEventTime == null || selectedEventTime.getId() == 0) {
             Toast.makeText(getContext(), "Please select event time", Toast.LENGTH_SHORT).show();
             formIsValid = false;
         } else if (packageTitle.getText().toString().isEmpty()) {
@@ -116,10 +122,10 @@ public class ProProfilePackageTabAddPackage extends android.support.v4.app.Fragm
             formIsValid = false;
 
         } else if (packagePrice.getText().toString().isEmpty()) {
-            packageTitle.setError(getResources().getString(R.string.error_field_missing));
+            packagePrice.setError(getResources().getString(R.string.error_field_missing));
             formIsValid = false;
         } else if (packageDescription.getText().toString().isEmpty()) {
-            packageTitle.setError(getResources().getString(R.string.error_field_missing));
+            packageDescription.setError(getResources().getString(R.string.error_field_missing));
             formIsValid = false;
         }
 
@@ -131,11 +137,11 @@ public class ProProfilePackageTabAddPackage extends android.support.v4.app.Fragm
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
-        if (view == eventTimeSpinner) {
+        if (parent.getId() == eventTimeSpinner.getId()) {
 
             selectedEventTime = eventTimeList.get(position);
 
-        } else if (view == eventTypeSpinner) {
+        } else if (parent.getId() == eventTypeSpinner.getId()) {
             selectedEventType = eventTypesList.get(position);
 
         }
@@ -150,10 +156,11 @@ public class ProProfilePackageTabAddPackage extends android.support.v4.app.Fragm
     @Override
     public void onWriteDataCompleted(boolean writeSuccessful) {
         if (writeSuccessful) {
-            FragmentManager fragmentManager = getFragmentManager();
-            if (fragmentManager != null) {
-                fragmentManager.popBackStack();
-            }
+            Toast.makeText(getContext(), "Save successfully", Toast.LENGTH_SHORT).show();
+            final FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
+            ft.replace(R.id.main_container, new ProPackages());
+            ft.commit();
+
         }
 
     }

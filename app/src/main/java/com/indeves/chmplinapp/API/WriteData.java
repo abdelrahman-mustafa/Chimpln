@@ -3,16 +3,23 @@ package com.indeves.chmplinapp.API;
 import android.content.Context;
 import android.support.annotation.NonNull;
 import android.util.Log;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
+import com.google.firebase.database.ValueEventListener;
 import com.indeves.chmplinapp.Models.EventModel;
 import com.indeves.chmplinapp.Models.PackageModel;
 import com.indeves.chmplinapp.Models.ProUserModel;
 import com.indeves.chmplinapp.Models.UserData;
+
+import java.util.ArrayList;
+import java.util.List;
 
 /**
  * Created by boda on 2/25/18.
@@ -88,8 +95,50 @@ public class WriteData {
 
     }
 
-    public void addNewProPackage(final PackageModel packageModel) {
-        //firstly, get pro data to
+    public void addNewProPackage(final PackageModel packageModel) throws Exception {
+        //firstly, get pro data to check if it has packages
+        if (mAuth.getCurrentUser() != null) {
+            mDatabaseUserReference.child(mAuth.getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {
+                @Override
+                public void onDataChange(DataSnapshot dataSnapshot) {
+
+                    if (dataSnapshot != null && dataSnapshot.getValue() != null) {
+                        ProUserModel proUserModel = dataSnapshot.getValue(ProUserModel.class);
+                        if (proUserModel != null) {
+                            List<PackageModel> packageModelList;
+                            if (proUserModel.getPackages() == null) {
+                                packageModelList = new ArrayList<>();
+                            } else {
+                                packageModelList = proUserModel.getPackages();
+                            }
+                            packageModelList.add(packageModel);
+                            mDatabaseUserReference.child(mAuth.getCurrentUser().getUid()).child("packages").setValue(packageModelList).addOnCompleteListener(new OnCompleteListener<Void>() {
+                                @Override
+                                public void onComplete(@NonNull Task<Void> task) {
+                                    if (task.isSuccessful()) {
+                                        firebaseEventsListener.onWriteDataCompleted(true);
+                                    } else {
+                                        firebaseEventsListener.onWriteDataCompleted(false);
+                                    }
+                                }
+                            });
+                        }
+                    }
+                }
+
+                @Override
+                public void onCancelled(DatabaseError databaseError) {
+                    try {
+                        throw new Exception(databaseError.toException());
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+
+                }
+            });
+        } else {
+            throw new Exception("user is not authenticated");
+        }
     }
 
     public void bookNewEvent(final EventModel eventModel) throws Exception {

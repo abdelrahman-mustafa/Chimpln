@@ -12,6 +12,7 @@ import android.view.ViewGroup;
 
 import com.indeves.chmplinapp.Adapters.ProProfPackageAdaptor;
 import com.indeves.chmplinapp.Models.MyPackageData;
+import com.indeves.chmplinapp.Models.PackageModel;
 import com.indeves.chmplinapp.R;
 
 import java.util.ArrayList;
@@ -26,7 +27,7 @@ public class StuProfilePackageTabMyPackages extends android.support.v4.app.Fragm
     protected RecyclerView.LayoutManager mLayoutManager;
     MyPackageData myPackageData;
     ProProfPackageAdaptor userProfEventsAdaptor;
-    private List<MyPackageData> list;
+    private List<PackageModel> list;
     private ViewPager viewPager;
     private RecyclerView recyclerView;
 
@@ -42,13 +43,13 @@ public class StuProfilePackageTabMyPackages extends android.support.v4.app.Fragm
         View rootView = inflater.inflate(R.layout.activity_user_profile_tab_events_upcoming, container, false);
         recyclerView = rootView.findViewById(R.id.userProfile_event_recycler_view);
         ;
-        list = new ArrayList<MyPackageData>();
-        myPackageData = new MyPackageData("Golden Package", "2 full day event", "3000", "EGP", "photo & share", "6 photo sessions, Wedding");
-
-        list.add(myPackageData);
-        list.add(myPackageData);
-        list.add(myPackageData);
-        list.add(myPackageData);
+        list = new ArrayList<PackageModel>();
+//        myPackageData = new MyPackageData("Golden Package", "2 full day event", "3000", "EGP", "photo & share", "6 photo sessions, Wedding");
+//
+//        list.add(myPackageData);
+//        list.add(myPackageData);
+//        list.add(myPackageData);
+//        list.add(myPackageData);
 
         mLayoutManager = new LinearLayoutManager(getActivity());
 
