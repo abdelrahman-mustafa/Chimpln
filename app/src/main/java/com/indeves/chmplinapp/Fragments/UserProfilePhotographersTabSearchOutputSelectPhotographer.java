@@ -125,18 +125,18 @@ public class UserProfilePhotographersTabSearchOutputSelectPhotographer extends a
         return rootView;
     }
 
-//    private FirebaseEventsListener firebaseEventsListener = new FirebaseEventsListener() {
-//        @Override
-//        public void onWriteDataCompleted(boolean writeSuccessful) {
-//            progressDialog.dismiss();
-//            if (writeSuccessful) {
-//                Toast.makeText(getContext(), "Done", Toast.LENGTH_LONG).show();
-//            }
-//        }
-//
-//        @Override
-//        public void onReadDataResponse(DataSnapshot dataSnapshot) {
-//
-//        }
-//    };
+    //    private FirebaseEventsListener firebaseEventsListener = new FirebaseEventsListener() {
+    //        @Override
+    //        public void onWriteDataCompleted(boolean writeSuccessful) {
+    //            progressDialog.dismiss();
+    //            if (writeSuccessful) {
+    //                Toast.makeText(getContext(), "Done", Toast.LENGTH_LONG).show();
+    //            }
+    //        }
+    //
+    //        @Override
+    //        public void onReadDataResponse(DataSnapshot dataSnapshot) {
+    //
+    //        }
+    //    };
 }

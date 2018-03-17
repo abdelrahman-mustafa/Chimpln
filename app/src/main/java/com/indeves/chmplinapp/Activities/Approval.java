@@ -1,5 +1,6 @@
 package com.indeves.chmplinapp.Activities;
 
+import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Intent;
 import android.os.Bundle;
@@ -12,8 +13,11 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
 import android.widget.TextView;
 
+import com.indeves.chmplinapp.Models.EventModel;
+import com.indeves.chmplinapp.Models.ProUserModel;
 import com.indeves.chmplinapp.R;
 import com.indeves.chmplinapp.Utility.StepProgressBar;
 import com.kofigyan.stateprogressbar.StateProgressBar;
@@ -22,8 +26,13 @@ public class Approval extends StepProgressBar {
     TextView date,time,type,share,pro,note,location;
     String sdate,stime,stype,sshare,spro,snote,slocation;
     Button approvalbtn;
+    EventModel model;
     public Approval() {
         // Required empty public constructor
+    }
+    @SuppressLint("ValidFragment")
+    public Approval(EventModel model) {
+        this.model = model;
     }
 
     @Override
@@ -42,6 +51,13 @@ public class Approval extends StepProgressBar {
         pro=(TextView)rootview.findViewById(R.id.approval__pro);
         note=(TextView)rootview.findViewById(R.id.approval_notes);
         location=(TextView)rootview.findViewById(R.id.approval_location);
+        date.setText(model.getEventDate());
+        time.setText(model.getStartTime());
+        type.setText(model.getTypeId());
+        share.setText(model.getSharingOptionId());
+        pro.setText(model.getPhotographerName());
+        note.setText(model.getNoteToPro());
+        location.setText(model.getEventCity());
       /*  Intent intent=getIntent();
         slocation=intent.getStringExtra("address");
         sdate=intent.getStringExtra("date");
