@@ -36,10 +36,11 @@ public class UserProfilePhotographersTabSearchOutput extends android.support.v4.
     protected RecyclerView.LayoutManager mLayoutManager;
     protected LayoutManagerType mCurrentLayoutManagerType;
     TextView date, location, numEvents;
+    LinearLayout linearLayout;
+    LinearLayout linearLayout2;
+    //    private List<UserAccPhotographerData> list;
     private RecyclerView recyclerView;
     private UserAccPhotographersAdaptor userAccPhotographersAdaptor;
-    private List<UserAccPhotographerData> list;
-
     private FragmentManager fragmentManager;
 
     public UserProfilePhotographersTabSearchOutput() {
@@ -49,9 +50,6 @@ public class UserProfilePhotographersTabSearchOutput extends android.support.v4.
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
-
-    LinearLayout linearLayout;
-    LinearLayout linearLayout2;
 
     @Nullable
     @Override
@@ -65,16 +63,16 @@ public class UserProfilePhotographersTabSearchOutput extends android.support.v4.
         numEvents = rootView.findViewById(R.id.userProfile_phot_search_number_events);
         linearLayout = rootView.findViewById(R.id.view);
 
-        UserAccPhotographerData data = new UserAccPhotographerData("Ahmed Mohamed", "Cairo, Egypt", "EGP", "2000", "Male");
-
-        list = new ArrayList<UserAccPhotographerData>();
-        list.add(data);
-        list.add(data);
-        list.add(data);
-        list.add(data);
-        list.add(data);
-        list.add(data);
-        list.add(data);
+//        UserAccPhotographerData data = new UserAccPhotographerData("Ahmed Mohamed", "Cairo, Egypt", "EGP", "2000", "Male");
+//
+//        list = new ArrayList<UserAccPhotographerData>();
+//        list.add(data);
+//        list.add(data);
+//        list.add(data);
+//        list.add(data);
+//        list.add(data);
+//        list.add(data);
+//        list.add(data);
       /*  mLayoutManager = new LinearLayoutManager(getActivity());
 
         mCurrentLayoutManagerType = LayoutManagerType.LINEAR_LAYOUT_MANAGER;
@@ -216,9 +214,6 @@ public class UserProfilePhotographersTabSearchOutput extends android.support.v4.
                 date.setOnClickListener(new OnClickListener() {
                     @Override
                     public void onClick(View view) {
-                        list = new ArrayList<UserAccPhotographerData>();
-
-
                         numEvents.setBackgroundColor(getResources().getColor(R.color.colorWhite));
                         location.setBackgroundColor(getResources().getColor(R.color.colorWhite));
                         date.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
@@ -231,7 +226,7 @@ public class UserProfilePhotographersTabSearchOutput extends android.support.v4.
                         recyclerView.setAdapter(userAccPhotographersAdaptor);
                     }
                 });
-                recyclerView.addOnItemTouchListener(new RecyclerTouchListener(this,
+                recyclerView.addOnItemTouchListener(new RecyclerTouchListener(
                         recyclerView, new ClickListener() {
                     @Override
                     public void onClick(View view, final int position) {
@@ -296,12 +291,12 @@ public class UserProfilePhotographersTabSearchOutput extends android.support.v4.
     }
 
 
-    static class RecyclerTouchListener implements RecyclerView.OnItemTouchListener {
+    class RecyclerTouchListener implements RecyclerView.OnItemTouchListener {
 
         private ClickListener clicklistener;
         private GestureDetector gestureDetector;
 
-        public RecyclerTouchListener(UserProfileEventsTabUpComming context, final RecyclerView recycleView, final ClickListener clicklistener) {
+        public RecyclerTouchListener(final RecyclerView recycleView, final ClickListener clicklistener) {
 
             this.clicklistener = clicklistener;
             gestureDetector = new GestureDetector(getContext(), new SimpleOnGestureListener() {

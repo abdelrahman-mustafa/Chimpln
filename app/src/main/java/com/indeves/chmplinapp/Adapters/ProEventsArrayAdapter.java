@@ -83,9 +83,8 @@ public class ProEventsArrayAdapter extends RecyclerView.Adapter<ProEventsArrayAd
             }
         }
         holder.location.setText(pData.getEventCity());
-        String[] monthsArray = {"Jan", "Feb", "March", "April", "May", "June", "July", "Aug", "Sep", "Oct", "Nov", "Dec"};
-        //use -1 to fit the index with months count
-        holder.month.setText(monthsArray[Integer.parseInt(eventDateParts[1]) - 1]);
+//        String[] monthsArray = {"Jan", "Feb", "March", "April", "May", "June", "July", "Aug", "Sep", "Oct", "Nov", "Dec"};
+        holder.month.setText(eventDateParts[1]);
     }
 
     @Override

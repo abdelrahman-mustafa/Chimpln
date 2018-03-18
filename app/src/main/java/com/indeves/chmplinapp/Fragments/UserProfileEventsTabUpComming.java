@@ -16,6 +16,7 @@ import android.view.ViewGroup;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
+import com.indeves.chmplinapp.API.FirebaseEventsListener;
 import com.indeves.chmplinapp.API.ReadData;
 import com.indeves.chmplinapp.Activities.Approval;
 import com.indeves.chmplinapp.Activities.Contactpro;
@@ -32,20 +33,17 @@ import java.util.List;
 
 import static android.view.View.GONE;
 
-public class UserProfileEventsTabUpComming extends android.support.v4.app.Fragment {
+public class UserProfileEventsTabUpComming extends android.support.v4.app.Fragment implements FirebaseEventsListener {
     private static final String TAG = "RecyclerViewFragment";
     private static final String KEY_LAYOUT_MANAGER = "layoutManager";
     private static final int SPAN_COUNT = 2;
     private static final int DATASET_COUNT = 60;
     protected LayoutManagerType mCurrentLayoutManagerType;
     protected RecyclerView.LayoutManager mLayoutManager;
-    PhotographerData photographerData;
     ProEventsArrayAdapter userProfEventsAdaptor;
-    private List<EventModel> list = new ArrayList<>();
-    private ViewPager viewPager;
-    private RecyclerView recyclerView;
     FragmentManager fragmentManager;
-
+    private List<EventModel> list;
+    private RecyclerView recyclerView;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -56,7 +54,6 @@ public class UserProfileEventsTabUpComming extends android.support.v4.app.Fragme
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.activity_user_profile_tab_events_upcoming, container, false);
-
 
 
         recyclerView = rootView.findViewById(R.id.userProfile_event_recycler_view);
@@ -75,9 +72,55 @@ public class UserProfileEventsTabUpComming extends android.support.v4.app.Fragme
                     .getSerializable(KEY_LAYOUT_MANAGER);
         }
         setRecyclerViewLayoutManager(mCurrentLayoutManagerType);
-
-        ReadData readData = new ReadData();
+        list = new ArrayList<EventModel>();
+        userProfEventsAdaptor = new ProEventsArrayAdapter(list);
+        ReadData readData = new ReadData(this);
         readData.getAllEvents();
+
+        recyclerView.addOnItemTouchListener(new RecyclerTouchListener(
+                recyclerView, new ClickListener() {
+            @Override
+            public void onClick(View view, final int position) {
+                //Values are passing to activity & to fragment as well
+
+                getActivity().findViewById(R.id.userProfile_LinearLayout).setVisibility(View.GONE);
+                fragmentManager = getActivity().getSupportFragmentManager();
+                if (list.get(position).getEventStatus().equals("pending")) {
+                    Approval frag = new Approval(list.get(position));
+                    FragmentTransaction transaction = fragmentManager.beginTransaction();
+                    transaction.replace(R.id.container_o, frag).commit();
+                } else if (list.get(position).getEventStatus().equals("accepted")) {
+                    Contactpro frag = new Contactpro(list.get(position).getPhotographerId());
+                    FragmentTransaction transaction = fragmentManager.beginTransaction();
+                    transaction.replace(R.id.container_o, frag).commit();
+                } else if (list.get(position).getEventStatus().equals("rejected")) {
+                    Rejected frag = new Rejected(list.get(position));
+                    FragmentTransaction transaction = fragmentManager.beginTransaction();
+                    transaction.replace(R.id.container_o, frag).commit();
+                }
+
+            }
+
+            @Override
+            public void onLongClick(View view, int position) {
+                getActivity().findViewById(R.id.userProfile_LinearLayout).setVisibility(View.GONE);
+                fragmentManager = getActivity().getSupportFragmentManager();
+                if (list.get(position).getEventStatus().equals("pending")) {
+                    Approval frag = new Approval(list.get(position));
+                    FragmentTransaction transaction = fragmentManager.beginTransaction();
+                    transaction.replace(R.id.container_o, frag).commit();
+                } else if (list.get(position).getEventStatus().equals("accepted")) {
+                    Contactpro frag = new Contactpro(list.get(position).getPhotographerId());
+                    FragmentTransaction transaction = fragmentManager.beginTransaction();
+                    transaction.replace(R.id.container_o, frag).commit();
+                } else if (list.get(position).getEventStatus().equals("rejected")) {
+                    Rejected frag = new Rejected(list.get(position));
+                    FragmentTransaction transaction = fragmentManager.beginTransaction();
+                    transaction.replace(R.id.container_o, frag).commit();
+                }
+
+            }
+        }));
 
         return rootView;
     }
@@ -109,64 +152,25 @@ public class UserProfileEventsTabUpComming extends android.support.v4.app.Fragme
         recyclerView.scrollToPosition(scrollPosition);
     }
 
+    @Override
+    public void onWriteDataCompleted(boolean writeSuccessful) {
+
+    }
+
+    @Override
     public void onReadDataResponse(DataSnapshot dataSnapshot) {
         if (dataSnapshot != null) {
 
             for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
-                    EventModel eventModel = dataSnapshot1.getValue(EventModel.class);
+                EventModel eventModel = dataSnapshot1.getValue(EventModel.class);
 
-                    if (eventModel != null && eventModel.getBookerUserId().equals(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
-                        list.add(eventModel);
+                if (eventModel != null && eventModel.getBookerUserId().equals(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
+                    list.add(eventModel);
 
-                    }
+                }
             }
-
-           // recyclerView.setAdapter(userProfEventsAdaptor);
-            userProfEventsAdaptor = new ProEventsArrayAdapter(list);
             recyclerView.setAdapter(userProfEventsAdaptor);
             userProfEventsAdaptor.notifyDataSetChanged();
-            recyclerView.addOnItemTouchListener(new UserProfilePhotographersTabSearchOutput.RecyclerTouchListener(this,
-                    recyclerView, new ClickListener() {
-                @Override
-                public void onClick(View view, final int position) {
-                    //Values are passing to activity & to fragment as well
-
-                    getActivity().findViewById(R.id.userProfile_LinearLayout).setVisibility(View.GONE);
-                    fragmentManager = getActivity().getSupportFragmentManager();
-                    if (list.get(position).getEventStatus().equals("pending")){
-                    Approval frag = new Approval(list.get(position));
-                    FragmentTransaction transaction = fragmentManager.beginTransaction();
-                    transaction.replace(R.id.container_o, frag).commit();}
-                    else if (list.get(position).getEventStatus().equals("accepted")){
-                        Contactpro frag = new Contactpro(list.get(position).getPhotographerId());
-                        FragmentTransaction transaction = fragmentManager.beginTransaction();
-                        transaction.replace(R.id.container_o, frag).commit();}
-                    else if (list.get(position).getEventStatus().equals("rejected")){
-                        Rejected frag = new Rejected(list.get(position));
-                        FragmentTransaction transaction = fragmentManager.beginTransaction();
-                        transaction.replace(R.id.container_o, frag).commit();}
-
-                }
-
-                @Override
-                public void onLongClick(View view, int position) {
-                    getActivity().findViewById(R.id.userProfile_LinearLayout).setVisibility(View.GONE);
-                    fragmentManager = getActivity().getSupportFragmentManager();
-                    if (list.get(position).getEventStatus().equals("pending")){
-                        Approval frag = new Approval(list.get(position));
-                        FragmentTransaction transaction = fragmentManager.beginTransaction();
-                        transaction.replace(R.id.container_o, frag).commit();}
-                    else if (list.get(position).getEventStatus().equals("accepted")){
-                        Contactpro frag = new Contactpro(list.get(position).getPhotographerId());
-                        FragmentTransaction transaction = fragmentManager.beginTransaction();
-                        transaction.replace(R.id.container_o, frag).commit();}
-                    else if (list.get(position).getEventStatus().equals("rejected")){
-                        Rejected frag = new Rejected(list.get(position));
-                        FragmentTransaction transaction = fragmentManager.beginTransaction();
-                        transaction.replace(R.id.container_o, frag).commit();}
-
-                }
-            }));
 
         }
     }
@@ -175,12 +179,13 @@ public class UserProfileEventsTabUpComming extends android.support.v4.app.Fragme
         GRID_LAYOUT_MANAGER,
         LINEAR_LAYOUT_MANAGER
     }
+
     class RecyclerTouchListener implements RecyclerView.OnItemTouchListener {
 
         private ClickListener clicklistener;
         private GestureDetector gestureDetector;
 
-        public RecyclerTouchListener(ReadData.AllProsListener context, final RecyclerView recycleView, final ClickListener clicklistener) {
+        public RecyclerTouchListener(final RecyclerView recycleView, final ClickListener clicklistener) {
 
             this.clicklistener = clicklistener;
             gestureDetector = new GestureDetector(getContext(), new GestureDetector.SimpleOnGestureListener() {

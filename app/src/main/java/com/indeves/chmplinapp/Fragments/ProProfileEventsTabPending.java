@@ -2,11 +2,14 @@ package com.indeves.chmplinapp.Fragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.GestureDetector;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 
@@ -14,6 +17,9 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.indeves.chmplinapp.API.FirebaseEventsListener;
 import com.indeves.chmplinapp.API.ReadData;
+import com.indeves.chmplinapp.Activities.Approval;
+import com.indeves.chmplinapp.Activities.Contactpro;
+import com.indeves.chmplinapp.Activities.Rejected;
 import com.indeves.chmplinapp.Adapters.ProEventsArrayAdapter;
 import com.indeves.chmplinapp.Adapters.UserProfEventsAdaptor;
 import com.indeves.chmplinapp.Models.EventModel;
@@ -21,6 +27,7 @@ import com.indeves.chmplinapp.Models.PhotographerData;
 import com.indeves.chmplinapp.Models.ProUserModel;
 import com.indeves.chmplinapp.Models.UserData;
 import com.indeves.chmplinapp.R;
+import com.indeves.chmplinapp.Utility.ClickListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -63,6 +70,24 @@ public class ProProfileEventsTabPending extends android.support.v4.app.Fragment 
         userProfEventsAdaptor = new ProEventsArrayAdapter(eventModels);
         ReadData readData = new ReadData(this);
         readData.getAllEvents();
+
+        recyclerView.addOnItemTouchListener(new RecyclerTouchListener(
+                recyclerView, new ClickListener() {
+            @Override
+            public void onClick(View view, final int position) {
+                //onClick
+                EventModel selectedEvent = eventModels.get(position);
+                ProEventResponse fragment = ProEventResponse.newInstance(selectedEvent);
+                FragmentTransaction fragmentTransaction = getFragmentManager().beginTransaction();
+                fragmentTransaction.replace(R.id.container, fragment).addToBackStack(null).commit();
+            }
+
+            @Override
+            public void onLongClick(View view, int position) {
+
+
+            }
+        }));
         return rootView;
     }
 
@@ -117,5 +142,50 @@ public class ProProfileEventsTabPending extends android.support.v4.app.Fragment 
     private enum LayoutManagerType {
         GRID_LAYOUT_MANAGER,
         LINEAR_LAYOUT_MANAGER
+    }
+
+    class RecyclerTouchListener implements RecyclerView.OnItemTouchListener {
+
+        private ClickListener clicklistener;
+        private GestureDetector gestureDetector;
+
+        public RecyclerTouchListener(final RecyclerView recycleView, final ClickListener clicklistener) {
+
+            this.clicklistener = clicklistener;
+            gestureDetector = new GestureDetector(getContext(), new GestureDetector.SimpleOnGestureListener() {
+                @Override
+                public boolean onSingleTapUp(MotionEvent e) {
+                    return true;
+                }
+
+                @Override
+                public void onLongPress(MotionEvent e) {
+                    View child = recycleView.findChildViewUnder(e.getX(), e.getY());
+                    if (child != null && clicklistener != null) {
+                        clicklistener.onLongClick(child, recycleView.getChildAdapterPosition(child));
+                    }
+                }
+            });
+        }
+
+        @Override
+        public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent e) {
+            View child = rv.findChildViewUnder(e.getX(), e.getY());
+            if (child != null && clicklistener != null && gestureDetector.onTouchEvent(e)) {
+                clicklistener.onClick(child, rv.getChildAdapterPosition(child));
+            }
+
+            return false;
+        }
+
+        @Override
+        public void onTouchEvent(RecyclerView rv, MotionEvent e) {
+
+        }
+
+        @Override
+        public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
+
+        }
     }
 }

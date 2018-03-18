@@ -11,26 +11,30 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
 
-import com.indeves.chmplinapp.Adapters.UserProfEventsAdaptor;
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.indeves.chmplinapp.API.FirebaseEventsListener;
+import com.indeves.chmplinapp.API.ReadData;
+import com.indeves.chmplinapp.Adapters.ProEventsArrayAdapter;
+import com.indeves.chmplinapp.Models.EventModel;
 import com.indeves.chmplinapp.Models.PhotographerData;
 import com.indeves.chmplinapp.R;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class ProProfileEventsTabUpComming extends android.support.v4.app.Fragment {
+public class ProProfileEventsTabUpComming extends android.support.v4.app.Fragment implements FirebaseEventsListener {
     private static final String TAG = "RecyclerViewFragment";
     private static final String KEY_LAYOUT_MANAGER = "layoutManager";
     private static final int SPAN_COUNT = 2;
     private static final int DATASET_COUNT = 60;
     protected LayoutManagerType mCurrentLayoutManagerType;
     protected RecyclerView.LayoutManager mLayoutManager;
-    PhotographerData photographerData;
     //    private ViewPager viewPager;
     TextView sortDate, sortLocation, sortType;
     int textDefaultColor;
-    UserProfEventsAdaptor userProfEventsAdaptor;
-    private List<PhotographerData> list;
+    ProEventsArrayAdapter userProfEventsAdaptor;
+    private List<EventModel> eventModels;
     private RecyclerView recyclerView;
 
     @Override
@@ -48,12 +52,8 @@ public class ProProfileEventsTabUpComming extends android.support.v4.app.Fragmen
         sortDate = rootView.findViewById(R.id.proProfile_phot_search_date);
         sortType = rootView.findViewById(R.id.proProfile_phot_search_number_events);
         textDefaultColor = sortDate.getCurrentTextColor();
-        photographerData = new PhotographerData("Ahmed", "Wedding", "10:00am  3:00pm", "6", "Feb", "no");
-        list = new ArrayList<PhotographerData>();
-        list.add(photographerData);
-        list.add(photographerData);
-        list.add(photographerData);
-        list.add(photographerData);
+        eventModels = new ArrayList<EventModel>();
+
         mLayoutManager = new LinearLayoutManager(getActivity());
 
         mCurrentLayoutManagerType = LayoutManagerType.LINEAR_LAYOUT_MANAGER;
@@ -64,67 +64,27 @@ public class ProProfileEventsTabUpComming extends android.support.v4.app.Fragmen
                     .getSerializable(KEY_LAYOUT_MANAGER);
         }
         setRecyclerViewLayoutManager(mCurrentLayoutManagerType);
-        userProfEventsAdaptor = new UserProfEventsAdaptor(list);
-        recyclerView.setAdapter(userProfEventsAdaptor);
+        userProfEventsAdaptor = new ProEventsArrayAdapter(eventModels);
+        ReadData readData = new ReadData(this);
+        readData.getAllEvents();
+
+//        recyclerView.setAdapter(userProfEventsAdaptor);
 
         sortLocation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                PhotographerData data = new PhotographerData("Ahmed", "Wedding", "10:00am  3:00pm", "6", "Feb", "no");
-                list = new ArrayList<PhotographerData>();
-                list.add(data);
 
-                sortDate.setBackgroundColor(getResources().getColor(R.color.colorWhite));
-                sortDate.setTextColor(textDefaultColor);
-                sortLocation.setTextColor(getResources().getColor(R.color.colorWhite));
-                sortLocation.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-                sortType.setBackgroundColor(getResources().getColor(R.color.colorWhite));
-                sortType.setTextColor(textDefaultColor);
-
-                setRecyclerViewLayoutManager(mCurrentLayoutManagerType);
-                userProfEventsAdaptor = new UserProfEventsAdaptor(list);
-                recyclerView.setAdapter(userProfEventsAdaptor);
             }
         });
         sortType.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                PhotographerData data = new PhotographerData("Ahmed", "Wedding", "10:00am  3:00pm", "6", "Feb", "no");
-
-                list = new ArrayList<PhotographerData>();
-                list.add(data);
-                list.add(data);
-                sortType.setTextColor(getResources().getColor(R.color.colorWhite));
-                sortType.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-                sortLocation.setBackgroundColor(getResources().getColor(R.color.colorWhite));
-                sortLocation.setTextColor(textDefaultColor);
-                sortDate.setBackgroundColor(getResources().getColor(R.color.colorWhite));
-                sortDate.setTextColor(textDefaultColor);
-                setRecyclerViewLayoutManager(mCurrentLayoutManagerType);
-                userProfEventsAdaptor = new UserProfEventsAdaptor(list);
-                recyclerView.setAdapter(userProfEventsAdaptor);
             }
         });
         sortDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                PhotographerData data = new PhotographerData("Ahmed", "Wedding", "10:00am  3:00pm", "6", "Feb", "no");
-                list = new ArrayList<PhotographerData>();
 
-                sortDate.setTextColor(getResources().getColor(R.color.colorWhite));
-                sortDate.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-                sortLocation.setBackgroundColor(getResources().getColor(R.color.colorWhite));
-                sortLocation.setTextColor(textDefaultColor);
-                sortType.setBackgroundColor(getResources().getColor(R.color.colorWhite));
-                sortType.setTextColor(textDefaultColor);
-                list.add(data);
-                list.add(data);
-                list.add(data);
-                list.add(data);
-
-                setRecyclerViewLayoutManager(mCurrentLayoutManagerType);
-                userProfEventsAdaptor = new UserProfEventsAdaptor(list);
-                recyclerView.setAdapter(userProfEventsAdaptor);
             }
         });
 
@@ -157,6 +117,26 @@ public class ProProfileEventsTabUpComming extends android.support.v4.app.Fragmen
 
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.scrollToPosition(scrollPosition);
+    }
+
+    @Override
+    public void onWriteDataCompleted(boolean writeSuccessful) {
+
+    }
+
+    @Override
+    public void onReadDataResponse(DataSnapshot dataSnapshot) {
+        if (dataSnapshot != null) {
+            for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
+                EventModel eventModel = dataSnapshot1.getValue(EventModel.class);
+                if (eventModel != null && eventModel.getPhotographerId().equals(FirebaseAuth.getInstance().getCurrentUser().getUid()) && eventModel.getEventStatus().equals("accepted")) {
+                    eventModels.add(eventModel);
+
+                }
+            }
+            recyclerView.setAdapter(userProfEventsAdaptor);
+            userProfEventsAdaptor.notifyDataSetChanged();
+        }
     }
 
     private enum LayoutManagerType {
