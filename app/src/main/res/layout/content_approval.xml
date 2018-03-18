@@ -74,7 +74,7 @@
                 android:orientation="horizontal">
 
                 <TextView
-                    android:layout_width="38dp"
+                    android:layout_width="38sp"
                     android:layout_height="match_parent"
                     android:layout_weight=".5"
                     android:text="Location:" />

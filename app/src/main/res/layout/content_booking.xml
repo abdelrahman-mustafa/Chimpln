@@ -42,7 +42,7 @@
             <ImageView
                 android:id="@+id/booking_imageView_prophoto"
                 android:layout_width="40sp"
-                android:layout_height="40dp"
+                android:layout_height="40sp"
                 android:layout_gravity="left"
                 android:layout_weight=".5"
                 android:background="@drawable/user" />

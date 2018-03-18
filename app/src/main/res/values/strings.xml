@@ -67,6 +67,7 @@
     <string name="error_not_authenticated">You are not authenticated</string>
     <string name="button_logout">logout</string>
     <string name="error_field_missing">Please fill this field</string>
+    <string name="title_activity_rejected">Rejected</string>
 
 
 </resources>

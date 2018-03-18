@@ -13,6 +13,7 @@
     <uses-permission android:name="android.permission.ACCESS_LOCATION_EXTRA_COMMANDS" />
     <uses-permission android:name="android.permission.ACCESS_NETWORK_STATE" />
     <uses-permission android:name="android.permission.INTERNET" />
+    <uses-permission android:name="android.permission.CALL_PHONE" />
 
     <application
         android:allowBackup="true"
@@ -63,15 +64,8 @@
         <activity
             android:name=".Activities.MapsActivity"
             android:label="@string/title_activity_maps" />
-        <activity
-            android:name=".Activities.Approval"
-            android:label="@string/title_activity_approval"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity
-            android:name=".Activities.Contactpro"
-            android:label="@string/title_activity_contactpro"
-            android:theme="@style/AppTheme.NoActionBar" />
-        <activity android:name=".Activities.ProRegActivity"></activity>
+        <activity android:name=".Activities.ProRegActivity" />
+
     </application>
 
 </manifest>

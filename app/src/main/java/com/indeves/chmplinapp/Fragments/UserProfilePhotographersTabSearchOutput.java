@@ -296,12 +296,12 @@ public class UserProfilePhotographersTabSearchOutput extends android.support.v4.
     }
 
 
-    class RecyclerTouchListener implements RecyclerView.OnItemTouchListener {
+    static class RecyclerTouchListener implements RecyclerView.OnItemTouchListener {
 
         private ClickListener clicklistener;
         private GestureDetector gestureDetector;
 
-        public RecyclerTouchListener(ReadData.AllProsListener context, final RecyclerView recycleView, final ClickListener clicklistener) {
+        public RecyclerTouchListener(UserProfileEventsTabUpComming context, final RecyclerView recycleView, final ClickListener clicklistener) {
 
             this.clicklistener = clicklistener;
             gestureDetector = new GestureDetector(getContext(), new SimpleOnGestureListener() {

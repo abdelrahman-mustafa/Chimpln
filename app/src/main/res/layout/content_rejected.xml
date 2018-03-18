@@ -5,8 +5,8 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent"
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
-    tools:context="com.indeves.chmplinapp.Activities.Contactpro"
-    tools:showIn="@layout/activity_contactpro">
+    tools:context="com.indeves.chmplinapp.Activities.Rejected"
+    tools:showIn="@layout/activity_rejected">
     <include
         layout="@layout/usage_stateprogressbar"
         android:layout_width="match_parent"
@@ -14,14 +14,14 @@
         android:id="@+id/include" />
 
     <Button
-        android:id="@+id/button4"
+        android:id="@+id/rejected_button"
         android:layout_width="150sp"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_centerHorizontal="true"
         android:layout_marginBottom="44dp"
         android:background="@color/colorPrimary"
-        android:text="Contact"
+        android:text="New Event"
         android:textColor="@color/colorWhite"
         tools:ignore="MissingConstraints"
         tools:layout_editor_absoluteX="117dp"
@@ -34,7 +34,7 @@
         android:layout_below="@+id/include"
         android:layout_centerHorizontal="true"
         android:layout_marginTop="67dp"
-        android:text="Thanks"
+        android:text="Sorry"
         android:textColor="@color/black"
         android:textSize="50sp"
         android:textStyle="bold"
@@ -44,16 +44,20 @@
 
     <TextView
         android:id="@+id/editText"
-        android:layout_width="300sp"
+        android:layout_width="200sp"
         android:layout_height="wrap_content"
         android:layout_below="@+id/stu_profile_name"
         android:layout_centerHorizontal="true"
-        android:layout_marginTop="113dp"
-        android:textColor="@color/black"
+        android:layout_marginTop="105dp"
+        android:ems="10"
         android:inputType="textPersonName"
-        android:text="The pro accepted your event you can now contact the pro"
+        android:text="The pro rejected your event"
+        android:textColor="@color/black"
+        android:textStyle="bold"
         tools:layout_editor_absoluteX="42dp"
         tools:layout_editor_absoluteY="157dp" />
 
 
 </RelativeLayout>
+
+

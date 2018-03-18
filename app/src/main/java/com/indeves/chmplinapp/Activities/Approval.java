@@ -9,24 +9,32 @@ import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.TextView;
+import android.widget.Toast;
 
+import com.indeves.chmplinapp.API.ReadData;
 import com.indeves.chmplinapp.Models.EventModel;
+import com.indeves.chmplinapp.Models.LookUpModel;
 import com.indeves.chmplinapp.Models.ProUserModel;
 import com.indeves.chmplinapp.R;
 import com.indeves.chmplinapp.Utility.StepProgressBar;
 import com.kofigyan.stateprogressbar.StateProgressBar;
+
+import java.util.List;
 
 public class Approval extends StepProgressBar {
     TextView date,time,type,share,pro,note,location;
     String sdate,stime,stype,sshare,spro,snote,slocation;
     Button approvalbtn;
     EventModel model;
+    LookUpModel timeData,sharingOptionData,eventTypeData;
     public Approval() {
         // Required empty public constructor
     }
@@ -52,9 +60,42 @@ public class Approval extends StepProgressBar {
         note=(TextView)rootview.findViewById(R.id.approval_notes);
         location=(TextView)rootview.findViewById(R.id.approval_location);
         date.setText(model.getEventDate());
-        time.setText(model.getStartTime());
-        type.setText(model.getTypeId());
-        share.setText(model.getSharingOptionId());
+        ReadData readData = new ReadData();
+        readData.getLookupsByType("eventTimesLookups", new ReadData.LookUpsListener() {
+            @Override
+            public void onLookUpsResponse(List<LookUpModel> eventTypeLookups) {
+                Log.v("EventTypeLookupsArr", eventTypeLookups.toString());
+               timeData= eventTypeLookups.get(model.getTimeId());
+                if (timeData.getId()==3){time.setText(timeData.getEnglishName()+" From "+model.getStartTime()+"  to "+model.getEndTime());}
+                else {time.setText(timeData.getEnglishName());}
+
+
+
+
+            }
+        });
+        readData.getLookupsByType("eventTypesLookups", new ReadData.LookUpsListener() {
+            @Override
+            public void onLookUpsResponse(List<LookUpModel> eventTypeLookups) {
+                Log.v("EventTypeLookupsArr", eventTypeLookups.toString());
+                eventTypeData= eventTypeLookups.get(model.getTypeId());
+                type.setText(eventTypeData.getEnglishName());
+
+
+
+            }
+        });
+        readData.getLookupsByType("shringOptionLookups", new ReadData.LookUpsListener() {
+            @Override
+            public void onLookUpsResponse(List<LookUpModel> eventTypeLookups) {
+                Log.v("EventTypeLookupsArr", eventTypeLookups.toString());
+                sharingOptionData= eventTypeLookups.get(model.getSharingOptionId());
+                share.setText(sharingOptionData.getEnglishName());
+            }
+        });
+
+
+
         pro.setText(model.getPhotographerName());
         note.setText(model.getNoteToPro());
         location.setText(model.getEventCity());
@@ -95,10 +136,13 @@ public class Approval extends StepProgressBar {
    @Override
     public void onClick(View v) {
         stateprogressbar.checkStateCompleted(true);
-       Contactpro output = new Contactpro();
+       if (model.getEventStatus().equals("pending")){
+           Toast.makeText(getContext(), "Your Event is Still pending", Toast.LENGTH_LONG).show();}
+       else if (model.getEventStatus().equals("accepted")){
+        Contactpro output = new Contactpro(model.getPhotographerId());
        android.support.v4.app.FragmentTransaction transaction = getFragmentManager().beginTransaction();
 
-       transaction.replace(R.id.container_o, output).commit();
+       transaction.replace(R.id.container_o, output).commit();}
 
    }
 

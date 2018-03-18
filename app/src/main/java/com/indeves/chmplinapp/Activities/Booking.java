@@ -69,11 +69,12 @@ public class Booking extends StepProgressBar implements View.OnClickListener,Ada
     String sDate;
     LookUpModel sTime;
     LookUpModel sType;
+    LookUpModel sSharingOption;
+
     String sShareable;
     String sAddress;
     String sNote;
     Boolean boolDate=false,booltime=false,boolType=false,boolAddress=false,fromto=true,from=false,to=false,boolshareable=false;
-    SpinnerCustomArrayAdapter photoShareSpinner;
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
     int REQUST=1;
@@ -81,10 +82,12 @@ public class Booking extends StepProgressBar implements View.OnClickListener,Ada
     private String mParam2;
     int PLACE_PICKER_REQUEST = 5;
     Geocoder geocoder;
-    ProgressDialog progressDialog = new ProgressDialog(getContext());
+    ProgressDialog progressDialog ;
     Place place;
     List<LookUpModel> eTypeSpinner = new ArrayList<>();
     List<LookUpModel> eTimeSpinner = new ArrayList<>();
+    List<LookUpModel> photoShareSpinner=new ArrayList<>();
+    EventModel eventModel;
 
 
 
@@ -163,34 +166,27 @@ public class Booking extends StepProgressBar implements View.OnClickListener,Ada
         timeedit.setVisibility(View.GONE);
         eType.setOnItemSelectedListener(this);
 
-        photoShareSpinner = new SpinnerCustomArrayAdapter(getContext(), android.R.layout.simple_spinner_dropdown_item);
-
-        photoShareSpinner.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        photoShareSpinner.add("Let pro share photos");
-        photoShareSpinner.add("share after approval up to 10 pic`s ");
-        photoShareSpinner.add("don`t share any");
-        photoShareSpinner.add("Select photo sharing option");
-        photoShare.setAdapter(photoShareSpinner);
-        photoShare.setSelection(photoShareSpinner.getCount());
+       // photoShare.setSelection(photoShareSpinner.getCount());
         eLoction.setOnItemSelectedListener(this);
         SpinnerCustomArrayAdapter loctionSpinner = new SpinnerCustomArrayAdapter(getContext(), android.R.layout.simple_spinner_dropdown_item);
 
         loctionSpinner.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-        loctionSpinner.add("Insert Addrees");
-       // loctionSpinner.add("Current Location");
+      //  loctionSpinner.add("Insert Addrees");
+        loctionSpinner.add("Current Location");
         loctionSpinner.add("Select location option");
         eLoction.setAdapter(loctionSpinner);
         eLoction.setSelection(loctionSpinner.getCount());
         geocoder = new Geocoder(getContext(), Locale.getDefault());
         proName.setText(pro.getName());
         proDetails.setText(pro.getCity()+"-"+pro.getCountry());
-        Picasso.with(getContext()).load(pro.profilePicUrl).resize(40, 40).transform(new CircleTransform()).centerCrop().into(proPhoto);
+        Picasso.with(getContext()).load(pro.profilePicUrl).resize(40, 40).transform(new CircleTransform()).into(proPhoto);
         ReadData readData = new ReadData();
         readData.getLookupsByType("eventTypesLookups", new ReadData.LookUpsListener() {
             @Override
             public void onLookUpsResponse(List<LookUpModel> eventTypeLookups) {
                 Log.v("EventTypeLookupsArr", eventTypeLookups.toString());
-                eTypeSpinner.add(0, new LookUpModel(0, getResources().getString(R.string.selectPackTy)));
+                eTypeSpinner.add(new LookUpModel(0,"Select Event Type"));
+
                 eTypeSpinner.addAll(eventTypeLookups);
 
                 ArrayAdapter<LookUpModel> eventTypeArrayAdapter = new ArrayAdapter<LookUpModel>(getContext(), android.R.layout.simple_spinner_item, eTypeSpinner);
@@ -205,12 +201,27 @@ public class Booking extends StepProgressBar implements View.OnClickListener,Ada
             @Override
             public void onLookUpsResponse(List<LookUpModel> eventTypeLookups) {
                 Log.v("EventTypeLookupsArr", eventTypeLookups.toString());
-                eTypeSpinner.add(0, new LookUpModel(0, getResources().getString(R.string.selectPackTyime)));
+                eTimeSpinner.add(new LookUpModel(0,"Select Event Time"));
                 eTimeSpinner.addAll(eventTypeLookups);
                 ArrayAdapter<LookUpModel> eventTimeArrayAdapter = new ArrayAdapter<LookUpModel>(getContext(), android.R.layout.simple_spinner_item, eTimeSpinner);
                 eventTimeArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
                 eTime.setAdapter(eventTimeArrayAdapter);
+
+
+            }
+        });
+        readData.getLookupsByType("shringOptionLookups", new ReadData.LookUpsListener() {
+            @Override
+            public void onLookUpsResponse(List<LookUpModel> eventTypeLookups) {
+                Log.v("EventTypeLookupsArr", eventTypeLookups.toString());
+                photoShareSpinner.add(new LookUpModel(0,"Select photo sharing option"));
+                photoShareSpinner.addAll(eventTypeLookups);
+
+                ArrayAdapter<LookUpModel> eventSharingOptionArrayAdapter = new ArrayAdapter<LookUpModel>(getContext(), android.R.layout.simple_spinner_item, photoShareSpinner);
+
+                eventSharingOptionArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                photoShare.setAdapter(eventSharingOptionArrayAdapter);
 
 
             }
@@ -277,12 +288,21 @@ public class Booking extends StepProgressBar implements View.OnClickListener,Ada
             Log.i("8",String.valueOf(boolshareable));
             Log.i("9",sAddress+"hi"+"\n"+note.getText().toString());
             Log.i("10",String.valueOf(sAddress.length()));
-
-
-
             if(proceedbtn(  boolDate,  booltime,  boolType,  boolAddress,  fromto,  from,  to,  boolshareable))
             {
-
+                if (sTime.getId()==0){
+                    Toast.makeText(getContext(), "Please Select Event Time ", Toast.LENGTH_LONG).show();
+                    booltime=false;
+                }
+                else if (sType.getId()==0){
+                    Toast.makeText(getContext(), "Please Select Event Type ", Toast.LENGTH_LONG).show();
+                    boolType=false;
+                }
+                else if (sSharingOption.getId()==0){
+                    Toast.makeText(getContext(), "Please Select Sharing Option ", Toast.LENGTH_LONG).show();
+                    boolshareable=false;
+                }
+                else {
 
                 sDate=eDate.getText().toString();
             sNote=note.getText().toString();
@@ -299,26 +319,23 @@ public class Booking extends StepProgressBar implements View.OnClickListener,Ada
                 startActivity(intent);*/
 
            // startActivity(new Intent(Booking.this,Approval.class));
+                progressDialog=new ProgressDialog(getContext());
                 progressDialog.setMessage("Please wait...");
                 progressDialog.setCanceledOnTouchOutside(false);
                 progressDialog.show();
-                EventModel eventModel = new EventModel(FirebaseAuth.getInstance().getCurrentUser().getUid(), pro.getUid(), sDate, FirebaseAuth.getInstance().getCurrentUser().getDisplayName(), pro.getName(), timefrom.getText().toString(), timeto.getText().toString(), sNote, sAddress, (long) place.getLatLng().longitude, (long) place.getLatLng().latitude, "pending",sType.getId() , sTime.getId(), 1);
+                eventModel = new EventModel(FirebaseAuth.getInstance().getCurrentUser().getUid(), pro.getUid(), sDate, FirebaseAuth.getInstance().getCurrentUser().getDisplayName(), pro.getName(), timefrom.getText().toString(), timeto.getText().toString(), sNote, sAddress, (long) place.getLatLng().longitude, (long) place.getLatLng().latitude, "pending",sType.getId() , sTime.getId(), sSharingOption.getId());
                 WriteData writeData = new WriteData(firebaseEventsListener);
                 try {
                    writeData.bookNewEvent(eventModel);
+                   Log.i("hi",eventModel.toString());
                 } catch (Exception e) {
                     //User is not authenticated
                     e.printStackTrace();
                 }
-                stateprogressbar.checkStateCompleted(true);
-                Approval output = new Approval(eventModel);
-                android.support.v4.app.FragmentTransaction transaction = getFragmentManager().beginTransaction();
-
-                transaction.replace(R.id.container_o, output).commit();
 
 
 
-            }}
+            }}}
         //else Toast.makeText(this, "Check Your data", Toast.LENGTH_SHORT).show();}
         if (v==eDate)
         {
@@ -419,7 +436,7 @@ public class Booking extends StepProgressBar implements View.OnClickListener,Ada
             case R.id.booking_spinner_etime:
             {
                 String eTimedata;
-               if (position==0||position==1){
+               if (position==1||position==2){
                    sTime =eTimeSpinner.get(position);
 
                    layout.setVisibility(View.GONE);
@@ -429,7 +446,7 @@ public class Booking extends StepProgressBar implements View.OnClickListener,Ada
                    booltime=true;
 
                }
-               else if (position==2)
+               else if (position==3)
                {
                    sTime =eTimeSpinner.get(position);
 
@@ -443,6 +460,7 @@ public class Booking extends StepProgressBar implements View.OnClickListener,Ada
 
                }
 
+
                 break;
             }
             case R.id.booking_spiner_etype:
@@ -454,17 +472,19 @@ public class Booking extends StepProgressBar implements View.OnClickListener,Ada
                 }
             case R.id.booking_spinner_photoshare:
                 {
-                    sShareable = parent.getItemAtPosition(position).toString();
-                    boolshareable=true;
+
+                        sSharingOption = photoShareSpinner.get(position);
+                        boolshareable=true;
+
 
                     break;
                 }
             case R.id.booking_spinner_eloction:
                 {
-                    if (position==0){addressLine.setVisibility(View.VISIBLE);
+                    if (position==6){addressLine.setVisibility(View.VISIBLE);
                     sAddress=addressLine.getText().toString();
                     }
-                    else if (position==1){
+                    else if (position==0){
                         addressLine.setVisibility(View.VISIBLE);
                         PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
 
@@ -503,7 +523,7 @@ public class Booking extends StepProgressBar implements View.OnClickListener,Ada
             dpmonth=i1+1;
             dpday=i2;
             String[] months= {"Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec" };
-            eDate.setText(String.valueOf(dpday)+"  "+months[dpmonth-1]+"   "+String.valueOf(dpyear));
+            eDate.setText(String.valueOf(dpday)+"-"+months[dpmonth-1]+"-"+String.valueOf(dpyear));
 
         }
     };
@@ -511,8 +531,8 @@ public class Booking extends StepProgressBar implements View.OnClickListener,Ada
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
-        if (requestCode == PLACE_PICKER_REQUEST) {
-            if(resultCode == Activity.RESULT_OK){
+        if (requestCode == PLACE_PICKER_REQUEST ) {
+            if(resultCode == Activity.RESULT_OK && data != null){
                 String result=data.getStringExtra("result");
                 place = PlacePicker.getPlace(data, getContext());
                 List<Address> addresses = null;
@@ -522,6 +542,7 @@ public class Booking extends StepProgressBar implements View.OnClickListener,Ada
                     e.printStackTrace();
                 }
                 String toastMsg = String.format("Place: %s", place.getName());
+
                 final String address = addresses.get(0).getAddressLine(0); // If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
                 final String city = addresses.get(0).getLocality();
                 Log.i("1",toastMsg);
@@ -541,10 +562,14 @@ public class Booking extends StepProgressBar implements View.OnClickListener,Ada
         if (booltime==false)
         {
             if (from==true&&to==true){tfinal=true;}
-            else {tfinal=false;}
+            else {tfinal=false;
+                Toast.makeText(getContext(), "Please Select Event Time", Toast.LENGTH_LONG).show();}
         }
         else if (booltime==true){tfinal=true;}
-
+        if (boolAddress==false){ Toast.makeText(getContext(), "Please Select Event Loction", Toast.LENGTH_LONG).show();}
+        if (boolDate==false){Toast.makeText(getContext(), "Please Select Event Date", Toast.LENGTH_LONG).show();}
+        if (boolshareable==false){Toast.makeText(getContext(), "Please Select Event Share Option", Toast.LENGTH_LONG).show();}
+        if (boolType==false){Toast.makeText(getContext(), "Please Select Event Type", Toast.LENGTH_LONG).show();}
         if (boolAddress==true&&boolDate==true&&boolshareable==true&&boolType==true&&tfinal==true){return true;}
         else {return false;}
 
@@ -555,6 +580,13 @@ public class Booking extends StepProgressBar implements View.OnClickListener,Ada
             progressDialog.dismiss();
             if (writeSuccessful) {
                 Toast.makeText(getContext(), "Done", Toast.LENGTH_LONG).show();
+                stateprogressbar.checkStateCompleted(true);
+                Approval output = new Approval(eventModel);
+                android.support.v4.app.FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                Log.i("done","done");
+
+                transaction.replace(R.id.container_o, output).commit();
+
             }
         }
 
