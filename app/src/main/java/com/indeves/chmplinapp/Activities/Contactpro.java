@@ -1,14 +1,20 @@
 package com.indeves.chmplinapp.Activities;
 
+import android.Manifest;
 import android.annotation.SuppressLint;
 import android.content.Intent;
+import android.content.pm.PackageManager;
 import android.net.Uri;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
+import android.support.v4.app.ActivityCompat;
+import android.support.v4.content.ContextCompat;
 import android.support.v7.app.AppCompatActivity;
 import android.support.v7.widget.Toolbar;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -28,6 +34,7 @@ import com.indeves.chmplinapp.Utility.StepProgressBar;
 import com.kofigyan.stateprogressbar.StateProgressBar;
 
 public class Contactpro extends StepProgressBar implements View.OnClickListener, FirebaseEventsListener {
+    private static final int PERMISSION_REQUEST_CODE = 8;
     Button button;
     String proId;
     ProUserModel proUserModel;
@@ -89,11 +96,53 @@ public class Contactpro extends StepProgressBar implements View.OnClickListener,
 
     @Override
     public void onClick(View v) {
-        Toast.makeText(getContext(), "well done", Toast.LENGTH_LONG).show();
-        Intent callIntent = new Intent(Intent.ACTION_CALL);
-        callIntent.setData(Uri.parse("tel:" + proUserModel.getPhone()));
-        startActivity(callIntent);
+       if (v==button){
+makeCall();       }
+
+        //callIntent.setData(Uri.parse("tel:" + proUserModel.getPhone()));
+    }
+
+    private void requestPermission()
+    {
+
+        if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(),Manifest.permission.CALL_PHONE))
+        {
+        }
+        else {
+
+            ActivityCompat.requestPermissions(getActivity(),new String[]{Manifest.permission.ACCESS_FINE_LOCATION},PERMISSION_REQUEST_CODE);
+        }
+    }
+
+    @Override
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults)
+    {
+        switch (requestCode) {
+            case PERMISSION_REQUEST_CODE:
+                if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
+                    makeCall();
+                }
+                break;
+        }
+    }
+    public void makeCall()
+    {
+        Intent intent = new Intent(Intent.ACTION_CALL);
+        intent.setData(Uri.parse("tel:" +proUserModel.getPhone()));
+        int result = ContextCompat.checkSelfPermission(getContext(), Manifest.permission.CALL_PHONE);
+        if (result == PackageManager.PERMISSION_GRANTED){
+
+            startActivity(intent);
+
+        } else {
+            Toast.makeText(getContext(), "We need call permission", Toast.LENGTH_SHORT).show();
+        }
     }
 
 
+
 }
+
+
+
+
