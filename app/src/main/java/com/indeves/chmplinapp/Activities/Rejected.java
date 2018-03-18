@@ -20,6 +20,7 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
+import com.indeves.chmplinapp.API.FirebaseEventsListener;
 import com.indeves.chmplinapp.API.ReadData;
 import com.indeves.chmplinapp.Models.EventModel;
 import com.indeves.chmplinapp.Models.LookUpModel;
@@ -30,7 +31,7 @@ import com.kofigyan.stateprogressbar.StateProgressBar;
 
 import java.util.List;
 
-public class Rejected extends StepProgressBar {
+public class Rejected extends StepProgressBar implements FirebaseEventsListener {
     Button newEvent;
     EventModel model;
     ProUserModel proUserModel;
@@ -72,6 +73,12 @@ public class Rejected extends StepProgressBar {
 
 
     }
+
+    @Override
+    public void onWriteDataCompleted(boolean writeSuccessful) {
+
+    }
+
     public void onReadDataResponse(DataSnapshot dataSnapshot) {
         if (dataSnapshot != null && dataSnapshot.getValue() != null)
         { proUserModel = dataSnapshot.getValue(ProUserModel.class);
