@@ -55,7 +55,7 @@ public class Rejected extends StepProgressBar implements FirebaseEventsListener 
         View rootview=inflater.inflate(R.layout.activity_rejected, container, false);
         newEvent=(Button)rootview.findViewById(R.id.rejected_button);
         newEvent.setOnClickListener(this);
-        ReadData readData = new ReadData();
+        ReadData readData = new ReadData(this);
         readData.getUserInfoById(model.getPhotographerId());
 
 

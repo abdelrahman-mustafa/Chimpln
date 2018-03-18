@@ -29,7 +29,7 @@ import com.kofigyan.stateprogressbar.StateProgressBar;
 
 public class Contactpro extends StepProgressBar implements View.OnClickListener, FirebaseEventsListener {
     Button button;
-    String proid;
+    String proId;
     ProUserModel proUserModel;
 
 
@@ -39,7 +39,7 @@ public class Contactpro extends StepProgressBar implements View.OnClickListener,
 
     @SuppressLint("ValidFragment")
     public Contactpro(String id) {
-        this.proid = id;
+        this.proId = id;
     }
 
 
@@ -56,7 +56,7 @@ public class Contactpro extends StepProgressBar implements View.OnClickListener,
         button = (Button) rootview.findViewById(R.id.button4);
         button.setOnClickListener(this);
         ReadData readData = new ReadData(this);
-        readData.getUserInfoById(proid);
+        readData.getUserInfoById(proId);
 
 
         return rootview;
