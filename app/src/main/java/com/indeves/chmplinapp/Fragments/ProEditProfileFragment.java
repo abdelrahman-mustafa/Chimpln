@@ -16,6 +16,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -28,6 +29,7 @@ import com.indeves.chmplinapp.Activities.ProLandingPage;
 import com.indeves.chmplinapp.Models.ProUserModel;
 import com.indeves.chmplinapp.Models.UserData;
 import com.indeves.chmplinapp.R;
+import com.squareup.picasso.Picasso;
 
 import java.util.Calendar;
 
@@ -38,6 +40,7 @@ public class ProEditProfileFragment extends Fragment implements FirebaseEventsLi
     EditText firstName, lastName, birthDate, gender, experience, country, city, area;
     TextView editFirstName, editLastName, editBirthDate, editGender, editExperience, editCountry, editCity, editArea, email, mobileNumber;
     ProgressDialog progressDialog;
+    ImageView profileImage;
     private int year;
     private int month;
     private int day;
@@ -83,6 +86,7 @@ public class ProEditProfileFragment extends Fragment implements FirebaseEventsLi
 
         }
         email = rootView.findViewById(R.id.proProfile_mail);
+        profileImage = rootView.findViewById(R.id.pro_profile_pic);
         mobileNumber = rootView.findViewById(R.id.proProfile_mobileNumber);
         firstName = rootView.findViewById(R.id.editProfile_user_firstName_textView);
         firstName.setEnabled(false);
@@ -232,6 +236,10 @@ public class ProEditProfileFragment extends Fragment implements FirebaseEventsLi
                 city.setText(proUserModel.getCity());
             if (proUserModel.getArea() != null)
                 area.setText(proUserModel.getArea());
+
+            if (proUserModel.getProfilePicUrl() != null) {
+                Picasso.with(getContext()).load(proUserModel.getProfilePicUrl()).resize(300, 300).placeholder(R.drawable.user).error(R.drawable.user).into(profileImage);
+            }
 
         }
     }

@@ -12,6 +12,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
 
@@ -22,11 +23,13 @@ import com.indeves.chmplinapp.API.ReadData;
 import com.indeves.chmplinapp.Activities.ProLandingPage;
 import com.indeves.chmplinapp.Models.ProUserModel;
 import com.indeves.chmplinapp.R;
+import com.squareup.picasso.Picasso;
 
 public class ProProfile extends Fragment implements FirebaseEventsListener {
     Context attachedActivityContext;
     TextView proName, photosCount, eventsCount, subInfoRow, experience, workHours;
     RatingBar rate;
+    ImageView profileImage;
 
     public ProProfile() {
     }
@@ -49,6 +52,7 @@ public class ProProfile extends Fragment implements FirebaseEventsListener {
         rate = rootView.findViewById(R.id.stu_profile_rating);
         experience = rootView.findViewById(R.id.pro_profile_experience);
         workHours = rootView.findViewById(R.id.pro_profile_work_hours);
+        profileImage = rootView.findViewById(R.id.pro_profile_pic);
         setHasOptionsMenu(true);
         if (attachedActivityContext != null && ((ProLandingPage) attachedActivityContext).getSupportActionBar() != null) {
             ((ProLandingPage) attachedActivityContext).getSupportActionBar().setDisplayShowHomeEnabled(false);
@@ -127,6 +131,9 @@ public class ProProfile extends Fragment implements FirebaseEventsListener {
             if (proUserModel.getWorkDayStart() != null && proUserModel.getWorkDayEnd() != null) {
                 String workHoursRow = "Working hours      " + proUserModel.getWorkDayStart() + "    " + proUserModel.getWorkDayEnd();
                 workHours.setText(workHoursRow);
+            }
+            if (proUserModel.getProfilePicUrl() != null) {
+                Picasso.with(getContext()).load(proUserModel.getProfilePicUrl()).resize(300, 300).placeholder(R.drawable.user).error(R.drawable.user).into(profileImage);
             }
         }
     }

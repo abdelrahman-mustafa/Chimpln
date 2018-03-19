@@ -10,7 +10,7 @@
 
     <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
         android:layout_width="fill_parent"
-        android:layout_height="fill_parent"
+        android:layout_height="wrap_content"
         android:layout_marginLeft="20dp"
         android:layout_marginRight="20dp">
 
@@ -42,7 +42,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="left"
-                android:text="Email@email.email"
+                android:text="Email"
                 android:textColor="#ffff"
                 android:textSize="16sp"
                 android:textStyle="bold" />
@@ -53,7 +53,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="+20 1009961733"
+                android:text="Phone"
                 android:textColor="#ffff"
                 android:textSize="16sp"
                 android:textStyle="bold" />
@@ -64,7 +64,7 @@
             android:layout_width="match_parent"
             android:layout_height="44dp"
             android:layout_below="@id/linearLayout4"
-            android:layout_marginBottom="10dp"
+            android:layout_marginBottom="15dp"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
             android:orientation="horizontal">
@@ -77,6 +77,7 @@
                 android:backgroundTint="@color/colorWhite"
                 android:gravity="left"
                 android:hint="First Name"
+                android:inputType="textPersonName"
                 android:textColor="#ffff"
                 android:textColorHint="#fff"
                 android:textSize="16sp" />
@@ -89,6 +90,7 @@
                 android:backgroundTint="@color/colorWhite"
                 android:gravity="left"
                 android:hint="Last Name"
+                android:inputType="textPersonName"
                 android:textColor="#ffff"
                 android:textColorHint="#fff"
                 android:textSize="16sp" />
@@ -130,6 +132,7 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_below="@id/linearLayout6"
+            android:layout_marginBottom="15dp"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="5dp"
@@ -173,6 +176,7 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_below="@id/linearLayout7"
+            android:layout_marginBottom="15dp"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="5dp"
@@ -188,6 +192,7 @@
             android:layout_marginTop="5dp"
             android:background="@android:color/transparent"
             android:hint="Years of Experiences"
+            android:inputType="number"
             android:textColor="#ffff"
             android:textColorHint="#fff"
             android:textSize="15dp" />
@@ -197,6 +202,7 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_below="@id/pro_reg_edit_years_exp"
+            android:layout_marginBottom="15dp"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="5dp"
@@ -238,6 +244,7 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_below="@id/linearLayout8"
+            android:layout_marginBottom="15dp"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="5dp"
@@ -279,6 +286,7 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_below="@id/linearLayout9"
+            android:layout_marginBottom="15dp"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="5dp"
@@ -294,6 +302,7 @@
             android:layout_marginTop="5dp"
             android:background="@android:color/transparent"
             android:hint="Area"
+            android:inputType="textPersonName"
             android:textColor="#ffff"
             android:textColorHint="#fff"
             android:textSize="15dp" />
@@ -303,6 +312,7 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_below="@id/pro_reg_edit_area"
+            android:layout_marginBottom="15dp"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="5dp"
@@ -311,10 +321,11 @@
         <LinearLayout
             android:id="@+id/linearLayout10"
             android:layout_width="match_parent"
-            android:layout_height="26dp"
+            android:layout_height="wrap_content"
             android:layout_below="@id/view"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
+            android:baselineAligned="true"
             android:orientation="horizontal">
 
             <TextView
@@ -336,8 +347,9 @@
                 android:background="@android:color/transparent"
                 android:gravity="center"
                 android:hint="From"
+                android:inputType="number"
                 android:textColor="#ffff"
-                android:textColorHint="#fff" />
+                android:textColorHint="@android:color/darker_gray" />
 
             <Spinner
                 android:id="@+id/pro_reg_spinner_date"
@@ -355,8 +367,9 @@
                 android:background="@android:color/transparent"
                 android:gravity="center_vertical"
                 android:hint="To"
+                android:inputType="number"
                 android:textColor="#ffff"
-                android:textColorHint="#fff" />
+                android:textColorHint="@android:color/darker_gray" />
 
             <Spinner
                 android:id="@+id/pro_reg_spinner_date1"
@@ -372,6 +385,7 @@
             android:layout_width="match_parent"
             android:layout_height="1dp"
             android:layout_below="@id/linearLayout10"
+            android:layout_marginBottom="15dp"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
@@ -385,7 +399,8 @@
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="8dp"
-            android:orientation="horizontal">
+            android:orientation="horizontal"
+            android:visibility="gone">
 
             <TextView
                 android:layout_width="wrap_content"
@@ -408,17 +423,19 @@
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="5dp"
-            android:background="@color/colorWhite" />
+            android:background="@color/colorWhite"
+            android:visibility="gone" />
+
         <Button
             android:id="@+id/pro_reg_complete"
-            android:layout_below="@id/linearLayout11"
             android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/linearLayout11"
             android:layout_margin="20dp"
-            android:textColor="@color/colorWhite"
             android:background="@drawable/button"
             android:text="Complete the account"
-            android:layout_height="wrap_content"
-            android:layout_alignParentBottom="true"/>
+            android:textAllCaps="false"
+            android:textColor="@color/colorWhite" />
 
     </RelativeLayout>
 

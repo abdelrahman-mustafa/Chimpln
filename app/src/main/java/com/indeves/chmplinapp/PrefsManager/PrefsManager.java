@@ -31,7 +31,7 @@ public class PrefsManager extends Activity {
     public PrefsManager(Context context) {
         this.context = context;
         //put initialization in constructor so you can use passed context.
-       this.prefGet = new PrefGet(context);
+        this.prefGet = new PrefGet(context);
     }
 
     public Boolean checkLogIn() {
@@ -44,8 +44,8 @@ public class PrefsManager extends Activity {
     }
 
     public void goMainProfile(Context context) {
-        Log.d("context",context.toString());
-        Log.d("user",prefGet.getUserType());
+        Log.d("context", context.toString());
+        Log.d("user", prefGet.getUserType());
         switch (prefGet.getUserType()) {
             case "stu":
                 context.startActivity(new Intent(context, StuLandingPage.class));
@@ -60,9 +60,11 @@ public class PrefsManager extends Activity {
                 finish();
                 break;
         }
-    }    public void goCompleteData(Context context) {
-        Log.d("context",context.toString());
-        Log.d("user",prefGet.getUserType());
+    }
+
+    public void goCompleteData(Context context) {
+        Log.d("context", context.toString());
+        Log.d("user", prefGet.getUserType());
         switch (prefGet.getUserType()) {
             case "stu":
                 context.startActivity(new Intent(context, ProRegActivity.class));

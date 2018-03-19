@@ -9,6 +9,7 @@ import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.ValueEventListener;
+import com.indeves.chmplinapp.Models.CityLookUpModel;
 import com.indeves.chmplinapp.Models.LookUpModel;
 import com.indeves.chmplinapp.Models.ProUserModel;
 import com.indeves.chmplinapp.Models.UserData;
@@ -152,7 +153,7 @@ public class ReadData {
         mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
-                Log.v("EventTypesResponse", dataSnapshot.toString());
+                Log.v("LookupsResponse", dataSnapshot.toString());
                 if (dataSnapshot.getValue() != null) {
                     GenericTypeIndicator<List<LookUpModel>> t = new GenericTypeIndicator<List<LookUpModel>>() {
                     };
@@ -177,6 +178,39 @@ public class ReadData {
 
     }
 
+    public void getCitiesLookUpsWithCountryId(final int countryId, final CityLookUpsListener cityLookUpsListener) {
+        mDatabase = FirebaseDatabase.getInstance().getReference("citiesLookups");
+        mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Log.v("CityLookups", dataSnapshot.toString());
+                if (dataSnapshot.getValue() != null) {
+                    List<CityLookUpModel> lookUpModels = new ArrayList<CityLookUpModel>();
+                    for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
+                        CityLookUpModel cityLookUpModel = dataSnapshot1.getValue(CityLookUpModel.class);
+                        if (cityLookUpModel != null && cityLookUpModel.getCountryId() == countryId) {
+                            lookUpModels.add(cityLookUpModel);
+                        }
+                    }
+                    if (cityLookUpsListener != null) {
+                        cityLookUpsListener.onLookUpsResponse(lookUpModels);
+                    }
+                }
+
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                // Failed to read value
+                Log.v("DB_error", error.toString());
+                if (cityLookUpsListener != null) {
+                    cityLookUpsListener.onLookUpsResponse(null);
+                }
+            }
+        });
+    }
+
     public interface AllProsListener {
         void onProsResponse(ArrayList<ProUserModel> pros);
     }
@@ -185,5 +219,8 @@ public class ReadData {
         void onLookUpsResponse(List<LookUpModel> lookups);
     }
 
+    public interface CityLookUpsListener {
+        void onLookUpsResponse(List<CityLookUpModel> citiesList);
+    }
 
 }
