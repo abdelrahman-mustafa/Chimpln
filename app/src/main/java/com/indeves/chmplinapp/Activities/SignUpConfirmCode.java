@@ -81,7 +81,7 @@ public class SignUpConfirmCode extends AppCompatActivity implements Authenticati
             prefSave.saveLogInStatus(true);
             prefSave.saveUserType(accountType);
             PrefsManager prefsManager = new PrefsManager(this);
-            prefsManager.goMainProfile(this);
+            prefsManager.goCompleteData(this);
         } else {
             Toast.makeText(this, "Invalid verification code", Toast.LENGTH_SHORT).show();
         }

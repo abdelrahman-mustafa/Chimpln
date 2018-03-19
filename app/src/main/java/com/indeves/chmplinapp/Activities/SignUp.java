@@ -198,7 +198,7 @@ auth.setContext(SignUp.this);
             prefSave.saveLogInStatus(true);
             prefSave.saveUserType(auth.getType());
             PrefsManager prefsManager = new PrefsManager(this);
-            prefsManager.goMainProfile(this);
+            prefsManager.goCompleteData(this);
         } else {
             Toast.makeText(this, "Invalid verification code", Toast.LENGTH_SHORT).show();
             stopAnim();

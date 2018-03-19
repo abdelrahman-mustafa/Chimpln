@@ -11,6 +11,7 @@ import android.util.Log;
 
 import com.indeves.chmplinapp.Activities.LogIn;
 import com.indeves.chmplinapp.Activities.ProLandingPage;
+import com.indeves.chmplinapp.Activities.ProRegActivity;
 import com.indeves.chmplinapp.Activities.SignUpConfirmCode;
 import com.indeves.chmplinapp.Activities.StuLandingPage;
 import com.indeves.chmplinapp.Activities.UserProfileMain;
@@ -59,6 +60,24 @@ public class PrefsManager extends Activity {
                 finish();
                 break;
         }
+    }    public void goCompleteData(Context context) {
+        Log.d("context",context.toString());
+        Log.d("user",prefGet.getUserType());
+        switch (prefGet.getUserType()) {
+            case "stu":
+                context.startActivity(new Intent(context, ProRegActivity.class));
+                finish();
+                break;
+            case "user":
+                context.startActivity(new Intent(context, UserProfileMain.class));
+                finish();
+                break;
+            case "pro":
+                context.startActivity(new Intent(context, ProRegActivity.class));
+                finish();
+                break;
+        }
     }
+
 
 }
