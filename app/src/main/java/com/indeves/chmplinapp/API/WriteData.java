@@ -95,6 +95,25 @@ public class WriteData {
 
     }
 
+    public void respondToEvent(boolean accepted, String eventId) throws Exception {
+        EventModel eventModel = new EventModel();
+        eventModel.setEventStatus(accepted ? "accepted" : "rejected");
+        if (mAuth.getCurrentUser() != null) {
+            eventsDatabaseReference.child(eventId).updateChildren(eventModel.toMap()).addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+                    if (task.isSuccessful()) {
+                        firebaseEventsListener.onWriteDataCompleted(true);
+                    } else {
+                        firebaseEventsListener.onWriteDataCompleted(false);
+                    }
+                }
+            });
+        } else {
+            throw new Exception("user is not authenticated");
+        }
+    }
+
     public void addNewProPackage(final PackageModel packageModel) throws Exception {
         //firstly, get pro data to check if it has packages
         if (mAuth.getCurrentUser() != null) {

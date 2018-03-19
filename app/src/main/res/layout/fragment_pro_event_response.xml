@@ -10,7 +10,10 @@
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:text="Respond to event"
+        android:layout_marginBottom="15dp"
+        android:layout_marginStart="12dp"
+        android:layout_marginTop="5dp"
+        android:text="Respond to event:"
         android:textSize="25sp"
         android:textStyle="bold" />
 
@@ -136,4 +139,39 @@
         </LinearLayout>
 
     </LinearLayout>
+
+    <View
+        android:id="@+id/separator1"
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_below="@+id/view"
+        android:background="@color/colorTab" />
+
+    <Button
+        android:id="@+id/pro_Accept_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_above="@+id/pro_Reject_button"
+        android:layout_marginBottom="15dp"
+        android:layout_marginEnd="30dp"
+        android:layout_marginStart="30dp"
+        android:background="@drawable/button_package"
+        android:text="Accept"
+        android:textAllCaps="false"
+        android:textColor="@color/colorWhite" />
+
+    <Button
+        android:id="@+id/pro_Reject_button"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:layout_marginBottom="30dp"
+        android:layout_marginEnd="30dp"
+        android:layout_marginStart="30dp"
+        android:background="@drawable/button_package"
+        android:text="Reject"
+        android:textAllCaps="false"
+        android:textColor="@color/colorWhite" />
+
+
 </RelativeLayout>

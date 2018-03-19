@@ -1,6 +1,10 @@
 package com.indeves.chmplinapp.Models;
 
+import com.google.firebase.database.Exclude;
+
 import java.io.Serializable;
+import java.util.HashMap;
+import java.util.Map;
 
 /**
  * Created by khalid on 26/02/18.
@@ -179,5 +183,12 @@ public class EventModel implements Serializable {
 
     public void setEventId(String eventId) {
         this.eventId = eventId;
+    }
+
+    @Exclude
+    public Map<String, Object> toMap() {
+        HashMap<String, Object> result = new HashMap<>();
+        result.put("eventStatus", eventStatus);
+        return result;
     }
 }
