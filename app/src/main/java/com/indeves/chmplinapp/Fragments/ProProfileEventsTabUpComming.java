@@ -3,10 +3,14 @@ package com.indeves.chmplinapp.Fragments;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 
+import android.support.v4.app.FragmentManager;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.GestureDetector;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.TextView;
@@ -19,9 +23,12 @@ import com.indeves.chmplinapp.Adapters.ProEventsArrayAdapter;
 import com.indeves.chmplinapp.Models.EventModel;
 import com.indeves.chmplinapp.Models.PhotographerData;
 import com.indeves.chmplinapp.R;
+import com.indeves.chmplinapp.Utility.ClickListener;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static android.view.View.GONE;
 
 public class ProProfileEventsTabUpComming extends android.support.v4.app.Fragment implements FirebaseEventsListener {
     private static final String TAG = "RecyclerViewFragment";
@@ -36,7 +43,7 @@ public class ProProfileEventsTabUpComming extends android.support.v4.app.Fragmen
     ProEventsArrayAdapter userProfEventsAdaptor;
     private List<EventModel> eventModels;
     private RecyclerView recyclerView;
-
+    FragmentManager fragmentManager;
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -68,9 +75,27 @@ public class ProProfileEventsTabUpComming extends android.support.v4.app.Fragmen
         ReadData readData = new ReadData(this);
         readData.getAllEvents();
 
-//        recyclerView.setAdapter(userProfEventsAdaptor);
+        recyclerView.setAdapter(userProfEventsAdaptor);
+        recyclerView.addOnItemTouchListener(new RecyclerTouchListener(
+                recyclerView, new ClickListener() {
+            @Override
+            public void onClick(View view, final int position) {
+                //Values are passing to activity & to fragment as well
 
-        sortLocation.setOnClickListener(new View.OnClickListener() {
+                fragmentManager = getActivity().getSupportFragmentManager();
+                ProProfileEventsTabComingSelectedEvent frag = new ProProfileEventsTabComingSelectedEvent(eventModels.get(position));
+                FragmentTransaction transaction = fragmentManager.beginTransaction();
+                transaction.replace(R.id.main_container, frag).commit();
+
+            }
+
+            @Override
+            public void onLongClick(View view, int position) {
+               // linearLayout.setVisibility(GONE);
+
+            }
+        }));
+    /*    sortLocation.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
 
@@ -86,7 +111,7 @@ public class ProProfileEventsTabUpComming extends android.support.v4.app.Fragmen
             public void onClick(View view) {
 
             }
-        });
+        });*/
 
 
         return rootView;
@@ -143,4 +168,51 @@ public class ProProfileEventsTabUpComming extends android.support.v4.app.Fragmen
         GRID_LAYOUT_MANAGER,
         LINEAR_LAYOUT_MANAGER
     }
+
+
+    class RecyclerTouchListener implements RecyclerView.OnItemTouchListener {
+
+        private ClickListener clicklistener;
+        private GestureDetector gestureDetector;
+
+        public RecyclerTouchListener(final RecyclerView recycleView, final ClickListener clicklistener) {
+
+            this.clicklistener = clicklistener;
+            gestureDetector = new GestureDetector(getContext(), new GestureDetector.SimpleOnGestureListener() {
+                @Override
+                public boolean onSingleTapUp(MotionEvent e) {
+                    return true;
+                }
+
+                @Override
+                public void onLongPress(MotionEvent e) {
+                    View child = recycleView.findChildViewUnder(e.getX(), e.getY());
+                    if (child != null && clicklistener != null) {
+                        clicklistener.onLongClick(child, recycleView.getChildAdapterPosition(child));
+                    }
+                }
+            });
+        }
+
+        @Override
+        public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent e) {
+            View child = rv.findChildViewUnder(e.getX(), e.getY());
+            if (child != null && clicklistener != null && gestureDetector.onTouchEvent(e)) {
+                clicklistener.onClick(child, rv.getChildAdapterPosition(child));
+            }
+
+            return false;
+        }
+
+        @Override
+        public void onTouchEvent(RecyclerView rv, MotionEvent e) {
+
+        }
+
+        @Override
+        public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
+
+        }
+    }
+
 }

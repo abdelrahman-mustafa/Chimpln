@@ -93,9 +93,9 @@ public class StuEvents extends Fragment {
 
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getChildFragmentManager());
-        adapter.addFragment(new ProProfileEventsTabUpComming(), "UpComing");
-        adapter.addFragment(new ProProfileEventsTabPending(), "Pending");
-        adapter.addFragment(new ProProfileEventsTabHistory(), "History");
+        adapter.addFragment(new StuProfileEventsTabUpComming(), "UpComing");
+        adapter.addFragment(new StuProfileEventsTabPending(), "Pending");
+        adapter.addFragment(new StuProfileEventsTabHistory(), "History");
         viewPager.setAdapter(adapter);
     }
 

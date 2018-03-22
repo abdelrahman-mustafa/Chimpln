@@ -9,26 +9,29 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.indeves.chmplinapp.API.FirebaseEventsListener;
+import com.indeves.chmplinapp.API.ReadData;
 import com.indeves.chmplinapp.Adapters.ProProfPackageAdaptor;
 import com.indeves.chmplinapp.Models.MyPackageData;
 import com.indeves.chmplinapp.Models.PackageModel;
+import com.indeves.chmplinapp.Models.ProUserModel;
 import com.indeves.chmplinapp.R;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class StuProfilePackageTabMyPackages extends android.support.v4.app.Fragment {
-    private static final String TAG = "RecyclerViewFragment";
+public class StuProfilePackageTabMyPackages extends android.support.v4.app.Fragment implements FirebaseEventsListener {
+    //    private static final String TAG = "RecyclerViewFragment";
     private static final String KEY_LAYOUT_MANAGER = "layoutManager";
     private static final int SPAN_COUNT = 2;
-    private static final int DATASET_COUNT = 60;
     protected LayoutManagerType mCurrentLayoutManagerType;
     protected RecyclerView.LayoutManager mLayoutManager;
-    MyPackageData myPackageData;
     ProProfPackageAdaptor userProfEventsAdaptor;
     private List<PackageModel> list;
-    private ViewPager viewPager;
     private RecyclerView recyclerView;
 
     @Override
@@ -44,12 +47,6 @@ public class StuProfilePackageTabMyPackages extends android.support.v4.app.Fragm
         recyclerView = rootView.findViewById(R.id.userProfile_event_recycler_view);
         ;
         list = new ArrayList<PackageModel>();
-//        myPackageData = new MyPackageData("Golden Package", "2 full day event", "3000", "EGP", "photo & share", "6 photo sessions, Wedding");
-//
-//        list.add(myPackageData);
-//        list.add(myPackageData);
-//        list.add(myPackageData);
-//        list.add(myPackageData);
 
         mLayoutManager = new LinearLayoutManager(getActivity());
 
@@ -62,9 +59,15 @@ public class StuProfilePackageTabMyPackages extends android.support.v4.app.Fragm
         }
         setRecyclerViewLayoutManager(mCurrentLayoutManagerType);
         userProfEventsAdaptor = new ProProfPackageAdaptor(list);
-        recyclerView.setAdapter(userProfEventsAdaptor);
-
         return rootView;
+    }
+
+    @Override
+    public void onStart() {
+        ReadData readData = new ReadData(this);
+        readData.getUserInfoById(FirebaseAuth.getInstance().getCurrentUser().getUid());
+
+        super.onStart();
     }
 
     public void setRecyclerViewLayoutManager(LayoutManagerType layoutManagerType) {
@@ -92,6 +95,28 @@ public class StuProfilePackageTabMyPackages extends android.support.v4.app.Fragm
 
         recyclerView.setLayoutManager(mLayoutManager);
         recyclerView.scrollToPosition(scrollPosition);
+    }
+
+    @Override
+    public void onWriteDataCompleted(boolean writeSuccessful) {
+
+    }
+
+    @Override
+    public void onReadDataResponse(DataSnapshot dataSnapshot) {
+        if (dataSnapshot != null && dataSnapshot.getValue() != null) {
+            ProUserModel proUserModel = dataSnapshot.getValue(ProUserModel.class);
+            if (proUserModel != null) {
+                if (proUserModel.getPackages() != null) {
+                    list.addAll(proUserModel.getPackages());
+                    recyclerView.setAdapter(userProfEventsAdaptor);
+                    userProfEventsAdaptor.notifyDataSetChanged();
+                } else {
+                    Toast.makeText(getContext(), "You don't have any packages yet", Toast.LENGTH_SHORT).show();
+                }
+            }
+        }
+
     }
 
     private enum LayoutManagerType {

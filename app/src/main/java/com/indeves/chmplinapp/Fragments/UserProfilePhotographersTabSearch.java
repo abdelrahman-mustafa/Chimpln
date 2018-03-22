@@ -38,7 +38,7 @@ public class UserProfilePhotographersTabSearch extends android.support.v4.app.Fr
         android.support.v4.app.FragmentTransaction transaction0 = getChildFragmentManager().beginTransaction();
         transaction0.replace(R.id.container, select);
         transaction0.commit();
-        search = rootView.findViewById(R.id.userProfile_button_search);
+       /* search = rootView.findViewById(R.id.userProfile_button_search);
         search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
@@ -49,7 +49,7 @@ public class UserProfilePhotographersTabSearch extends android.support.v4.app.Fr
                 transaction.replace(R.id.container, output);
                 transaction.commit();            }
         });
-
+*/
         return rootView;
     }
 }

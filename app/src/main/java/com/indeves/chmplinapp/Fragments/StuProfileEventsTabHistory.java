@@ -2,6 +2,7 @@ package com.indeves.chmplinapp.Fragments;
 
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
@@ -22,7 +23,7 @@ public class StuProfileEventsTabHistory extends android.support.v4.app.Fragment 
     private static final String KEY_LAYOUT_MANAGER = "layoutManager";
     private static final int SPAN_COUNT = 2;
     private static final int DATASET_COUNT = 60;
-    protected StuProfileEventsTabHistory.LayoutManagerType mCurrentLayoutManagerType;
+    protected LayoutManagerType mCurrentLayoutManagerType;
     protected RecyclerView.LayoutManager mLayoutManager;
     List<ProEventHistoryItem> eventsList;
     ProEventHistoryAdapter userProfEventsAdaptor;
@@ -40,11 +41,11 @@ public class StuProfileEventsTabHistory extends android.support.v4.app.Fragment 
         recyclerView = rootView.findViewById(R.id.proProfile_eventsHistory_recycleView);
         mLayoutManager = new LinearLayoutManager(getActivity());
 
-        mCurrentLayoutManagerType = StuProfileEventsTabHistory.LayoutManagerType.LINEAR_LAYOUT_MANAGER;
+        mCurrentLayoutManagerType = LayoutManagerType.LINEAR_LAYOUT_MANAGER;
 
         if (savedInstanceState != null) {
             // Restore saved layout manager type.
-            mCurrentLayoutManagerType = (StuProfileEventsTabHistory.LayoutManagerType) savedInstanceState
+            mCurrentLayoutManagerType = (LayoutManagerType) savedInstanceState
                     .getSerializable(KEY_LAYOUT_MANAGER);
         }
         ProEventHistoryItem proEventHistoryItem = new ProEventHistoryItem("http://api.learn2crack.com/android/images/donut.png", "Lembie's Wedding", "Bolak", "Bla bla");
@@ -57,11 +58,14 @@ public class StuProfileEventsTabHistory extends android.support.v4.app.Fragment 
         setRecyclerViewLayoutManager(mCurrentLayoutManagerType);
         userProfEventsAdaptor = new ProEventHistoryAdapter(eventsList, getContext());
         recyclerView.setAdapter(userProfEventsAdaptor);
+        DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(),
+                DividerItemDecoration.HORIZONTAL);
+        recyclerView.addItemDecoration(dividerItemDecoration);
 
         return rootView;
     }
 
-    public void setRecyclerViewLayoutManager(StuProfileEventsTabHistory.LayoutManagerType layoutManagerType) {
+    public void setRecyclerViewLayoutManager(LayoutManagerType layoutManagerType) {
         int scrollPosition = 0;
 
         // If a layout manager has already been set, get current scroll position.

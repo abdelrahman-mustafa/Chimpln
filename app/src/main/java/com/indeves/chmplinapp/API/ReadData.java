@@ -102,7 +102,8 @@ public class ReadData {
                 for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
                     UserData userData = dataSnapshot1.getValue(UserData.class);
                     if (userData != null) {
-                        if (!userData.type.equals("user")) {
+                        if (userData.type != null && !userData.type.equals("user")) {
+
                             pros.add(dataSnapshot1.getValue(ProUserModel.class));
                         }
                     }

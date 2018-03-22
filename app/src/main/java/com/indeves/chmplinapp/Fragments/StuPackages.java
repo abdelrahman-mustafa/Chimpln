@@ -13,6 +13,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.indeves.chmplinapp.Activities.ProLandingPage;
+import com.indeves.chmplinapp.Activities.StuLandingPage;
 import com.indeves.chmplinapp.R;
 
 import java.util.ArrayList;
@@ -32,15 +34,14 @@ public class StuPackages extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
     TabLayout tabLayout;
+    Context attachedActivityContext;
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
     private ViewPager viewPager;
-    private OnFragmentInteractionListener mListener;
+    private StuPackages.OnFragmentInteractionListener mListener;
 
-    public StuPackages() {
-        // Required empty public constructor
-    }
+
 
     /**
      * Use this factory method to create a new instance of
@@ -73,12 +74,16 @@ public class StuPackages extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View rootView = inflater.inflate(R.layout.activity_user_profile_tab_events, container, false);
+        View rootView = inflater.inflate(R.layout.pro_packages_tab, container, false);
+        if (attachedActivityContext != null && ((StuLandingPage) attachedActivityContext).getSupportActionBar() != null) {
+            ((StuLandingPage) attachedActivityContext).getSupportActionBar().setDisplayShowHomeEnabled(false);
+            ((StuLandingPage) attachedActivityContext).getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+            ((StuLandingPage) attachedActivityContext).getSupportActionBar().setTitle(getResources().getString(R.string.fragment_title_packages));
+        }
 
+        viewPager = (ViewPager) rootView.findViewById(R.id.packages_container);
 
-        viewPager = (ViewPager) rootView.findViewById(R.id.container);
-
-        setupViewPager(viewPager);
+//        setupViewPager(viewPager);
 
         tabLayout = rootView.findViewById(R.id.tabs);
         tabLayout.setupWithViewPager(viewPager);
@@ -88,10 +93,11 @@ public class StuPackages extends Fragment {
         setupViewPager(viewPager);
         return rootView;
     }
+
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getChildFragmentManager());
-        adapter.addFragment(new ProProfilePackageTabMyPackages(), "My Packages");
-        adapter.addFragment(new ProProfilePackageTabAddPackage(), "+ Add New Package");
+        adapter.addFragment(new StuProfilePackageTabMyPackages(), "My Packages");
+        adapter.addFragment(new StuProfilePackageTabAddPackage(), "+ Add New Package");
         viewPager.setAdapter(adapter);
     }
 
@@ -105,8 +111,9 @@ public class StuPackages extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
+        this.attachedActivityContext = context;
+        if (context instanceof StuPackages.OnFragmentInteractionListener) {
+            mListener = (StuPackages.OnFragmentInteractionListener) context;
         } else {
             throw new RuntimeException(context.toString()
                     + " must implement OnFragmentInteractionListener");
@@ -143,7 +150,7 @@ public class StuPackages extends Fragment {
         }
 
         @Override
-        public Fragment getItem(int position) {
+        public android.support.v4.app.Fragment getItem(int position) {
             return mFragmentList.get(position);
         }
 
@@ -152,7 +159,7 @@ public class StuPackages extends Fragment {
             return mFragmentList.size();
         }
 
-        public void addFragment(Fragment fragment, String title) {
+        public void addFragment(android.support.v4.app.Fragment fragment, String title) {
             mFragmentList.add(fragment);
             mFragmentTitleList.add(title);
         }

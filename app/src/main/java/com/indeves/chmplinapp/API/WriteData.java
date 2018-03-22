@@ -95,9 +95,9 @@ public class WriteData {
 
     }
 
-    public void respondToEvent(boolean accepted, String eventId) throws Exception {
+    public void respondToEvent(String status, String eventId) throws Exception {
         EventModel eventModel = new EventModel();
-        eventModel.setEventStatus(accepted ? "accepted" : "rejected");
+        eventModel.setEventStatus(status);
         if (mAuth.getCurrentUser() != null) {
             eventsDatabaseReference.child(eventId).updateChildren(eventModel.toMap()).addOnCompleteListener(new OnCompleteListener<Void>() {
                 @Override

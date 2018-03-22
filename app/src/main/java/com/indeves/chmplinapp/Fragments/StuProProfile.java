@@ -4,106 +4,135 @@ import android.content.Context;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
+import android.widget.RatingBar;
+import android.widget.TextView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.indeves.chmplinapp.API.FirebaseEventsListener;
+import com.indeves.chmplinapp.API.ReadData;
+import com.indeves.chmplinapp.Activities.StuLandingPage;
+import com.indeves.chmplinapp.Models.ProUserModel;
 import com.indeves.chmplinapp.R;
+import com.squareup.picasso.Picasso;
 
-/**
- * A simple {@link Fragment} subclass.
- * Activities that contain this fragment must implement the
- * {@link StuProProfile.OnFragmentInteractionListener} interface
- * to handle interaction events.
- * Use the {@link StuProProfile#newInstance} factory method to
- * create an instance of this fragment.
- */
-public class StuProProfile extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
 
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
+public class StuProProfile extends Fragment implements FirebaseEventsListener {
+    Context attachedActivityContext;
+    TextView proName, photosCount, eventsCount, subInfoRow, experience, workHours;
+    RatingBar rate;
+    ImageView profileImage;
 
-    private OnFragmentInteractionListener mListener;
-
-    public StuProProfile() {
-        // Required empty public constructor
-    }
-
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment ProProfile.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static StuProProfile newInstance(String param1, String param2) {
-        StuProProfile fragment = new StuProProfile();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
 
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+
     }
 
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        return inflater.inflate(R.layout.fragment_stu_profile, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_pro_profile, container, false);
+        proName = rootView.findViewById(R.id.stu_profile_name);
+        photosCount = rootView.findViewById(R.id.pro_profile_photos);
+        eventsCount = rootView.findViewById(R.id.pro__profile_events);
+        subInfoRow = rootView.findViewById(R.id.stu_profile_about);
+        rate = rootView.findViewById(R.id.stu_profile_rating);
+        experience = rootView.findViewById(R.id.pro_profile_experience);
+        workHours = rootView.findViewById(R.id.pro_profile_work_hours);
+        profileImage = rootView.findViewById(R.id.pro_profile_pic);
+        setHasOptionsMenu(true);
+        if (attachedActivityContext != null && ((StuLandingPage) attachedActivityContext).getSupportActionBar() != null) {
+            ((StuLandingPage) attachedActivityContext).getSupportActionBar().setDisplayShowHomeEnabled(false);
+            ((StuLandingPage) attachedActivityContext).getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+            ((StuLandingPage) attachedActivityContext).getSupportActionBar().setTitle(getResources().getString(R.string.fragment_title_my_profile));
+        }
+        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+            ReadData readData = new ReadData(this);
+            readData.getUserInfoById(FirebaseAuth.getInstance().getCurrentUser().getUid());
+        }
+        return rootView;
     }
 
-    // TODO: Rename method, update argument and hook method into UI event
-    public void onButtonPressed(Uri uri) {
-        if (mListener != null) {
-            mListener.onFragmentInteraction(uri);
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.pro_profile_fragment_menu, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.pro_profile_menu_edit) {
+//Go to edit screen
+            final FragmentTransaction ft = getFragmentManager().beginTransaction();
+            ft.replace(R.id.main_container, new StuEditProfileFragment());
+            ft.addToBackStack(null);
+            ft.commit();
+            return true;
+        } else {
+            return super.onOptionsItemSelected(item);
         }
+
     }
 
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
-        } else {
-            throw new RuntimeException(context.toString()
-                    + " must implement OnFragmentInteractionListener");
-        }
+        this.attachedActivityContext = context;
     }
 
     @Override
     public void onDetach() {
         super.onDetach();
-        mListener = null;
     }
 
-    /**
-     * This interface must be implemented by activities that contain this
-     * fragment to allow an interaction in this fragment to be communicated
-     * to the activity and potentially other fragments contained in that
-     * activity.
-     * <p>
-     * See the Android Training lesson <a href=
-     * "http://developer.android.com/training/basics/fragments/communicating.html"
-     * >Communicating with Other Fragments</a> for more information.
-     */
-    public interface OnFragmentInteractionListener {
-        // TODO: Update argument type and name
-        void onFragmentInteraction(Uri uri);
+    @Override
+    public void onWriteDataCompleted(boolean writeSuccessful) {
+
+    }
+
+    @Override
+    public void onReadDataResponse(DataSnapshot dataSnapshot) {
+        if (dataSnapshot != null && dataSnapshot.getValue() != null) {
+            ProUserModel proUserModel = dataSnapshot.getValue(ProUserModel.class);
+            displayUserInfo(proUserModel);
+        }
+
+    }
+
+    void displayUserInfo(ProUserModel proUserModel) {
+        if (proUserModel != null) {
+            if (proUserModel.getName() != null)
+                proName.setText(proUserModel.getName());
+            if (proUserModel.getEventsIds() != null)
+                eventsCount.setText(String.valueOf(proUserModel.getEventsIds().size()));
+            String about = "";
+            if (proUserModel.getGender() != null)
+                about = about + proUserModel.getGender();
+            if (proUserModel.getArea() != null)
+                about = about + ", " + proUserModel.getArea();
+            subInfoRow.setText(about);
+            if (proUserModel.getExperience() != null) {
+                String experienceRow = proUserModel.getExperience() + " years of experience";
+                experience.setText(experienceRow);
+            }
+            if (proUserModel.getWorkDayStart() != null && proUserModel.getWorkDayEnd() != null) {
+                String workHoursRow = "Working hours      " + proUserModel.getWorkDayStart() + "    " + proUserModel.getWorkDayEnd();
+                workHours.setText(workHoursRow);
+            }
+            if (proUserModel.getProfilePicUrl() != null) {
+                Picasso.with(getContext()).load(proUserModel.getProfilePicUrl()).resize(300, 300).placeholder(R.drawable.user).error(R.drawable.user).into(profileImage);
+            }
+        }
     }
 }

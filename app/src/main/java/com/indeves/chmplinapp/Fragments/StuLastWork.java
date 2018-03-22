@@ -9,6 +9,8 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.indeves.chmplinapp.Activities.ProLandingPage;
+import com.indeves.chmplinapp.Activities.StuLandingPage;
 import com.indeves.chmplinapp.Adapters.LastWorkImagesAdapter;
 import com.indeves.chmplinapp.R;
 
@@ -27,12 +29,11 @@ public class StuLastWork extends Fragment {
     // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-
+    Context attachedActivityContext;
     // TODO: Rename and change types of parameters
     private String mParam1;
     private String mParam2;
-
-    private OnFragmentInteractionListener mListener;
+    private StuLastWork.OnFragmentInteractionListener mListener;
 
     public StuLastWork() {
         // Required empty public constructor
@@ -69,11 +70,16 @@ public class StuLastWork extends Fragment {
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View rootView = inflater.inflate(R.layout.fragment_stu_last_work, container, false);
+        View rootView = inflater.inflate(R.layout.fragment_pro_last_work, container, false);
         RecyclerView recyclerView = (RecyclerView) rootView.findViewById(R.id.card_recycler_view);
         recyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getContext(), 2);
         recyclerView.setLayoutManager(layoutManager);
+        if (attachedActivityContext != null && ((StuLandingPage) attachedActivityContext).getSupportActionBar() != null) {
+            ((StuLandingPage) attachedActivityContext).getSupportActionBar().setDisplayShowHomeEnabled(false);
+            ((StuLandingPage) attachedActivityContext).getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+            ((StuLandingPage) attachedActivityContext).getSupportActionBar().setTitle(getResources().getString(R.string.fragment_title_last_work));
+        }
 
         ArrayList<String> images = new ArrayList<>();
         images.add("http://api.learn2crack.com/android/images/donut.png");
@@ -102,8 +108,9 @@ public class StuLastWork extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
-        if (context instanceof OnFragmentInteractionListener) {
-            mListener = (OnFragmentInteractionListener) context;
+        this.attachedActivityContext = context;
+        if (context instanceof StuLastWork.OnFragmentInteractionListener) {
+            mListener = (StuLastWork.OnFragmentInteractionListener) context;
         } else {
             throw new RuntimeException(context.toString()
                     + " must implement OnFragmentInteractionListener");

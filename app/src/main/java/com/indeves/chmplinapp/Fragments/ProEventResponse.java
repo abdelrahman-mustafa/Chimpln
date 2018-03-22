@@ -86,7 +86,7 @@ public class ProEventResponse extends Fragment implements View.OnClickListener, 
         if (v == accept) {
             WriteData writeData = new WriteData(this);
             try {
-                writeData.respondToEvent(true, selectedEvent.getEventId());
+                writeData.respondToEvent("accepted", selectedEvent.getEventId());
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -94,7 +94,7 @@ public class ProEventResponse extends Fragment implements View.OnClickListener, 
         } else if (v == reject) {
             WriteData writeData = new WriteData(this);
             try {
-                writeData.respondToEvent(false, selectedEvent.getEventId());
+                writeData.respondToEvent("rejected", selectedEvent.getEventId());
             } catch (Exception e) {
                 e.printStackTrace();
             }
