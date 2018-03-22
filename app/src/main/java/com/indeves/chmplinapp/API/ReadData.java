@@ -3,6 +3,7 @@ package com.indeves.chmplinapp.API;
 import android.content.Context;
 import android.util.Log;
 
+import com.google.firebase.database.ChildEventListener;
 import com.google.firebase.database.DataSnapshot;
 import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
@@ -224,4 +225,38 @@ public class ReadData {
         void onLookUpsResponse(List<CityLookUpModel> citiesList);
     }
 
+    public void searchPros(){
+        mDatabase = FirebaseDatabase.getInstance().getReference("users");
+
+        mDatabase.orderByChild("city").equalTo("cairo").addChildEventListener(new ChildEventListener() {
+            @Override
+            public void onChildAdded(DataSnapshot dataSnapshot, String prevChildKey) {
+                Log.v("ggg", dataSnapshot.toString());
+
+            }
+
+            @Override
+            public void onChildChanged(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onChildRemoved(DataSnapshot dataSnapshot) {
+
+            }
+
+            @Override
+            public void onChildMoved(DataSnapshot dataSnapshot, String s) {
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError databaseError) {
+
+            }
+
+            // ...
+        });
+
+    }
 }

@@ -17,6 +17,7 @@ import android.widget.ImageView;
 
 import com.google.firebase.database.FirebaseDatabase;
 import com.indeves.chmplinapp.*;
+import com.indeves.chmplinapp.API.ReadData;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -60,7 +61,6 @@ public class MainActivity extends AppCompatActivity {
         });
        */
         animatorSet.start();
-
 // Later.. stop the animation
         button1.setOnClickListener(new View.OnClickListener() {
             @Override

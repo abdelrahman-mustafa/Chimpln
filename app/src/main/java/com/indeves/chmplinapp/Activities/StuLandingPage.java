@@ -11,6 +11,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
+import com.indeves.chmplinapp.API.ReadData;
 import com.indeves.chmplinapp.Fragments.ProEvents;
 import com.indeves.chmplinapp.Fragments.ProLastWork;
 import com.indeves.chmplinapp.Fragments.ProPackages;
@@ -35,6 +36,9 @@ public class StuLandingPage extends AppCompatActivity implements StuEvents.OnFra
         Fragment initialFragment = new StuLastWork();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.replace(R.id.main_container, initialFragment).commit();
+
+        ReadData readData = new ReadData();
+        readData.searchPros();
 
         bottomNavigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
