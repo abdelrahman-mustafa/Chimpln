@@ -13,6 +13,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
 
@@ -42,6 +43,8 @@ public class UserProfilePhotographersTabSearchSelect extends android.support.v4.
     String selectedGender;
     String selectedCity;
     LookUpModel selectedEventType;
+    LinearLayout linear;
+
 
     public UserProfilePhotographersTabSearchSelect() {
     }
@@ -72,22 +75,26 @@ public class UserProfilePhotographersTabSearchSelect extends android.support.v4.
         calendar = Calendar.getInstance();
         year = calendar.get(Calendar.YEAR);
         month = calendar.get(Calendar.MONTH);
+        linear = rootView.findViewById(R.id.linear);
         day = calendar.get(Calendar.DAY_OF_MONTH);
         spinCity = rootView.findViewById(R.id.userProfile_phot_spinner_city);
-        spinbirthPicker.setOnItemSelectedListener(this);
-        spinbirthPicker.setOnTouchListener(this);
+
         spinGender = rootView.findViewById(R.id.userProfile_phot_spinner_gender);
         spinbirthPicker = rootView.findViewById(R.id.userProfile_phot_spinner_event_date);
         spinEventType = rootView.findViewById(R.id.userProfile_phot_spinner_event_type);
         search = rootView.findViewById(R.id.userProfile_button_search);
+        spinbirthPicker.setOnItemSelectedListener(this);
+        spinbirthPicker.setOnTouchListener(this);
         search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
+                linear.setVisibility(View.GONE);
                 search.setVisibility(View.GONE);
+
                 UserProfilePhotographersTabSearchOutput output = new UserProfilePhotographersTabSearchOutput();
                 android.support.v4.app.FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
 
-                transaction.replace(R.id.container, output);
+                transaction.replace(R.id.container_special, output);
                 transaction.commit();
             }
         });
