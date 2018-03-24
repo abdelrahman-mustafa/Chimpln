@@ -84,6 +84,7 @@
                     android:layout_width="45sp"
                     android:layout_height="match_parent"
                     android:layout_weight=".5"
+                    android:width="45sp"
                     android:text="Location:" />
 
                 <TextView
@@ -91,6 +92,9 @@
                     android:layout_width="wrap_content"
                     android:layout_height="match_parent"
                     android:layout_weight="1"
+                    android:width="60sp"
+                    android:autoText="true"
+                    android:maxLines="1"
                     android:text="TextView" />
             </LinearLayout>
 
@@ -104,7 +108,7 @@
                     android:layout_width="45sp"
                     android:layout_height="match_parent"
                     android:layout_weight=".5"
-                    android:text="Photograper" />
+                    android:text="Photograper:" />
 
                 <TextView
                     android:id="@+id/approval__pro"
@@ -124,7 +128,7 @@
                     android:layout_width="45sp"
                     android:layout_height="match_parent"
                     android:layout_weight=".5"
-                    android:text="Event type" />
+                    android:text="Event type:" />
 
                 <TextView
                     android:id="@+id/approval_type"

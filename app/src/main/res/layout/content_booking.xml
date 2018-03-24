@@ -39,7 +39,7 @@
 
             <ImageView
                 android:id="@+id/booking_imageView_prophoto"
-                android:layout_width="45dp"
+                android:layout_width="30dp"
                 android:layout_height="45dp"
                 android:layout_gravity="left"
                 android:layout_weight=".5"
@@ -105,7 +105,7 @@
                 android:layout_width="120sp"
                 android:layout_height="30sp"
                 android:layout_marginLeft="5sp"
-                android:layout_marginTop="10sp"
+                android:layout_marginTop="15sp"
                 android:clickable="true"
                 android:text="Event Date"
                 android:textSize="20sp"
@@ -233,7 +233,9 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="2sp"
                 android:hint="Address line "
-                android:inputType="text" />
+                android:inputType="text"
+                android:lines="2"
+                android:maxLines="4" />
 
             <EditText
                 android:id="@+id/booking_editText_note"
