@@ -27,6 +27,7 @@ import android.widget.Toast;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.indeves.chmplinapp.API.CloudStorageAPI;
+import com.indeves.chmplinapp.API.CloudStorageListener;
 import com.indeves.chmplinapp.API.FirebaseEventsListener;
 import com.indeves.chmplinapp.API.ReadData;
 import com.indeves.chmplinapp.API.WriteData;
@@ -197,7 +198,7 @@ public class ProRegActivity extends AppCompatActivity implements View.OnClickLis
             progressDialog.show();
             if (ValidateRegistrationForm()) {
                 CloudStorageAPI cloudStorageAPI = new CloudStorageAPI();
-                cloudStorageAPI.UploadImage(selectImage, new CloudStorageAPI.CloudStorageListener() {
+                cloudStorageAPI.UploadImage(selectImage, new CloudStorageListener.UploadUserImageListener() {
                     @Override
                     public void onImageUpload(String downloadUrl) {
                         if (downloadUrl != null) {

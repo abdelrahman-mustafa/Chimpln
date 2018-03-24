@@ -73,7 +73,7 @@ public class UserProfileEventsTabUpComming extends android.support.v4.app.Fragme
         }
         setRecyclerViewLayoutManager(mCurrentLayoutManagerType);
         list = new ArrayList<EventModel>();
-        userProfEventsAdaptor = new ProEventsArrayAdapter(list);
+        userProfEventsAdaptor = new ProEventsArrayAdapter(list, "user");
         ReadData readData = new ReadData(this);
         readData.getAllEvents();
 

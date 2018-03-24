@@ -56,7 +56,7 @@ public class StuProfileEventsTabHistory extends android.support.v4.app.Fragment 
         eventsList.add(proEventHistoryItem);
         eventsList.add(proEventHistoryItem);
         setRecyclerViewLayoutManager(mCurrentLayoutManagerType);
-        userProfEventsAdaptor = new ProEventHistoryAdapter(eventsList, getContext());
+//        userProfEventsAdaptor = new ProEventHistoryAdapter(eventsList, getContext());
         recyclerView.setAdapter(userProfEventsAdaptor);
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(),
                 DividerItemDecoration.HORIZONTAL);

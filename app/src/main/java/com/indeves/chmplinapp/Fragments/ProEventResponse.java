@@ -11,6 +11,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.indeves.chmplinapp.API.FirebaseEventsListener;
@@ -151,21 +152,35 @@ public class ProEventResponse extends Fragment implements View.OnClickListener, 
         readData.getLookupsByType("eventTypesLookups", new ReadData.LookUpsListener() {
             @Override
             public void onLookUpsResponse(List<LookUpModel> eventTypeLookups) {
-                eventTypes.addAll(eventTypeLookups);
-                readData.getLookupsByType("eventTimesLookups", new ReadData.LookUpsListener() {
-                    @Override
-                    public void onLookUpsResponse(List<LookUpModel> lookups) {
-                        eventTimes.addAll(lookups);
-                        readData.getLookupsByType("shringOptionLookups", new ReadData.LookUpsListener() {
-                            @Override
-                            public void onLookUpsResponse(List<LookUpModel> lookups) {
+                if (eventTypeLookups != null) {
+                    eventTypes.addAll(eventTypeLookups);
+                    readData.getLookupsByType("eventTimesLookups", new ReadData.LookUpsListener() {
+                        @Override
+                        public void onLookUpsResponse(List<LookUpModel> lookups) {
+                            if (lookups != null) {
+                                eventTimes.addAll(lookups);
+                                readData.getLookupsByType("shringOptionLookups", new ReadData.LookUpsListener() {
+                                    @Override
+                                    public void onLookUpsResponse(List<LookUpModel> lookups) {
+                                        progressDialog.dismiss();
+                                        if (lookups != null) {
+                                            sharingOptions.addAll(lookups);
+                                            displayEventData();
+                                        } else {
+                                            Toast.makeText(getContext(), "Failed to load event data", Toast.LENGTH_SHORT).show();
+                                        }
+                                    }
+                                });
+                            } else {
                                 progressDialog.dismiss();
-                                sharingOptions.addAll(lookups);
-                                displayEventData();
+                                Toast.makeText(getContext(), "Failed to load event data", Toast.LENGTH_SHORT).show();
                             }
-                        });
-                    }
-                });
+                        }
+                    });
+                } else {
+                    progressDialog.dismiss();
+                    Toast.makeText(getContext(), "Failed to load event data", Toast.LENGTH_SHORT).show();
+                }
             }
         });
 

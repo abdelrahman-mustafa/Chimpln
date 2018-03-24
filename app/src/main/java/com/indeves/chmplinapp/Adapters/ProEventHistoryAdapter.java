@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 
+import com.indeves.chmplinapp.Models.EventModel;
 import com.indeves.chmplinapp.Models.ProEventHistoryItem;
 import com.indeves.chmplinapp.R;
 import com.squareup.picasso.Picasso;
@@ -20,10 +21,10 @@ import java.util.List;
  */
 
 public class ProEventHistoryAdapter extends RecyclerView.Adapter<ProEventHistoryAdapter.MyViewHolder> {
-    private List<ProEventHistoryItem> list;
+    private List<EventModel> list;
     private Context mContext;
 
-    public ProEventHistoryAdapter(List<ProEventHistoryItem> list, Context context) {
+    public ProEventHistoryAdapter(List<EventModel> list, Context context) {
         this.list = list;
         this.mContext = context;
     }
@@ -38,12 +39,13 @@ public class ProEventHistoryAdapter extends RecyclerView.Adapter<ProEventHistory
 
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
-        ProEventHistoryItem pData = list.get(position);
-        holder.eventTitle.setText(pData.getTitle());
-        holder.eventLocation.setText(pData.getLocation());
-        holder.eventDescription.setText(pData.getDescription());
-        Picasso.with(mContext).load(pData.getImageUrl()).placeholder(mContext.getResources().getDrawable(R.drawable.test_image)).into(holder.eventImage);
-
+        EventModel pData = list.get(position);
+        holder.eventTitle.setText(pData.getBookerUserName());
+        holder.eventLocation.setText(pData.getEventCity());
+        holder.eventDescription.setText(pData.getNoteToPro());
+        if (pData.getEventImagesUrls() != null) {
+            Picasso.with(mContext).load(pData.getEventImagesUrls().get(0)).placeholder(mContext.getResources().getDrawable(R.drawable.test_image)).into(holder.eventImage);
+        }
     }
 
     @Override

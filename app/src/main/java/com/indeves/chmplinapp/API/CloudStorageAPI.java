@@ -13,19 +13,21 @@ import com.google.firebase.storage.StorageReference;
 import com.google.firebase.storage.UploadTask;
 
 import java.io.ByteArrayOutputStream;
+import java.util.ArrayList;
 
 /**
  * Created by khalid on 19/03/18.
  */
 
 public class CloudStorageAPI {
-    private StorageReference imagesRef;
+    private StorageReference imagesRef, eventsImages;
 
     public CloudStorageAPI() {
         this.imagesRef = FirebaseStorage.getInstance().getReference().child("usersImages");
+        this.eventsImages = FirebaseStorage.getInstance().getReference().child("eventsImages");
     }
 
-    public void UploadImage(Bitmap image, final CloudStorageListener cloudStorageListener) {
+    public void UploadImage(Bitmap image, final CloudStorageListener.UploadUserImageListener cloudStorageListener) {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         image.compress(Bitmap.CompressFormat.JPEG, 100, baos);
         byte[] data = baos.toByteArray();
@@ -51,8 +53,10 @@ public class CloudStorageAPI {
 
     }
 
-    public interface CloudStorageListener {
-        void onImageUpload(String downloadUrl);
+    public void UploadEventImages(int eventId, final ArrayList<Bitmap> images) {
+        //Firebase cloud storage SDK doesn't have a multiple files upload method, so we will make it manually
+
     }
+
 
 }

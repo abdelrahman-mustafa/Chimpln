@@ -30,9 +30,9 @@ import java.util.ArrayList;
 import java.util.List;
 
 @SuppressLint("ValidFragment")
-public class ProProfileEventsTabComingSelectedEvent extends android.support.v4.app.Fragment  implements View.OnClickListener, FirebaseEventsListener{
-     TextView name, type, time, day, month, share, location, eventType,notes,fees, locationString;
-     Button endEvent;
+public class ProProfileEventsTabComingSelectedEvent extends android.support.v4.app.Fragment implements View.OnClickListener, FirebaseEventsListener {
+    TextView name, type, time, day, month, share, location, eventType, notes, fees, locationString;
+    Button endEvent;
     EventModel eventModel;
     FragmentManager fragmentManager;
 
@@ -62,13 +62,14 @@ public class ProProfileEventsTabComingSelectedEvent extends android.support.v4.a
         eventType = view.findViewById(R.id.userProfile_event_type);
         fees = view.findViewById(R.id.selected_event_fees);
         notes = view.findViewById(R.id.selected_event_notes);
-        locationString =  view.findViewById(R.id.selected_event_location);
+        locationString = view.findViewById(R.id.selected_event_location);
         endEvent.setOnClickListener(this);
         initializeData();
 
         return view;
     }
-    public  void initializeData(){
+
+    public void initializeData() {
         name.setText(eventModel.getBookerUserName());
         notes.setText(eventModel.getNoteToPro());
         time.setText(eventModel.getEventDate());
@@ -81,12 +82,12 @@ public class ProProfileEventsTabComingSelectedEvent extends android.support.v4.a
 
     @Override
     public void onClick(View v) {
-        if (v == endEvent){
+        if (v == endEvent) {
             WriteData finishEvent = new WriteData(this);
             String eventId = eventModel.getEventId();
 
             try {
-                finishEvent.respondToEvent("finished",eventId);
+                finishEvent.respondToEvent("finished", eventId);
             } catch (Exception e) {
                 e.printStackTrace();
             }
@@ -95,12 +96,12 @@ public class ProProfileEventsTabComingSelectedEvent extends android.support.v4.a
 
     @Override
     public void onWriteDataCompleted(boolean writeSuccessful) {
-        if (writeSuccessful){
+        if (writeSuccessful) {
             fragmentManager = getActivity().getSupportFragmentManager();
             ProProfileEventsTabUpComming frag = new ProProfileEventsTabUpComming();
             FragmentTransaction transaction = fragmentManager.beginTransaction();
             transaction.replace(R.id.main_container, frag).commit();
-        }else {
+        } else {
             Toasts toasts = new Toasts(getContext());
             toasts.wrongMe();
         }

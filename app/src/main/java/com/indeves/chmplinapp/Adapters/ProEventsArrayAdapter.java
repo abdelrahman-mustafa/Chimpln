@@ -23,14 +23,16 @@ import java.util.Map;
 import java.util.Set;
 
 public class ProEventsArrayAdapter extends RecyclerView.Adapter<ProEventsArrayAdapter.MyViewHolder> {
-    List<LookUpModel> eventTypes, eventTimes, sharingOptions;
+    private List<LookUpModel> eventTypes, eventTimes, sharingOptions;
     private List<EventModel> list;
+    private String displayType;
 
-    public ProEventsArrayAdapter(List<EventModel> list) {
+    public ProEventsArrayAdapter(List<EventModel> list, String displayType) {
         this.list = list;
         eventTypes = new ArrayList<>();
         eventTimes = new ArrayList<>();
         sharingOptions = new ArrayList<>();
+        this.displayType = displayType;
         loadLookups();
 
     }
@@ -46,7 +48,12 @@ public class ProEventsArrayAdapter extends RecyclerView.Adapter<ProEventsArrayAd
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
         EventModel pData = list.get(position);
-        holder.name.setText(pData.getBookerUserName());
+        if (displayType.equals("user")) {
+            holder.name.setText(pData.getPhotographerName());
+        } else {
+            holder.name.setText(pData.getBookerUserName());
+        }
+
         String[] eventDateParts = pData.getEventDate().split("-");
         holder.day.setText(eventDateParts[0]);
 //        holder.month.setText(eventDateParts[1]);

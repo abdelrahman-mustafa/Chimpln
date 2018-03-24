@@ -40,9 +40,10 @@ public class StuProfileEventsTabUpComming extends android.support.v4.app.Fragmen
         TextView sortDate, sortLocation, sortType;
         int textDefaultColor;
         ProEventsArrayAdapter userProfEventsAdaptor;
+    FragmentManager fragmentManager;
         private List<EventModel> eventModels;
         private RecyclerView recyclerView;
-        FragmentManager fragmentManager;
+
         @Override
         public void onCreate(@Nullable Bundle savedInstanceState) {
             super.onCreate(savedInstanceState);
@@ -70,7 +71,7 @@ public class StuProfileEventsTabUpComming extends android.support.v4.app.Fragmen
                         .getSerializable(KEY_LAYOUT_MANAGER);
             }
             setRecyclerViewLayoutManager(mCurrentLayoutManagerType);
-            userProfEventsAdaptor = new ProEventsArrayAdapter(eventModels);
+            userProfEventsAdaptor = new ProEventsArrayAdapter(eventModels, "pro");
             ReadData readData = new ReadData(this);
             readData.getAllEvents();
 

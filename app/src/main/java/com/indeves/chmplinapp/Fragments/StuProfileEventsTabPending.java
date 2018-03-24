@@ -62,7 +62,7 @@ public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container,
         .getSerializable(KEY_LAYOUT_MANAGER);
         }
         setRecyclerViewLayoutManager(mCurrentLayoutManagerType);
-        userProfEventsAdaptor = new ProEventsArrayAdapter(eventModels);
+    userProfEventsAdaptor = new ProEventsArrayAdapter(eventModels, "pro");
         ReadData readData = new ReadData(this);
         readData.getAllEvents();
 

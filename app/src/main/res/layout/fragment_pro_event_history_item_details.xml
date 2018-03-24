@@ -1,27 +1,49 @@
+<?xml version="1.0" encoding="utf-8"?>
 <RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
+    android:id="@+id/Content_homePage"
     android:layout_width="match_parent"
-    android:layout_height="match_parent"
-    tools:context="com.indeves.chmplinapp.Fragments.ProEventResponse">
+    android:layout_height="wrap_content"
+    android:layout_marginBottom="5dp"
+    android:layout_marginTop="5dp"
+    android:elevation="3dp">
 
-    <TextView
-        android:id="@+id/title"
-        android:layout_width="wrap_content"
+    <RelativeLayout
+        android:id="@+id/backButtonLayout"
+        android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_alignParentTop="true"
-        android:layout_marginBottom="15dp"
-        android:layout_marginStart="12dp"
-        android:layout_marginTop="5dp"
-        android:text="Respond to event:"
-        android:textSize="25sp"
-        android:textStyle="bold" />
+        android:layout_margin="5dp">
+
+        <ImageView
+            android:id="@+id/icon"
+            android:layout_width="30dp"
+            android:layout_height="30dp"
+            android:layout_alignParentStart="true"
+            android:layout_alignParentTop="true"
+            android:layout_centerVertical="true"
+            android:src="@drawable/if_arrow_lef_01_186410" />
+
+        <TextView
+            android:id="@+id/backButton"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_centerVertical="true"
+            android:layout_toEndOf="@+id/icon"
+            android:text="Back To history"
+            android:textSize="23sp"
+            android:textStyle="bold" />
+    </RelativeLayout>
+
 
     <LinearLayout
         android:id="@+id/view"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_below="@+id/title"
+        android:layout_below="@+id/backButtonLayout"
+        android:elevation="3dp"
         android:orientation="horizontal"
         android:translationZ="3dp">
 
@@ -36,6 +58,7 @@
                 android:id="@+id/userProfile_event_day"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
+                android:layout_gravity="center_horizontal"
                 android:text="5"
                 android:textColor="@color/colorProfile"
                 android:textSize="50sp"
@@ -141,38 +164,58 @@
 
     </LinearLayout>
 
-    <!--<View-->
-    <!--android:id="@+id/separator1"-->
-    <!--android:layout_width="match_parent"-->
-    <!--android:layout_height="1dp"-->
-    <!--android:layout_below="@+id/view"-->
-    <!--android:background="@color/colorTab" />-->
-
-    <Button
-        android:id="@+id/pro_Accept_button"
+    <RelativeLayout
+        android:id="@+id/AddPhotosHintLayout"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
-        android:layout_above="@+id/pro_Reject_button"
-        android:layout_marginBottom="15dp"
-        android:layout_marginEnd="30dp"
-        android:layout_marginStart="30dp"
-        android:background="@drawable/button_package"
-        android:text="Accept"
-        android:textAllCaps="false"
-        android:textColor="@color/colorWhite" />
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/view"
+        android:layout_marginTop="20dp"
+        android:paddingEnd="30dp"
+        android:paddingStart="30dp">
+
+        <TextView
+            android:id="@+id/addPhotosHint"
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignParentStart="true"
+            android:text="Add photos to event"
+            android:textColor="@android:color/darker_gray"
+            android:textSize="20sp"
+            android:textStyle="bold" />
+
+        <TextView
+            android:layout_width="wrap_content"
+            android:layout_height="wrap_content"
+            android:layout_alignBaseline="@+id/addPhotosHint"
+            android:layout_marginStart="2dp"
+            android:layout_toEndOf="@+id/addPhotosHint"
+            android:text="(10 photos max)"
+            android:textColor="@android:color/darker_gray"
+            android:textSize="15sp" />
+
+    </RelativeLayout>
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/card_recycler_view"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@id/AddPhotosHintLayout"
+        android:adjustViewBounds="true"
+        android:padding="30dp"
+        android:scrollbars="vertical" />
+
 
     <Button
-        android:id="@+id/pro_Reject_button"
+        android:id="@+id/selected_event_end"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_marginBottom="30dp"
-        android:layout_marginEnd="30dp"
-        android:layout_marginStart="30dp"
-        android:background="@drawable/button_package"
-        android:text="Reject"
-        android:textAllCaps="false"
+        android:layout_margin="25dp"
+        android:background="@drawable/button"
+        android:text="Save"
         android:textColor="@color/colorWhite" />
 
 
 </RelativeLayout>
+

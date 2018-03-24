@@ -4,6 +4,7 @@ import com.google.firebase.database.Exclude;
 
 import java.io.Serializable;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -11,15 +12,38 @@ import java.util.Map;
  */
 
 public class EventModel implements Serializable {
-    private String bookerUserId, photographerId, eventDate, bookerUserName, photographerName, startTime, endTime, noteToPro, eventCity, eventId;
+    private String bookerUserId, photographerId, eventDate, bookerUserName, photographerName, startTime, endTime, noteToPro, eventCity, eventId, rejectionReason;
     private long eventLocationLong, eventLocationLat;
     //eventStatus is one of these values "pending, accepted, rejected, finished"
     private String eventStatus;
     private int typeId, timeId, sharingOptionId;
+    private PackageModel selectedPackage;
+    private List<String> eventImagesUrls;
 
     public EventModel() {
     }
 
+    //this constructor contains the main data that user booking must have
+    public EventModel(String bookerUserId, String photographerId, String eventDate, String bookerUserName, String photographerName, String startTime, String endTime, String noteToPro, String eventCity, long eventLocationLong, long eventLocationLat, String eventStatus, int typeId, int timeId, int sharingOptionId, PackageModel selectedPackage) {
+        this.bookerUserId = bookerUserId;
+        this.photographerId = photographerId;
+        this.eventDate = eventDate;
+        this.bookerUserName = bookerUserName;
+        this.photographerName = photographerName;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.noteToPro = noteToPro;
+        this.eventCity = eventCity;
+        this.eventLocationLong = eventLocationLong;
+        this.eventLocationLat = eventLocationLat;
+        this.eventStatus = eventStatus;
+        this.typeId = typeId;
+        this.timeId = timeId;
+        this.sharingOptionId = sharingOptionId;
+        this.selectedPackage = selectedPackage;
+    }
+
+    //this constructor contains the main data that user booking must have
     public EventModel(String bookerUserId, String photographerId, String eventDate, String bookerUserName, String photographerName, String startTime, String endTime, String noteToPro, String eventCity, long eventLocationLong, long eventLocationLat, String eventStatus, int typeId, int timeId, int sharingOptionId) {
         this.bookerUserId = bookerUserId;
         this.photographerId = photographerId;
@@ -38,7 +62,9 @@ public class EventModel implements Serializable {
         this.sharingOptionId = sharingOptionId;
     }
 
-    public EventModel(String bookerUserId, String photographerId, String eventDate, String bookerUserName, String photographerName, String startTime, String endTime, String noteToPro, String eventCity, String eventId, long eventLocationLong, long eventLocationLat, String eventStatus, int typeId, int timeId, int sharingOptionId) {
+
+    //This constructor contains all data to be retrieved.
+    public EventModel(String bookerUserId, String photographerId, String eventDate, String bookerUserName, String photographerName, String startTime, String endTime, String noteToPro, String eventCity, String eventId, String rejectionReason, long eventLocationLong, long eventLocationLat, String eventStatus, int typeId, int timeId, int sharingOptionId, PackageModel selectedPackage, List<String> eventImagesUrls) {
         this.bookerUserId = bookerUserId;
         this.photographerId = photographerId;
         this.eventDate = eventDate;
@@ -49,12 +75,15 @@ public class EventModel implements Serializable {
         this.noteToPro = noteToPro;
         this.eventCity = eventCity;
         this.eventId = eventId;
+        this.rejectionReason = rejectionReason;
         this.eventLocationLong = eventLocationLong;
         this.eventLocationLat = eventLocationLat;
         this.eventStatus = eventStatus;
         this.typeId = typeId;
         this.timeId = timeId;
         this.sharingOptionId = sharingOptionId;
+        this.selectedPackage = selectedPackage;
+        this.eventImagesUrls = eventImagesUrls;
     }
 
     public String getBookerUserId() {
@@ -185,10 +214,39 @@ public class EventModel implements Serializable {
         this.eventId = eventId;
     }
 
+    public PackageModel getSelectedPackage() {
+        return selectedPackage;
+    }
+
+    public void setSelectedPackage(PackageModel selectedPackage) {
+        this.selectedPackage = selectedPackage;
+    }
+
+    public List<String> getEventImagesUrls() {
+        return eventImagesUrls;
+    }
+
+    public void setEventImagesUrls(List<String> eventImagesUrls) {
+        this.eventImagesUrls = eventImagesUrls;
+    }
+
+    public String getRejectionReason() {
+        return rejectionReason;
+    }
+
+    public void setRejectionReason(String rejectionReason) {
+        this.rejectionReason = rejectionReason;
+    }
+
     @Exclude
     public Map<String, Object> toMap() {
         HashMap<String, Object> result = new HashMap<>();
-        result.put("eventStatus", eventStatus);
+        if (eventStatus != null)
+            result.put("eventStatus", eventStatus);
+        if (eventImagesUrls != null)
+            result.put("eventImagesUrls", eventImagesUrls);
+        if (rejectionReason != null)
+            result.put("rejectionReason", rejectionReason);
         return result;
     }
 }
