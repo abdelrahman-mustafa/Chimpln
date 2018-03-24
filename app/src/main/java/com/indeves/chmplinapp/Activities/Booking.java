@@ -39,9 +39,13 @@ import com.indeves.chmplinapp.API.FirebaseEventsListener;
 import com.indeves.chmplinapp.API.ReadData;
 import com.indeves.chmplinapp.API.WriteData;
 import com.indeves.chmplinapp.Adapters.SpinnerCustomArrayAdapter;
+import com.indeves.chmplinapp.Fragments.UserProfilePhotographersTabSearch;
+import com.indeves.chmplinapp.Fragments.UserProfilePhotographersTabSearchSelect;
 import com.indeves.chmplinapp.Models.EventModel;
 import com.indeves.chmplinapp.Models.LookUpModel;
+import com.indeves.chmplinapp.Models.PackageModel;
 import com.indeves.chmplinapp.Models.ProUserModel;
+import com.indeves.chmplinapp.Models.UserData;
 import com.indeves.chmplinapp.R;
 import com.indeves.chmplinapp.Utility.CircleTransform;
 import com.indeves.chmplinapp.Utility.StepProgressBar;
@@ -56,9 +60,10 @@ import java.util.List;
 import java.util.Locale;
 
 import static com.indeves.chmplinapp.R.id.booking_time_layout;
+import static com.indeves.chmplinapp.R.id.visible;
 
 public class Booking extends StepProgressBar implements View.OnClickListener,AdapterView.OnItemSelectedListener{
-    Spinner eTime,eType,photoShare,eLoction;
+    Spinner eTime,eType,photoShare,eLoction,ePackage;
     TextView proName,proDetails,eDate,timefrom,timeto;
     ImageView proPhoto;
     Button proedit,proceed,timeedit;
@@ -70,6 +75,10 @@ public class Booking extends StepProgressBar implements View.OnClickListener,Ada
     LookUpModel sTime;
     LookUpModel sType;
     LookUpModel sSharingOption;
+    List<PackageModel> ePackageSpinner = new ArrayList<>();
+    PackageModel packageData;
+    String bookerName;
+
 
     String sShareable;
     String sAddress;
@@ -87,6 +96,7 @@ public class Booking extends StepProgressBar implements View.OnClickListener,Ada
     List<LookUpModel> eTypeSpinner = new ArrayList<>();
     List<LookUpModel> eTimeSpinner = new ArrayList<>();
     List<LookUpModel> photoShareSpinner=new ArrayList<>();
+
     EventModel eventModel;
 
 
@@ -145,12 +155,15 @@ public class Booking extends StepProgressBar implements View.OnClickListener,Ada
         addressLine=(EditText)rootview.findViewById(R.id.booking_edittext_insertaddrres);
         addressLine=(EditText)rootview.findViewById(R.id.booking_edittext_insertaddrres) ;
         addressLine.setVisibility(View.GONE);
+        ePackage=(Spinner)rootview.findViewById(R.id.booking_spiner_package);
+        ePackage.setOnItemSelectedListener(this);
 
     //    eTimeSpinner.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
        /* eTimeSpinner.add("Full Day");
         eTimeSpinner.add("Half Day");
         eTimeSpinner.add("Per hour");*/
         photoShare.setOnItemSelectedListener(this);
+        ePackage.setVisibility(View.GONE);
 
 
 
@@ -179,7 +192,7 @@ public class Booking extends StepProgressBar implements View.OnClickListener,Ada
         geocoder = new Geocoder(getContext(), Locale.getDefault());
         proName.setText(pro.getName());
         proDetails.setText(pro.getCity()+"-"+pro.getCountry());
-        Picasso.with(getContext()).load(pro.profilePicUrl).resize(40, 40).transform(new CircleTransform()).into(proPhoto);
+        Picasso.with(getContext()).load(pro.profilePicUrl).resize(45, 45).transform(new CircleTransform()).into(proPhoto);
         ReadData readData = new ReadData();
         readData.getLookupsByType("eventTypesLookups", new ReadData.LookUpsListener() {
             @Override
@@ -226,6 +239,7 @@ public class Booking extends StepProgressBar implements View.OnClickListener,Ada
 
             }
         });
+        readData.getUserInfoById(FirebaseAuth.getInstance().getCurrentUser().getUid());
 
 
 
@@ -274,6 +288,17 @@ public class Booking extends StepProgressBar implements View.OnClickListener,Ada
     @SuppressLint("ResourceAsColor")
     @Override
     public void onClick(View v) {
+        if (v==proedit){
+            UserProfilePhotographersTabSearch output = new UserProfilePhotographersTabSearch();
+            android.support.v4.app.FragmentTransaction transaction = getFragmentManager().beginTransaction();
+
+            getActivity().findViewById(R.id.userProfile_LinearLayout).setVisibility(View.VISIBLE);
+
+
+
+            transaction.replace(R.id.container_o, output).commit();
+
+        }
         if (v==proceed)
         { sAddress=addressLine.getText().toString();
             if (sAddress.length()>5){boolAddress=true;}
@@ -323,7 +348,11 @@ public class Booking extends StepProgressBar implements View.OnClickListener,Ada
                 progressDialog.setMessage("Please wait...");
                 progressDialog.setCanceledOnTouchOutside(false);
                 progressDialog.show();
-                eventModel = new EventModel(FirebaseAuth.getInstance().getCurrentUser().getUid(), pro.getUid(), sDate, FirebaseAuth.getInstance().getCurrentUser().getDisplayName(), pro.getName(), timefrom.getText().toString(), timeto.getText().toString(), sNote, sAddress, (long) place.getLatLng().longitude, (long) place.getLatLng().latitude, "pending",sType.getId() , sTime.getId(), sSharingOption.getId());
+                if (timefrom.getText().toString().equals("From")){timefrom.setText("");}
+                if (timeto.getText().toString().equals("To")){timeto.setText("");}
+
+
+                    eventModel = new EventModel(FirebaseAuth.getInstance().getCurrentUser().getUid(), pro.getUid(), sDate, bookerName, pro.getName(), timefrom.getText().toString(), timeto.getText().toString(), sNote, sAddress, (long) place.getLatLng().longitude, (long) place.getLatLng().latitude, "pending",sType.getId() , sTime.getId(), sSharingOption.getId(),packageData);
                 WriteData writeData = new WriteData(firebaseEventsListener);
                 try {
                    writeData.bookNewEvent(eventModel);
@@ -465,11 +494,30 @@ public class Booking extends StepProgressBar implements View.OnClickListener,Ada
             }
             case R.id.booking_spiner_etype:
                 {
+                    if (position!=0){
                     sType = eTypeSpinner.get(position);
                     boolType=true;
+                    ePackage.setVisibility(View.VISIBLE);
+                    ePackageSpinner = new ArrayList<>();
+                    if (pro.getPackages()!=null){
+                    for (int i = 0;i<pro.getPackages().size();i++){
+                        if (pro.getPackages().get(i).getEventTypeId()==sType.getId()){ePackageSpinner.add(pro.getPackages().get(i));}
+                    }
 
-                break;
+                    ArrayAdapter<PackageModel> typePackage = new ArrayAdapter<PackageModel>(getContext(), android.R.layout.simple_spinner_item, ePackageSpinner);
+
+                    typePackage.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                    ePackage.setAdapter(typePackage);}}
+
+
+
+                    break;
                 }
+                  case R.id.booking_spiner_package:{
+                      packageData = ePackageSpinner.get(position);
+
+
+                  }
             case R.id.booking_spinner_photoshare:
                 {
 
@@ -542,13 +590,15 @@ public class Booking extends StepProgressBar implements View.OnClickListener,Ada
                     e.printStackTrace();
                 }
                 String toastMsg = String.format("Place: %s", place.getName());
+                if (place.getLatLng()!=null){if (addresses!=null){
 
                 final String address = addresses.get(0).getAddressLine(0); // If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
                 final String city = addresses.get(0).getLocality();
                 Log.i("1",toastMsg);
                 Log.i("2",address+"\n"+city);
-                addressLine.setText(address);
-                boolAddress=true;
+                addressLine.setText(address);}
+                else addressLine.setText(toastMsg   );
+                boolAddress=true;}
 
             }
             if (resultCode == Activity.RESULT_CANCELED) {
@@ -592,9 +642,17 @@ public class Booking extends StepProgressBar implements View.OnClickListener,Ada
 
         @Override
         public void onReadDataResponse(DataSnapshot dataSnapshot) {
+            if (dataSnapshot != null && dataSnapshot.getValue() != null) {
+                if ( dataSnapshot.getValue(UserData.class).getName()!=null&& !(dataSnapshot.getValue(UserData.class).getName().equals(""))){
+                bookerName = dataSnapshot.getValue(UserData.class).getName();}
+                else bookerName= dataSnapshot.getValue(UserData.class).getEmail();
+            } else {
+                Toast.makeText(getContext(), "Error loading your data", Toast.LENGTH_SHORT).show();
+            }
 
         }
     };
+
 
 
 }

@@ -65,7 +65,7 @@ public class Approval extends StepProgressBar {
             @Override
             public void onLookUpsResponse(List<LookUpModel> eventTypeLookups) {
                 Log.v("EventTypeLookupsArr", eventTypeLookups.toString());
-               timeData= eventTypeLookups.get(model.getTimeId());
+               timeData= eventTypeLookups.get(model.getTimeId()-1);
                 if (timeData.getId()==3){time.setText(timeData.getEnglishName()+" From "+model.getStartTime()+"  to "+model.getEndTime());}
                 else {time.setText(timeData.getEnglishName());}
 
@@ -78,7 +78,7 @@ public class Approval extends StepProgressBar {
             @Override
             public void onLookUpsResponse(List<LookUpModel> eventTypeLookups) {
                 Log.v("EventTypeLookupsArr", eventTypeLookups.toString());
-                eventTypeData= eventTypeLookups.get(model.getTypeId());
+                eventTypeData= eventTypeLookups.get(model.getTypeId()-1);
                 type.setText(eventTypeData.getEnglishName());
 
 
@@ -89,7 +89,7 @@ public class Approval extends StepProgressBar {
             @Override
             public void onLookUpsResponse(List<LookUpModel> eventTypeLookups) {
                 Log.v("EventTypeLookupsArr", eventTypeLookups.toString());
-                sharingOptionData= eventTypeLookups.get(model.getSharingOptionId());
+                sharingOptionData= eventTypeLookups.get(model.getSharingOptionId()-1);
                 share.setText(sharingOptionData.getEnglishName());
             }
         });

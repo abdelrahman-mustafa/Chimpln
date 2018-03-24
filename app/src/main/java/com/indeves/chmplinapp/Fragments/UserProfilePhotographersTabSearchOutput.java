@@ -62,6 +62,7 @@ public class UserProfilePhotographersTabSearchOutput extends android.support.v4.
         date = rootView.findViewById(R.id.userProfile_phot_search_date);
         numEvents = rootView.findViewById(R.id.userProfile_phot_search_number_events);
         linearLayout = rootView.findViewById(R.id.view);
+        linearLayout.setVisibility(View.VISIBLE);
 
 //        UserAccPhotographerData data = new UserAccPhotographerData("Ahmed Mohamed", "Cairo, Egypt", "EGP", "2000", "Male");
 //

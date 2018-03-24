@@ -68,6 +68,7 @@
     <string name="button_logout">logout</string>
     <string name="error_field_missing">Please fill this field</string>
     <string name="title_activity_rejected">Rejected</string>
+    <string name="title_activity_maps2">Map</string>
 
 
 </resources>
