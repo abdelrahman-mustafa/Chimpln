@@ -74,6 +74,7 @@ public class Booking extends StepProgressBar implements View.OnClickListener, Ad
     int dpyear , dpday,dpmonth;
     LinearLayout layout;
     String sDate;
+    View view_bookig;
     LookUpModel sTime;
     LookUpModel sType;
     LookUpModel sSharingOption;
@@ -189,6 +190,9 @@ public class Booking extends StepProgressBar implements View.OnClickListener, Ad
         addressLine.setVisibility(View.GONE);
         ePackage=(Spinner)rootview.findViewById(R.id.booking_spiner_package);
         ePackage.setOnItemSelectedListener(this);
+        view_bookig=(View)rootview.findViewById(R.id.booking_view);
+        view_bookig.setVisibility(View.GONE);
+
 
     //    eTimeSpinner.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
        /* eTimeSpinner.add("Full Day");
@@ -510,8 +514,9 @@ public class Booking extends StepProgressBar implements View.OnClickListener, Ad
                     if (position!=0){
                     sType = eTypeSpinner.get(position);
                     boolType=true;
+                    view_bookig.setVisibility(View.VISIBLE);
                     ePackage.setVisibility(View.VISIBLE);
-                    ePackageSpinner = new ArrayList<>();
+                    ePackageSpinner =new ArrayList<>();
                     if (pro.getPackages()!=null){
                     for (int i = 0;i<pro.getPackages().size();i++){
                         if (pro.getPackages().get(i).getEventTypeId()==sType.getId()){ePackageSpinner.add(pro.getPackages().get(i));}
