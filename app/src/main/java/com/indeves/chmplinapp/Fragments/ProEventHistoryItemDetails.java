@@ -11,6 +11,7 @@ import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -20,6 +21,8 @@ import android.widget.TextView;
 import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
+import com.indeves.chmplinapp.API.CloudStorageAPI;
+import com.indeves.chmplinapp.API.CloudStorageListener;
 import com.indeves.chmplinapp.API.FirebaseEventsListener;
 import com.indeves.chmplinapp.API.ReadData;
 import com.indeves.chmplinapp.Activities.ProRegActivity;
@@ -43,6 +46,7 @@ public class ProEventHistoryItemDetails extends Fragment implements FirebaseEven
     ProgressDialog progressDialog;
     RelativeLayout backButtonLayout;
     RecyclerView imagesRecycleView;
+    Button saveImages;
     AddImagesArrayAdapter addImagesArrayAdapter;
     ArrayList<Bitmap> eventImages;
     private EventModel selectedEvent;
@@ -90,6 +94,9 @@ public class ProEventHistoryItemDetails extends Fragment implements FirebaseEven
         eventType = rootView.findViewById(R.id.userProfile_event_type);
         backButtonLayout = rootView.findViewById(R.id.backButtonLayout);
         backButtonLayout.setOnClickListener(this);
+        saveImages = rootView.findViewById(R.id.save_event_photos_button);
+//ToDO: enable button action after sending this app version
+        //        saveImages.setOnClickListener(this);
         imagesRecycleView = rootView.findViewById(R.id.card_recycler_view);
         int numberOfColumns = 4;
         eventImages = new ArrayList<>();
@@ -183,7 +190,7 @@ public class ProEventHistoryItemDetails extends Fragment implements FirebaseEven
                 }
 
             }
-            if (selectedEvent.getStartTime() != null && selectedEvent.getEndTime() != null) {
+            if (selectedEvent.getStartTime() != null && !selectedEvent.getStartTime().isEmpty() && selectedEvent.getEndTime() != null && !selectedEvent.getEndTime().isEmpty()) {
                 String timeString = selectedEvent.getStartTime() + " - " + selectedEvent.getEndTime();
                 time.setText(timeString);
 
@@ -210,6 +217,26 @@ public class ProEventHistoryItemDetails extends Fragment implements FirebaseEven
             FragmentManager fragmentManager = getFragmentManager();
             if (fragmentManager != null) {
                 fragmentManager.popBackStack();
+            }
+        } else if (v == saveImages) {
+            if (eventImages != null && eventImages.size() > 1) {
+                progressDialog.setCanceledOnTouchOutside(false);
+                progressDialog.show();
+                CloudStorageAPI cloudStorageAPI = new CloudStorageAPI();
+                cloudStorageAPI.UploadEventImages(selectedEvent.getEventId(), eventImages, new CloudStorageListener.UploadEventImagesListener() {
+                    @Override
+                    public void onImagesUploaded(ArrayList<String> imagesUrls) {
+                        progressDialog.dismiss();
+                        if (imagesUrls != null) {
+                            Log.v("uploadImages", "Images uploaded successfully");
+                            Log.v("UrlsArr", imagesUrls.toString());
+                        } else {
+                            Toast.makeText(getContext(), "oops! Something went wrong", Toast.LENGTH_SHORT).show();
+                        }
+                    }
+                });
+            } else {
+                Toast.makeText(getContext(), "Please pick the images you want to upload", Toast.LENGTH_SHORT).show();
             }
         }
 
@@ -245,6 +272,9 @@ public class ProEventHistoryItemDetails extends Fragment implements FirebaseEven
                 Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
 //                Bitmap.createScaledBitmap(selectedImage, 120, 120, false);
                 eventImages.add(0, selectedImage);
+                if (eventImages.size() > 10) {
+                    eventImages.remove(eventImages.size() - 1);
+                }
                 addImagesArrayAdapter.notifyDataSetChanged();
 
             } catch (FileNotFoundException e) {

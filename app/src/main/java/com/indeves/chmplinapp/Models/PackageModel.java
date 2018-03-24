@@ -1,10 +1,12 @@
 package com.indeves.chmplinapp.Models;
 
+import java.io.Serializable;
+
 /**
  * Created by khalid on 27/02/18.
  */
 
-public class PackageModel {
+public class PackageModel implements Serializable {
     private String packageTitle, packageDescription;
     private int eventTypeId, eventTimeId, price;
 

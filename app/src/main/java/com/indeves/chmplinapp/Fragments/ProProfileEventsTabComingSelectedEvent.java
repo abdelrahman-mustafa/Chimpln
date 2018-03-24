@@ -1,6 +1,7 @@
 package com.indeves.chmplinapp.Fragments;
 
 import android.annotation.SuppressLint;
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
@@ -14,6 +15,7 @@ import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.firebase.database.DataSnapshot;
 import com.indeves.chmplinapp.API.FirebaseEventsListener;
@@ -31,10 +33,12 @@ import java.util.List;
 
 @SuppressLint("ValidFragment")
 public class ProProfileEventsTabComingSelectedEvent extends android.support.v4.app.Fragment implements View.OnClickListener, FirebaseEventsListener {
-    TextView name, type, time, day, month, share, location, eventType, notes, fees, locationString;
+    TextView name, type, time, day, month, share, location, eventType, notes, fees, locationString, eventPackage, eventTypeAgainWithoutReason, sharingOptionAgainwithNoReason;
     Button endEvent;
     EventModel eventModel;
-    FragmentManager fragmentManager;
+    List<LookUpModel> eventTypes, eventTimes, sharingOptions;
+    ReadData readData;
+    ProgressDialog progressDialog;
 
     @SuppressLint("ValidFragment")
     public ProProfileEventsTabComingSelectedEvent(EventModel eventModel) {
@@ -44,6 +48,14 @@ public class ProProfileEventsTabComingSelectedEvent extends android.support.v4.a
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        eventTimes = new ArrayList<>();
+        eventTypes = new ArrayList<>();
+        sharingOptions = new ArrayList<>();
+        progressDialog = new ProgressDialog(getContext());
+        progressDialog.setCanceledOnTouchOutside(false);
+        progressDialog.setMessage("Please wait.. ");
+        progressDialog.show();
+        loadLookups();
     }
 
     @SuppressLint("SetTextI18n")
@@ -63,21 +75,62 @@ public class ProProfileEventsTabComingSelectedEvent extends android.support.v4.a
         fees = view.findViewById(R.id.selected_event_fees);
         notes = view.findViewById(R.id.selected_event_notes);
         locationString = view.findViewById(R.id.selected_event_location);
+        eventPackage = view.findViewById(R.id.selected_event_package);
+        eventTypeAgainWithoutReason = view.findViewById(R.id.selected_event_type);
+        sharingOptionAgainwithNoReason = view.findViewById(R.id.selected_event_sharing_option);
         endEvent.setOnClickListener(this);
-        initializeData();
-
         return view;
     }
 
     public void initializeData() {
-        name.setText(eventModel.getBookerUserName());
-        notes.setText(eventModel.getNoteToPro());
-        time.setText(eventModel.getEventDate());
-        location.setText(eventModel.getEventCity());
-        locationString.setText(eventModel.getEventCity());
-        share.setText(String.valueOf(eventModel.getSharingOptionId()));
-        fees.setText("xxxxxxx");
 
+        if (eventModel != null) {
+            name.setText(eventModel.getBookerUserName());
+            notes.setText(eventModel.getNoteToPro());
+            locationString.setText(eventModel.getEventCity());
+            String[] eventDateParts = eventModel.getEventDate().split("-");
+            day.setText(eventDateParts[0]);
+            if (eventTypes != null) {
+                for (LookUpModel eventTypeElement : eventTypes) {
+                    if (eventModel.getTypeId() == eventTypeElement.getId()) {
+                        eventType.setText(eventTypeElement.getEnglishName());
+                        eventTypeAgainWithoutReason.setText(eventTypeElement.getEnglishName());
+
+                    }
+                }
+
+            }
+            if (sharingOptions != null) {
+                for (LookUpModel sharingOptionElement : sharingOptions) {
+                    if (eventModel.getSharingOptionId() == sharingOptionElement.getId()) {
+                        share.setText(sharingOptionElement.getEnglishName());
+                        sharingOptionAgainwithNoReason.setText(sharingOptionElement.getEnglishName());
+                    }
+                }
+
+            }
+            if (eventModel.getStartTime() != null && !eventModel.getStartTime().isEmpty() && eventModel.getEndTime() != null && !eventModel.getEndTime().isEmpty()) {
+                String timeString = eventModel.getStartTime() + " - " + eventModel.getEndTime();
+                time.setText(timeString);
+
+            } else {
+                if (eventTimes != null) {
+                    for (LookUpModel eventTimesElement : eventTimes) {
+                        if (eventTimesElement.getId() == eventModel.getTimeId()) {
+                            time.setText(eventTimesElement.getEnglishName());
+
+                        }
+                    }
+                }
+            }
+            location.setText(eventModel.getEventCity());
+            month.setText(eventDateParts[1]);
+
+            if (eventModel.getSelectedPackage() != null) {
+                eventPackage.setText(eventModel.getSelectedPackage().getPackageTitle());
+            }
+
+        }
     }
 
     @Override
@@ -97,10 +150,10 @@ public class ProProfileEventsTabComingSelectedEvent extends android.support.v4.a
     @Override
     public void onWriteDataCompleted(boolean writeSuccessful) {
         if (writeSuccessful) {
-            fragmentManager = getActivity().getSupportFragmentManager();
-            ProProfileEventsTabUpComming frag = new ProProfileEventsTabUpComming();
-            FragmentTransaction transaction = fragmentManager.beginTransaction();
-            transaction.replace(R.id.main_container, frag).commit();
+            FragmentManager fragmentManager = getFragmentManager();
+            if (fragmentManager != null) {
+                fragmentManager.popBackStack();
+            }
         } else {
             Toasts toasts = new Toasts(getContext());
             toasts.wrongMe();
@@ -109,6 +162,47 @@ public class ProProfileEventsTabComingSelectedEvent extends android.support.v4.a
 
     @Override
     public void onReadDataResponse(DataSnapshot dataSnapshot) {
+
+    }
+
+    public void loadLookups() {
+        readData = new ReadData();
+        //using nested calls is to make sure that all lookups are loaded
+        readData.getLookupsByType("eventTypesLookups", new ReadData.LookUpsListener() {
+            @Override
+            public void onLookUpsResponse(List<LookUpModel> eventTypeLookups) {
+                if (eventTypeLookups != null) {
+                    eventTypes.addAll(eventTypeLookups);
+                    readData.getLookupsByType("eventTimesLookups", new ReadData.LookUpsListener() {
+                        @Override
+                        public void onLookUpsResponse(List<LookUpModel> lookups) {
+                            if (lookups != null) {
+                                eventTimes.addAll(lookups);
+                                readData.getLookupsByType("shringOptionLookups", new ReadData.LookUpsListener() {
+                                    @Override
+                                    public void onLookUpsResponse(List<LookUpModel> lookups) {
+                                        progressDialog.dismiss();
+                                        if (lookups != null) {
+                                            sharingOptions.addAll(lookups);
+                                            initializeData();
+                                        } else {
+                                            Toast.makeText(getContext(), "Failed to load event data", Toast.LENGTH_SHORT).show();
+                                        }
+                                    }
+                                });
+                            } else {
+                                progressDialog.dismiss();
+                                Toast.makeText(getContext(), "Failed to load event data", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+                } else {
+                    progressDialog.dismiss();
+                    Toast.makeText(getContext(), "Failed to load event data", Toast.LENGTH_SHORT).show();
+                }
+            }
+        });
+
 
     }
 }

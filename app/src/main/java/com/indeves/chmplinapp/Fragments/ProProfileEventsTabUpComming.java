@@ -86,7 +86,7 @@ public class ProProfileEventsTabUpComming extends android.support.v4.app.Fragmen
                 fragmentManager = getActivity().getSupportFragmentManager();
                 ProProfileEventsTabComingSelectedEvent frag = new ProProfileEventsTabComingSelectedEvent(eventModels.get(position));
                 FragmentTransaction transaction = fragmentManager.beginTransaction();
-                transaction.replace(R.id.main_container, frag).commit();
+                transaction.replace(R.id.main_container, frag).addToBackStack(null).commit();
 
             }
 

@@ -21,6 +21,8 @@ import java.util.ArrayList;
 
 public class CloudStorageAPI {
     private StorageReference imagesRef, eventsImages;
+    private ArrayList<String> imagesURLs;
+    private int counter;
 
     public CloudStorageAPI() {
         this.imagesRef = FirebaseStorage.getInstance().getReference().child("usersImages");
@@ -53,8 +55,40 @@ public class CloudStorageAPI {
 
     }
 
-    public void UploadEventImages(int eventId, final ArrayList<Bitmap> images) {
+    public void UploadEventImages(String eventId, final ArrayList<Bitmap> images, final CloudStorageListener.UploadEventImagesListener uploadEventImagesListener) {
         //Firebase cloud storage SDK doesn't have a multiple files upload method, so we will make it manually
+        imagesURLs = new ArrayList<>();
+        counter = 1;
+        StorageReference eventImagesIds = eventsImages.child(eventId);
+        for (Bitmap image : images) {
+            if (image != null) {
+                ByteArrayOutputStream baos = new ByteArrayOutputStream();
+                image.compress(Bitmap.CompressFormat.JPEG, 100, baos);
+                byte[] data = baos.toByteArray();
+                String imageId = counter + ".jpg";
+                counter++;
+                StorageReference imageRef = eventImagesIds.child(imageId);
+                UploadTask uploadTask = imageRef.putBytes(data);
+                uploadTask.addOnFailureListener(new OnFailureListener() {
+                    @Override
+                    public void onFailure(@NonNull Exception exception) {
+                        Log.v("UploadImageEx", exception.toString());
+                        uploadEventImagesListener.onImagesUploaded(null);
+                    }
+                }).addOnSuccessListener(new OnSuccessListener<UploadTask.TaskSnapshot>() {
+                    @Override
+                    public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
+                        String downloadUrl = taskSnapshot.getDownloadUrl().toString();
+                        imagesURLs.add(downloadUrl);
+                        if (imagesURLs.size() == images.size()) ;
+                        {
+                            uploadEventImagesListener.onImagesUploaded(imagesURLs);
+                        }
+
+                    }
+                });
+            }
+        }
 
     }
 

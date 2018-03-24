@@ -207,7 +207,7 @@
 
 
     <Button
-        android:id="@+id/selected_event_end"
+        android:id="@+id/save_event_photos_button"
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
