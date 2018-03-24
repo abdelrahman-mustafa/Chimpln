@@ -75,7 +75,7 @@ public class ProEventsArrayAdapter extends RecyclerView.Adapter<ProEventsArrayAd
             }
 
         }
-        if (pData.getStartTime() != null && pData.getEndTime() != null) {
+        if (pData.getStartTime() != null && !pData.getStartTime().isEmpty() && pData.getEndTime() != null && !pData.getEndTime().isEmpty()) {
             String timeString = pData.getStartTime() + " - " + pData.getEndTime();
             holder.time.setText(timeString);
 

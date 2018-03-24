@@ -61,6 +61,6 @@ public class PackageModel {
 
     @Override
     public String toString() {
-        return this.packageTitle;
+        return this.packageTitle + ",  " + this.price;
     }
 }

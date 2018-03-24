@@ -126,7 +126,7 @@ public class ProEventResponse extends Fragment implements View.OnClickListener, 
                 }
 
             }
-            if (selectedEvent.getStartTime() != null && selectedEvent.getEndTime() != null) {
+            if (selectedEvent.getStartTime() != null && !selectedEvent.getStartTime().isEmpty() && selectedEvent.getEndTime() != null && !selectedEvent.getEndTime().isEmpty()) {
                 String timeString = selectedEvent.getStartTime() + " - " + selectedEvent.getEndTime();
                 time.setText(timeString);
 
