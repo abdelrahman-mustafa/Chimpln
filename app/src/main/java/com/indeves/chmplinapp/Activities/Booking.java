@@ -62,14 +62,16 @@ import java.util.Locale;
 import static com.indeves.chmplinapp.R.id.booking_time_layout;
 import static com.indeves.chmplinapp.R.id.visible;
 
-public class Booking extends StepProgressBar implements View.OnClickListener,AdapterView.OnItemSelectedListener{
+public class Booking extends StepProgressBar implements View.OnClickListener, AdapterView.OnItemSelectedListener {
+    static final int Did = 0;
+    private static final String ARG_PARAM1 = "param1";
+    private static final String ARG_PARAM2 = "param2";
     Spinner eTime,eType,photoShare,eLoction,ePackage;
     TextView proName,proDetails,eDate,timefrom,timeto;
     ImageView proPhoto;
     Button proedit,proceed,timeedit;
     EditText note,addressLine;
     int dpyear , dpday,dpmonth;
-    static final int Did=0;
     LinearLayout layout;
     String sDate;
     LookUpModel sTime;
@@ -78,17 +80,11 @@ public class Booking extends StepProgressBar implements View.OnClickListener,Ada
     List<PackageModel> ePackageSpinner = new ArrayList<>();
     PackageModel packageData;
     String bookerName;
-
-
     String sShareable;
     String sAddress;
     String sNote;
     Boolean boolDate=false,booltime=false,boolType=false,boolAddress=false,fromto=true,from=false,to=false,boolshareable=false;
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
     int REQUST=1;
-    private String mParam1;
-    private String mParam2;
     int PLACE_PICKER_REQUEST = 5;
     Geocoder geocoder;
     ProgressDialog progressDialog ;
@@ -96,21 +92,56 @@ public class Booking extends StepProgressBar implements View.OnClickListener,Ada
     List<LookUpModel> eTypeSpinner = new ArrayList<>();
     List<LookUpModel> eTimeSpinner = new ArrayList<>();
     List<LookUpModel> photoShareSpinner=new ArrayList<>();
-
     EventModel eventModel;
-
-
-
-
     ProUserModel pro;
     String type;
     Button button;
+    private String mParam1;
+    private String mParam2;
+    private DatePickerDialog.OnDateSetListener dlistener = new DatePickerDialog.OnDateSetListener() {
+        @Override
+        public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
+            dpyear = i;
+            dpmonth = i1 + 1;
+            dpday = i2;
+            String[] months = {"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
+            eDate.setText(String.valueOf(dpday) + "-" + months[dpmonth - 1] + "-" + String.valueOf(dpyear));
+
+        }
+    };
+    private FirebaseEventsListener firebaseEventsListener = new FirebaseEventsListener() {
+        @Override
+        public void onWriteDataCompleted(boolean writeSuccessful) {
+            progressDialog.dismiss();
+            if (writeSuccessful) {
+                Toast.makeText(getContext(), "Done", Toast.LENGTH_LONG).show();
+                stateprogressbar.checkStateCompleted(true);
+                Approval output = new Approval(eventModel);
+                android.support.v4.app.FragmentTransaction transaction = getFragmentManager().beginTransaction();
+                Log.i("done", "done");
+
+                transaction.replace(R.id.container_o, output).commit();
+
+            }
+        }
+
+        @Override
+        public void onReadDataResponse(DataSnapshot dataSnapshot) {
+            if (dataSnapshot != null && dataSnapshot.getValue() != null) {
+                if (dataSnapshot.getValue(UserData.class).getName() != null && !(dataSnapshot.getValue(UserData.class).getName().equals(""))) {
+                    bookerName = dataSnapshot.getValue(UserData.class).getName();
+                } else bookerName = dataSnapshot.getValue(UserData.class).getEmail();
+            } else {
+                Toast.makeText(getContext(), "Error loading your data", Toast.LENGTH_SHORT).show();
+            }
+
+        }
+    };
 
     @SuppressLint("ValidFragment")
     public Booking(ProUserModel pro, String type) {
         this.pro = pro;
     }
-
     public Booking() {
         // Required empty public constructor
     }
@@ -119,6 +150,7 @@ public class Booking extends StepProgressBar implements View.OnClickListener,Ada
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
@@ -193,7 +225,7 @@ public class Booking extends StepProgressBar implements View.OnClickListener,Ada
         proName.setText(pro.getName());
         proDetails.setText(pro.getCity()+"-"+pro.getCountry());
         Picasso.with(getContext()).load(pro.profilePicUrl).resize(45, 45).transform(new CircleTransform()).into(proPhoto);
-        ReadData readData = new ReadData();
+        ReadData readData = new ReadData(firebaseEventsListener);
         readData.getLookupsByType("eventTypesLookups", new ReadData.LookUpsListener() {
             @Override
             public void onLookUpsResponse(List<LookUpModel> eventTypeLookups) {
@@ -261,10 +293,6 @@ public class Booking extends StepProgressBar implements View.OnClickListener,Ada
 
     }
 
-
-
-
-
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -276,14 +304,6 @@ public class Booking extends StepProgressBar implements View.OnClickListener,Ada
 
 
     }
-
-
-
-
-
-
-
-
 
     @SuppressLint("ResourceAsColor")
     @Override
@@ -447,13 +467,6 @@ public class Booking extends StepProgressBar implements View.OnClickListener,Ada
         }
     }
 
-
-
-
-
-
-
-
     @SuppressLint("ResourceAsColor")
     @Override
 
@@ -564,17 +577,7 @@ public class Booking extends StepProgressBar implements View.OnClickListener,Ada
 
 
     }
-    private DatePickerDialog.OnDateSetListener dlistener = new DatePickerDialog.OnDateSetListener() {
-        @Override
-        public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
-            dpyear=i;
-            dpmonth=i1+1;
-            dpday=i2;
-            String[] months= {"Jan","Feb","Mar","Apr","May","Jun","Jul","Aug","Sep","Oct","Nov","Dec" };
-            eDate.setText(String.valueOf(dpday)+"-"+months[dpmonth-1]+"-"+String.valueOf(dpyear));
 
-        }
-    };
     @SuppressLint("ResourceAsColor")
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
@@ -624,34 +627,6 @@ public class Booking extends StepProgressBar implements View.OnClickListener,Ada
         else {return false;}
 
     }
-    private FirebaseEventsListener firebaseEventsListener = new FirebaseEventsListener() {
-        @Override
-        public void onWriteDataCompleted(boolean writeSuccessful) {
-            progressDialog.dismiss();
-            if (writeSuccessful) {
-                Toast.makeText(getContext(), "Done", Toast.LENGTH_LONG).show();
-                stateprogressbar.checkStateCompleted(true);
-                Approval output = new Approval(eventModel);
-                android.support.v4.app.FragmentTransaction transaction = getFragmentManager().beginTransaction();
-                Log.i("done","done");
-
-                transaction.replace(R.id.container_o, output).commit();
-
-            }
-        }
-
-        @Override
-        public void onReadDataResponse(DataSnapshot dataSnapshot) {
-            if (dataSnapshot != null && dataSnapshot.getValue() != null) {
-                if ( dataSnapshot.getValue(UserData.class).getName()!=null&& !(dataSnapshot.getValue(UserData.class).getName().equals(""))){
-                bookerName = dataSnapshot.getValue(UserData.class).getName();}
-                else bookerName= dataSnapshot.getValue(UserData.class).getEmail();
-            } else {
-                Toast.makeText(getContext(), "Error loading your data", Toast.LENGTH_SHORT).show();
-            }
-
-        }
-    };
 
 
 
