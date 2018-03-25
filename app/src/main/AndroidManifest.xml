@@ -65,6 +65,7 @@
             android:name=".Activities.MapsActivity"
             android:label="@string/title_activity_maps" />
         <activity android:name=".Activities.ProRegActivity" />
+        <activity android:name=".Activities.SplashActivity"></activity>
     </application>
 
 </manifest>

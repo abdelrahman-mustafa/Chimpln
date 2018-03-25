@@ -20,6 +20,7 @@ import android.widget.TextView;
 import com.indeves.chmplinapp.API.ReadData;
 import com.indeves.chmplinapp.Models.CityLookUpModel;
 import com.indeves.chmplinapp.Models.LookUpModel;
+import com.indeves.chmplinapp.Models.ProUserModel;
 import com.indeves.chmplinapp.R;
 
 import java.util.ArrayList;
@@ -88,22 +89,38 @@ public class UserProfilePhotographersTabSearchSelect extends android.support.v4.
         search.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View view) {
-                linear.setVisibility(View.GONE);
-                search.setVisibility(View.GONE);
 
-                UserProfilePhotographersTabSearchOutput output = new UserProfilePhotographersTabSearchOutput();
-                android.support.v4.app.FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
 
-                transaction.replace(R.id.container_special, output);
-                transaction.commit();
+                ReadData readData = new ReadData();
+                readData.getAllPros(new ReadData.AllProsListener() {
+                    @Override
+                    public void onProsResponse(ArrayList<ProUserModel> pros) {
+                        //deal with pros
+                        //    Log.v("ALlPros", pros.toString());
+
+                        linear.setVisibility(View.GONE);
+                        search.setVisibility(View.GONE);
+                        for (int i = 0; i < pros.size(); i++) {
+                            if (pros.get(i).getCity() != null && pros.get(i).getCity().contains(spinCity.getSelectedItem().toString())|pros.get(i).getGender().contains(spinGender.getSelectedItem().toString())) {
+                                ArrayList<ProUserModel> customList = new ArrayList<>();
+                                customList.add(pros.get(i));
+                                UserProfilePhotographersTabSearchOutput output = new UserProfilePhotographersTabSearchOutput(customList);
+                                android.support.v4.app.FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+
+                                transaction.replace(R.id.container_special, output);
+                                transaction.commit();
+
+
+                            }
+                        }
+                    }
+                });
+
+
             }
         });
 
 
-        spinbirthPicker.setPrompt(getResources().getString(R.string.selectEvDate));
-        spinEventType.setPrompt(getResources().getString(R.string.selectEvType));
-        spinCity.setPrompt(getResources().getString(R.string.selectEvCity));
-        spinGender.setPrompt(getResources().getString(R.string.selectEvGender));
 
         genderCategories = new ArrayList<String>();
         genderCategories.add(getResources().getString(R.string.gender));
@@ -120,6 +137,13 @@ public class UserProfilePhotographersTabSearchSelect extends android.support.v4.
         citiesArrayAdapter = new ArrayAdapter<CityLookUpModel>(getContext(), R.layout.spinner_item, citiesList);
         citiesArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinCity.setAdapter(citiesArrayAdapter);
+
+
+
+
+
+
+
         //-------------------------------------------------
 
         eventTypesList.add(0, new LookUpModel(0, getResources().getString(R.string.selectPackTy)));
@@ -143,8 +167,25 @@ public class UserProfilePhotographersTabSearchSelect extends android.support.v4.
 
     @Override
     public void onClick(View v) {
-        if (v == search){
-            // add query function to get the data match the outputs of search
+        if (v == search) {
+        /*    // add query function to get the data match the outputs of search
+            ReadData readData = new ReadData();
+            readData.getAllPros(new ReadData.AllProsListener() {
+                @Override
+                public void onProsResponse(ArrayList<ProUserModel> pros) {
+                    //deal with pros
+                    Log.v("ALlPros", pros.toString());
+                    for (ProUserModel d : pros) {
+                        if (d.getCity() != null && d.getCity().contains(spinCity.getSelectedItem().toString())) {
+                            ArrayList<ProUserModel> customList = new ArrayList<>();
+                            customList.add(d);
+
+
+                        }
+                    }
+                }
+            });*/
+
         }
 
     }
@@ -164,7 +205,7 @@ public class UserProfilePhotographersTabSearchSelect extends android.support.v4.
         } else if (parent.getId() == spinCity.getId()) {
             selectedCity = citiesList.get(position).getEnglishName();
 
-        }else if (parent.getId() == spinEventType.getId()){
+        } else if (parent.getId() == spinEventType.getId()) {
             selectedEventType = eventTypesList.get(position);
 
         }

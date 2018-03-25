@@ -9,6 +9,7 @@ import com.google.firebase.database.DatabaseError;
 import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
 import com.google.firebase.database.GenericTypeIndicator;
+import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.indeves.chmplinapp.Models.CityLookUpModel;
 import com.indeves.chmplinapp.Models.LookUpModel;
@@ -226,9 +227,11 @@ public class ReadData {
     }
 
     public void searchPros(){
-        mDatabase = FirebaseDatabase.getInstance().getReference("users");
+        DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
 
-        mDatabase.orderByChild("city").equalTo("cairo").addChildEventListener(new ChildEventListener() {
+        Query query = reference.child("users").orderByChild("city").equalTo("cairo");
+
+        query.addChildEventListener(new ChildEventListener() {
             @Override
             public void onChildAdded(DataSnapshot dataSnapshot, String prevChildKey) {
                 Log.v("ggg", dataSnapshot.toString());

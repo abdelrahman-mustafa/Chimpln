@@ -1,5 +1,6 @@
 package com.indeves.chmplinapp.Fragments;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
@@ -42,8 +43,11 @@ public class UserProfilePhotographersTabSearchOutput extends android.support.v4.
     private RecyclerView recyclerView;
     private UserAccPhotographersAdaptor userAccPhotographersAdaptor;
     private FragmentManager fragmentManager;
+    ArrayList<ProUserModel> pros;
+    @SuppressLint("ValidFragment")
+    public UserProfilePhotographersTabSearchOutput(ArrayList<ProUserModel> list) {
+        this.pros = list;
 
-    public UserProfilePhotographersTabSearchOutput() {
     }
 
     @Override
@@ -168,7 +172,7 @@ public class UserProfilePhotographersTabSearchOutput extends android.support.v4.
         setRecyclerViewLayoutManager(mCurrentLayoutManagerType);
         userAccPhotographersAdaptor = new UserAccPhotographersAdaptor(list);
         recyclerView.setAdapter(userAccPhotographersAdaptor);*/
-        ReadData readData = new ReadData();
+  /*      ReadData readData = new ReadData();
         readData.getAllPros(new ReadData.AllProsListener() {
             @Override
             public void onProsResponse(final ArrayList<ProUserModel> pros) {
@@ -255,7 +259,21 @@ public class UserProfilePhotographersTabSearchOutput extends android.support.v4.
                 recyclerView.setAdapter(userAccPhotographersAdaptor);
 
             }
-        });
+        });*/
+        mLayoutManager = new LinearLayoutManager(getActivity());
+
+        mCurrentLayoutManagerType = LayoutManagerType.LINEAR_LAYOUT_MANAGER;
+
+        if (savedInstanceState != null) {
+            // Restore saved layout manager type.
+            mCurrentLayoutManagerType = (LayoutManagerType) savedInstanceState
+                    .getSerializable(KEY_LAYOUT_MANAGER);
+        }
+
+
+        setRecyclerViewLayoutManager(mCurrentLayoutManagerType);
+        userAccPhotographersAdaptor = new UserAccPhotographersAdaptor(pros);
+        recyclerView.setAdapter(userAccPhotographersAdaptor);
         return rootView;
     }
 

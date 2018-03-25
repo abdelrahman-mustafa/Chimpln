@@ -58,6 +58,7 @@ public class UserProfileMain extends AppCompatActivity {
         ratingBar.setNumStars(5);
         ratingBar.setRating(3);
         userProLayout = (LinearLayout) findViewById(R.id.userProfile_LinearLayout);
+        ReadData readData = new ReadData();
 
         fragmentManager = getSupportFragmentManager();
         initialFragment = new UserProfileEventsTab();
@@ -82,14 +83,6 @@ public class UserProfileMain extends AppCompatActivity {
                 final FragmentTransaction transaction = fragmentManager.beginTransaction();
                 transaction.replace(R.id.container_o, fragment).commit();
                 return true;
-            }
-        });
-        ReadData readData = new ReadData();
-        readData.getAllPros(new ReadData.AllProsListener() {
-            @Override
-            public void onProsResponse(ArrayList<ProUserModel> pros) {
-                //deal with pros
-                Log.v("ALlPros", pros.toString());
             }
         });
 

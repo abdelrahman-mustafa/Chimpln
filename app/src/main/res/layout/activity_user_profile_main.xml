@@ -13,7 +13,7 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_weight="0"
-        android:background="@color/colorProfile"
+        android:background="@color/colorUser"
         android:orientation="horizontal"
         android:paddingBottom="15dp">
 
@@ -37,6 +37,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:text="@string/userName"
+                android:textStyle="bold"
                 android:textColor="@color/colorWhite"
                 android:textSize="18sp" />
 
@@ -56,6 +57,7 @@
                 android:layout_height="wrap_content"
                 android:layout_marginTop="3dp"
                 android:numStars="5"
+                android:visibility="gone"
                 android:stepSize="1"
                 android:theme="@style/RatingBar" />
 

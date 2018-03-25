@@ -10,5 +10,12 @@
     android:id="@+id/userProfile_event_recycler_view"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"/>
+    <TextView
+        android:layout_width="match_parent"
+        android:id="@+id/history_no_events"
+        android:layout_height="wrap_content"
+        android:textStyle="bold"
+        android:visibility="gone"
+        android:text="There are no events in the history"/>
 
 </LinearLayout>

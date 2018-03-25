@@ -61,11 +61,12 @@ public class SignUp extends AppCompatActivity implements AuthenticationInterface
 
     com.wang.avi.AVLoadingIndicatorView avi;
     Auth auth = new Auth(SignUp.this, SignUp.this);
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
-auth.setContext(SignUp.this);
+        auth.setContext(SignUp.this);
         createAccount = findViewById(R.id.signUp_button_createAccount);
         radioButton = findViewById(R.id.signUp_radio_user_account);
         radioButton2 = findViewById(R.id.signUp_radio_pro_account);
@@ -96,7 +97,7 @@ auth.setContext(SignUp.this);
             @Override
             public void onClick(View view) {
                 Log.d("mail", mail.getText().toString());
-                 startAnim();
+                startAnim();
                 email = mail.getText().toString();
                 password = pass.getText().toString();
                 phoneNum = phone.getText().toString();
@@ -177,7 +178,7 @@ auth.setContext(SignUp.this);
         intent.putExtra("mail", auth.getEmail());
         intent.putExtra("pass", auth.getPassword());
         intent.putExtra("resend", forceResendingToken);
-        intent.putExtra("phone",auth.getPhone());
+        intent.putExtra("phone", auth.getPhone());
         context.startActivity(intent);
 
     }

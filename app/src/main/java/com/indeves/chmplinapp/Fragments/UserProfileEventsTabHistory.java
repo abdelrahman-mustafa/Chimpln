@@ -9,6 +9,7 @@ import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.indeves.chmplinapp.Adapters.UserProfEventsAdaptor;
 import com.indeves.chmplinapp.Models.PhotographerData;
@@ -29,6 +30,7 @@ public class UserProfileEventsTabHistory extends android.support.v4.app.Fragment
     private List<PhotographerData> list = new ArrayList<PhotographerData>();
     private ViewPager viewPager;
     private RecyclerView recyclerView;
+    TextView noEvents;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -41,13 +43,13 @@ public class UserProfileEventsTabHistory extends android.support.v4.app.Fragment
         View rootView = inflater.inflate(R.layout.activity_user_profile_tab_events_upcoming, container, false);
         recyclerView = rootView.findViewById(R.id.userProfile_event_recycler_view);
         photographerData = new PhotographerData("Ahmed","Wedding","10:00am  3:00pm","6","Feb","no");
+        noEvents = rootView.findViewById(R.id.history_no_events);
 
         list.add(photographerData);
         list.add(photographerData);
         list.add(photographerData);
         list.add(photographerData);
         mLayoutManager = new LinearLayoutManager(getActivity());
-
         mCurrentLayoutManagerType = LayoutManagerType.LINEAR_LAYOUT_MANAGER;
 
         if (savedInstanceState != null) {
@@ -58,6 +60,8 @@ public class UserProfileEventsTabHistory extends android.support.v4.app.Fragment
         setRecyclerViewLayoutManager(mCurrentLayoutManagerType);
         userProfEventsAdaptor = new UserProfEventsAdaptor(list);
         recyclerView.setAdapter(userProfEventsAdaptor);
+        recyclerView.setVisibility(View.GONE);
+        noEvents.setVisibility(View.VISIBLE);
         return rootView;
     }
 
