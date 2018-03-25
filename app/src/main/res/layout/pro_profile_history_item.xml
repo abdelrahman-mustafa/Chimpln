@@ -32,7 +32,7 @@
                     android:id="@+id/proProfile_eventImage_imageView"
                     android:layout_width="match_parent"
                     android:layout_height="match_parent"
-                    android:background="@drawable/test_image" />
+                    android:src="@drawable/test_image" />
             </LinearLayout>
 
             <LinearLayout

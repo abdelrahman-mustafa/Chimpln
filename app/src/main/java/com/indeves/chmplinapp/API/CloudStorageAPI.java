@@ -80,8 +80,7 @@ public class CloudStorageAPI {
                     public void onSuccess(UploadTask.TaskSnapshot taskSnapshot) {
                         String downloadUrl = taskSnapshot.getDownloadUrl().toString();
                         imagesURLs.add(downloadUrl);
-                        if (imagesURLs.size() == images.size()) ;
-                        {
+                        if (imagesURLs.size() == images.size()) {
                             uploadEventImagesListener.onImagesUploaded(imagesURLs);
                         }
 

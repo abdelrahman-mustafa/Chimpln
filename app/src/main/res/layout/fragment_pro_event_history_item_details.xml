@@ -5,9 +5,7 @@
     android:id="@+id/Content_homePage"
     android:layout_width="match_parent"
     android:layout_height="wrap_content"
-    android:layout_marginBottom="5dp"
-    android:layout_marginTop="5dp"
-    android:elevation="3dp">
+    android:padding="10dp">
 
     <RelativeLayout
         android:id="@+id/backButtonLayout"
@@ -170,9 +168,9 @@
         android:layout_height="wrap_content"
         android:layout_alignParentStart="true"
         android:layout_below="@+id/view"
-        android:layout_marginTop="20dp"
-        android:paddingEnd="30dp"
-        android:paddingStart="30dp">
+        android:layout_marginTop="10dp"
+        android:paddingEnd="20dp"
+        android:paddingStart="20dp">
 
         <TextView
             android:id="@+id/addPhotosHint"
@@ -202,7 +200,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@id/AddPhotosHintLayout"
         android:adjustViewBounds="true"
-        android:padding="30dp"
+        android:padding="20dp"
         android:scrollbars="vertical" />
 
 
@@ -211,7 +209,8 @@
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
-        android:layout_margin="25dp"
+        android:layout_marginEnd="25dp"
+        android:layout_marginStart="25dp"
         android:background="@drawable/button"
         android:text="Save"
         android:textColor="@color/colorWhite" />

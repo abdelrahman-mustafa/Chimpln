@@ -182,5 +182,26 @@ public class WriteData {
 
     }
 
+    public void updateEventData(EventModel eventModel) throws Exception {
+        if (mAuth.getCurrentUser() != null) {
+            if (eventModel.getEventId() != null) {
+                eventsDatabaseReference.child(eventModel.getEventId()).updateChildren(eventModel.toMap()).addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            firebaseEventsListener.onWriteDataCompleted(true);
+                        } else {
+                            firebaseEventsListener.onWriteDataCompleted(false);
+                        }
+                    }
+                });
+            } else {
+                throw new Exception("Selected event has no ID");
+            }
+        } else {
+            throw new Exception("user is not authenticated");
+        }
+    }
+
 
 }

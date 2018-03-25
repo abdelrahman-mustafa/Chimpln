@@ -25,10 +25,12 @@ import com.indeves.chmplinapp.API.CloudStorageAPI;
 import com.indeves.chmplinapp.API.CloudStorageListener;
 import com.indeves.chmplinapp.API.FirebaseEventsListener;
 import com.indeves.chmplinapp.API.ReadData;
+import com.indeves.chmplinapp.API.WriteData;
 import com.indeves.chmplinapp.Activities.ProRegActivity;
 import com.indeves.chmplinapp.Adapters.AddImagesArrayAdapter;
 import com.indeves.chmplinapp.Models.EventModel;
 import com.indeves.chmplinapp.Models.LookUpModel;
+import com.indeves.chmplinapp.Models.ProUserModel;
 import com.indeves.chmplinapp.R;
 
 import java.io.FileNotFoundException;
@@ -95,8 +97,7 @@ public class ProEventHistoryItemDetails extends Fragment implements FirebaseEven
         backButtonLayout = rootView.findViewById(R.id.backButtonLayout);
         backButtonLayout.setOnClickListener(this);
         saveImages = rootView.findViewById(R.id.save_event_photos_button);
-//ToDO: enable button action after sending this app version
-        //        saveImages.setOnClickListener(this);
+        saveImages.setOnClickListener(this);
         imagesRecycleView = rootView.findViewById(R.id.card_recycler_view);
         int numberOfColumns = 4;
         eventImages = new ArrayList<>();
@@ -220,16 +221,29 @@ public class ProEventHistoryItemDetails extends Fragment implements FirebaseEven
             }
         } else if (v == saveImages) {
             if (eventImages != null && eventImages.size() > 1) {
-                progressDialog.setCanceledOnTouchOutside(false);
+                //TODO: @khalid This is wrong, upload icon should be isolated from the array from the beginning, let this go now and modify it ASAP
+                ArrayList<Bitmap> imagesToSend = eventImages;
+                imagesToSend.remove(eventImages.size() - 1);
                 progressDialog.show();
                 CloudStorageAPI cloudStorageAPI = new CloudStorageAPI();
-                cloudStorageAPI.UploadEventImages(selectedEvent.getEventId(), eventImages, new CloudStorageListener.UploadEventImagesListener() {
+                cloudStorageAPI.UploadEventImages(selectedEvent.getEventId(), imagesToSend, new CloudStorageListener.UploadEventImagesListener() {
                     @Override
                     public void onImagesUploaded(ArrayList<String> imagesUrls) {
                         progressDialog.dismiss();
                         if (imagesUrls != null) {
                             Log.v("uploadImages", "Images uploaded successfully");
                             Log.v("UrlsArr", imagesUrls.toString());
+                            EventModel eventModel = new EventModel();
+                            eventModel.setEventImagesUrls(imagesUrls);
+                            eventModel.setEventId(selectedEvent.getEventId());
+                            WriteData writeData = new WriteData(ProEventHistoryItemDetails.this);
+                            try {
+                                writeData.updateEventData(eventModel);
+                            } catch (Exception e) {
+                                e.printStackTrace();
+                                Toast.makeText(getContext(), "You are not authenticated or your session is expired", Toast.LENGTH_SHORT).show();
+                            }
+
                         } else {
                             Toast.makeText(getContext(), "oops! Something went wrong", Toast.LENGTH_SHORT).show();
                         }
@@ -272,9 +286,6 @@ public class ProEventHistoryItemDetails extends Fragment implements FirebaseEven
                 Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
 //                Bitmap.createScaledBitmap(selectedImage, 120, 120, false);
                 eventImages.add(0, selectedImage);
-                if (eventImages.size() > 10) {
-                    eventImages.remove(eventImages.size() - 1);
-                }
                 addImagesArrayAdapter.notifyDataSetChanged();
 
             } catch (FileNotFoundException e) {
