@@ -34,6 +34,7 @@ import com.indeves.chmplinapp.API.WriteData;
 import com.indeves.chmplinapp.Models.CityLookUpModel;
 import com.indeves.chmplinapp.Models.LookUpModel;
 import com.indeves.chmplinapp.Models.ProUserModel;
+import com.indeves.chmplinapp.PrefsManager.PrefGet;
 import com.indeves.chmplinapp.PrefsManager.PrefsManager;
 import com.indeves.chmplinapp.R;
 import com.squareup.picasso.Picasso;
@@ -367,8 +368,21 @@ public class ProRegActivity extends AppCompatActivity implements View.OnClickLis
     public void onWriteDataCompleted(boolean writeSuccessful) {
         progressDialog.dismiss();
         if (writeSuccessful) {
-            PrefsManager prefsManager = new PrefsManager(this);
-            prefsManager.goMainProfile(this);
+            PrefGet prefGet = new PrefGet(ProRegActivity.this);
+            switch (prefGet.getUserType()) {
+                case "stu":
+                    startActivity(new Intent(ProRegActivity.this, StuLandingPage.class));
+                    ProRegActivity.this.finish();
+                    break;
+                case "user":
+                    startActivity(new Intent(ProRegActivity.this, UserProfileMain.class));
+                    ProRegActivity.this.finish();
+                    break;
+                case "pro":
+                    startActivity(new Intent(ProRegActivity.this, ProLandingPage.class));
+                    ProRegActivity.this.finish();
+                    break;
+            }
         } else {
             Toast.makeText(this, "Error in saving your data", Toast.LENGTH_SHORT).show();
         }
@@ -377,5 +391,13 @@ public class ProRegActivity extends AppCompatActivity implements View.OnClickLis
     @Override
     public void onReadDataResponse(DataSnapshot dataSnapshot) {
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent startMain = new Intent(Intent.ACTION_MAIN);
+        startMain.addCategory(Intent.CATEGORY_HOME);
+        startMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(startMain);
     }
 }

@@ -42,35 +42,11 @@ public class Auth implements FirebaseEventsListener {
     private String email;
     private String password;
     private String phone;
-    private UserData userData;
     private FirebaseAuth mAuth;
-    private FirebaseDatabase k;
     private AuthenticationInterface.SignInWithPhoneAuthCredentialListener signInWithPhoneAuthCredentialListener;
     private AuthenticationInterface.LoginListener loginListener;
     private AuthenticationInterface.SinUpListener sinUpListener;
     private AuthenticationInterface.PhoneVerificationListener phoneVerificationListener;
-
-    public Auth(FirebaseAuth mAuth, FirebaseDatabase k) {
-        this.mAuth = mAuth;
-        this.k = k;
-    }
-
-
-    public String getType() {
-        return type;
-    }
-
-    public String getEmail() {
-        return email;
-    }
-
-    public String getPassword() {
-        return password;
-    }
-
-    public String getPhone() {
-        return phone;
-    }
 
     public Auth(AuthenticationInterface.SinUpListener sinUpListener, AuthenticationInterface.PhoneVerificationListener phoneVerificationListener) {
         this.sinUpListener = sinUpListener;
@@ -83,7 +59,6 @@ public class Auth implements FirebaseEventsListener {
         this.loginListener = loginListener;
     }
 
-
     //K.A: overloading constructor to avoid making any conflict with existing code
     public Auth(AuthenticationInterface.SignInWithPhoneAuthCredentialListener signInWithPhoneAuthCredentialListener) {
         //no need to pass FirebaseAuth instance between classes as it's a signletone class
@@ -92,6 +67,37 @@ public class Auth implements FirebaseEventsListener {
 
     }
 
+    public String getType() {
+        return type;
+    }
+
+    public void setType(String type) {
+        this.type = type;
+    }
+
+    public String getEmail() {
+        return email;
+    }
+
+    public void setEmail(String email) {
+        this.email = email;
+    }
+
+    public String getPassword() {
+        return password;
+    }
+
+    public void setPassword(String password) {
+        this.password = password;
+    }
+
+    public String getPhone() {
+        return phone;
+    }
+
+    public void setPhone(String phone) {
+        this.phone = phone;
+    }
 
     public void veifyphone() {
 
@@ -100,19 +106,20 @@ public class Auth implements FirebaseEventsListener {
             @Override
             public void onVerificationCompleted(PhoneAuthCredential phoneAuthCredential) {
                 Log.d("JEJE", "onVerificationCompleted:" + phoneAuthCredential);
-                if (phoneVerificationListener!= null){
+                if (phoneVerificationListener != null) {
                     phoneVerificationListener.onVerificationCompleted(phoneAuthCredential);
-                }else {
-                signInWithPhoneAuthCredential(phoneAuthCredential);
                 }
+//                else {
+//                    signInWithPhoneAuthCredential(phoneAuthCredential);
+//                }
             }
 
             @Override
             public void onVerificationFailed(FirebaseException e) {
 
-                if (phoneVerificationListener!= null){
+                if (phoneVerificationListener != null) {
                     phoneVerificationListener.onVerificationFailed(e);
-                }else {
+                } else {
                     Log.w("JEJE", "onVerificationFailed", e);
                     if (e instanceof FirebaseAuthInvalidCredentialsException) {
                         Log.d("JEJE", "INVALID REQUEST");
@@ -127,26 +134,26 @@ public class Auth implements FirebaseEventsListener {
             public void onCodeSent(String VerficationID, PhoneAuthProvider.ForceResendingToken forceResendingToken) {
                 super.onCodeSent(VerficationID, forceResendingToken);
 
-                if (phoneVerificationListener!=null){
-                    phoneVerificationListener.onCodeSent(VerficationID,forceResendingToken);
-                }else {
-                    Log.d("JEJE", "onCodeSent:" + VerficationID);
-                    String userId = mAuth.getCurrentUser().getUid().toString();
-                    PrefSave prefSave = new PrefSave(context);
-                    prefSave.saveId(userId);
-                    prefSave.saveLogInStatus(true);
-                    prefSave.saveUserType(type);
-
-                    Intent intent = new Intent(context, SignUpConfirmCode.class);
-                    intent.putExtra("accountType", type);
-                    intent.putExtra("Verfication ID", VerficationID);
-                    intent.putExtra("mail", email);
-                    intent.putExtra("pass", password);
-                    intent.putExtra("resend", forceResendingToken);
-                    context.startActivity(intent);
-
+                if (phoneVerificationListener != null) {
+                    phoneVerificationListener.onCodeSent(VerficationID, forceResendingToken);
                 }
-
+//                else {
+//                    Log.d("JEJE", "onCodeSent:" + VerficationID);
+//                    String userId = mAuth.getCurrentUser().getUid().toString();
+//                    PrefSave prefSave = new PrefSave(context);
+//                    prefSave.saveId(userId);
+//                    prefSave.saveLogInStatus(true);
+//                    prefSave.saveUserType(type);
+//
+//                    Intent intent = new Intent(context, SignUpConfirmCode.class);
+//                    intent.putExtra("accountType", type);
+//                    intent.putExtra("Verfication ID", VerficationID);
+//                    intent.putExtra("mail", email);
+//                    intent.putExtra("pass", password);
+//                    intent.putExtra("resend", forceResendingToken);
+//                    context.startActivity(intent);
+//
+//                }
 
 
             }
@@ -157,22 +164,6 @@ public class Auth implements FirebaseEventsListener {
                 TimeUnit.SECONDS,   // Unit of timeout
                 activity,               // Activity (for callback binding)
                 mCallBacks);        // OnVerificationStateChangedCallback
-    }
-
-    public void setType(String type) {
-        this.type = type;
-    }
-
-    public void setEmail(String email) {
-        this.email = email;
-    }
-
-    public void setPassword(String password) {
-        this.password = password;
-    }
-
-    public void setPhone(String phone) {
-        this.phone = phone;
     }
 
     public void setContext(Context context) {
@@ -187,7 +178,7 @@ public class Auth implements FirebaseEventsListener {
                     @Override
                     public void onComplete(@NonNull Task<AuthResult> task) {
                         if (task.isSuccessful()) {
-                            userData = new UserData(email, phone, type, mAuth.getCurrentUser().getUid());
+                            UserData userData = new UserData(email, phone, type, mAuth.getCurrentUser().getUid());
                             Log.d("userMail", userData.email);
                             Log.d("userPhone", userData.phone);
                             Log.d("userType", userData.type);
@@ -197,19 +188,20 @@ public class Auth implements FirebaseEventsListener {
                             //K.A: this is an example for using one of authentication listeners
                             if (signInWithPhoneAuthCredentialListener != null) {
                                 signInWithPhoneAuthCredentialListener.onSignInWithPhoneAuthCredentialCompleted(true);
-                            } else {
-                                //K.A: this condition to deal with other caller methods in this class which doesn't implement the listener
-                                // to solve this use other interfaces in their activities and call this method appropriately.
-                                String userId = mAuth.getCurrentUser().getUid();
-                                Log.d("userID", userId);
-                                PrefSave prefSave = new PrefSave(context);
-                                prefSave.saveId(userId);
-                                // K.A: why do you get user type and then set it again?
-                                prefSave.saveLogInStatus(true);
-                                prefSave.saveUserType(type);
-                                PrefsManager prefsManager = new PrefsManager(context);
-                                prefsManager.goMainProfile(context);
                             }
+//                            else {
+//                                //K.A: this condition to deal with other caller methods in this class which doesn't implement the listener
+//                                // to solve this use other interfaces in their activities and call this method appropriately.
+//                                String userId = mAuth.getCurrentUser().getUid();
+//                                Log.d("userID", userId);
+//                                PrefSave prefSave = new PrefSave(context);
+//                                prefSave.saveId(userId);
+//                                // K.A: why do you get user type and then set it again?
+//                                prefSave.saveLogInStatus(true);
+//                                prefSave.saveUserType(type);
+//                                PrefsManager prefsManager = new PrefsManager(context);
+//                                prefsManager.goMainProfile(context);
+//                            }
                             // ...
                         } else {
                             // Sign in failed, display a message and update the UI
@@ -241,15 +233,13 @@ public class Auth implements FirebaseEventsListener {
                                 Toast.makeText(context, "Authentication failed." + task.getException().getMessage(),
                                         Toast.LENGTH_SHORT).show();
                                 Log.e("FBAuthenticationError", task.getException().toString());
-                                if (sinUpListener!=null){
+                                if (sinUpListener != null) {
                                     sinUpListener.onSignUpWithEmailAndPasswordComplete(false);
                                 }
                             }
                         } else {
-                            if (sinUpListener!=null){
+                            if (sinUpListener != null) {
                                 sinUpListener.onSignUpWithEmailAndPasswordComplete(true);
-                            }else {
-                                veifyphone();
                             }
                         }
                     }
@@ -274,16 +264,7 @@ public class Auth implements FirebaseEventsListener {
                             // Sign in success, update UI with the signed-in user's information
                             if (loginListener != null) {
                                 loginListener.onUserLoginComplete(true);
-                            } else {
-
-                                String userId = mAuth.getCurrentUser().getUid();
-                                PrefSave prefSave = new PrefSave(context);
-                                prefSave.saveId(userId);
-                                prefSave.saveLogInStatus(true);
-                                ReadData readData = new ReadData();
-                                readData.readUserInfo(userId, context);
                             }
-
                         } else {
                             // If sign in fails, display a message to the user.
                             if (loginListener != null) {
@@ -305,7 +286,7 @@ public class Auth implements FirebaseEventsListener {
             @Override
             public void onVerificationCompleted(PhoneAuthCredential phoneAuthCredential) {
                 Log.d("JEJE", "onVerificationCompleted:" + phoneAuthCredential);
-                signInWithPhoneAuthCredential(phoneAuthCredential);
+                //signInWithPhoneAuthCredential(phoneAuthCredential);
 
 
             }

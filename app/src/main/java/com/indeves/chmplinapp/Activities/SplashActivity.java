@@ -8,6 +8,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.widget.ImageView;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.indeves.chmplinapp.PrefsManager.PrefGet;
 import com.indeves.chmplinapp.R;
 
 public class SplashActivity extends AppCompatActivity {
@@ -31,11 +33,30 @@ public class SplashActivity extends AppCompatActivity {
         new Handler().postDelayed(new Runnable() {
             @Override
             public void run() {
+                PrefGet prefGet = new PrefGet(SplashActivity.this);
+                if (prefGet.getLogInStatus() && FirebaseAuth.getInstance().getCurrentUser() != null && prefGet.getUserType() != null) {
+                    switch (prefGet.getUserType()) {
+                        case "stu":
+                            startActivity(new Intent(SplashActivity.this, StuLandingPage.class));
+                            SplashActivity.this.finish();
+                            break;
+                        case "user":
+                            startActivity(new Intent(SplashActivity.this, UserProfileMain.class));
+                            SplashActivity.this.finish();
+                            break;
+                        case "pro":
+                            startActivity(new Intent(SplashActivity.this, ProLandingPage.class));
+                            SplashActivity.this.finish();
+                            break;
+                    }
 
-                // find the  loggin status vis sharedpreferences
+                } else {
+                    startActivity(new Intent(SplashActivity.this, MainActivity.class));
+                    SplashActivity.this.finish();
+                }
 
             }
-        }, 1000);
+        }, 2000);
 
     }
 }

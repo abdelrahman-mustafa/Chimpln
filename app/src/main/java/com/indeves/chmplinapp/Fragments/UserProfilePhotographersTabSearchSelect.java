@@ -220,28 +220,6 @@ public class UserProfilePhotographersTabSearchSelect extends android.support.v4.
 
         }
 
-
-
-
-        /* else if (parent.getId() == sCountry.getId()) {
-            selectedCountry = countriesList.get(position).getEnglishName();
-            country.setText(selectedCountry);
-            ReadData readData = new ReadData();
-            //TODO: issue occurs in reselecting multiple times
-            readData.getCitiesLookUpsWithCountryId(countriesList.get(position).getId(), new ReadData.CityLookUpsListener() {
-                @Override
-                public void onLookUpsResponse(List<CityLookUpModel> newCitiesList) {
-                    Log.v("CitiesReturned", newCitiesList.toString());
-                    citiesList.clear();
-                    citiesList.addAll(newCitiesList);
-                    citiesArrayAdapter.notifyDataSetChanged();
-                }
-            });
-
-
-        } */
-
-
     }
 
     @Override

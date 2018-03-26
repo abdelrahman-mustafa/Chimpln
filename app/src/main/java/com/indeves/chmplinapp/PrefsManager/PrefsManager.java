@@ -43,43 +43,43 @@ public class PrefsManager extends Activity {
         }
     }
 
-    public void goMainProfile(Context context) {
-        Log.d("context", context.toString());
-        Log.d("user", prefGet.getUserType());
-        switch (prefGet.getUserType()) {
-            case "stu":
-                context.startActivity(new Intent(context, StuLandingPage.class));
-                finish();
-                break;
-            case "user":
-                context.startActivity(new Intent(context, UserProfileMain.class));
-                finish();
-                break;
-            case "pro":
-                context.startActivity(new Intent(context, ProLandingPage.class));
-                finish();
-                break;
-        }
-    }
-
-    public void goCompleteData(Context context) {
-        Log.d("context", context.toString());
-        Log.d("user", prefGet.getUserType());
-        switch (prefGet.getUserType()) {
-            case "stu":
-                context.startActivity(new Intent(context, ProRegActivity.class));
-                finish();
-                break;
-            case "user":
-                context.startActivity(new Intent(context, UserProfileMain.class));
-                finish();
-                break;
-            case "pro":
-                context.startActivity(new Intent(context, ProRegActivity.class));
-                finish();
-                break;
-        }
-    }
+//    public void goMainProfile(Context context) {
+//        Log.d("context", context.toString());
+//        Log.d("user", prefGet.getUserType());
+//        switch (prefGet.getUserType()) {
+//            case "stu":
+//                context.startActivity(new Intent(context, StuLandingPage.class));
+//                finish();
+//                break;
+//            case "user":
+//                context.startActivity(new Intent(context, UserProfileMain.class));
+//                finish();
+//                break;
+//            case "pro":
+//                context.startActivity(new Intent(context, ProLandingPage.class));
+//                finish();
+//                break;
+//        }
+//    }
+//
+//    public void goCompleteData(Context context) {
+//        Log.d("context", context.toString());
+//        Log.d("user", prefGet.getUserType());
+//        switch (prefGet.getUserType()) {
+//            case "stu":
+//                context.startActivity(new Intent(context, ProRegActivity.class));
+//                finish();
+//                break;
+//            case "user":
+//                context.startActivity(new Intent(context, UserProfileMain.class));
+//                finish();
+//                break;
+//            case "pro":
+//                context.startActivity(new Intent(context, ProRegActivity.class));
+//                finish();
+//                break;
+//        }
+//    }
 
 
 }

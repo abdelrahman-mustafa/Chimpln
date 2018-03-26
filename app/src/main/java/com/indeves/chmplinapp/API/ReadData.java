@@ -38,7 +38,7 @@ public class ReadData {
         this.firebaseEventsListener = firebaseEventsListener;
     }
 
-    public void readUserInfo(final String userId, final Context context) {
+    public void readUserInfo(final String userId) {
 
         mDatabase = FirebaseDatabase.getInstance().getReference("users");
         mDatabase.child(userId).addListenerForSingleValueEvent(new ValueEventListener() {
@@ -46,27 +46,18 @@ public class ReadData {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Log.v("DataSnap", dataSnapshot.toString());
-                user = dataSnapshot.getValue(UserData.class);
-                if (user != null) {
-                    Log.i("MyUserData", user.toString());
-                    PrefSave prefSave = new PrefSave(context);
-                    if (user.type != null) {
-                        prefSave.saveUserType(user.type.trim());
-                        PrefsManager prefsManager = new PrefsManager(context);
-                        prefsManager.goMainProfile(context);
-                    }
-                } else {
-                    //TODO delete the account in the auth
-                    if (firebaseEventsListener != null) {
-                        firebaseEventsListener.onReadDataResponse(null);
-                    }
-                }
+                if (firebaseEventsListener != null) {
+                    firebaseEventsListener.onReadDataResponse(dataSnapshot);
 
+                }
             }
 
             @Override
             public void onCancelled(DatabaseError error) {
                 // Failed to read value
+                if (firebaseEventsListener != null) {
+                    firebaseEventsListener.onReadDataResponse(null);
+                }
             }
         });
     }
@@ -181,6 +172,7 @@ public class ReadData {
 
     }
 
+    //to get All cities, pass -1 in country id
     public void getCitiesLookUpsWithCountryId(final int countryId, final CityLookUpsListener cityLookUpsListener) {
         mDatabase = FirebaseDatabase.getInstance().getReference("citiesLookups");
         mDatabase.addListenerForSingleValueEvent(new ValueEventListener() {
@@ -191,8 +183,10 @@ public class ReadData {
                     List<CityLookUpModel> lookUpModels = new ArrayList<CityLookUpModel>();
                     for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
                         CityLookUpModel cityLookUpModel = dataSnapshot1.getValue(CityLookUpModel.class);
-                        if (cityLookUpModel != null && cityLookUpModel.getCountryId() == countryId) {
-                            lookUpModels.add(cityLookUpModel);
+                        if (cityLookUpModel != null) {
+                            if (countryId == -1 || cityLookUpModel.getCountryId() == countryId) {
+                                lookUpModels.add(cityLookUpModel);
+                            }
                         }
                     }
                     if (cityLookUpsListener != null) {
@@ -214,19 +208,7 @@ public class ReadData {
         });
     }
 
-    public interface AllProsListener {
-        void onProsResponse(ArrayList<ProUserModel> pros);
-    }
-
-    public interface LookUpsListener {
-        void onLookUpsResponse(List<LookUpModel> lookups);
-    }
-
-    public interface CityLookUpsListener {
-        void onLookUpsResponse(List<CityLookUpModel> citiesList);
-    }
-
-    public void searchPros(){
+    public void searchPros() {
         DatabaseReference reference = FirebaseDatabase.getInstance().getReference();
 
         Query query = reference.child("users").orderByChild("city").equalTo("cairo");
@@ -261,5 +243,17 @@ public class ReadData {
             // ...
         });
 
+    }
+
+    public interface AllProsListener {
+        void onProsResponse(ArrayList<ProUserModel> pros);
+    }
+
+    public interface LookUpsListener {
+        void onLookUpsResponse(List<LookUpModel> lookups);
+    }
+
+    public interface CityLookUpsListener {
+        void onLookUpsResponse(List<CityLookUpModel> citiesList);
     }
 }

@@ -31,8 +31,10 @@ import com.indeves.chmplinapp.API.Auth;
 import com.indeves.chmplinapp.API.AuthenticationInterface;
 import com.indeves.chmplinapp.API.FirebaseEventsListener;
 import com.indeves.chmplinapp.API.ReadData;
+import com.indeves.chmplinapp.Models.PackageModel;
 import com.indeves.chmplinapp.Models.UserData;
 import com.indeves.chmplinapp.PrefsManager.PrefSave;
+import com.indeves.chmplinapp.PrefsManager.PrefsManager;
 import com.indeves.chmplinapp.R;
 import com.indeves.chmplinapp.Utility.CheckError;
 import com.indeves.chmplinapp.Utility.Toasts;
@@ -42,7 +44,6 @@ import com.wang.avi.AVLoadingIndicatorView;
 public class LogIn extends AppCompatActivity implements AuthenticationInterface.LoginListener, FirebaseEventsListener {
 
     EditText mail, pass;
-    UserData user;
     Button signUp, login;
     String TAG = "This Activiy";
     com.wang.avi.AVLoadingIndicatorView avi;
@@ -110,13 +111,9 @@ public class LogIn extends AppCompatActivity implements AuthenticationInterface.
     @Override
     public void onUserLoginComplete(boolean loginSuccessful) {
         if (loginSuccessful) {
-            String userId = mAuth.getCurrentUser().getUid();
-            Log.v("LoggedInUID", userId);
-            PrefSave prefSave = new PrefSave(LogIn.this);
-            prefSave.saveId(userId);
-            prefSave.saveLogInStatus(true);
+            Log.v("LoggedInUID", mAuth.getCurrentUser().getUid());
             ReadData readData = new ReadData(this);
-            readData.readUserInfo(userId, LogIn.this);
+            readData.readUserInfo(mAuth.getCurrentUser().getUid());
         } else {
             toasts.wrongMe();
             stopAnim();
@@ -141,9 +138,34 @@ public class LogIn extends AppCompatActivity implements AuthenticationInterface.
 
     @Override
     public void onReadDataResponse(DataSnapshot dataSnapshot) {
+        stopAnim();
         if (dataSnapshot == null) {
             toasts.wrongMe();
-            stopAnim();
+        } else {
+            UserData user = dataSnapshot.getValue(UserData.class);
+            if (user != null && user.type != null) {
+                Log.i("MyUserData", user.toString());
+                PrefSave prefSave = new PrefSave(LogIn.this);
+                prefSave.saveUserType(user.type.trim());
+                prefSave.saveId(mAuth.getCurrentUser().getUid());
+                prefSave.saveLogInStatus(true);
+                switch (user.type) {
+                    case "stu":
+                        startActivity(new Intent(LogIn.this, StuLandingPage.class));
+                        LogIn.this.finish();
+                        break;
+                    case "user":
+                        startActivity(new Intent(LogIn.this, UserProfileMain.class));
+                        LogIn.this.finish();
+                        break;
+                    case "pro":
+                        startActivity(new Intent(LogIn.this, ProLandingPage.class));
+                        LogIn.this.finish();
+                        break;
+                }
+            } else {
+                toasts.wrongMe();
+            }
         }
 
     }

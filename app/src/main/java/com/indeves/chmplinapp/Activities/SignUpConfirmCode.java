@@ -74,17 +74,36 @@ public class SignUpConfirmCode extends AppCompatActivity implements Authenticati
     @Override
     public void onSignInWithPhoneAuthCredentialCompleted(boolean codeVerified) {
         if (codeVerified) {
-            String userId = mAuth.getCurrentUser().getUid();
-            Log.d("userID", userId);
+            Log.d("userID", mAuth.getCurrentUser().getUid());
             PrefSave prefSave = new PrefSave(this);
-            prefSave.saveId(userId);
+            prefSave.saveId(mAuth.getCurrentUser().getUid());
             prefSave.saveLogInStatus(true);
             prefSave.saveUserType(accountType);
-            PrefsManager prefsManager = new PrefsManager(this);
-            prefsManager.goCompleteData(this);
+            switch (accountType) {
+                case "stu":
+                    startActivity(new Intent(SignUpConfirmCode.this, ProRegActivity.class));
+                    SignUpConfirmCode.this.finish();
+                    break;
+                case "user":
+                    startActivity(new Intent(SignUpConfirmCode.this, UserProfileMain.class));
+                    SignUpConfirmCode.this.finish();
+                    break;
+                case "pro":
+                    startActivity(new Intent(SignUpConfirmCode.this, ProRegActivity.class));
+                    SignUpConfirmCode.this.finish();
+                    break;
+            }
         } else {
             Toast.makeText(this, "Invalid verification code", Toast.LENGTH_SHORT).show();
         }
 
+    }
+
+    @Override
+    public void onBackPressed() {
+        Intent startMain = new Intent(Intent.ACTION_MAIN);
+        startMain.addCategory(Intent.CATEGORY_HOME);
+        startMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+        startActivity(startMain);
     }
 }

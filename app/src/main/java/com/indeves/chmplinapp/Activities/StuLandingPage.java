@@ -22,7 +22,7 @@ import com.indeves.chmplinapp.Fragments.StuPackages;
 import com.indeves.chmplinapp.Fragments.StuProProfile;
 import com.indeves.chmplinapp.R;
 
-public class StuLandingPage extends AppCompatActivity implements StuEvents.OnFragmentInteractionListener, StuLastWork.OnFragmentInteractionListener,StuPackages.OnFragmentInteractionListener {
+public class StuLandingPage extends AppCompatActivity implements StuEvents.OnFragmentInteractionListener, StuLastWork.OnFragmentInteractionListener, StuPackages.OnFragmentInteractionListener {
     private static final String TAG = MainActivity.class.getSimpleName();
     private Fragment fragment;
     private FragmentManager fragmentManager;
@@ -95,12 +95,10 @@ public class StuLandingPage extends AppCompatActivity implements StuEvents.OnFra
         if (getSupportFragmentManager().getBackStackEntryCount() > 0) {
             super.onBackPressed();
         } else {
-            Intent intent = new Intent(Intent.ACTION_MAIN);
-            intent.addCategory(Intent.CATEGORY_HOME);
-            intent.setFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP);//***Change Here***
-            startActivity(intent);
-            finish();
-            System.exit(0);
+            Intent startMain = new Intent(Intent.ACTION_MAIN);
+            startMain.addCategory(Intent.CATEGORY_HOME);
+            startMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(startMain);
         }
     }
 }

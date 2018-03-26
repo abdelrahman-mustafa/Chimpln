@@ -48,24 +48,24 @@ import com.wang.avi.AVLoadingIndicatorView;
 import java.util.concurrent.TimeUnit;
 
 public class SignUp extends AppCompatActivity implements AuthenticationInterface.SinUpListener, AuthenticationInterface.PhoneVerificationListener, AuthenticationInterface.SignInWithPhoneAuthCredentialListener {
+    private static final String TAG = "EmailPassword";
+    private static String phoneNum;
     RadioButton radioButton, radioButton2, radioButton3;
     Button createAccount;
-    private static String phoneNum;
     EditText mail, phone, pass, confirmPass;
-    private static final String TAG = "EmailPassword";
-    private Toasts toasts;
-    private FirebaseAuth mAuth;
     FirebaseDatabase k;
     String email;
     String password;
-
     com.wang.avi.AVLoadingIndicatorView avi;
-    Auth auth = new Auth(SignUp.this, SignUp.this);
+    Auth auth;
+    private Toasts toasts;
+    private FirebaseAuth mAuth;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_sign_up);
+        auth = new Auth(SignUp.this, SignUp.this);
         auth.setContext(SignUp.this);
         createAccount = findViewById(R.id.signUp_button_createAccount);
         radioButton = findViewById(R.id.signUp_radio_user_account);
@@ -76,7 +76,6 @@ public class SignUp extends AppCompatActivity implements AuthenticationInterface
         avi = (AVLoadingIndicatorView) findViewById(R.id.indicator);
         pass = findViewById(R.id.signUp_pass);
         confirmPass = findViewById(R.id.signUp_confirm_pass);
-
         toasts = new Toasts(SignUp.this);
         final ImageView splash = (ImageView) findViewById(R.id.splash);
         //splash.startAnimation(anim);
@@ -165,21 +164,15 @@ public class SignUp extends AppCompatActivity implements AuthenticationInterface
     @Override
     public void onCodeSent(String VerficationID, PhoneAuthProvider.ForceResendingToken forceResendingToken) {
         Log.d("JEJE", "onCodeSent:" + VerficationID);
-        String userId = mAuth.getCurrentUser().getUid().toString();
-        PrefSave prefSave = new PrefSave(SignUp.this);
-        prefSave.saveId(userId);
-        prefSave.saveLogInStatus(true);
-        prefSave.saveUserType(auth.getType());
-
-        Context context = SignUp.this;
-        Intent intent = new Intent(context, SignUpConfirmCode.class);
+        Intent intent = new Intent(SignUp.this, SignUpConfirmCode.class);
         intent.putExtra("accountType", auth.getType());
         intent.putExtra("Verfication ID", VerficationID);
         intent.putExtra("mail", auth.getEmail());
         intent.putExtra("pass", auth.getPassword());
         intent.putExtra("resend", forceResendingToken);
         intent.putExtra("phone", auth.getPhone());
-        context.startActivity(intent);
+        startActivity(intent);
+        SignUp.this.finish();
 
     }
 
@@ -191,19 +184,29 @@ public class SignUp extends AppCompatActivity implements AuthenticationInterface
 
     @Override
     public void onSignInWithPhoneAuthCredentialCompleted(boolean codeVerified) {
+        stopAnim();
         if (codeVerified) {
-            String userId = mAuth.getCurrentUser().getUid();
-            Log.d("userID", userId);
+            Log.d("userID", mAuth.getCurrentUser().getUid());
             PrefSave prefSave = new PrefSave(this);
-            prefSave.saveId(userId);
+            prefSave.saveId(mAuth.getCurrentUser().getUid());
             prefSave.saveLogInStatus(true);
             prefSave.saveUserType(auth.getType());
-            PrefsManager prefsManager = new PrefsManager(this);
-            prefsManager.goCompleteData(this);
+            switch (auth.getType()) {
+                case "stu":
+                    startActivity(new Intent(SignUp.this, ProRegActivity.class));
+                    SignUp.this.finish();
+                    break;
+                case "user":
+                    startActivity(new Intent(SignUp.this, UserProfileMain.class));
+                    SignUp.this.finish();
+                    break;
+                case "pro":
+                    startActivity(new Intent(SignUp.this, ProRegActivity.class));
+                    SignUp.this.finish();
+                    break;
+            }
         } else {
             Toast.makeText(this, "Invalid verification code", Toast.LENGTH_SHORT).show();
-            stopAnim();
-
         }
     }
 
