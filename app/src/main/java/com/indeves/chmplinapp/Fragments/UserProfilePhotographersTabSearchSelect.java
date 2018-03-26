@@ -98,7 +98,7 @@ public class UserProfilePhotographersTabSearchSelect extends android.support.v4.
                         linear.setVisibility(View.GONE);
                         search.setVisibility(View.GONE);
                         for (int i = 0; i < pros.size(); i++) {
-                            if (pros.get(i).getCity() != null && pros.get(i).getCity().contains(spinCity.getSelectedItem().toString()) | pros.get(i).getGender().contains(spinGender.getSelectedItem().toString())) {
+                            if (pros.get(i).getCity() != null && pros.get(i).getCity().contains(spinCity.getSelectedItem().toString()) && pros.get(i).getGender().contains(spinGender.getSelectedItem().toString())) {
                                 ArrayList<ProUserModel> customList = new ArrayList<>();
                                 customList.add(pros.get(i));
                                 UserProfilePhotographersTabSearchOutput output = new UserProfilePhotographersTabSearchOutput(customList);
