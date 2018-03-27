@@ -1,7 +1,6 @@
 package com.indeves.chmplinapp.Adapters;
 
 import android.content.Context;
-import android.graphics.Bitmap;
 import android.support.annotation.NonNull;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
@@ -27,16 +26,17 @@ public class StudioTeamMembersAdapter extends RecyclerView.Adapter<StudioTeamMem
 
     private List<StudioTeamMember> mData = new ArrayList<>();
     private LayoutInflater mInflater;
-    private AddImagesArrayAdapter.ItemClickListener mClickListener;
-    private boolean editMode;
+    private ItemClickListener mClickListener;
+    private String mode;
+    // mode is show or edit or assign
     private Context context;
 
     // data is passed into the constructor
-    public StudioTeamMembersAdapter(Context context, ArrayList<StudioTeamMember> data, boolean editMode) {
+    public StudioTeamMembersAdapter(Context context, ArrayList<StudioTeamMember> data, String mode) {
         this.mInflater = LayoutInflater.from(context);
         this.mData = data;
         this.context = context;
-        this.editMode = editMode;
+        this.mode = mode;
     }
 
     // inflates the cell layout from xml when needed
@@ -51,14 +51,19 @@ public class StudioTeamMembersAdapter extends RecyclerView.Adapter<StudioTeamMem
     @Override
     public void onBindViewHolder(@NonNull StudioTeamMembersAdapter.ViewHolder holder, int position) {
         StudioTeamMember member = mData.get(position);
-        if (editMode) {
+        if (mode.equals("edit")) {
             holder.deleteMember.setVisibility(View.VISIBLE);
             holder.eventsCount.setVisibility(View.GONE);
             holder.eventCountHint.setVisibility(View.GONE);
-        } else {
+        } else if (mode.equals("show")) {
             holder.deleteMember.setVisibility(View.GONE);
             holder.eventsCount.setVisibility(View.VISIBLE);
             holder.eventCountHint.setVisibility(View.VISIBLE);
+        } else if (mode.equals("assign")) {
+            holder.deleteMember.setVisibility(View.VISIBLE);
+            holder.deleteMember.setText("Assign");
+            holder.eventsCount.setVisibility(View.GONE);
+            holder.eventCountHint.setVisibility(View.GONE);
         }
         holder.name.setText(member.getName());
         String description = member.getCity() + ", " + member.getGender();
@@ -66,7 +71,7 @@ public class StudioTeamMembersAdapter extends RecyclerView.Adapter<StudioTeamMem
         if (member.getEventsIds() != null) {
             holder.eventsCount.setText(String.valueOf(member.getEventsIds().size()));
         }
-        Picasso.with(context).load(member.getImageUrl()).transform(new CircleTransform()).resize(90, 90).into(holder.imageView);
+        Picasso.with(context).load(member.getImageUrl()).transform(new CircleTransform()).resize(80, 80).into(holder.imageView);
 
 
     }
@@ -83,7 +88,7 @@ public class StudioTeamMembersAdapter extends RecyclerView.Adapter<StudioTeamMem
     }
 
     // allows clicks events to be caught
-    public void setClickListener(AddImagesArrayAdapter.ItemClickListener itemClickListener) {
+    public void setClickListener(ItemClickListener itemClickListener) {
         this.mClickListener = itemClickListener;
     }
 

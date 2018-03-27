@@ -1,6 +1,7 @@
 package com.indeves.chmplinapp.Models;
 
 import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.List;
 
 /**
@@ -9,7 +10,7 @@ import java.util.List;
 
 public class StudioTeamMember implements Serializable {
     private String imageUrl, name, city, gender, email, phone;
-    private List<String> eventsIds;
+    private ArrayList<String> eventsIds;
 
     public StudioTeamMember() {
     }
@@ -21,7 +22,7 @@ public class StudioTeamMember implements Serializable {
         this.gender = gender;
     }
 
-    public StudioTeamMember(String imageUrl, String name, String city, String gender, String email, String phone, List<String> eventsIds) {
+    public StudioTeamMember(String imageUrl, String name, String city, String gender, String email, String phone, ArrayList<String> eventsIds) {
         this.imageUrl = imageUrl;
         this.name = name;
         this.city = city;
@@ -79,11 +80,12 @@ public class StudioTeamMember implements Serializable {
         this.phone = phone;
     }
 
-    public List<String> getEventsIds() {
+    public ArrayList<String> getEventsIds() {
         return eventsIds;
     }
 
-    public void setEventsIds(List<String> eventsIds) {
+    public void setEventsIds(ArrayList<String> eventsIds) {
         this.eventsIds = eventsIds;
     }
+
 }

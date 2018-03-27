@@ -55,7 +55,6 @@ public class StuProProfile extends Fragment implements FirebaseEventsListener, V
     public View onCreateView(LayoutInflater inflater, ViewGroup container,
                              Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        Log.v("TestTest", "In on Create view");
         View rootView = inflater.inflate(R.layout.stu_pro_profile, container, false);
         proName = rootView.findViewById(R.id.stu_profile_name);
         prosCount = rootView.findViewById(R.id.stu_profile_prosCount);
@@ -119,7 +118,7 @@ public class StuProProfile extends Fragment implements FirebaseEventsListener, V
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.pro_profile_menu_edit) {
             final FragmentTransaction ft = getFragmentManager().beginTransaction();
-            ft.replace(R.id.main_container, new StuEditProfileFragment());
+            ft.replace(R.id.main_container, StuEditProfileFragment.newInstance(proUserModel, Integer.parseInt(eventsCount.getText().toString())));
             ft.addToBackStack(null);
             ft.commit();
             return true;
@@ -196,7 +195,7 @@ public class StuProProfile extends Fragment implements FirebaseEventsListener, V
                 prosCount.setText(String.valueOf(proUserModel.getStudioTeamMembers().size()));
             }
             if (proUserModel.getStudioTeamMembers() != null) {
-                StudioTeamMembersAdapter studioTeamMembersAdapter = new StudioTeamMembersAdapter(getContext(), proUserModel.getStudioTeamMembers(), false);
+                StudioTeamMembersAdapter studioTeamMembersAdapter = new StudioTeamMembersAdapter(getContext(), proUserModel.getStudioTeamMembers(), "show");
                 teamMembersListView.setAdapter(studioTeamMembersAdapter);
             }
 

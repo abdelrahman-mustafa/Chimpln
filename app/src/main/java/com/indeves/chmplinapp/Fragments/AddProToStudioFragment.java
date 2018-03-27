@@ -129,6 +129,7 @@ public class AddProToStudioFragment extends Fragment implements AdapterView.OnIt
                             studioTeamMembers.add(studioTeamMember);
                             proUserModel.setStudioTeamMembers(studioTeamMembers);
                             WriteData writeData = new WriteData(AddProToStudioFragment.this);
+                            //Todo: @khalid Change this fucking way of adding team members
                             try {
                                 writeData.updateUserProfileData(proUserModel);
                             } catch (Exception e) {

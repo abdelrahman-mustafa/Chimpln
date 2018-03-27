@@ -72,7 +72,7 @@ public class StuProfileEventsTabPending extends android.support.v4.app.Fragment 
             public void onClick(View view, final int position) {
                 //onClick
                 EventModel selectedEvent = eventModels.get(position);
-                ProEventResponse fragment = ProEventResponse.newInstance(selectedEvent);
+                AssignEventToProFragment fragment = AssignEventToProFragment.newInstance(selectedEvent);
                 FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
                 fragmentTransaction.replace(R.id.main_container, fragment).addToBackStack(null).commit();
             }

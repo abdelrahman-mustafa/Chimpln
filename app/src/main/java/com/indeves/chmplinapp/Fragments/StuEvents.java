@@ -13,6 +13,7 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 
+import com.indeves.chmplinapp.Activities.StuLandingPage;
 import com.indeves.chmplinapp.R;
 
 import java.util.ArrayList;
@@ -32,11 +33,11 @@ public class StuEvents extends Fragment {
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
     TabLayout tabLayout;
+    Context attachedActivityContext;
     // TODO: Rename and change types of parameters
     private String mParam1;
     private ViewPager viewPager;
     private String mParam2;
-
     private OnFragmentInteractionListener mListener;
 
     public StuEvents() {
@@ -76,7 +77,11 @@ public class StuEvents extends Fragment {
         // Inflate the layout for this fragment
         View rootView = inflater.inflate(R.layout.activity_user_profile_tab_events, container, false);
 
-
+        if (attachedActivityContext != null && ((StuLandingPage) attachedActivityContext).getSupportActionBar() != null) {
+            ((StuLandingPage) attachedActivityContext).getSupportActionBar().setDisplayShowHomeEnabled(false);
+            ((StuLandingPage) attachedActivityContext).getSupportActionBar().setDisplayHomeAsUpEnabled(false);
+            ((StuLandingPage) attachedActivityContext).getSupportActionBar().setTitle(getResources().getString(R.string.fragment_title_events));
+        }
         viewPager = (ViewPager) rootView.findViewById(R.id.container);
 
         setupViewPager(viewPager);
@@ -109,6 +114,7 @@ public class StuEvents extends Fragment {
     @Override
     public void onAttach(Context context) {
         super.onAttach(context);
+        this.attachedActivityContext = context;
         if (context instanceof OnFragmentInteractionListener) {
             mListener = (OnFragmentInteractionListener) context;
         } else {
