@@ -29,6 +29,7 @@ import com.indeves.chmplinapp.Activities.ProLandingPage;
 import com.indeves.chmplinapp.Models.ProUserModel;
 import com.indeves.chmplinapp.Models.UserData;
 import com.indeves.chmplinapp.R;
+import com.indeves.chmplinapp.Utility.CircleTransform;
 import com.squareup.picasso.Picasso;
 
 import java.util.Calendar;
@@ -238,7 +239,7 @@ public class ProEditProfileFragment extends Fragment implements FirebaseEventsLi
                 area.setText(proUserModel.getArea());
 
             if (proUserModel.getProfilePicUrl() != null) {
-                Picasso.with(getContext()).load(proUserModel.getProfilePicUrl()).resize(300, 300).placeholder(R.drawable.user).error(R.drawable.user).into(profileImage);
+                Picasso.with(getContext()).load(proUserModel.getProfilePicUrl()).resize(300, 300).placeholder(R.drawable.user).transform(new CircleTransform()).error(R.drawable.user).into(profileImage);
             }
 
         }

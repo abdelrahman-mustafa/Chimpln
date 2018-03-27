@@ -1,5 +1,7 @@
 package com.indeves.chmplinapp.Models;
 
+import java.io.Serializable;
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -8,11 +10,13 @@ import java.util.Map;
  * Created by khalid on 26/02/18.
  */
 
-public class ProUserModel extends UserData {
+public class ProUserModel extends UserData implements Serializable {
+    //pro could be a single photographer or a studio
     private long rate, locationLat, locationLong;
     private List<String> lastWorkPicsUrls;
     private List<PackageModel> packages;
     private String country, city, area, workDayStart, workDayEnd, experience;
+    private ArrayList<StudioTeamMember> studioTeamMembers;
 
     // Default constructor required for calls to
     // DataSnapshot.getValue(User.class)
@@ -38,6 +42,22 @@ public class ProUserModel extends UserData {
         this.workDayStart = workDayStart;
         this.workDayEnd = workDayEnd;
         this.experience = experience;
+    }
+
+    public ProUserModel(String name, String email, String phone, String type, String lastName, String birthDate, String gender, String uid, String profilePicUrl, String location, List<String> eventsIds, long rate, long locationLat, long locationLong, List<String> lastWorkPicsUrls, List<PackageModel> packages, String country, String city, String area, String workDayStart, String workDayEnd, String experience, ArrayList<StudioTeamMember> studioTeamMembers) {
+        super(name, email, phone, type, lastName, birthDate, gender, uid, profilePicUrl, location, eventsIds);
+        this.rate = rate;
+        this.locationLat = locationLat;
+        this.locationLong = locationLong;
+        this.lastWorkPicsUrls = lastWorkPicsUrls;
+        this.packages = packages;
+        this.country = country;
+        this.city = city;
+        this.area = area;
+        this.workDayStart = workDayStart;
+        this.workDayEnd = workDayEnd;
+        this.experience = experience;
+        this.studioTeamMembers = studioTeamMembers;
     }
 
     public long getRate() {
@@ -128,6 +148,14 @@ public class ProUserModel extends UserData {
         this.experience = experience;
     }
 
+    public ArrayList<StudioTeamMember> getStudioTeamMembers() {
+        return studioTeamMembers;
+    }
+
+    public void setStudioTeamMembers(ArrayList<StudioTeamMember> studioTeamMembers) {
+        this.studioTeamMembers = studioTeamMembers;
+    }
+
     @Override
     public Map<String, Object> toMap() {
         Map<String, Object> result = super.toMap();
@@ -153,7 +181,8 @@ public class ProUserModel extends UserData {
             result.put("workDayEnd", workDayEnd);
         if (experience != null)
             result.put("experience", experience);
-
+        if (studioTeamMembers != null)
+            result.put("studioTeamMembers", studioTeamMembers);
         return result;
     }
 }

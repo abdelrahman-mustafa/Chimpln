@@ -35,7 +35,7 @@ public class MainActivity extends AppCompatActivity {
         anim.setRepeatCount(Animation.INFINITE);
         anim.setDuration(700);
         //K.A: enable offline sync in app
-        FirebaseDatabase.getInstance().setPersistenceEnabled(false);
+//        FirebaseDatabase.getInstance().setPersistenceEnabled(false);
 // Start animating the image
         final ImageView splash = (ImageView) findViewById(R.id.splash);
         //splash.startAnimation(anim);

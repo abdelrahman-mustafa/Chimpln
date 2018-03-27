@@ -50,8 +50,8 @@
     <string name="title_activity_maps">Map</string>
     <string name="title_activity_approval">Approval</string>
     <string name="title_activity_contactpro">Contactpro</string>
-    <string name="menu_title_edit">Edit Profile</string>
-    <string name="fragment_title_last_work">Last work</string>
+    <string name="menu_title_edit">Edit</string>
+    <string name="fragment_title_last_work">Latest work</string>
     <string name="fragment_title_events">Events</string>
     <string name="fragment_title_packages">Packages</string>
     <string name="fragment_title_my_profile">My profile</string>
@@ -69,6 +69,7 @@
     <string name="error_field_missing">Please fill this field</string>
     <string name="title_activity_rejected">Rejected</string>
     <string name="title_activity_maps2">Map</string>
+    <string name="button_add">Add</string>
 
 
 </resources>

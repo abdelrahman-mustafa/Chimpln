@@ -14,6 +14,7 @@ import com.google.firebase.storage.UploadTask;
 
 import java.io.ByteArrayOutputStream;
 import java.util.ArrayList;
+import java.util.Random;
 
 /**
  * Created by khalid on 19/03/18.
@@ -29,11 +30,17 @@ public class CloudStorageAPI {
         this.eventsImages = FirebaseStorage.getInstance().getReference().child("eventsImages");
     }
 
-    public void UploadImage(Bitmap image, final CloudStorageListener.UploadUserImageListener cloudStorageListener) {
+    public void UploadImage(Bitmap image, boolean userImage, final CloudStorageListener.UploadUserImageListener cloudStorageListener) {
         ByteArrayOutputStream baos = new ByteArrayOutputStream();
         image.compress(Bitmap.CompressFormat.JPEG, 100, baos);
         byte[] data = baos.toByteArray();
-        String imageId = FirebaseAuth.getInstance().getCurrentUser().getUid() + ".jpg";
+        String imageId;
+        if (userImage) {
+            imageId = FirebaseAuth.getInstance().getCurrentUser().getUid() + ".jpg";
+        } else {
+            imageId = getSaltString() + ".jpg";
+
+        }
         StorageReference imageRef = imagesRef.child(imageId);
         UploadTask uploadTask = imageRef.putBytes(data);
         uploadTask.addOnFailureListener(new OnFailureListener() {
@@ -88,6 +95,19 @@ public class CloudStorageAPI {
                 });
             }
         }
+
+    }
+
+    protected String getSaltString() {
+        String SALTCHARS = "ABCDEFGHIJKLMNOPQRSTUVWXYZ1234567890";
+        StringBuilder salt = new StringBuilder();
+        Random rnd = new Random();
+        while (salt.length() < 18) { // length of the random string.
+            int index = (int) (rnd.nextFloat() * SALTCHARS.length());
+            salt.append(SALTCHARS.charAt(index));
+        }
+        String saltStr = salt.toString();
+        return saltStr;
 
     }
 

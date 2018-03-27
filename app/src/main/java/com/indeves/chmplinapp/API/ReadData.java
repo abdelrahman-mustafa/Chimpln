@@ -64,10 +64,12 @@ public class ReadData {
 
     public void getUserInfoById(String userId) {
         mDatabase = FirebaseDatabase.getInstance().getReference("users");
+        mDatabase.keepSynced(true);
         mDatabase.child(userId).addListenerForSingleValueEvent(new ValueEventListener() {
             //changed it to single value event to disable firing this code again if user's data is changed in edit profile
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
+                Log.v("returnedUser", dataSnapshot.toString());
                 if (firebaseEventsListener != null) {
                     firebaseEventsListener.onReadDataResponse(dataSnapshot);
                 }

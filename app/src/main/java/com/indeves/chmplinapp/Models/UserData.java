@@ -3,12 +3,13 @@ package com.indeves.chmplinapp.Models;
 import com.google.firebase.database.Exclude;
 import com.google.firebase.database.IgnoreExtraProperties;
 
+import java.io.Serializable;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 @IgnoreExtraProperties
-public class UserData {
+public class UserData implements Serializable {
 
 
     public String name, email, phone, type, lastName, birthDate, gender, uid, profilePicUrl, location;

@@ -37,6 +37,7 @@ import com.indeves.chmplinapp.Models.ProUserModel;
 import com.indeves.chmplinapp.PrefsManager.PrefGet;
 import com.indeves.chmplinapp.PrefsManager.PrefsManager;
 import com.indeves.chmplinapp.R;
+import com.indeves.chmplinapp.Utility.CircleTransform;
 import com.squareup.picasso.Picasso;
 
 import java.io.FileNotFoundException;
@@ -199,7 +200,7 @@ public class ProRegActivity extends AppCompatActivity implements View.OnClickLis
             progressDialog.show();
             if (ValidateRegistrationForm()) {
                 CloudStorageAPI cloudStorageAPI = new CloudStorageAPI();
-                cloudStorageAPI.UploadImage(selectImage, new CloudStorageListener.UploadUserImageListener() {
+                cloudStorageAPI.UploadImage(selectImage, true, new CloudStorageListener.UploadUserImageListener() {
                     @Override
                     public void onImageUpload(String downloadUrl) {
                         if (downloadUrl != null) {
@@ -260,7 +261,8 @@ public class ProRegActivity extends AppCompatActivity implements View.OnClickLis
                 final Uri imageUri = data.getData();
                 final InputStream imageStream = getContentResolver().openInputStream(imageUri);
                 selectImage = BitmapFactory.decodeStream(imageStream);
-                pic.setImageBitmap(Bitmap.createScaledBitmap(selectImage, 300, 300, false));
+//                pic.setImageBitmap(Bitmap.createScaledBitmap(selectImage, 300, 300, false));
+                Picasso.with(this).load(imageUri).resize(300, 300).transform(new CircleTransform()).into(pic);
 
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
