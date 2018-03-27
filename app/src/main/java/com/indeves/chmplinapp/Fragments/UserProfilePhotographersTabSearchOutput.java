@@ -273,6 +273,28 @@ public class UserProfilePhotographersTabSearchOutput extends android.support.v4.
 
         setRecyclerViewLayoutManager(mCurrentLayoutManagerType);
         userAccPhotographersAdaptor = new UserAccPhotographersAdaptor(pros);
+        recyclerView.addOnItemTouchListener(new RecyclerTouchListener(
+                recyclerView, new ClickListener() {
+            @Override
+            public void onClick(View view, final int position) {
+                //Values are passing to activity & to fragment as well
+
+                linearLayout.setVisibility(GONE);
+                fragmentManager = getActivity().getSupportFragmentManager();
+                UserProfilePhotographersTabSearchOutputSelectPhotographer frag = new UserProfilePhotographersTabSearchOutputSelectPhotographer(pros.get(position));
+                FragmentTransaction transaction = fragmentManager.beginTransaction();
+                transaction.replace(R.id.container_o, frag).commit();
+
+            }
+
+            @Override
+            public void onLongClick(View view, int position) {
+                linearLayout.setVisibility(GONE);
+                UserProfilePhotographersTabSearchOutputSelectPhotographer frag = new UserProfilePhotographersTabSearchOutputSelectPhotographer(pros.get(position));
+                FragmentTransaction transaction = fragmentManager.beginTransaction();
+                transaction.replace(R.id.container_o, frag).commit();
+            }
+        }));
         recyclerView.setAdapter(userAccPhotographersAdaptor);
         return rootView;
     }
