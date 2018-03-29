@@ -77,7 +77,7 @@ public class UserProfileMain extends AppCompatActivity {
                         fragment = new UserProfilePhotographersTab();
                         break;
                     case R.id.action_profile:
-                        fragment = new UserProfileEditProfileTab();
+                        fragment = new UserProfileProfileTab();
                         break;
                 }
                 final FragmentTransaction transaction = fragmentManager.beginTransaction();
