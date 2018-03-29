@@ -18,7 +18,7 @@ import com.indeves.chmplinapp.Fragments.ProPackages;
 import com.indeves.chmplinapp.Fragments.ProProfile;
 import com.indeves.chmplinapp.R;
 
-public class ProLandingPage extends AppCompatActivity implements ProEvents.OnFragmentInteractionListener, ProPackages.OnFragmentInteractionListener {
+public class ProLandingPage extends AppCompatActivity {
     private static final String TAG = MainActivity.class.getSimpleName();
     private Fragment fragment;
     private FragmentManager fragmentManager;
@@ -57,13 +57,6 @@ public class ProLandingPage extends AppCompatActivity implements ProEvents.OnFra
             }
         });
     }
-
-    @Override
-    public void onFragmentInteraction(Uri uri) {
-
-    }
-
-
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 

@@ -22,7 +22,7 @@ import com.indeves.chmplinapp.Fragments.StuPackages;
 import com.indeves.chmplinapp.Fragments.StuProProfile;
 import com.indeves.chmplinapp.R;
 
-public class StuLandingPage extends AppCompatActivity implements StuEvents.OnFragmentInteractionListener, StuPackages.OnFragmentInteractionListener {
+public class StuLandingPage extends AppCompatActivity {
     private static final String TAG = MainActivity.class.getSimpleName();
     private Fragment fragment;
     private FragmentManager fragmentManager;
@@ -64,12 +64,6 @@ public class StuLandingPage extends AppCompatActivity implements StuEvents.OnFra
             }
         });
     }
-
-    @Override
-    public void onFragmentInteraction(Uri uri) {
-
-    }
-
 
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {

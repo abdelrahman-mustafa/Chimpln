@@ -88,7 +88,7 @@ public class StuLastWork extends Fragment implements FirebaseEventsListener {
         if (dataSnapshot != null) {
             for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
                 EventModel eventModel = dataSnapshot1.getValue(EventModel.class);
-                if (eventModel != null && eventModel.getPhotographerId() != null && eventModel.getPhotographerId().equals(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
+                if (eventModel != null && eventModel.getPhotographerId() != null && eventModel.getPhotographerId().equals(FirebaseAuth.getInstance().getCurrentUser().getUid()) && eventModel.getEventStatus().equals("finished")) {
                     if (eventModel.getEventImagesUrls() != null) {
                         images.addAll(eventModel.getEventImagesUrls());
                     }

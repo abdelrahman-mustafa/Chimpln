@@ -157,9 +157,8 @@ public class StuProfilePackageTabAddPackage extends android.support.v4.app.Fragm
         if (writeSuccessful) {
             Toast.makeText(getContext(), "Save successfully", Toast.LENGTH_SHORT).show();
             final FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
-            ft.replace(R.id.main_container, new ProPackages());
+            ft.replace(R.id.main_container, new StuPackages());
             ft.commit();
-
         }
 
     }
