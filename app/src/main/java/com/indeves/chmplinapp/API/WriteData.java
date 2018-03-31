@@ -115,6 +115,7 @@ public class WriteData {
     }
 
     public void addNewProPackage(final PackageModel packageModel) throws Exception {
+        //TODO: use push with key to handle the packages better
         //firstly, get pro data to check if it has packages
         if (mAuth.getCurrentUser() != null) {
             mDatabaseUserReference.child(mAuth.getCurrentUser().getUid()).addListenerForSingleValueEvent(new ValueEventListener() {

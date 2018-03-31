@@ -30,8 +30,8 @@ public class ProProfilePackageTabAddPackage extends android.support.v4.app.Fragm
 
 
     Spinner eventTypeSpinner, eventTimeSpinner;
-    List<LookUpModel> eventTypesList = new ArrayList<>();
-    List<LookUpModel> eventTimeList = new ArrayList<>();
+    List<LookUpModel> eventTypesList;
+    List<LookUpModel> eventTimeList;
     ArrayAdapter<LookUpModel> eventTypeArrayAdapter;
     ArrayAdapter<LookUpModel> eventTimeArrayAdapter;
     EditText packageTitle, packagePrice, packageDescription;
@@ -57,7 +57,8 @@ public class ProProfilePackageTabAddPackage extends android.support.v4.app.Fragm
         addNewPackage = rootView.findViewById(R.id.pro_packages_addPackage_button);
         addNewPackage.setOnClickListener(this);
 
-
+        eventTypesList = new ArrayList<>();
+        eventTimeList = new ArrayList<>();
         eventTypesList.add(0, new LookUpModel(0, getResources().getString(R.string.selectPackTy)));
         // Creating adapter for spinner
         eventTypeArrayAdapter = new ArrayAdapter<LookUpModel>(getContext(), android.R.layout.simple_spinner_item, eventTypesList);

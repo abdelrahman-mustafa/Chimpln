@@ -10,6 +10,7 @@ import android.graphics.Paint;
 import android.graphics.RectF;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
@@ -26,6 +27,7 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.indeves.chmplinapp.API.FirebaseEventsListener;
 import com.indeves.chmplinapp.API.ReadData;
+import com.indeves.chmplinapp.API.WriteData;
 import com.indeves.chmplinapp.Adapters.ProProfPackageAdaptor;
 import com.indeves.chmplinapp.Models.MyPackageData;
 import com.indeves.chmplinapp.Models.PackageModel;
@@ -44,24 +46,20 @@ public class StuProfilePackageTabMyPackages extends android.support.v4.app.Fragm
     //    private static final String TAG = "RecyclerViewFragment";
     private static final String KEY_LAYOUT_MANAGER = "layoutManager";
     private static final int SPAN_COUNT = 2;
+    private static final float buttonWidth = 300;
     protected LayoutManagerType mCurrentLayoutManagerType;
     protected RecyclerView.LayoutManager mLayoutManager;
     ProProfPackageAdaptor userProfEventsAdaptor;
+    SwipeController swipeController = null;
+    ProUserModel proUserModel;
+    Boolean swipeBack = false;
     private List<PackageModel> list;
     private RectF buttonInstance = null;
     private RecyclerView recyclerView;
-    SwipeController swipeController = null;
     private RecyclerView.ViewHolder currentItemViewHolder = null;
     private Paint p = new Paint();
-    enum ButtonsState {
-        GONE,
-        LEFT_VISIBLE,
-        RIGHT_VISIBLE
-    }
-
+    private PackageModel deletedPackage;
     private ButtonsState buttonShowedState = ButtonsState.GONE;
-    private static final float buttonWidth = 300;
-    Boolean swipeBack = false;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
@@ -88,18 +86,31 @@ public class StuProfilePackageTabMyPackages extends android.support.v4.app.Fragm
                     .getSerializable(KEY_LAYOUT_MANAGER);
         }
         setRecyclerViewLayoutManager(mCurrentLayoutManagerType);
-       // initSwipe();
+        // initSwipe();
 
 
         swipeController = new SwipeController(new SwipeControllerActions() {
             @Override
             public void onRightClicked(int position) {
                 // A.M : Here you add the function of delete
+                deletedPackage = list.get(position);
+                list.remove(position);
+                ProUserModel proUserModel = new ProUserModel();
+                proUserModel.setPackages(list);
+                WriteData writeData = new WriteData(StuProfilePackageTabMyPackages.this);
+                try {
+                    writeData.updateUserProfileData(proUserModel);
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
 
             @Override
             public void onLeftClicked(int position) {
-                 // A.M : Here you add the function of edit
+                // A.M : Here you add the function of edit
+                FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
+                EditPackageDetails editPackageDetails = EditPackageDetails.newInstance(list.get(position), proUserModel);
+                fragmentTransaction.replace(R.id.main_container, editPackageDetails).addToBackStack(null).commit();
 
             }
         });
@@ -116,15 +127,10 @@ public class StuProfilePackageTabMyPackages extends android.support.v4.app.Fragm
 
 
         userProfEventsAdaptor = new ProProfPackageAdaptor(list);
-        return rootView;
-    }
-
-    @Override
-    public void onStart() {
         ReadData readData = new ReadData(this);
         readData.getUserInfoById(FirebaseAuth.getInstance().getCurrentUser().getUid());
 
-        super.onStart();
+        return rootView;
     }
 
     public void setRecyclerViewLayoutManager(LayoutManagerType layoutManagerType) {
@@ -156,13 +162,28 @@ public class StuProfilePackageTabMyPackages extends android.support.v4.app.Fragm
 
     @Override
     public void onWriteDataCompleted(boolean writeSuccessful) {
+        if (writeSuccessful) {
+            Toast.makeText(getContext(), "Deleted Successfully!", Toast.LENGTH_SHORT).show();
+            userProfEventsAdaptor.notifyDataSetChanged();
+            if (deletedPackage != null) {
+                if (proUserModel.getPackages().contains(deletedPackage)) {
+                    proUserModel.getPackages().remove(deletedPackage);
+                }
+            }
+        } else {
+            Toast.makeText(getContext(), "Failed to delete package", Toast.LENGTH_SHORT).show();
+            if (deletedPackage != null) {
+                list.add(deletedPackage);
+                userProfEventsAdaptor.notifyDataSetChanged();
+            }
+        }
 
     }
 
     @Override
     public void onReadDataResponse(DataSnapshot dataSnapshot) {
         if (dataSnapshot != null && dataSnapshot.getValue() != null) {
-            ProUserModel proUserModel = dataSnapshot.getValue(ProUserModel.class);
+            proUserModel = dataSnapshot.getValue(ProUserModel.class);
             if (proUserModel != null) {
                 if (proUserModel.getPackages() != null) {
                     list.addAll(proUserModel.getPackages());
@@ -176,18 +197,16 @@ public class StuProfilePackageTabMyPackages extends android.support.v4.app.Fragm
 
     }
 
+    enum ButtonsState {
+        GONE,
+        LEFT_VISIBLE,
+        RIGHT_VISIBLE
+    }
+
     private enum LayoutManagerType {
         GRID_LAYOUT_MANAGER,
         LINEAR_LAYOUT_MANAGER
     }
-
-
-
-
-
-
-
-
 
 
 }

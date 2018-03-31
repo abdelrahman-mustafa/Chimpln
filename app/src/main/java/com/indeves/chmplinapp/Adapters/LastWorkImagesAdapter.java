@@ -34,7 +34,7 @@ public class LastWorkImagesAdapter extends RecyclerView.Adapter<LastWorkImagesAd
 
     @Override
     public void onBindViewHolder(LastWorkImagesAdapter.ViewHolder viewHolder, int i) {
-        Picasso.with(context).load(imagesURLs.get(i)).placeholder(R.drawable.test_image).into(viewHolder.img_android);
+        Picasso.with(context).load(imagesURLs.get(i)).into(viewHolder.img_android);
     }
 
     @Override

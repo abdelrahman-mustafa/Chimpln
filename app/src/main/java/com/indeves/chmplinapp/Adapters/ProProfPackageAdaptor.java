@@ -24,7 +24,6 @@ public class ProProfPackageAdaptor extends RecyclerView.Adapter<ProProfPackageAd
         this.list = list;
         eventTimesList = new ArrayList<>();
         eventTypesList = new ArrayList<>();
-        loadLookups();
     }
 
     @Override
@@ -36,28 +35,43 @@ public class ProProfPackageAdaptor extends RecyclerView.Adapter<ProProfPackageAd
     }
 
     @Override
-    public void onBindViewHolder(MyViewHolder holder, int position) {
-        PackageModel pData = list.get(position);
+    public void onBindViewHolder(final MyViewHolder holder, int position) {
+        final PackageModel pData = list.get(position);
         holder.packageName.setText(pData.getPackageTitle());
         holder.packagePrice.setText(String.valueOf(pData.getPrice()));
         holder.packageDescription.setText(pData.getPackageDescription());
-        if (eventTypesList != null) {
-            for (LookUpModel eventTypeElement : eventTypesList) {
-                if (pData.getEventTypeId() == eventTypeElement.getId()) {
-                    holder.packageEventType.setText(eventTypeElement.getEnglishName());
+        ReadData readData = new ReadData();
+        readData.getLookupsByType("eventTypesLookups", new ReadData.LookUpsListener() {
+            @Override
+            public void onLookUpsResponse(List<LookUpModel> eventTypeLookups) {
+                Log.v("EventTypeLookupsArr", eventTypeLookups.toString());
+                eventTypesList.addAll(eventTypeLookups);
+                if (eventTypesList != null) {
+                    for (LookUpModel eventTypeElement : eventTypesList) {
+                        if (pData.getEventTypeId() == eventTypeElement.getId()) {
+                            holder.packageEventType.setText(eventTypeElement.getEnglishName());
+
+                        }
+                    }
 
                 }
             }
+        });
+        readData.getLookupsByType("eventTimesLookups", new ReadData.LookUpsListener() {
+            @Override
+            public void onLookUpsResponse(List<LookUpModel> lookups) {
+                eventTimesList.addAll(lookups);
+                if (eventTimesList != null) {
+                    for (LookUpModel eventTimesElement : eventTimesList) {
+                        if (eventTimesElement.getId() == pData.getEventTimeId()) {
+                            holder.packageTime.setText(eventTimesElement.getEnglishName());
 
-        }
-        if (eventTimesList != null) {
-            for (LookUpModel eventTimesElement : eventTimesList) {
-                if (eventTimesElement.getId() == pData.getEventTimeId()) {
-                    holder.packageTime.setText(eventTimesElement.getEnglishName());
-
+                        }
+                    }
                 }
+
             }
-        }
+        });
 
     }
 
@@ -67,23 +81,23 @@ public class ProProfPackageAdaptor extends RecyclerView.Adapter<ProProfPackageAd
         return list.size();
     }
 
-    public void loadLookups() {
-        ReadData readData = new ReadData();
-        readData.getLookupsByType("eventTypesLookups", new ReadData.LookUpsListener() {
-            @Override
-            public void onLookUpsResponse(List<LookUpModel> eventTypeLookups) {
-                Log.v("EventTypeLookupsArr", eventTypeLookups.toString());
-                eventTypesList.addAll(eventTypeLookups);
-            }
-        });
-        readData.getLookupsByType("eventTimesLookups", new ReadData.LookUpsListener() {
-            @Override
-            public void onLookUpsResponse(List<LookUpModel> lookups) {
-                eventTimesList.addAll(lookups);
-            }
-        });
-
-    }
+//    public void loadLookups() {
+//        ReadData readData = new ReadData();
+//        readData.getLookupsByType("eventTypesLookups", new ReadData.LookUpsListener() {
+//            @Override
+//            public void onLookUpsResponse(List<LookUpModel> eventTypeLookups) {
+//                Log.v("EventTypeLookupsArr", eventTypeLookups.toString());
+//                eventTypesList.addAll(eventTypeLookups);
+//            }
+//        });
+//        readData.getLookupsByType("eventTimesLookups", new ReadData.LookUpsListener() {
+//            @Override
+//            public void onLookUpsResponse(List<LookUpModel> lookups) {
+//                eventTimesList.addAll(lookups);
+//            }
+//        });
+//
+//    }
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
 

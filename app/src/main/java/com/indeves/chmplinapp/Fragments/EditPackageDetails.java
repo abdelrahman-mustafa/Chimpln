@@ -1,8 +1,9 @@
 package com.indeves.chmplinapp.Fragments;
 
+
 import android.os.Bundle;
-import android.support.annotation.Nullable;
-import android.support.v4.app.FragmentTransaction;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentManager;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -20,14 +21,15 @@ import com.indeves.chmplinapp.API.ReadData;
 import com.indeves.chmplinapp.API.WriteData;
 import com.indeves.chmplinapp.Models.LookUpModel;
 import com.indeves.chmplinapp.Models.PackageModel;
+import com.indeves.chmplinapp.Models.ProUserModel;
 import com.indeves.chmplinapp.R;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class StuProfilePackageTabAddPackage extends android.support.v4.app.Fragment implements View.OnClickListener, AdapterView.OnItemSelectedListener, FirebaseEventsListener {
-
-
+public class EditPackageDetails extends Fragment implements View.OnClickListener, AdapterView.OnItemSelectedListener, FirebaseEventsListener {
+    private static final String ARG_PARAM1 = "param1";
+    private static final String ARG_PARAM2 = "param2";
     Spinner eventTypeSpinner, eventTimeSpinner;
     List<LookUpModel> eventTypesList;
     List<LookUpModel> eventTimeList;
@@ -36,25 +38,47 @@ public class StuProfilePackageTabAddPackage extends android.support.v4.app.Fragm
     EditText packageTitle, packagePrice, packageDescription;
     Button addNewPackage;
     LookUpModel selectedEventType, selectedEventTime;
+    ProUserModel proUserModel;
+    private PackageModel selectedPackage;
 
-
-    @Override
-    public void onCreate(@Nullable Bundle savedInstanceState) {
-        super.onCreate(savedInstanceState);
+    public EditPackageDetails() {
+        // Required empty public constructor
     }
 
-    @Nullable
-    @Override
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
-        View rootView = inflater.inflate(R.layout.activity_stu_profile_tab_add_package, container, false);
+    public static EditPackageDetails newInstance(PackageModel param1, ProUserModel proUserModel) {
+        EditPackageDetails fragment = new EditPackageDetails();
+        Bundle args = new Bundle();
+        args.putSerializable(ARG_PARAM1, param1);
+        args.putSerializable(ARG_PARAM2, proUserModel);
+        fragment.setArguments(args);
+        return fragment;
+    }
 
+    @Override
+    public void onCreate(Bundle savedInstanceState) {
+        super.onCreate(savedInstanceState);
+        if (getArguments() != null) {
+            selectedPackage = (PackageModel) getArguments().getSerializable(ARG_PARAM1);
+            proUserModel = (ProUserModel) getArguments().getSerializable(ARG_PARAM2);
+        }
+    }
+
+    @Override
+    public View onCreateView(LayoutInflater inflater, ViewGroup container,
+                             Bundle savedInstanceState) {
+        // Inflate the layout for this fragment
+        View rootView = inflater.inflate(R.layout.fragment_edit_package_details, container, false);
         eventTypeSpinner = rootView.findViewById(R.id.proProfile_spinner_package_type);
         eventTimeSpinner = rootView.findViewById(R.id.proProfile_spinner_package_time);
         packageTitle = rootView.findViewById(R.id.proProfile_editText_package_name);
+        packageTitle.setText(selectedPackage.getPackageTitle());
         packagePrice = rootView.findViewById(R.id.proProfile_editText_package_price);
+        packagePrice.setText(String.valueOf(selectedPackage.getPrice()));
         packageDescription = rootView.findViewById(R.id.proProfile_editText_package_desc);
+        packageDescription.setText(selectedPackage.getPackageDescription());
         addNewPackage = rootView.findViewById(R.id.pro_packages_addPackage_button);
         addNewPackage.setOnClickListener(this);
+
         eventTypesList = new ArrayList<>();
         eventTimeList = new ArrayList<>();
         eventTypesList.add(0, new LookUpModel(0, getResources().getString(R.string.selectPackTy)));
@@ -77,35 +101,30 @@ public class StuProfilePackageTabAddPackage extends android.support.v4.app.Fragm
             @Override
             public void onLookUpsResponse(List<LookUpModel> eventTypeLookups) {
                 Log.v("EventTypeLookupsArr", eventTypeLookups.toString());
-                eventTypeArrayAdapter.addAll(eventTypeLookups);
+                eventTypesList.addAll(eventTypeLookups);
+                eventTypeArrayAdapter.notifyDataSetChanged();
+                for (int i = 0; i < eventTypesList.size(); i++) {
+                    if (selectedPackage.getEventTypeId() == eventTypesList.get(i).getId()) {
+                        eventTypeSpinner.setSelection(i);
+                    }
+                }
             }
         });
         readData.getLookupsByType("eventTimesLookups", new ReadData.LookUpsListener() {
             @Override
             public void onLookUpsResponse(List<LookUpModel> lookups) {
-                eventTimeArrayAdapter.addAll(lookups);
+                eventTimeList.addAll(lookups);
+                eventTimeArrayAdapter.notifyDataSetChanged();
+                for (int i = 0; i < eventTimeList.size(); i++) {
+                    if (selectedPackage.getEventTimeId() == eventTimeList.get(i).getId()) {
+                        eventTimeSpinner.setSelection(i);
+                    }
+                }
             }
         });
         eventTypeSpinner.setOnItemSelectedListener(this);
         eventTimeSpinner.setOnItemSelectedListener(this);
-
         return rootView;
-    }
-
-
-    @Override
-    public void onClick(View v) {
-        if (v == addNewPackage) {
-            if (validatePackageForm()) {
-                PackageModel packageModel = new PackageModel(packageTitle.getText().toString(), packageDescription.getText().toString(), selectedEventType.getId(), selectedEventTime.getId(), Integer.parseInt(packagePrice.getText().toString()));
-                WriteData writeData = new WriteData(this);
-                try {
-                    writeData.addNewProPackage(packageModel);
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-        }
     }
 
     boolean validatePackageForm() {
@@ -133,6 +152,29 @@ public class StuProfilePackageTabAddPackage extends android.support.v4.app.Fragm
 
     }
 
+    @Override
+    public void onClick(View v) {
+        if (validatePackageForm()) {
+            //Todo: this shit way of edit should be changes ASAP
+            PackageModel editedPackageModel = new PackageModel(packageTitle.getText().toString(), packageDescription.getText().toString(), selectedEventType.getId(), selectedEventTime.getId(), Integer.parseInt(packagePrice.getText().toString()));
+            List<PackageModel> packageModelList = proUserModel.getPackages();
+            for (int i = 0; i < packageModelList.size(); i++) {
+                if (packageModelList.get(i) == selectedPackage) {
+                    packageModelList.set(i, editedPackageModel);
+                }
+            }
+            ProUserModel newModel = new ProUserModel();
+            newModel.setPackages(packageModelList);
+            WriteData writeData = new WriteData(this);
+            try {
+                writeData.updateUserProfileData(newModel);
+            } catch (Exception e) {
+                e.printStackTrace();
+            }
+
+        }
+
+    }
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
@@ -144,7 +186,6 @@ public class StuProfilePackageTabAddPackage extends android.support.v4.app.Fragm
             selectedEventType = eventTypesList.get(position);
 
         }
-
     }
 
     @Override
@@ -155,10 +196,9 @@ public class StuProfilePackageTabAddPackage extends android.support.v4.app.Fragm
     @Override
     public void onWriteDataCompleted(boolean writeSuccessful) {
         if (writeSuccessful) {
-            Toast.makeText(getContext(), "Save successfully", Toast.LENGTH_SHORT).show();
-            final FragmentTransaction ft = getActivity().getSupportFragmentManager().beginTransaction();
-            ft.replace(R.id.main_container, new StuPackages());
-            ft.commit();
+            Toast.makeText(getContext(), "Saved successfully!", Toast.LENGTH_SHORT).show();
+            if (getFragmentManager() != null)
+                getFragmentManager().popBackStack();
         }
 
     }
