@@ -68,6 +68,7 @@ public class Booking extends StepProgressBar implements View.OnClickListener, Ad
     private static final String ARG_PARAM2 = "param2";
     Spinner eTime,eType,photoShare,eLoction,ePackage;
     TextView proName,proDetails,eDate,timefrom,timeto;
+    private static final String[]options = {"Select location option","Current Location"};
     ImageView proPhoto;
     Button proedit,proceed,timeedit;
     EditText note,addressLine;
@@ -217,14 +218,16 @@ public class Booking extends StepProgressBar implements View.OnClickListener, Ad
 
        // photoShare.setSelection(photoShareSpinner.getCount());
         eLoction.setOnItemSelectedListener(this);
-        SpinnerCustomArrayAdapter loctionSpinner = new SpinnerCustomArrayAdapter(getContext(), android.R.layout.simple_spinner_dropdown_item);
+       // ArrayAdapter loctionSpinner = new ArrayAdapter(getContext(), android.R.layout.simple_spinner_dropdown_item);
+        ArrayAdapter<String>loctionSpinner = new ArrayAdapter<String>(getContext(),
+                android.R.layout.simple_spinner_item,options);
 
         loctionSpinner.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
       //  loctionSpinner.add("Insert Addrees");
-        loctionSpinner.add("Current Location");
-        loctionSpinner.add("Select location option");
+
+       /* loctionSpinner.add("Select location option");
+        loctionSpinner.add("Current Location");*/
         eLoction.setAdapter(loctionSpinner);
-        eLoction.setSelection(loctionSpinner.getCount());
         geocoder = new Geocoder(getContext(), Locale.getDefault());
         proName.setText(pro.getName());
         proDetails.setText(pro.getCity()+"-"+pro.getCountry());
@@ -550,7 +553,7 @@ public class Booking extends StepProgressBar implements View.OnClickListener, Ad
                     if (position==6){addressLine.setVisibility(View.VISIBLE);
                     sAddress=addressLine.getText().toString();
                     }
-                    else if (position==0){
+                    else if (position==1){
                         addressLine.setVisibility(View.VISIBLE);
                         PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
 
