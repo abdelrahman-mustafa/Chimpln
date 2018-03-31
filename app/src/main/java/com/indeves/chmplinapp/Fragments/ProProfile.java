@@ -1,6 +1,7 @@
 package com.indeves.chmplinapp.Fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -12,6 +13,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
@@ -20,9 +22,11 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.indeves.chmplinapp.API.FirebaseEventsListener;
 import com.indeves.chmplinapp.API.ReadData;
+import com.indeves.chmplinapp.Activities.LogIn;
 import com.indeves.chmplinapp.Activities.ProLandingPage;
 import com.indeves.chmplinapp.Models.EventModel;
 import com.indeves.chmplinapp.Models.ProUserModel;
+import com.indeves.chmplinapp.PrefsManager.PrefSave;
 import com.indeves.chmplinapp.R;
 import com.indeves.chmplinapp.Utility.CircleTransform;
 import com.squareup.picasso.Picasso;
@@ -34,7 +38,7 @@ public class ProProfile extends Fragment implements FirebaseEventsListener {
     TextView proName, photosCount, eventsCount, subInfoRow, experience, workHours;
     RatingBar rate;
     ImageView profileImage;
-
+    Button logout;
     public ProProfile() {
     }
 
@@ -57,6 +61,17 @@ public class ProProfile extends Fragment implements FirebaseEventsListener {
         experience = rootView.findViewById(R.id.pro_profile_experience);
         workHours = rootView.findViewById(R.id.pro_profile_work_hours);
         profileImage = rootView.findViewById(R.id.pro_profile_pic);
+        logout = rootView.findViewById(R.id.pro_profile_logout);
+        logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PrefSave prefSave = new PrefSave(getContext());
+                prefSave.saveLogInStatus(false);
+
+                startActivity(new Intent(getActivity(), LogIn.class));
+                getActivity().finish();
+            }
+        });
         setHasOptionsMenu(true);
         if (attachedActivityContext != null && ((ProLandingPage) attachedActivityContext).getSupportActionBar() != null) {
             ((ProLandingPage) attachedActivityContext).getSupportActionBar().setDisplayShowHomeEnabled(false);

@@ -16,6 +16,7 @@
         android:layout_height="wrap_content"
         android:textStyle="bold"
         android:visibility="gone"
+
         android:text="There are no events in the history"/>
 
 </LinearLayout>

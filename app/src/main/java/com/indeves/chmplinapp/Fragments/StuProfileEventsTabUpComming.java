@@ -8,6 +8,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -25,6 +26,7 @@ import com.indeves.chmplinapp.Models.EventModel;
 import com.indeves.chmplinapp.Models.PhotographerData;
 import com.indeves.chmplinapp.R;
 import com.indeves.chmplinapp.Utility.ClickListener;
+import com.indeves.chmplinapp.Utility.SwipeController;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -40,10 +42,10 @@ public class StuProfileEventsTabUpComming extends android.support.v4.app.Fragmen
     TextView sortDate, sortLocation, sortType;
     int textDefaultColor;
     ProEventsArrayAdapter userProfEventsAdaptor;
+
     FragmentManager fragmentManager;
     private List<EventModel> eventModels;
     private RecyclerView recyclerView;
-
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -75,6 +77,10 @@ public class StuProfileEventsTabUpComming extends android.support.v4.app.Fragmen
         ReadData readData = new ReadData(this);
         readData.getAllEvents();
 
+        // A.M add swiping feature to the recyclerView
+
+
+        //-------------------------------------------------------------------------
         recyclerView.setAdapter(userProfEventsAdaptor);
         recyclerView.addOnItemTouchListener(new RecyclerTouchListener(
                 recyclerView, new ClickListener() {

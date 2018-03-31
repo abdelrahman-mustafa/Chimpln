@@ -61,6 +61,9 @@
     <android.support.v7.widget.RecyclerView
         android:id="@+id/proProfile_event_recycler_view"
         android:layout_width="match_parent"
+        android:orientation="horizontal"
+        android:clipToPadding="false"
+        android:overScrollMode="never"
         android:layout_height="wrap_content" />
 
 

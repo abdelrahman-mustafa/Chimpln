@@ -1,6 +1,7 @@
 package com.indeves.chmplinapp.Fragments;
 
 import android.content.Context;
+import android.content.Intent;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentTransaction;
@@ -14,6 +15,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.ImageView;
 import android.widget.RatingBar;
 import android.widget.TextView;
@@ -22,10 +24,12 @@ import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.indeves.chmplinapp.API.FirebaseEventsListener;
 import com.indeves.chmplinapp.API.ReadData;
+import com.indeves.chmplinapp.Activities.LogIn;
 import com.indeves.chmplinapp.Activities.StuLandingPage;
 import com.indeves.chmplinapp.Adapters.StudioTeamMembersAdapter;
 import com.indeves.chmplinapp.Models.EventModel;
 import com.indeves.chmplinapp.Models.ProUserModel;
+import com.indeves.chmplinapp.PrefsManager.PrefSave;
 import com.indeves.chmplinapp.R;
 import com.indeves.chmplinapp.Utility.CircleTransform;
 import com.squareup.picasso.Picasso;
@@ -44,7 +48,7 @@ public class StuProProfile extends Fragment implements FirebaseEventsListener, V
     ImageView profileImage;
     RecyclerView teamMembersListView;
     ProUserModel proUserModel;
-
+    Button logout;
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -60,6 +64,17 @@ public class StuProProfile extends Fragment implements FirebaseEventsListener, V
         prosCount = rootView.findViewById(R.id.stu_profile_prosCount);
         eventsCount = rootView.findViewById(R.id.pro_profile_events);
         subInfoRow = rootView.findViewById(R.id.stu_profile_about);
+        logout = rootView.findViewById(R.id.stu_profile_logout);
+        logout.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                PrefSave prefSave = new PrefSave(getContext());
+                prefSave.saveLogInStatus(false);
+
+                startActivity(new Intent(getActivity(), LogIn.class));
+                getActivity().finish();
+            }
+        });
         rate = rootView.findViewById(R.id.stu_profile_rating);
         teamMembersListView = rootView.findViewById(R.id.stu_profile_itemsList_listView);
         mLayoutManager = new LinearLayoutManager(getActivity());

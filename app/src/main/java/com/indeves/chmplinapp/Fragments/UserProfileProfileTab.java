@@ -19,6 +19,7 @@ import com.indeves.chmplinapp.API.ReadData;
 import com.indeves.chmplinapp.API.WriteData;
 import com.indeves.chmplinapp.Activities.LogIn;
 import com.indeves.chmplinapp.Models.UserData;
+import com.indeves.chmplinapp.PrefsManager.PrefSave;
 import com.indeves.chmplinapp.R;
 
 public class UserProfileProfileTab extends android.support.v4.app.Fragment implements FirebaseEventsListener, View.OnClickListener {
@@ -83,6 +84,8 @@ public class UserProfileProfileTab extends android.support.v4.app.Fragment imple
     @Override
     public void onClick(View v) {
         if (v == logout) {
+            PrefSave prefSave = new PrefSave(getContext());
+            prefSave.saveLogInStatus(false);
 
             startActivity(new Intent(getActivity(), LogIn.class));
             getActivity().finish();
@@ -91,4 +94,5 @@ public class UserProfileProfileTab extends android.support.v4.app.Fragment imple
 
 
     }
+
 }
