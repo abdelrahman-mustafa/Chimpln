@@ -144,7 +144,7 @@ public class ProProfileEventsTabComingSelectedEvent extends android.support.v4.a
                 SimpleDateFormat formatter2 = new SimpleDateFormat("dd-MMM-yyyy");
                 Date date2 = formatter2.parse(eventModel.getEventDate());
                 Date today = new Date();
-                if (date2.after(today)) {
+                if (today.after(date2)) {
                     WriteData finishEvent = new WriteData(this);
                     String eventId = eventModel.getEventId();
                     finishEvent.respondToEvent("finished", eventId);
