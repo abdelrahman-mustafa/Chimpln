@@ -28,7 +28,10 @@ import com.indeves.chmplinapp.Models.ProUserModel;
 import com.indeves.chmplinapp.R;
 import com.indeves.chmplinapp.Utility.Toasts;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 
 @SuppressLint("ValidFragment")
@@ -90,6 +93,8 @@ public class ProProfileEventsTabComingSelectedEvent extends android.support.v4.a
             locationString.setText(eventModel.getEventCity());
             String[] eventDateParts = eventModel.getEventDate().split("-");
             day.setText(eventDateParts[0]);
+            month.setText(eventDateParts[1]);
+
             if (eventTypes != null) {
                 for (LookUpModel eventTypeElement : eventTypes) {
                     if (eventModel.getTypeId() == eventTypeElement.getId()) {
@@ -124,7 +129,6 @@ public class ProProfileEventsTabComingSelectedEvent extends android.support.v4.a
                 }
             }
             location.setText(eventModel.getEventCity());
-            month.setText(eventDateParts[1]);
 
             if (eventModel.getSelectedPackage() != null) {
                 eventPackage.setText(eventModel.getSelectedPackage().getPackageTitle());
@@ -136,11 +140,19 @@ public class ProProfileEventsTabComingSelectedEvent extends android.support.v4.a
     @Override
     public void onClick(View v) {
         if (v == endEvent) {
-            WriteData finishEvent = new WriteData(this);
-            String eventId = eventModel.getEventId();
-
             try {
-                finishEvent.respondToEvent("finished", eventId);
+                SimpleDateFormat formatter2 = new SimpleDateFormat("dd-MMM-yyyy");
+                Date date2 = formatter2.parse(eventModel.getEventDate());
+                Date today = new Date();
+                if (date2.after(today)) {
+                    WriteData finishEvent = new WriteData(this);
+                    String eventId = eventModel.getEventId();
+                    finishEvent.respondToEvent("finished", eventId);
+                } else {
+                    Toast.makeText(getContext(), getResources().getString(R.string.error_eventDate), Toast.LENGTH_SHORT).show();
+                }
+            } catch (ParseException e) {
+                e.printStackTrace();
             } catch (Exception e) {
                 e.printStackTrace();
             }

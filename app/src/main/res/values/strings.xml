@@ -71,6 +71,7 @@
     <string name="title_activity_rejected">Rejected</string>
     <string name="title_activity_maps2">Map</string>
     <string name="button_add">Add</string>
+    <string name="error_eventDate">you can\'t end event before its date</string>
 
 
 </resources>
