@@ -97,19 +97,62 @@ public class UserProfilePhotographersTabSearchSelect extends android.support.v4.
                         //    Log.v("ALlPros", pros.toString());
                         linear.setVisibility(View.GONE);
                         search.setVisibility(View.GONE);
-                        for (int i = 0; i < pros.size(); i++) {
-                            if (pros.get(i).getCity() != null && pros.get(i).getCity().contains(spinCity.getSelectedItem().toString()) && pros.get(i).getGender().contains(spinGender.getSelectedItem().toString())) {
-                                ArrayList<ProUserModel> customList = new ArrayList<>();
-                                customList.add(pros.get(i));
-                                UserProfilePhotographersTabSearchOutput output = new UserProfilePhotographersTabSearchOutput(customList);
-                                android.support.v4.app.FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+                        if (spinCity.getSelectedItemPosition() == 0 && spinGender.getSelectedItemPosition() == 0) {
+                            UserProfilePhotographersTabSearchOutput output = new UserProfilePhotographersTabSearchOutput(pros);
+                            android.support.v4.app.FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
 
-                                transaction.replace(R.id.container_special, output);
-                                transaction.commit();
+                            transaction.replace(R.id.container_special, output);
+                            transaction.commit();
+                        } else if (spinCity.getSelectedItemPosition() != 0) {
+                            ArrayList<ProUserModel> customList = new ArrayList<>();
 
+                            for (int i = 0; i < pros.size(); i++) {
+                                if (pros.get(i).getCity() != null && pros.get(i).getCity().equals(spinCity.getSelectedItem().toString())) {
+                                    customList.add(pros.get(i));
+                                }
+                            }
+                            UserProfilePhotographersTabSearchOutput output = new UserProfilePhotographersTabSearchOutput(customList);
+                            android.support.v4.app.FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+
+                            transaction.replace(R.id.container_special, output);
+                            transaction.commit();
+
+                        } else if (spinGender.getSelectedItemPosition() != 0) {
+                            ArrayList<ProUserModel> customList = new ArrayList<>();
+
+                            for (int i = 0; i < pros.size(); i++) {
+                                if (pros.get(i).getGender()!= null && pros.get(i).getGender().equals(spinGender.getSelectedItem().toString())) {
+                                    customList.add(pros.get(i));
+
+
+                                }
 
                             }
+                            UserProfilePhotographersTabSearchOutput output = new UserProfilePhotographersTabSearchOutput(customList);
+                            android.support.v4.app.FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+
+                            transaction.replace(R.id.container_special, output);
+                            transaction.commit();
+
+                        }else {
+                            ArrayList<ProUserModel> customList = new ArrayList<>();
+
+                            for (int i = 0; i < pros.size(); i++) {
+                                if (pros.get(i).getCity() != null && pros.get(i).getCity().contains(spinCity.getSelectedItem().toString())&& pros.get(i).getGender().contains(spinGender.getSelectedItem().toString())) {
+                                    customList.add(pros.get(i));
+
+
+                                }
+
+                            }
+                            UserProfilePhotographersTabSearchOutput output = new UserProfilePhotographersTabSearchOutput(customList);
+                            android.support.v4.app.FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
+
+                            transaction.replace(R.id.container_special, output);
+                            transaction.commit();
+
                         }
+
                     }
                 });
 
