@@ -14,7 +14,7 @@ import java.util.Map;
 public class EventModel implements Serializable {
     private String bookerUserId, photographerId, eventDate, bookerUserName, photographerName, startTime, endTime, noteToPro, eventCity, eventId, rejectionReason;
     private long eventLocationLong, eventLocationLat;
-    //eventStatus is one of these values "pending, accepted, rejected, finished"
+    //eventStatus is one of these values "pending, accepted, rejected, finished,cancelled"
     private String eventStatus;
     private int typeId, timeId, sharingOptionId;
     private PackageModel selectedPackage;

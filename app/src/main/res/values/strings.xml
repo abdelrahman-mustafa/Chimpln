@@ -72,6 +72,9 @@
     <string name="title_activity_maps2">Map</string>
     <string name="button_add">Add</string>
     <string name="error_eventDate">you can\'t end event before its date</string>
+    <string name="end_event_button">End event</string>
+    <string name="cancel_event_button">Cancel event</string>
+    <string name="cancel_event_confirmation">You will be charged by 20% of event cost, are you sure you want to cancel this event?</string>
 
 
 </resources>

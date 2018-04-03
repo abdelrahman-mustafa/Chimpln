@@ -1,19 +1,20 @@
 package com.indeves.chmplinapp.Fragments;
 
 import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
+import android.support.annotation.NonNull;
 import android.support.annotation.Nullable;
 import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
-import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
-import android.widget.ArrayAdapter;
+
 import android.widget.Button;
-import android.widget.Spinner;
+
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -21,16 +22,17 @@ import com.google.firebase.database.DataSnapshot;
 import com.indeves.chmplinapp.API.FirebaseEventsListener;
 import com.indeves.chmplinapp.API.ReadData;
 import com.indeves.chmplinapp.API.WriteData;
-import com.indeves.chmplinapp.Activities.Booking;
+
 import com.indeves.chmplinapp.Models.EventModel;
 import com.indeves.chmplinapp.Models.LookUpModel;
-import com.indeves.chmplinapp.Models.ProUserModel;
+
 import com.indeves.chmplinapp.R;
 import com.indeves.chmplinapp.Utility.Toasts;
 
 import java.text.ParseException;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 
@@ -65,7 +67,7 @@ public class ProProfileEventsTabComingSelectedEvent extends android.support.v4.a
     @Nullable
     @Override
 
-    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
+    public View onCreateView(@NonNull LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View view = inflater.inflate(R.layout.fragment__pro_upcoming_event_selected, container, false);
         name = view.findViewById(R.id.userProfile_event_photographer_name);
         time = view.findViewById(R.id.userProfile_event_time);
@@ -133,6 +135,16 @@ public class ProProfileEventsTabComingSelectedEvent extends android.support.v4.a
             if (eventModel.getSelectedPackage() != null) {
                 eventPackage.setText(eventModel.getSelectedPackage().getPackageTitle());
             }
+            try {
+                if (checkIfUserCanEndEvent(eventModel.getEventDate())) {
+                    endEvent.setText(getResources().getString(R.string.end_event_button));
+                } else {
+                    endEvent.setText(getResources().getString(R.string.cancel_event_button));
+                }
+            } catch (ParseException e) {
+                e.printStackTrace();
+                Toast.makeText(getContext(), "Error parsing event date", Toast.LENGTH_SHORT).show();
+            }
 
         }
     }
@@ -141,20 +153,36 @@ public class ProProfileEventsTabComingSelectedEvent extends android.support.v4.a
     public void onClick(View v) {
         if (v == endEvent) {
             try {
-                SimpleDateFormat formatter2 = new SimpleDateFormat("dd-MMM-yyyy");
-                Date date2 = formatter2.parse(eventModel.getEventDate());
-                Date today = new Date();
-                if (today.after(date2)) {
-                    WriteData finishEvent = new WriteData(this);
-                    String eventId = eventModel.getEventId();
+                final WriteData finishEvent = new WriteData(this);
+                final String eventId = eventModel.getEventId();
+                if (checkIfUserCanEndEvent(eventModel.getEventDate())) {
                     finishEvent.respondToEvent("finished", eventId);
                 } else {
-                    Toast.makeText(getContext(), getResources().getString(R.string.error_eventDate), Toast.LENGTH_SHORT).show();
+                    AlertDialog dialog = new AlertDialog.Builder(getContext())
+                            .setTitle(getResources().getString(R.string.cancel_event_button))
+                            .setMessage(getResources().getString(R.string.cancel_event_confirmation))
+                            .setPositiveButton(getResources().getString(R.string.cancel_event_button), new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                    try {
+                                        finishEvent.respondToEvent("cancelled", eventId);
+                                    } catch (Exception e) {
+                                        e.printStackTrace();
+                                    }
+                                }
+                            }).setNegativeButton("No", new DialogInterface.OnClickListener() {
+                                @Override
+                                public void onClick(DialogInterface dialogInterface, int i) {
+                                }
+                            }).setCancelable(false).create();
+                    dialog.show();
                 }
             } catch (ParseException e) {
                 e.printStackTrace();
+                Toast.makeText(getContext(), "Error parsing event date", Toast.LENGTH_SHORT).show();
             } catch (Exception e) {
                 e.printStackTrace();
+                Toast.makeText(getContext(), "You are not logged in", Toast.LENGTH_SHORT).show();
             }
         }
     }
@@ -215,6 +243,21 @@ public class ProProfileEventsTabComingSelectedEvent extends android.support.v4.a
             }
         });
 
+
+    }
+
+    boolean checkIfUserCanEndEvent(String eventDateString) throws ParseException {
+
+        try {
+            @SuppressLint("SimpleDateFormat") SimpleDateFormat formatter2 = new SimpleDateFormat("dd-MMM-yyyy");
+            Date eventDate = formatter2.parse(eventDateString);
+            Date today = new Date();
+            long oneDayDifference = 1000 * 60 * 60 * 24;
+            return ((today.getTime() - eventDate.getTime()) > oneDayDifference);
+        } catch (ParseException e) {
+            e.printStackTrace();
+            throw e;
+        }
 
     }
 }
