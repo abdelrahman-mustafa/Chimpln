@@ -138,7 +138,7 @@
         android:layout_marginTop="80dp"
         android:text="0 years of Experience"
         android:textSize="15sp"
-        app:layout_constraintBottom_toTopOf="@+id/button2"
+        app:layout_constraintBottom_toTopOf="@+id/pay_addnewcard_button"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintHorizontal_bias="0.0"
         app:layout_constraintStart_toStartOf="parent"
