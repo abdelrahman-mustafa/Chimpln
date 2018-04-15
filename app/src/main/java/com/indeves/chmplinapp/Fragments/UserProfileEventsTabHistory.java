@@ -78,7 +78,7 @@ public class UserProfileEventsTabHistory extends android.support.v4.app.Fragment
             public void onClick(View view, final int position) {
                 //onClick
                 EventModel selectedEvent = eventsList.get(position);
-                ProEventHistoryItemDetails fragment = ProEventHistoryItemDetails.newInstance(selectedEvent);
+                UserEventHistoryItemDetails fragment = UserEventHistoryItemDetails.newInstance(selectedEvent);
                 FragmentTransaction fragmentTransaction = getActivity().getSupportFragmentManager().beginTransaction();
                 fragmentTransaction.replace(R.id.container_o, fragment).addToBackStack(null).commit();
             }
