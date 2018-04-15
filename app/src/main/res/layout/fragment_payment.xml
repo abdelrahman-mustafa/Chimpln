@@ -1,0 +1,183 @@
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.indeves.chmplinapp.Fragments.PaymentFragment">
+
+    <include
+        layout="@layout/usage_stateprogressbar"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:id="@+id/include"
+        android:layout_marginTop="10dp"
+        />
+<RelativeLayout
+    android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_gravity="center"
+        android:layout_marginBottom="0dp"
+        android:layout_marginLeft="30dp"
+        android:layout_marginRight="30dp"
+        android:layout_marginTop="60dp"
+        android:orientation="vertical"
+        tools:layout_editor_absoluteX="40dp"
+        tools:layout_editor_absoluteY="21dp">
+
+    <TextView
+        android:id="@+id/textView"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentStart="true"
+        android:layout_alignParentTop="true"
+        android:text="The photographer has accepted your event 20% deposit is must to confirm the event"
+        android:textColor="@color/black"
+        android:textSize="16dp" />
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_marginTop="5dp"
+        android:background="@color/colorProfile"
+        android:layout_below="@+id/textView"
+        android:id="@+id/view1" />
+
+
+    <Spinner
+        android:id="@+id/paytype_spinner"
+        android:layout_width="match_parent"
+        android:layout_height="24dp"
+        android:layout_alignParentStart="true"
+        android:layout_below="@+id/view1"
+        android:layout_marginTop="13dp" />
+
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_alignStart="@+id/paytype_spinner"
+        android:layout_below="@+id/paytype_spinner"
+        android:layout_marginTop="5dp"
+        android:background="@color/colorProfile"
+        android:id="@+id/view3" />
+
+
+    <Button
+        android:id="@+id/pay_addnewcard_button"
+        android:layout_width="match_parent"
+        android:layout_marginLeft="20sp"
+        android:layout_marginRight="20sp"
+        android:layout_height="wrap_content"
+        android:layout_alignStart="@+id/view3"
+        android:layout_below="@+id/view3"
+        android:text="+ Add new card"
+        android:gravity="center"
+        android:background="@drawable/button_white">
+
+    </Button>
+    <View
+        android:layout_width="match_parent"
+        android:layout_height="1dp"
+        android:layout_alignStart="@+id/paytype_spinner"
+        android:layout_below="@+id/pay_addnewcard_button"
+        android:layout_marginTop="5dp"
+        android:background="@color/colorProfile"
+        android:id="@+id/view4" />
+
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:layout_below="@+id/view4"
+        android:orientation="vertical"
+        android:id="@+id/pay_layout"
+        >
+
+        <Spinner
+            android:id="@+id/pay_cardtype-spinner"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content" />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_alignStart="@+id/paytype_spinner"
+            android:layout_below="@+id/pay_addnewcard_button"
+            android:layout_marginTop="5dp"
+            android:background="@color/colorProfile"
+            android:id="@+id/view5" />
+
+        <EditText
+            android:id="@+id/pay_num_edittext"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="Card Number"
+            android:inputType="numberSigned" />
+        <View
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_alignStart="@+id/paytype_spinner"
+            android:layout_below="@+id/pay_addnewcard_button"
+            android:layout_marginTop="5dp"
+            android:background="@color/colorProfile"
+            android:id="@+id/view6" />
+
+        <EditText
+            android:id="@+id/pay_name_editText"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:ems="10"
+            android:hint="Card Holder Name"
+            android:inputType="textPersonName" />
+        <LinearLayout
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="horizontal">
+
+            <TextView
+                android:id="@+id/textView2"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="Expiry Date "
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                />
+
+            <EditText
+                android:id="@+id/pay_date_edittext"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5sp"
+                android:hint="MM-YYYY"
+                android:inputType="date"
+                android:textSize="15sp" />
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="CVV number"
+                android:textColor="@color/black"
+                android:textStyle="bold"
+                android:layout_marginLeft="5sp"/>
+
+            <EditText
+                android:id="@+id/pay_cvv_edittext"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_marginLeft="5sp"
+                android:hint="CVV"
+                android:inputType="numberDecimal"
+                android:textSize="15sp" />
+
+        </LinearLayout>
+
+        <Button
+            android:id="@+id/pay_addcard_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:background="@drawable/button_package"
+            android:gravity="center_vertical|center_horizontal|center"
+            android:text="Add CArd "
+            android:textColor="@color/colorWhite"
+            android:layout_marginTop="50sp"/>
+    </LinearLayout>
+</RelativeLayout>
+
+
+</RelativeLayout>

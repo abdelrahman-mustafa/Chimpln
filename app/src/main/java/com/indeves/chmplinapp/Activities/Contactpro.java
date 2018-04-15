@@ -72,7 +72,7 @@ public class Contactpro extends StepProgressBar implements View.OnClickListener,
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        stateprogressbar.setCurrentStateNumber(StateProgressBar.StateNumber.THREE);
+        stateprogressbar.setCurrentStateNumber(StateProgressBar.StateNumber.FOUR);
         stateprogressbar.setAllStatesCompleted(true);
 
 

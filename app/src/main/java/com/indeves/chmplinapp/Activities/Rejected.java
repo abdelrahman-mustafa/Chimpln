@@ -3,8 +3,10 @@ package com.indeves.chmplinapp.Activities;
 import android.annotation.SuppressLint;
 import android.app.Dialog;
 import android.content.Intent;
+import android.os.Build;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.annotation.RequiresApi;
 import android.support.design.widget.FloatingActionButton;
 import android.support.design.widget.Snackbar;
 import android.support.v7.app.AppCompatActivity;
@@ -62,10 +64,12 @@ public class Rejected extends StepProgressBar implements FirebaseEventsListener 
 
         return rootview;
     }
+    @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        stateprogressbar.setCurrentStateNumber(StateProgressBar.StateNumber.THREE);
+        //stateprogressbar.setTransitionName("Rejected");
+        stateprogressbar.setCurrentStateNumber(StateProgressBar.StateNumber.FOUR);
         stateprogressbar.setAllStatesCompleted(false);
 
 
