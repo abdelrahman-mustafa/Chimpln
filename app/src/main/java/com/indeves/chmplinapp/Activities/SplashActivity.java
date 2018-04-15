@@ -27,7 +27,7 @@ public class SplashActivity extends AppCompatActivity {
                 ObjectAnimator.ofFloat(imageView, "alpha", 0, 1)
         );
         animatorSet.setDuration(2000);
-        animatorSet.start();
+        /*animatorSet.start();*/
 
 
         new Handler().postDelayed(new Runnable() {

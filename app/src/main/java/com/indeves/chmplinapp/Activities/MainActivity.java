@@ -33,7 +33,7 @@ public class MainActivity extends AppCompatActivity {
         RotateAnimation anim = new RotateAnimation(0f, 350f, 15f, 15f);
         anim.setInterpolator(new LinearInterpolator());
         anim.setRepeatCount(Animation.INFINITE);
-        anim.setDuration(700);
+       // anim.setDuration(700);
         //K.A: enable offline sync in app
 //        FirebaseDatabase.getInstance().setPersistenceEnabled(false);
 // Start animating the image
@@ -60,7 +60,7 @@ public class MainActivity extends AppCompatActivity {
             }
         });
        */
-        animatorSet.start();
+    //    animatorSet.start();
 // Later.. stop the animation
         button1.setOnClickListener(new View.OnClickListener() {
             @Override

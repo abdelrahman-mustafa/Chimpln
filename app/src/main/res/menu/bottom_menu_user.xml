@@ -4,17 +4,18 @@
     xmlns:tools="http://schemas.android.com/tools">
 
     <item
-        android:id="@+id/action_events"
-        android:enabled="true"
-        android:icon="@mipmap/events_default"
-        android:title="@string/bottom_menu_events"
-        app:showAsAction="always" />
-    <item
         android:id="@+id/action_photographers"
         android:enabled="true"
         android:icon="@mipmap/packages_default"
         android:title="Photographers"
         app:showAsAction="always" />
+    <item
+        android:id="@+id/action_events"
+        android:enabled="true"
+        android:icon="@mipmap/events_default"
+        android:title="@string/bottom_menu_events"
+        app:showAsAction="always" />
+
     <item
         android:id="@+id/action_profile"
         android:enabled="true"

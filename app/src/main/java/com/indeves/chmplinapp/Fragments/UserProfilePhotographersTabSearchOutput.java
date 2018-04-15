@@ -113,15 +113,7 @@ public class UserProfilePhotographersTabSearchOutput extends android.support.v4.
                 list = new ArrayList<UserAccPhotographerData>();
                 list.add(data);
                 list.add(data);
-                numEvents.setTextColor(getResources().getColor(R.color.colorWhite));
-                date.setTextColor(getResources().getColor(R.color.colorProfile));
-                location.setTextColor(getResources().getColor(R.color.colorProfile));
-                numEvents.setBackgroundColor(getResources().getColor(R.color.colorPrimary));
-                location.setBackgroundColor(getResources().getColor(R.color.colorWhite));
-                date.setBackgroundColor(getResources().getColor(R.color.colorWhite));
-                setRecyclerViewLayoutManager(mCurrentLayoutManagerType);
-                userAccPhotographersAdaptor = new UserAccPhotographersAdaptor();
-                recyclerView.setAdapter(userAccPhotographersAdaptor);
+    ؤا
             }
         });
         date.setOnClickListener(new OnClickListener() {

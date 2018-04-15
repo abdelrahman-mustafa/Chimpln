@@ -85,7 +85,7 @@ public class SignUp extends AppCompatActivity implements AuthenticationInterface
                 ObjectAnimator.ofFloat(splash, "alpha", 0, 1)
         );
         animatorSet.setDuration(2000);
-        animatorSet.start();
+      //  animatorSet.start();
         stopAnim();
 
 

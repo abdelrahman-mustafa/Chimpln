@@ -61,7 +61,7 @@ public class UserProfileMain extends AppCompatActivity {
         ReadData readData = new ReadData();
 
         fragmentManager = getSupportFragmentManager();
-        initialFragment = new UserProfileEventsTab();
+        initialFragment = new UserProfilePhotographersTab();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.replace(R.id.container_o, initialFragment).commit();
 
@@ -70,12 +70,13 @@ public class UserProfileMain extends AppCompatActivity {
             public boolean onNavigationItemSelected(@NonNull MenuItem item) {
                 int id = item.getItemId();
                 switch (id) {
-                    case R.id.action_events:
-                        fragment = new UserProfileEventsTab();
-                        break;
                     case R.id.action_photographers:
                         fragment = new UserProfilePhotographersTab();
                         break;
+                    case R.id.action_events:
+                        fragment = new UserProfileEventsTab();
+                        break;
+
                     case R.id.action_profile:
                         fragment = new UserProfileProfileTab();
                         break;
