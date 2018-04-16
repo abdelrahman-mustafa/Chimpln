@@ -69,7 +69,7 @@ public class Rejected extends StepProgressBar implements FirebaseEventsListener 
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
         //stateprogressbar.setTransitionName("Rejected");
-        stateprogressbar.setCurrentStateNumber(StateProgressBar.StateNumber.FOUR);
+        stateprogressbar.setCurrentStateNumber(StateProgressBar.StateNumber.THREE);
         stateprogressbar.setAllStatesCompleted(false);
 
 

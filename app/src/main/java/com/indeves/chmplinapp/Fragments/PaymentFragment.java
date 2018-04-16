@@ -64,7 +64,7 @@ public class PaymentFragment extends StepProgressBar implements View.OnClickList
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
-        stateprogressbar.setCurrentStateNumber(StateProgressBar.StateNumber.THREE);
+        //stateprogressbar.setCurrentStateNumber(StateProgressBar.StateNumber.THREE);
         stateprogressbar.setAllStatesCompleted(true);
 
 

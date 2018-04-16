@@ -68,9 +68,9 @@ public class Booking extends StepProgressBar implements View.OnClickListener, Ad
     private static final String ARG_PARAM2 = "param2";
     Spinner eTime,eType,photoShare,eLoction,ePackage;
     TextView proName,proDetails,eDate,timefrom,timeto;
-    private static final String[]options = {"Select location option","Current Location"};
+    private static final String[]options = {"Select location option","Current Location","Insert Addrees"};
     ImageView proPhoto;
-    Button proedit,proceed,timeedit;
+    Button proedit,proceed,timeedit,dateedit;
     EditText note,addressLine;
     int dpyear , dpday,dpmonth;
     LinearLayout layout;
@@ -90,7 +90,7 @@ public class Booking extends StepProgressBar implements View.OnClickListener, Ad
     int PLACE_PICKER_REQUEST = 5;
     Geocoder geocoder;
     ProgressDialog progressDialog ;
-    Place place;
+    Place place=null;
     List<LookUpModel> eTypeSpinner = new ArrayList<>();
     List<LookUpModel> eTimeSpinner = new ArrayList<>();
     List<LookUpModel> photoShareSpinner=new ArrayList<>();
@@ -193,6 +193,8 @@ public class Booking extends StepProgressBar implements View.OnClickListener, Ad
         ePackage.setOnItemSelectedListener(this);
         view_bookig=(View)rootview.findViewById(R.id.booking_view);
         view_bookig.setVisibility(View.GONE);
+        dateedit=(Button)rootview.findViewById(R.id.booking_button_dateedit);
+        dateedit.setOnClickListener(this);
 
 
     //    eTimeSpinner.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -393,6 +395,9 @@ public class Booking extends StepProgressBar implements View.OnClickListener, Ad
 
             }}}
         //else Toast.makeText(this, "Check Your data", Toast.LENGTH_SHORT).show();}
+        if (v==dateedit){DatePickerDialog c = new DatePickerDialog( getContext(),dlistener ,dpyear , dpmonth, dpday);
+            c.getDatePicker().setMinDate(new Date().getTime());
+            c.show();}
         if (v==eDate)
         {
 
@@ -400,6 +405,8 @@ public class Booking extends StepProgressBar implements View.OnClickListener, Ad
             c.getDatePicker().setMinDate(new Date().getTime());
             c.show();
                 boolDate=true;
+                dateedit.setVisibility(View.VISIBLE);
+                eDate.setClickable(false);
 
         }
         if (v==timeedit)
@@ -550,8 +557,9 @@ public class Booking extends StepProgressBar implements View.OnClickListener, Ad
                 }
             case R.id.booking_spinner_eloction:
                 {
-                    if (position==6){addressLine.setVisibility(View.VISIBLE);
+                    if (position==2){addressLine.setVisibility(View.VISIBLE);
                     sAddress=addressLine.getText().toString();
+                    if (addressLine.length()>5){boolAddress=true;}
                     }
                     else if (position==1){
                         addressLine.setVisibility(View.VISIBLE);

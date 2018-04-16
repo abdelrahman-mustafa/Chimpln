@@ -15,13 +15,14 @@
         app:spb_animateToCurrentProgressState="true"
         app:spb_checkStateCompleted="false"
         app:spb_currentStateDescriptionColor="@color/black"
-        app:spb_descriptionTopSpaceIncrementer="3dp"
-        app:spb_maxStateNumber="four"
+        app:spb_descriptionTopSpaceIncrementer="5sp"
+        app:spb_maxStateNumber="three"
         app:spb_stateBackgroundColor="@color/state_background_color"
         app:spb_stateDescriptionColor="@color/state_background_color"
         app:spb_stateForegroundColor="@color/colorPur"
         app:spb_stateNumberBackgroundColor="@color/colorWhite"
         app:spb_stateNumberForegroundColor="@color/colorWhite"
+
 
 
         />
