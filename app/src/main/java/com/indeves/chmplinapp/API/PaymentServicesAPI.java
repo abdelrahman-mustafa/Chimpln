@@ -5,6 +5,8 @@ import android.util.Log;
 
 import com.google.android.gms.tasks.Continuation;
 import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.OnFailureListener;
+import com.google.android.gms.tasks.OnSuccessListener;
 import com.google.android.gms.tasks.Task;
 import com.google.firebase.functions.FirebaseFunctions;
 import com.google.firebase.functions.FirebaseFunctionsException;
@@ -24,28 +26,22 @@ public class PaymentServicesAPI {
         } else throw new Exception("Must implement paymentServiceListener");
     }
 
-    public void getPaymentKey(double paymentAmount) {
+    public void getPaymentKey(final double paymentAmountInCents) {
         Map<String, Object> data = new HashMap<>();
-        data.put("amount", paymentAmount);
-        mFunctions.getHttpsCallable("pay").call(data)
-                .addOnCompleteListener(new OnCompleteListener<HttpsCallableResult>() {
-                    @Override
-                    public void onComplete(@NonNull Task<HttpsCallableResult> task) {
-                        if (task.isSuccessful()) {
-                            paymentServiceListener.onRetrievePaymentKey(task.getResult().getData().toString());
-                        } else {
-                            Exception e = task.getException();
-                            if (e instanceof FirebaseFunctionsException) {
-                                FirebaseFunctionsException ffe = (FirebaseFunctionsException) e;
-                                FirebaseFunctionsException.Code code = ffe.getCode();
-                                Object details = ffe.getDetails();
-                                Log.v("PaymentKeyException", details.toString());
-                            }
-                            paymentServiceListener.onRetrievePaymentKey(null);
-                        }
+        data.put("amount", paymentAmountInCents);
+        mFunctions.getHttpsCallable("pay").call(data).addOnSuccessListener(new OnSuccessListener<HttpsCallableResult>() {
+            @Override
+            public void onSuccess(HttpsCallableResult httpsCallableResult) {
+                paymentServiceListener.onRetrievePaymentKey(httpsCallableResult.getData().toString());
+            }
+        }).addOnFailureListener(new OnFailureListener() {
+            @Override
+            public void onFailure(@NonNull Exception e) {
+                Log.v("GetPaymentTokenExc", e.toString());
+                paymentServiceListener.onRetrievePaymentKey(null);
 
-                    }
-                });
+            }
+        });
     }
 
     public interface PaymentServiceListener {
