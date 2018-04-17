@@ -16,7 +16,7 @@
         app:spb_checkStateCompleted="false"
         app:spb_currentStateDescriptionColor="@color/black"
         app:spb_descriptionTopSpaceIncrementer="5sp"
-        app:spb_maxStateNumber="three"
+        app:spb_maxStateNumber="four"
         app:spb_stateBackgroundColor="@color/state_background_color"
         app:spb_stateDescriptionColor="@color/state_background_color"
         app:spb_stateForegroundColor="@color/colorPur"

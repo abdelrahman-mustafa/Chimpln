@@ -17,7 +17,7 @@ import com.kofigyan.stateprogressbar.StateProgressBar;
  * Created by HP on 13/2/2018.
  */
 
-public abstract class StepProgressBar extends android.support.v4.app.Fragment implements View.OnClickListener {  protected String[] descriptionData = {"Info", "Approval","Booked"};
+public abstract class StepProgressBar extends android.support.v4.app.Fragment implements View.OnClickListener {  protected String[] descriptionData = {"Info", "Approval","Payment","Booked"};
 
      protected StateProgressBar stateprogressbar;
     @Override
