@@ -23,6 +23,8 @@ import android.widget.RatingBar;
 import android.widget.TextView;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.indeves.chmplinapp.API.FirebaseEventsListener;
 import com.indeves.chmplinapp.API.ReadData;
 import com.indeves.chmplinapp.Fragments.*;
 import com.indeves.chmplinapp.Fragments.UserProfileEventsTab;
@@ -58,7 +60,8 @@ public class UserProfileMain extends AppCompatActivity {
         ratingBar.setNumStars(5);
         ratingBar.setRating(3);
         userProLayout = (LinearLayout) findViewById(R.id.userProfile_LinearLayout);
-        ReadData readData = new ReadData();
+//        ReadData readData = new ReadData(firebaseEventsListener);
+//        readData.getEventsByProId("dvim55FWlihlaQeOfJ9JETomdki1");
 
         fragmentManager = getSupportFragmentManager();
         initialFragment = new UserProfilePhotographersTab();
@@ -88,6 +91,21 @@ public class UserProfileMain extends AppCompatActivity {
         });
 
     }
+
+//    private FirebaseEventsListener firebaseEventsListener = new FirebaseEventsListener() {
+//        @Override
+//        public void onWriteDataCompleted(boolean writeSuccessful) {
+//
+//        }
+//
+//        @Override
+//        public void onReadDataResponse(DataSnapshot dataSnapshot) {
+//            if (dataSnapshot != null && dataSnapshot.getValue() != null) {
+//                Log.v("AllProEvents", dataSnapshot.getValue().toString());
+//            }
+//
+//        }
+//    };
 
     @Override
     public void onBackPressed() {

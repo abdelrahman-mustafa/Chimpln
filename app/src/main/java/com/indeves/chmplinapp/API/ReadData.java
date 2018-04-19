@@ -247,6 +247,29 @@ public class ReadData {
 
     }
 
+    public void getEventsByProId(String proId) {
+        mDatabase = FirebaseDatabase.getInstance().getReference("events");
+        mDatabase.orderByChild("photographerId").equalTo(proId).addListenerForSingleValueEvent(new ValueEventListener() {
+            @Override
+            public void onDataChange(DataSnapshot dataSnapshot) {
+                Log.v("AllProEvents", dataSnapshot.toString());
+                if (firebaseEventsListener != null) {
+                    firebaseEventsListener.onReadDataResponse(dataSnapshot);
+                }
+
+            }
+
+            @Override
+            public void onCancelled(DatabaseError error) {
+                // Failed to read value
+                Log.v("AllEvents_error", error.toString());
+                if (firebaseEventsListener != null) {
+                    firebaseEventsListener.onReadDataResponse(null);
+                }
+            }
+        });
+    }
+
     public interface AllProsListener {
         void onProsResponse(ArrayList<ProUserModel> pros);
     }
