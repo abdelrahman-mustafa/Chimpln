@@ -45,7 +45,7 @@ public class UserProfilePhotographersTab extends android.support.v4.app.Fragment
     private void setupViewPager(ViewPager viewPager) {
         UserProfilePhotographersTab.ViewPagerAdapter adapter = new ViewPagerAdapter(getChildFragmentManager());
 
-        adapter.addFragment(new UserProfilePhotographersTabSearch(), "Search");
+        adapter.addFragment(new UserProfilePhotographersTabSearchSelect(), "Search");
         adapter.addFragment(new UserProfilePhotographersTabNearBy(), "Nearby");
         viewPager.setAdapter(adapter);
     }

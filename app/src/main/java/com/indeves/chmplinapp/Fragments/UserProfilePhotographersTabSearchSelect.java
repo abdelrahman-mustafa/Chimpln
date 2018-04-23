@@ -102,6 +102,7 @@ public class UserProfilePhotographersTabSearchSelect extends android.support.v4.
                             android.support.v4.app.FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
 
                             transaction.replace(R.id.container_special, output);
+                            transaction.addToBackStack("tag");
                             transaction.commit();
                         } else if (spinCity.getSelectedItemPosition() != 0) {
                             ArrayList<ProUserModel> customList = new ArrayList<>();
@@ -115,6 +116,7 @@ public class UserProfilePhotographersTabSearchSelect extends android.support.v4.
                             android.support.v4.app.FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
 
                             transaction.replace(R.id.container_special, output);
+                            transaction.addToBackStack("tag");
                             transaction.commit();
 
                         } else if (spinGender.getSelectedItemPosition() != 0) {
@@ -132,6 +134,7 @@ public class UserProfilePhotographersTabSearchSelect extends android.support.v4.
                             android.support.v4.app.FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
 
                             transaction.replace(R.id.container_special, output);
+                            transaction.addToBackStack("tag");
                             transaction.commit();
 
                         }else {
@@ -149,6 +152,7 @@ public class UserProfilePhotographersTabSearchSelect extends android.support.v4.
                             android.support.v4.app.FragmentTransaction transaction = getChildFragmentManager().beginTransaction();
 
                             transaction.replace(R.id.container_special, output);
+                            transaction.addToBackStack("tag");
                             transaction.commit();
 
                         }

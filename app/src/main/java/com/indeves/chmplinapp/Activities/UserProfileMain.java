@@ -66,7 +66,7 @@ public class UserProfileMain extends AppCompatActivity {
         fragmentManager = getSupportFragmentManager();
         initialFragment = new UserProfilePhotographersTab();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.replace(R.id.container_o, initialFragment).commit();
+        transaction.replace(R.id.container_o, initialFragment).addToBackStack("tag").commit();
 
         bottomNavigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -85,7 +85,7 @@ public class UserProfileMain extends AppCompatActivity {
                         break;
                 }
                 final FragmentTransaction transaction = fragmentManager.beginTransaction();
-                transaction.replace(R.id.container_o, fragment).commit();
+                transaction.replace(R.id.container_o, fragment).addToBackStack("tag").commit();
                 return true;
             }
         });
@@ -133,7 +133,7 @@ public class UserProfileMain extends AppCompatActivity {
             fragmentManager = getSupportFragmentManager();
             fragment = new UserProfileEditProfileTab();
             FragmentTransaction transaction = fragmentManager.beginTransaction();
-            transaction.replace(R.id.container_o, fragment).commit();
+            transaction.replace(R.id.container_o, fragment).addToBackStack("tag").commit();
 
             return true;
         } else {

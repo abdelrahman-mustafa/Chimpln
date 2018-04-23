@@ -21,5 +21,12 @@
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
+    <style name="tabTheme" parent="android:style/Theme">
+        <item name="android:tabWidgetStyle">@style/Widget.TabWidget</item>
+    </style>
+
+    <style name="Widget.TabWidget" parent="android:Theme">
+        <item name="android:tabStripEnabled">false</item>
+    </style>
 
 </resources>

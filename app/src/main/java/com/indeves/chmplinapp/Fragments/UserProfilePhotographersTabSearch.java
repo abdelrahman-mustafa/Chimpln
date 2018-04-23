@@ -37,6 +37,7 @@ public class UserProfilePhotographersTabSearch extends android.support.v4.app.Fr
         UserProfilePhotographersTabSearchSelect select =  new UserProfilePhotographersTabSearchSelect();
         android.support.v4.app.FragmentTransaction transaction0 = getChildFragmentManager().beginTransaction();
         transaction0.replace(R.id.container, select);
+        transaction0.addToBackStack("tag");
         transaction0.commit();
        /* search = rootView.findViewById(R.id.userProfile_button_search);
         search.setOnClickListener(new View.OnClickListener() {

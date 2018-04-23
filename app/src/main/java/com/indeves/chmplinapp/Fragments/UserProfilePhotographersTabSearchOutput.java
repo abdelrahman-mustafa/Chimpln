@@ -30,6 +30,7 @@ import java.util.List;
 
 import static android.view.View.*;
 
+@SuppressLint("ValidFragment")
 public class UserProfilePhotographersTabSearchOutput extends android.support.v4.app.Fragment {
 
     private static final String KEY_LAYOUT_MANAGER = "layoutManager";
@@ -275,6 +276,7 @@ public class UserProfilePhotographersTabSearchOutput extends android.support.v4.
                 fragmentManager = getActivity().getSupportFragmentManager();
                 UserProfilePhotographersTabSearchOutputSelectPhotographer frag = new UserProfilePhotographersTabSearchOutputSelectPhotographer(pros.get(position));
                 FragmentTransaction transaction = fragmentManager.beginTransaction();
+                transaction.addToBackStack(null);
                 transaction.replace(R.id.container_o, frag).commit();
 
             }
@@ -284,6 +286,7 @@ public class UserProfilePhotographersTabSearchOutput extends android.support.v4.
                 linearLayout.setVisibility(GONE);
                 UserProfilePhotographersTabSearchOutputSelectPhotographer frag = new UserProfilePhotographersTabSearchOutputSelectPhotographer(pros.get(position));
                 FragmentTransaction transaction = fragmentManager.beginTransaction();
+                transaction.addToBackStack(null);
                 transaction.replace(R.id.container_o, frag).commit();
             }
         }));

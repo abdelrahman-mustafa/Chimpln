@@ -7,7 +7,7 @@
     android:layout_height="fill_parent"
     android:paddingLeft="10dp"
     android:paddingRight="10dp"
-    android:paddingTop="40dp">
+    android:paddingTop="10dp">
 
 
     <TextView
@@ -16,10 +16,11 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="16dp"
+        android:layout_marginTop="1dp"
         android:text="Individual Name"
-        android:textSize="24sp"
+        android:textSize="20sp"
         android:textStyle="bold"
+        android:gravity="center"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toBottomOf="@+id/linearLayout3"
@@ -31,7 +32,6 @@
         android:layout_height="wrap_content"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
         android:text="Male,Haram.36 years"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
@@ -40,12 +40,12 @@
     <LinearLayout
         android:id="@+id/linearLayout3"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="65dp"
         android:layout_marginEnd="8dp"
         android:layout_marginStart="8dp"
-        android:layout_marginTop="8dp"
         android:orientation="horizontal"
         app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
@@ -126,12 +126,36 @@
         app:layout_constraintTop_toBottomOf="@+id/userProfile_pro_about"
         tools:ignore="MissingConstraints" />
 
+    <android.support.design.widget.TabLayout
+        android:id="@+id/tabs"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_marginBottom="8dp"
+        android:layout_marginTop="2dp"
+        app:tabTextColor="#b7b7b7"
+        app:tabSelectedTextColor="#000"
+        android:background="@drawable/back"
+        app:layout_constraintBottom_toTopOf="@+id/userProfile_button_create"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/userProfile_pro_about"
+        app:layout_constraintVertical_bias="0.0"
+        app:tabMode="fixed" />
+
+    <android.support.v4.view.ViewPager
+
+        android:id="@+id/container_special"
+        app:layout_constraintTop_toBottomOf="@+id/tabs"
+        app:layout_behavior="@string/appbar_scrolling_view_behavior"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content" />
 
     <Spinner
         android:id="@+id/userProfile_phot_spinner_type"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:layout_margin="30dp"
+        android:visibility="gone"
         android:layout_marginBottom="8dp"
         android:layout_marginEnd="100dp"
         android:layout_marginStart="100dp"
@@ -149,6 +173,7 @@
         android:layout_height="wrap_content"
         android:layout_alignParentBottom="true"
         android:layout_margin="15dp"
+
         android:layout_marginBottom="348dp"
         android:layout_marginTop="108dp"
         android:background="@drawable/button_package"
@@ -160,5 +185,21 @@
         app:layout_constraintVertical_bias="0.473"
         tools:ignore="MissingConstraints"
         tools:layout_editor_absoluteX="15dp" />
+
+    <android.support.v7.widget.RecyclerView
+        android:id="@+id/selected_pro_images"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:visibility="gone"
+        android:layout_marginBottom="8dp"
+        android:layout_marginEnd="8dp"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintBottom_toTopOf="@+id/userProfile_button_create"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="1.0"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/userProfile_phot_spinner_type"
+        app:layout_constraintVertical_bias="0.139" />
 
 </android.support.constraint.ConstraintLayout>
