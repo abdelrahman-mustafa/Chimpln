@@ -49,6 +49,7 @@ public class StuProProfile extends Fragment implements FirebaseEventsListener, V
     RecyclerView teamMembersListView;
     ProUserModel proUserModel;
     Button logout;
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -210,7 +211,7 @@ public class StuProProfile extends Fragment implements FirebaseEventsListener, V
                 prosCount.setText(String.valueOf(proUserModel.getStudioTeamMembers().size()));
             }
             if (proUserModel.getStudioTeamMembers() != null) {
-                StudioTeamMembersAdapter studioTeamMembersAdapter = new StudioTeamMembersAdapter(getContext(), proUserModel.getStudioTeamMembers(), "show");
+                StudioTeamMembersAdapter studioTeamMembersAdapter = new StudioTeamMembersAdapter(attachedActivityContext, proUserModel.getStudioTeamMembers(), "show");
                 teamMembersListView.setAdapter(studioTeamMembersAdapter);
             }
 

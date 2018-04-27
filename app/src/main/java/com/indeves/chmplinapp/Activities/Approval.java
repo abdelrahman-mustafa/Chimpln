@@ -30,14 +30,16 @@ import com.kofigyan.stateprogressbar.StateProgressBar;
 import java.util.List;
 
 public class Approval extends StepProgressBar {
-    TextView date,time,type,share,pro,note,location;
-    String sdate,stime,stype,sshare,spro,snote,slocation;
+    TextView date, time, type, share, pro, note, location;
+    String sdate, stime, stype, sshare, spro, snote, slocation;
     Button approvalbtn;
     EventModel model;
-    LookUpModel timeData,sharingOptionData,eventTypeData;
+    LookUpModel timeData, sharingOptionData, eventTypeData;
+
     public Approval() {
         // Required empty public constructor
     }
+
     @SuppressLint("ValidFragment")
     public Approval(EventModel model) {
         this.model = model;
@@ -47,29 +49,31 @@ public class Approval extends StepProgressBar {
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
     }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View rootview=inflater.inflate(R.layout.activity_approval, container, false);
-        date=(TextView)rootview.findViewById(R.id.approval_date_textView);
-        time=(TextView)rootview.findViewById(R.id.approval_time);
-        type=(TextView)rootview.findViewById(R.id.approval_type);
-        share=(TextView)rootview.findViewById(R.id.approval_sharing);
-        pro=(TextView)rootview.findViewById(R.id.approval__pro);
-        note=(TextView)rootview.findViewById(R.id.approval_notes);
-        location=(TextView)rootview.findViewById(R.id.approval_location);
+        View rootview = inflater.inflate(R.layout.activity_approval, container, false);
+        date = (TextView) rootview.findViewById(R.id.approval_date_textView);
+        time = (TextView) rootview.findViewById(R.id.approval_time);
+        type = (TextView) rootview.findViewById(R.id.approval_type);
+        share = (TextView) rootview.findViewById(R.id.approval_sharing);
+        pro = (TextView) rootview.findViewById(R.id.approval__pro);
+        note = (TextView) rootview.findViewById(R.id.approval_notes);
+        location = (TextView) rootview.findViewById(R.id.approval_location);
         date.setText(model.getEventDate());
         ReadData readData = new ReadData();
         readData.getLookupsByType("eventTimesLookups", new ReadData.LookUpsListener() {
             @Override
             public void onLookUpsResponse(List<LookUpModel> eventTypeLookups) {
                 Log.v("EventTypeLookupsArr", eventTypeLookups.toString());
-               timeData= eventTypeLookups.get(model.getTimeId()-1);
-                if (timeData.getId()==3){time.setText(timeData.getEnglishName()+" From "+model.getStartTime()+"  to "+model.getEndTime());}
-                else {time.setText(timeData.getEnglishName());}
-
-
+                timeData = eventTypeLookups.get(model.getTimeId() - 1);
+                if (timeData.getId() == 3) {
+                    time.setText(timeData.getEnglishName() + " From " + model.getStartTime() + "  to " + model.getEndTime());
+                } else {
+                    time.setText(timeData.getEnglishName());
+                }
 
 
             }
@@ -78,9 +82,8 @@ public class Approval extends StepProgressBar {
             @Override
             public void onLookUpsResponse(List<LookUpModel> eventTypeLookups) {
                 Log.v("EventTypeLookupsArr", eventTypeLookups.toString());
-                eventTypeData= eventTypeLookups.get(model.getTypeId()-1);
+                eventTypeData = eventTypeLookups.get(model.getTypeId() - 1);
                 type.setText(eventTypeData.getEnglishName());
-
 
 
             }
@@ -89,11 +92,10 @@ public class Approval extends StepProgressBar {
             @Override
             public void onLookUpsResponse(List<LookUpModel> eventTypeLookups) {
                 Log.v("EventTypeLookupsArr", eventTypeLookups.toString());
-                sharingOptionData= eventTypeLookups.get(model.getSharingOptionId()-1);
+                sharingOptionData = eventTypeLookups.get(model.getSharingOptionId() - 1);
                 share.setText(sharingOptionData.getEnglishName());
             }
         });
-
 
 
         pro.setText(model.getPhotographerName());
@@ -113,12 +115,13 @@ public class Approval extends StepProgressBar {
         pro.setText("ahmed"+"\"n"+"cairo-male");
         note.setText(snote);
         location.setText(slocation);*/
-        approvalbtn=(Button)rootview.findViewById(R.id.approvalbtnn);
+        approvalbtn = (Button) rootview.findViewById(R.id.approvalbtnn);
         approvalbtn.setOnClickListener(this);
 
 
         return rootview;
     }
+
     @Override
     public void onViewCreated(View view, @Nullable Bundle savedInstanceState) {
         super.onViewCreated(view, savedInstanceState);
@@ -126,25 +129,22 @@ public class Approval extends StepProgressBar {
         stateprogressbar.setAllStatesCompleted(false);
 
 
-
-
-
     }
 
 
-
-   @Override
+    @Override
     public void onClick(View v) {
         stateprogressbar.checkStateCompleted(true);
-       if (model.getEventStatus().equals("pending")){
-           Toast.makeText(getContext(), "Your Event is Still pending", Toast.LENGTH_LONG).show();}
-       else if (model.getEventStatus().equals("accepted")){
-        Contactpro output = new Contactpro(model.getPhotographerId());
-       android.support.v4.app.FragmentTransaction transaction = getFragmentManager().beginTransaction();
+        if (model.getEventStatus().equals("pending")) {
+            Toast.makeText(getContext(), "Your Event is Still pending", Toast.LENGTH_LONG).show();
+        } else if (model.getEventStatus().equals("accepted")) {
+            Contactpro output = new Contactpro(model.getPhotographerId());
+            android.support.v4.app.FragmentTransaction transaction = getFragmentManager().beginTransaction();
 
-       transaction.replace(R.id.container_o, output).commit();}
+            transaction.replace(R.id.container_o, output).addToBackStack(null).commit();
+        }
 
-   }
+    }
 
 
 }

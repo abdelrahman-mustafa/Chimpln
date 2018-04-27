@@ -66,7 +66,7 @@ public class UserProfileMain extends AppCompatActivity {
         fragmentManager = getSupportFragmentManager();
         initialFragment = new UserProfilePhotographersTab();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
-        transaction.replace(R.id.container_o, initialFragment).addToBackStack("tag").commit();
+        transaction.replace(R.id.container_o, initialFragment).commit();
 
         bottomNavigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -84,8 +84,9 @@ public class UserProfileMain extends AppCompatActivity {
                         fragment = new UserProfileProfileTab();
                         break;
                 }
+                fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
                 final FragmentTransaction transaction = fragmentManager.beginTransaction();
-                transaction.replace(R.id.container_o, fragment).addToBackStack("tag").commit();
+                transaction.replace(R.id.container_o, fragment).commit();
                 return true;
             }
         });
@@ -119,27 +120,5 @@ public class UserProfileMain extends AppCompatActivity {
         }
     }
 
-    @Override
-    public boolean onCreateOptionsMenu(Menu menu) {
-        MenuInflater inflater = getMenuInflater();
-        inflater.inflate(R.menu.pro_profile_fragment_menu, menu);
-        return true;
-    }
-
-    @Override
-    public boolean onOptionsItemSelected(MenuItem item) {
-        if (item.getItemId() == R.id.pro_profile_menu_edit) {
-            //Go to edit screen4
-            fragmentManager = getSupportFragmentManager();
-            fragment = new UserProfileEditProfileTab();
-            FragmentTransaction transaction = fragmentManager.beginTransaction();
-            transaction.replace(R.id.container_o, fragment).addToBackStack("tag").commit();
-
-            return true;
-        } else {
-            return super.onOptionsItemSelected(item);
-        }
-
-    }
 
 }

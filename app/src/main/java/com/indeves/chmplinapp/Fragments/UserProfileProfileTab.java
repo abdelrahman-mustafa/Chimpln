@@ -1,10 +1,16 @@
 package com.indeves.chmplinapp.Fragments;
 
+import android.app.ActionBar;
 import android.content.Intent;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.util.Log;
 import android.view.LayoutInflater;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
@@ -22,7 +28,7 @@ import com.indeves.chmplinapp.Models.UserData;
 import com.indeves.chmplinapp.PrefsManager.PrefSave;
 import com.indeves.chmplinapp.R;
 
-public class UserProfileProfileTab extends android.support.v4.app.Fragment implements FirebaseEventsListener, View.OnClickListener {
+public class UserProfileProfileTab extends Fragment implements FirebaseEventsListener, View.OnClickListener {
 
     TextView email, mobileNumber;
     Button logout;
@@ -43,7 +49,7 @@ public class UserProfileProfileTab extends android.support.v4.app.Fragment imple
         mobileNumber = rootView.findViewById(R.id.userMobileNumber_textView);
         logout = rootView.findViewById(R.id.userProfile_button_logout);
         logout.setOnClickListener(this);
-
+        setHasOptionsMenu(true);
         if (FirebaseAuth.getInstance().getCurrentUser() != null) {
             ReadData readData = new ReadData(this);
             readData.getUserInfoById(FirebaseAuth.getInstance().getCurrentUser().getUid());
@@ -67,7 +73,6 @@ public class UserProfileProfileTab extends android.support.v4.app.Fragment imple
         if (dataSnapshot != null && dataSnapshot.getValue() != null) {
             UserData userData = dataSnapshot.getValue(UserData.class);
             displayUserData(userData);
-
         } else {
             Toast.makeText(getContext(), "Error loading your data", Toast.LENGTH_SHORT).show();
         }
@@ -77,7 +82,26 @@ public class UserProfileProfileTab extends android.support.v4.app.Fragment imple
     public void displayUserData(UserData userData) {
         email.setText(userData.getEmail() != null ? userData.getEmail() : "");
         mobileNumber.setText(userData.getPhone() != null ? userData.getPhone() : "");
+    }
 
+    @Override
+    public void onCreateOptionsMenu(Menu menu, MenuInflater inflater) {
+        inflater.inflate(R.menu.pro_profile_fragment_menu, menu);
+        super.onCreateOptionsMenu(menu, inflater);
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(MenuItem item) {
+        if (item.getItemId() == R.id.pro_profile_menu_edit) {
+            //Go to edit screen
+            final FragmentTransaction ft = getFragmentManager().beginTransaction();
+            ft.replace(R.id.container_o, new UserProfileEditProfileTab());
+            ft.addToBackStack(null);
+            ft.commit();
+            return true;
+        } else {
+            return super.onOptionsItemSelected(item);
+        }
 
     }
 

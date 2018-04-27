@@ -58,6 +58,7 @@ public class StuLandingPage extends AppCompatActivity {
                         fragment = new StuProProfile();
                         break;
                 }
+                fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
                 final FragmentTransaction transaction = fragmentManager.beginTransaction();
                 transaction.replace(R.id.main_container, fragment).commit();
                 return true;

@@ -51,12 +51,14 @@ public class ProLandingPage extends AppCompatActivity {
                         fragment = new ProProfile();
                         break;
                 }
+                fragmentManager.popBackStack(null, FragmentManager.POP_BACK_STACK_INCLUSIVE);
                 final FragmentTransaction transaction = fragmentManager.beginTransaction();
                 transaction.replace(R.id.main_container, fragment).commit();
                 return true;
             }
         });
     }
+
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
 

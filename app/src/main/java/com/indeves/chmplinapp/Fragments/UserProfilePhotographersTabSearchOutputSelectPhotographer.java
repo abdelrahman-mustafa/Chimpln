@@ -43,9 +43,6 @@ import java.util.List;
 @SuppressLint("ValidFragment")
 public class UserProfilePhotographersTabSearchOutputSelectPhotographer extends android.support.v4.app.Fragment {
 
-    private ViewPager viewPager;
-    private TabLayout tabLayout;
-
     ProUserModel pros = new ProUserModel();
     //    ProgressDialog progressDialog;
     Spinner eventTypeSpinner;
@@ -58,6 +55,34 @@ public class UserProfilePhotographersTabSearchOutputSelectPhotographer extends a
     LastWorkImagesAdapter lastWorkImagesAdapter;
     RecyclerView recyclerView;
     ProgressDialog progressDialog;
+    private ViewPager viewPager;
+    private TabLayout tabLayout;
+    private FirebaseEventsListener firebaseEventsListener = new FirebaseEventsListener() {
+        @Override
+        public void onWriteDataCompleted(boolean writeSuccessful) {
+
+        }
+
+        @Override
+        public void onReadDataResponse(DataSnapshot dataSnapshot) {
+            if (dataSnapshot != null && dataSnapshot.getValue() != null) {
+                Log.v("AllProEvents", dataSnapshot.getValue().toString());
+
+                for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
+                    EventModel eventModel = dataSnapshot1.getValue(EventModel.class);
+                    if (eventModel.getEventImagesUrls() != null && eventTypeSpinner.getSelectedItemPosition() == (eventModel.getTypeId())) {
+                        images.addAll(eventModel.getEventImagesUrls());
+                    }
+
+                }
+                progressDialog.dismiss();
+                recyclerView.setAdapter(lastWorkImagesAdapter);
+                lastWorkImagesAdapter.notifyDataSetChanged();
+            }
+        }
+
+
+    };
 
     @SuppressLint("ValidFragment")
     public UserProfilePhotographersTabSearchOutputSelectPhotographer(ProUserModel pros) {
@@ -92,7 +117,7 @@ public class UserProfilePhotographersTabSearchOutputSelectPhotographer extends a
         lastWorkImagesAdapter = new LastWorkImagesAdapter(getContext(), images);
         viewPager = (ViewPager) rootView.findViewById(R.id.container_special);
         setupViewPager(viewPager);
-        tabLayout= rootView.findViewById(R.id.tabs);
+        tabLayout = rootView.findViewById(R.id.tabs);
         tabLayout.setSelectedTabIndicatorHeight(25);
         tabLayout.setSelectedTabIndicatorColor(R.color.peach);
         tabLayout.setupWithViewPager(viewPager);
@@ -106,12 +131,12 @@ public class UserProfilePhotographersTabSearchOutputSelectPhotographer extends a
         }*/
         if (pros.getEventsIds() != null) {
             events.setText(pros.getEventsIds().size());
-        }else {
+        } else {
             events.setText("0");
         }
 
         photos.setText("0");
-        Picasso.with(getContext()).load(pros.getProfilePicUrl()).resize(200,200).transform(new CircleTransform()).into(imageView);
+        Picasso.with(getContext()).load(pros.getProfilePicUrl()).resize(200, 200).transform(new CircleTransform()).into(imageView);
 
 
         eventTypesList.add(0, new LookUpModel(0, getResources().getString(R.string.selectPackTy)));
@@ -133,7 +158,6 @@ public class UserProfilePhotographersTabSearchOutputSelectPhotographer extends a
         });
 
 
-
         eventTypeSpinner.setOnItemSelectedListener(new AdapterView.OnItemSelectedListener() {
             @Override
             public void onItemSelected(AdapterView<?> parentView, View selectedItemView, int position, long id) {
@@ -144,11 +168,11 @@ public class UserProfilePhotographersTabSearchOutputSelectPhotographer extends a
                 progressDialog.show();
                 ReadData readDat = new ReadData(firebaseEventsListener);
                 readDat.getEventsByProId(pros.getUid());*/
-               if (position!=0){
-                Toast.makeText(getContext(), "Hi",Toast.LENGTH_SHORT).show();
-                   ReadData readDat = new ReadData(firebaseEventsListener);
-                   readDat.getEventsByProId(pros.getUid());
-               }
+                if (position != 0) {
+                    Toast.makeText(getContext(), "Hi", Toast.LENGTH_SHORT).show();
+                    ReadData readDat = new ReadData(firebaseEventsListener);
+                    readDat.getEventsByProId(pros.getUid());
+                }
 
             }
 
@@ -168,8 +192,7 @@ public class UserProfilePhotographersTabSearchOutputSelectPhotographer extends a
                 //  go to booking  activity
                 Booking output = new Booking(pros, eventTypeSpinner.getSelectedItem().toString());
                 android.support.v4.app.FragmentTransaction transaction = getFragmentManager().beginTransaction();
-
-                transaction.replace(R.id.container_o, output).addToBackStack("tag").commit();
+                transaction.replace(R.id.container_o, output).addToBackStack(null).commit();
 
 
                 //Khalid, example of creating booking event
@@ -190,14 +213,16 @@ public class UserProfilePhotographersTabSearchOutputSelectPhotographer extends a
         });
         return rootView;
     }
+
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getChildFragmentManager());
 
-        adapter.addFragment(new User_photographer_LastWork(), "Last Work");
+        adapter.addFragment(new User_photographer_LastWork(), "Latest Work");
         adapter.addFragment(new Usere_photographer_Events(pros.getUid()), "Events");
         adapter.addFragment(new User_photographer_Packages(pros.getUid()), "Packages");
         viewPager.setAdapter(adapter);
     }
+
     class ViewPagerAdapter extends FragmentPagerAdapter {
         private final List<android.support.v4.app.Fragment> mFragmentList = new ArrayList<>();
         private final List<String> mFragmentTitleList = new ArrayList<>();
@@ -226,31 +251,4 @@ public class UserProfilePhotographersTabSearchOutputSelectPhotographer extends a
             return mFragmentTitleList.get(position);
         }
     }
-
-    private FirebaseEventsListener firebaseEventsListener = new FirebaseEventsListener() {
-        @Override
-        public void onWriteDataCompleted(boolean writeSuccessful) {
-
-        }
-
-        @Override
-        public void onReadDataResponse(DataSnapshot dataSnapshot) {
-            if (dataSnapshot != null && dataSnapshot.getValue() != null) {
-                Log.v("AllProEvents", dataSnapshot.getValue().toString());
-
-                for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
-                    EventModel eventModel = dataSnapshot1.getValue(EventModel.class);
-                    if (eventModel.getEventImagesUrls() != null && eventTypeSpinner.getSelectedItemPosition() == (eventModel.getTypeId())) {
-                        images.addAll(eventModel.getEventImagesUrls());
-                    }
-
-                }
-                progressDialog.dismiss();
-                recyclerView.setAdapter(lastWorkImagesAdapter);
-                lastWorkImagesAdapter.notifyDataSetChanged();
-            }
-        }
-
-
-    };
 }

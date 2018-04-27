@@ -1,5 +1,6 @@
 package com.indeves.chmplinapp.Fragments;
 
+import android.app.ActionBar;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
@@ -65,7 +66,12 @@ public class UserProfileEditProfileTab extends android.support.v4.app.Fragment i
         editGender.setOnClickListener(this);
         saveChanges = rootView.findViewById(R.id.userEditProfile_save_button);
         saveChanges.setOnClickListener(this);
-
+        ActionBar ab = getActivity().getActionBar();
+        if (ab != null) {
+            ab.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
+            ab.setDisplayHomeAsUpEnabled(true);
+            ab.setDisplayShowHomeEnabled(true);
+        }
         if (FirebaseAuth.getInstance().getCurrentUser() != null) {
             ReadData readData = new ReadData(this);
             readData.getUserInfoById(FirebaseAuth.getInstance().getCurrentUser().getUid());

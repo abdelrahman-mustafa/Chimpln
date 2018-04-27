@@ -88,15 +88,15 @@ public class UserProfileEventsTabUpComming extends android.support.v4.app.Fragme
                 if (list.get(position).getEventStatus().equals("pending")) {
                     Approval frag = new Approval(list.get(position));
                     FragmentTransaction transaction = fragmentManager.beginTransaction();
-                    transaction.replace(R.id.container_o, frag).commit();
+                    transaction.replace(R.id.container_o, frag).addToBackStack(null).commit();
                 } else if (list.get(position).getEventStatus().equals("accepted")) {
                     Contactpro frag = new Contactpro(list.get(position).getPhotographerId());
                     FragmentTransaction transaction = fragmentManager.beginTransaction();
-                    transaction.replace(R.id.container_o, frag).commit();
+                    transaction.replace(R.id.container_o, frag).addToBackStack(null).commit();
                 } else if (list.get(position).getEventStatus().equals("rejected")) {
                     Rejected frag = new Rejected(list.get(position));
                     FragmentTransaction transaction = fragmentManager.beginTransaction();
-                    transaction.replace(R.id.container_o, frag).commit();
+                    transaction.replace(R.id.container_o, frag).addToBackStack(null).commit();
                 }
 
             }
@@ -108,15 +108,15 @@ public class UserProfileEventsTabUpComming extends android.support.v4.app.Fragme
                 if (list.get(position).getEventStatus().equals("pending")) {
                     Approval frag = new Approval(list.get(position));
                     FragmentTransaction transaction = fragmentManager.beginTransaction();
-                    transaction.replace(R.id.container_o, frag).commit();
+                    transaction.replace(R.id.container_o, frag).addToBackStack(null).commit();
                 } else if (list.get(position).getEventStatus().equals("accepted")) {
                     Contactpro frag = new Contactpro(list.get(position).getPhotographerId());
                     FragmentTransaction transaction = fragmentManager.beginTransaction();
-                    transaction.replace(R.id.container_o, frag).commit();
+                    transaction.replace(R.id.container_o, frag).addToBackStack(null).commit();
                 } else if (list.get(position).getEventStatus().equals("rejected")) {
                     Rejected frag = new Rejected(list.get(position));
                     FragmentTransaction transaction = fragmentManager.beginTransaction();
-                    transaction.replace(R.id.container_o, frag).commit();
+                    transaction.replace(R.id.container_o, frag).addToBackStack(null).commit();
                 }
 
             }

@@ -66,13 +66,13 @@ public class Booking extends StepProgressBar implements View.OnClickListener, Ad
     static final int Did = 0;
     private static final String ARG_PARAM1 = "param1";
     private static final String ARG_PARAM2 = "param2";
-    Spinner eTime,eType,photoShare,eLoction,ePackage;
-    TextView proName,proDetails,eDate,timefrom,timeto;
-    private static final String[]options = {"Select location option","Current Location","Insert Addrees"};
+    private static final String[] options = {"Select location option", "Current Location", "Insert Addrees"};
+    Spinner eTime, eType, photoShare, eLoction, ePackage;
+    TextView proName, proDetails, eDate, timefrom, timeto;
     ImageView proPhoto;
-    Button proedit,proceed,timeedit,dateedit;
-    EditText note,addressLine;
-    int dpyear , dpday,dpmonth;
+    Button proedit, proceed, timeedit, dateedit;
+    EditText note, addressLine;
+    int dpyear, dpday, dpmonth;
     LinearLayout layout;
     String sDate;
     View view_bookig;
@@ -85,15 +85,15 @@ public class Booking extends StepProgressBar implements View.OnClickListener, Ad
     String sShareable;
     String sAddress;
     String sNote;
-    Boolean boolDate=false,booltime=false,boolType=false,boolAddress=false,fromto=true,from=false,to=false,boolshareable=false;
-    int REQUST=1;
+    Boolean boolDate = false, booltime = false, boolType = false, boolAddress = false, fromto = true, from = false, to = false, boolshareable = false;
+    int REQUST = 1;
     int PLACE_PICKER_REQUEST = 5;
     Geocoder geocoder;
-    ProgressDialog progressDialog ;
-    Place place=null;
+    ProgressDialog progressDialog;
+    Place place = null;
     List<LookUpModel> eTypeSpinner = new ArrayList<>();
     List<LookUpModel> eTimeSpinner = new ArrayList<>();
-    List<LookUpModel> photoShareSpinner=new ArrayList<>();
+    List<LookUpModel> photoShareSpinner = new ArrayList<>();
     EventModel eventModel;
     ProUserModel pro;
     String type;
@@ -121,8 +121,7 @@ public class Booking extends StepProgressBar implements View.OnClickListener, Ad
                 Approval output = new Approval(eventModel);
                 android.support.v4.app.FragmentTransaction transaction = getFragmentManager().beginTransaction();
                 Log.i("done", "done");
-
-                transaction.replace(R.id.container_o, output).commit();
+                transaction.replace(R.id.container_o, output).addToBackStack(null).commit();
 
             }
         }
@@ -144,6 +143,7 @@ public class Booking extends StepProgressBar implements View.OnClickListener, Ad
     public Booking(ProUserModel pro, String type) {
         this.pro = pro;
     }
+
     public Booking() {
         // Required empty public constructor
     }
@@ -157,47 +157,47 @@ public class Booking extends StepProgressBar implements View.OnClickListener, Ad
     @Override
     public View onCreateView(LayoutInflater inflater, ViewGroup container, Bundle savedInstanceState) {
         // Inflate the layout for this fragment
-        View rootview=inflater.inflate(R.layout.activity_booking, container, false);
+        View rootview = inflater.inflate(R.layout.activity_booking, container, false);
         //button=(Button)rootview.findViewById(R.id.btnNext);
         //button.setOnClickListener(this);
-        eDate=(TextView)rootview.findViewById(R.id.booking_textview_edate);
+        eDate = (TextView) rootview.findViewById(R.id.booking_textview_edate);
         eDate.setOnClickListener(this);
-        timefrom=(TextView)rootview.findViewById(R.id.booking_textview_from);
+        timefrom = (TextView) rootview.findViewById(R.id.booking_textview_from);
         timefrom.setOnClickListener(this);
-        timeto=(TextView)rootview.findViewById(R.id.booking_textview_to);
+        timeto = (TextView) rootview.findViewById(R.id.booking_textview_to);
         timeto.setOnClickListener(this);
-        proName=(TextView)rootview.findViewById(R.id.booking_textView_proname);
-        proDetails=(TextView)rootview.findViewById(R.id.booking_textview_prodetails);
-        proPhoto=(ImageView)rootview.findViewById(R.id.booking_imageView_prophoto);
-        proedit =(Button)rootview.findViewById(R.id.booking_button_edit);
-        proceed=(Button)rootview.findViewById(R.id.booking_proceed_button);
+        proName = (TextView) rootview.findViewById(R.id.booking_textView_proname);
+        proDetails = (TextView) rootview.findViewById(R.id.booking_textview_prodetails);
+        proPhoto = (ImageView) rootview.findViewById(R.id.booking_imageView_prophoto);
+        proedit = (Button) rootview.findViewById(R.id.booking_button_edit);
+        proceed = (Button) rootview.findViewById(R.id.booking_proceed_button);
         proceed.setOnClickListener(this);
         proedit.setOnClickListener(this);
-        eTime=(Spinner)rootview.findViewById(R.id.booking_spinner_etime);
-        eType=(Spinner)rootview.findViewById(R.id.booking_spiner_etype);
-        photoShare=(Spinner)rootview.findViewById(R.id.booking_spinner_photoshare);
-        eLoction=(Spinner)rootview.findViewById(R.id.booking_spinner_eloction);
-        note=(EditText)rootview.findViewById(R.id.booking_editText_note);
+        eTime = (Spinner) rootview.findViewById(R.id.booking_spinner_etime);
+        eType = (Spinner) rootview.findViewById(R.id.booking_spiner_etype);
+        photoShare = (Spinner) rootview.findViewById(R.id.booking_spinner_photoshare);
+        eLoction = (Spinner) rootview.findViewById(R.id.booking_spinner_eloction);
+        note = (EditText) rootview.findViewById(R.id.booking_editText_note);
         final Calendar cal = Calendar.getInstance();
-        dpyear=cal.get(Calendar.YEAR);
-        dpmonth=cal.get(Calendar.MONTH);
-        dpday=cal.get(Calendar.DAY_OF_MONTH);
-        layout=(LinearLayout)rootview.findViewById(booking_time_layout);
+        dpyear = cal.get(Calendar.YEAR);
+        dpmonth = cal.get(Calendar.MONTH);
+        dpday = cal.get(Calendar.DAY_OF_MONTH);
+        layout = (LinearLayout) rootview.findViewById(booking_time_layout);
         layout.setVisibility(View.GONE);
         timeto.setVisibility(View.GONE);
         timefrom.setVisibility(View.GONE);
-        addressLine=(EditText)rootview.findViewById(R.id.booking_edittext_insertaddrres);
-        addressLine=(EditText)rootview.findViewById(R.id.booking_edittext_insertaddrres) ;
+        addressLine = (EditText) rootview.findViewById(R.id.booking_edittext_insertaddrres);
+        addressLine = (EditText) rootview.findViewById(R.id.booking_edittext_insertaddrres);
         addressLine.setVisibility(View.GONE);
-        ePackage=(Spinner)rootview.findViewById(R.id.booking_spiner_package);
+        ePackage = (Spinner) rootview.findViewById(R.id.booking_spiner_package);
         ePackage.setOnItemSelectedListener(this);
-        view_bookig=(View)rootview.findViewById(R.id.booking_view);
+        view_bookig = (View) rootview.findViewById(R.id.booking_view);
         view_bookig.setVisibility(View.GONE);
-        dateedit=(Button)rootview.findViewById(R.id.booking_button_dateedit);
+        dateedit = (Button) rootview.findViewById(R.id.booking_button_dateedit);
         dateedit.setOnClickListener(this);
 
 
-    //    eTimeSpinner.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+        //    eTimeSpinner.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
        /* eTimeSpinner.add("Full Day");
         eTimeSpinner.add("Half Day");
         eTimeSpinner.add("Per hour");*/
@@ -213,33 +213,33 @@ public class Booking extends StepProgressBar implements View.OnClickListener, Ad
         eTypeSpinner.add("Birthday");
         eTypeSpinner.add("Fan Day");*/
         eTime.setOnItemSelectedListener(this);
-        timeedit=(Button)rootview.findViewById(R.id.booking_button_timeedit);
+        timeedit = (Button) rootview.findViewById(R.id.booking_button_timeedit);
         timeedit.setOnClickListener(this);
         timeedit.setVisibility(View.GONE);
         eType.setOnItemSelectedListener(this);
 
-       // photoShare.setSelection(photoShareSpinner.getCount());
+        // photoShare.setSelection(photoShareSpinner.getCount());
         eLoction.setOnItemSelectedListener(this);
-       // ArrayAdapter loctionSpinner = new ArrayAdapter(getContext(), android.R.layout.simple_spinner_dropdown_item);
-        ArrayAdapter<String>loctionSpinner = new ArrayAdapter<String>(getContext(),
-                android.R.layout.simple_spinner_item,options);
+        // ArrayAdapter loctionSpinner = new ArrayAdapter(getContext(), android.R.layout.simple_spinner_dropdown_item);
+        ArrayAdapter<String> loctionSpinner = new ArrayAdapter<String>(getContext(),
+                android.R.layout.simple_spinner_item, options);
 
         loctionSpinner.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-      //  loctionSpinner.add("Insert Addrees");
+        //  loctionSpinner.add("Insert Addrees");
 
        /* loctionSpinner.add("Select location option");
         loctionSpinner.add("Current Location");*/
         eLoction.setAdapter(loctionSpinner);
         geocoder = new Geocoder(getContext(), Locale.getDefault());
         proName.setText(pro.getName());
-        proDetails.setText(pro.getCity()+"-"+pro.getCountry());
+        proDetails.setText(pro.getCity() + "-" + pro.getCountry());
         Picasso.with(getContext()).load(pro.profilePicUrl).resize(45, 45).transform(new CircleTransform()).into(proPhoto);
         ReadData readData = new ReadData(firebaseEventsListener);
         readData.getLookupsByType("eventTypesLookups", new ReadData.LookUpsListener() {
             @Override
             public void onLookUpsResponse(List<LookUpModel> eventTypeLookups) {
                 Log.v("EventTypeLookupsArr", eventTypeLookups.toString());
-                eTypeSpinner.add(new LookUpModel(0,"Select Event Type"));
+                eTypeSpinner.add(new LookUpModel(0, "Select Event Type"));
 
                 eTypeSpinner.addAll(eventTypeLookups);
 
@@ -255,7 +255,7 @@ public class Booking extends StepProgressBar implements View.OnClickListener, Ad
             @Override
             public void onLookUpsResponse(List<LookUpModel> eventTypeLookups) {
                 Log.v("EventTypeLookupsArr", eventTypeLookups.toString());
-                eTimeSpinner.add(new LookUpModel(0,"Select Event Time"));
+                eTimeSpinner.add(new LookUpModel(0, "Select Event Time"));
                 eTimeSpinner.addAll(eventTypeLookups);
                 ArrayAdapter<LookUpModel> eventTimeArrayAdapter = new ArrayAdapter<LookUpModel>(getContext(), android.R.layout.simple_spinner_item, eTimeSpinner);
                 eventTimeArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
@@ -269,7 +269,7 @@ public class Booking extends StepProgressBar implements View.OnClickListener, Ad
             @Override
             public void onLookUpsResponse(List<LookUpModel> eventTypeLookups) {
                 Log.v("EventTypeLookupsArr", eventTypeLookups.toString());
-                photoShareSpinner.add(new LookUpModel(0,"Select photo sharing option"));
+                photoShareSpinner.add(new LookUpModel(0, "Select photo sharing option"));
                 photoShareSpinner.addAll(eventTypeLookups);
 
                 ArrayAdapter<LookUpModel> eventSharingOptionArrayAdapter = new ArrayAdapter<LookUpModel>(getContext(), android.R.layout.simple_spinner_item, photoShareSpinner);
@@ -283,21 +283,6 @@ public class Booking extends StepProgressBar implements View.OnClickListener, Ad
         readData.getUserInfoById(FirebaseAuth.getInstance().getCurrentUser().getUid());
 
 
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
         return rootview;
 
     }
@@ -309,59 +294,53 @@ public class Booking extends StepProgressBar implements View.OnClickListener, Ad
         stateprogressbar.setAllStatesCompleted(false);
 
 
-
-
-
     }
 
     @SuppressLint("ResourceAsColor")
     @Override
     public void onClick(View v) {
-        if (v==proedit){
+        if (v == proedit) {
             UserProfilePhotographersTabSearch output = new UserProfilePhotographersTabSearch();
             android.support.v4.app.FragmentTransaction transaction = getFragmentManager().beginTransaction();
 
             getActivity().findViewById(R.id.userProfile_LinearLayout).setVisibility(View.VISIBLE);
 
 
-
             transaction.replace(R.id.container_o, output).commit();
 
         }
-        if (v==proceed)
-        { sAddress=addressLine.getText().toString();
-            if (sAddress.length()>5){boolAddress=true;}
-            Log.i("14",String.valueOf(boolAddress));
-            Log.i("1",String.valueOf(boolDate));
-            Log.i("2",String.valueOf(booltime));
-            Log.i("3",String.valueOf(boolType));
-            Log.i("4",String.valueOf(boolAddress));
-            Log.i("5",String.valueOf(fromto));
-            Log.i("6",String.valueOf(from));
-            Log.i("7",String.valueOf(to));
-            Log.i("8",String.valueOf(boolshareable));
-            Log.i("9",sAddress+"hi"+"\n"+note.getText().toString());
-            Log.i("10",String.valueOf(sAddress.length()));
-            if(proceedbtn(  boolDate,  booltime,  boolType,  boolAddress,  fromto,  from,  to,  boolshareable))
-            {
-                if (sTime.getId()==0){
+        if (v == proceed) {
+            sAddress = addressLine.getText().toString();
+            if (sAddress.length() > 5) {
+                boolAddress = true;
+            }
+            Log.i("14", String.valueOf(boolAddress));
+            Log.i("1", String.valueOf(boolDate));
+            Log.i("2", String.valueOf(booltime));
+            Log.i("3", String.valueOf(boolType));
+            Log.i("4", String.valueOf(boolAddress));
+            Log.i("5", String.valueOf(fromto));
+            Log.i("6", String.valueOf(from));
+            Log.i("7", String.valueOf(to));
+            Log.i("8", String.valueOf(boolshareable));
+            Log.i("9", sAddress + "hi" + "\n" + note.getText().toString());
+            Log.i("10", String.valueOf(sAddress.length()));
+            if (proceedbtn(boolDate, booltime, boolType, boolAddress, fromto, from, to, boolshareable)) {
+                if (sTime.getId() == 0) {
                     Toast.makeText(getContext(), "Please Select Event Time ", Toast.LENGTH_LONG).show();
-                    booltime=false;
-                }
-                else if (sType.getId()==0){
+                    booltime = false;
+                } else if (sType.getId() == 0) {
                     Toast.makeText(getContext(), "Please Select Event Type ", Toast.LENGTH_LONG).show();
-                    boolType=false;
-                }
-                else if (sSharingOption.getId()==0){
+                    boolType = false;
+                } else if (sSharingOption.getId() == 0) {
                     Toast.makeText(getContext(), "Please Select Sharing Option ", Toast.LENGTH_LONG).show();
-                    boolshareable=false;
-                }
-                else {
+                    boolshareable = false;
+                } else {
 
-                sDate=eDate.getText().toString();
-            sNote=note.getText().toString();
-           // if (fromto==true){sTime=timefrom.getText().toString()+"  to  "+timeto.getText().toString();}
-            Toast.makeText(getContext(), sAddress+"\n" +sType+"\n" +sTime+"\n" +sNote+"\n" +sDate+"\n" +sShareable, Toast.LENGTH_LONG).show();
+                    sDate = eDate.getText().toString();
+                    sNote = note.getText().toString();
+                    // if (fromto==true){sTime=timefrom.getText().toString()+"  to  "+timeto.getText().toString();}
+                    Toast.makeText(getContext(), sAddress + "\n" + sType + "\n" + sTime + "\n" + sNote + "\n" + sDate + "\n" + sShareable, Toast.LENGTH_LONG).show();
                /* Intent intent=new Intent(this,Approval.class);
                 intent.putExtra("address",sAddress);
                 intent.putExtra("date",sDate);
@@ -372,55 +351,65 @@ public class Booking extends StepProgressBar implements View.OnClickListener, Ad
                 stateprogressbar.checkStateCompleted(true);
                 startActivity(intent);*/
 
-           // startActivity(new Intent(Booking.this,Approval.class));
-                progressDialog=new ProgressDialog(getContext());
-                progressDialog.setMessage("Please wait...");
-                progressDialog.setCanceledOnTouchOutside(false);
-                progressDialog.show();
-                if (timefrom.getText().toString().equals("From")){timefrom.setText("");}
-                if (timeto.getText().toString().equals("To")){timeto.setText("");}
+                    // startActivity(new Intent(Booking.this,Approval.class));
+                    progressDialog = new ProgressDialog(getContext());
+                    progressDialog.setMessage("Please wait...");
+                    progressDialog.setCanceledOnTouchOutside(false);
+                    progressDialog.show();
+                    if (timefrom.getText().toString().equals("From")) {
+                        timefrom.setText("");
+                    }
+                    if (timeto.getText().toString().equals("To")) {
+                        timeto.setText("");
+                    }
+
+                    long latitude = 0, longitude = 0;
+                    if (place != null) {
+                        latitude = (long) place.getLatLng().latitude;
+                        longitude = (long) place.getLatLng().longitude;
+                    }
+
+                    eventModel = new EventModel(FirebaseAuth.getInstance().getCurrentUser().getUid(), pro.getUid(), sDate, bookerName, pro.getName(), timefrom.getText().toString(), timeto.getText().toString(), sNote, sAddress, longitude, latitude, "pending", sType.getId(), sTime.getId(), sSharingOption.getId(), packageData);
+                    WriteData writeData = new WriteData(firebaseEventsListener);
+                    try {
+                        writeData.bookNewEvent(eventModel);
+                        Log.i("hi", eventModel.toString());
+                    } catch (Exception e) {
+                        //User is not authenticated
+                        e.printStackTrace();
+                    }
 
 
-                    eventModel = new EventModel(FirebaseAuth.getInstance().getCurrentUser().getUid(), pro.getUid(), sDate, bookerName, pro.getName(), timefrom.getText().toString(), timeto.getText().toString(), sNote, sAddress, (long) place.getLatLng().longitude, (long) place.getLatLng().latitude, "pending",sType.getId() , sTime.getId(), sSharingOption.getId(),packageData);
-                WriteData writeData = new WriteData(firebaseEventsListener);
-                try {
-                   writeData.bookNewEvent(eventModel);
-                   Log.i("hi",eventModel.toString());
-                } catch (Exception e) {
-                    //User is not authenticated
-                    e.printStackTrace();
                 }
-
-
-
-            }}}
+            }
+        }
         //else Toast.makeText(this, "Check Your data", Toast.LENGTH_SHORT).show();}
-        if (v==dateedit){DatePickerDialog c = new DatePickerDialog( getContext(),dlistener ,dpyear , dpmonth, dpday);
-            c.getDatePicker().setMinDate(new Date().getTime());
-            c.show();}
-        if (v==eDate)
-        {
-
-            DatePickerDialog c = new DatePickerDialog( getContext(),dlistener ,dpyear , dpmonth, dpday);
+        if (v == dateedit) {
+            DatePickerDialog c = new DatePickerDialog(getContext(), dlistener, dpyear, dpmonth, dpday);
             c.getDatePicker().setMinDate(new Date().getTime());
             c.show();
-                boolDate=true;
-                dateedit.setVisibility(View.VISIBLE);
-                eDate.setClickable(false);
+        }
+        if (v == eDate) {
+
+            DatePickerDialog c = new DatePickerDialog(getContext(), dlistener, dpyear, dpmonth, dpday);
+            c.getDatePicker().setMinDate(new Date().getTime());
+            c.show();
+            boolDate = true;
+            dateedit.setVisibility(View.VISIBLE);
+            eDate.setClickable(false);
 
         }
-        if (v==timeedit)
-            {
-                eTime.setVisibility(View.VISIBLE);
-                layout.setVisibility(View.GONE);
-                timeto.setVisibility(View.GONE);
-                timefrom.setVisibility(View.GONE);
-                timeedit.setVisibility(View.GONE);
-               booltime=true;
-               fromto=false;
+        if (v == timeedit) {
+            eTime.setVisibility(View.VISIBLE);
+            layout.setVisibility(View.GONE);
+            timeto.setVisibility(View.GONE);
+            timefrom.setVisibility(View.GONE);
+            timeedit.setVisibility(View.GONE);
+            booltime = true;
+            fromto = false;
 
-            }
-        if (v==timeto){
+        }
+        if (v == timeto) {
             Calendar mcurrentTime = Calendar.getInstance();
             int hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
             int minute = mcurrentTime.get(Calendar.MINUTE);
@@ -438,10 +427,10 @@ public class Booking extends StepProgressBar implements View.OnClickListener, Ad
                     else if (datetime.get(Calendar.AM_PM) == Calendar.PM)
                         am_pm = "PM";
 
-                    String strHrsToShow = (datetime.get(Calendar.HOUR) == 0) ?"12":datetime.get(Calendar.HOUR)+"";
+                    String strHrsToShow = (datetime.get(Calendar.HOUR) == 0) ? "12" : datetime.get(Calendar.HOUR) + "";
 
-                    timeto.setText( strHrsToShow+":"+datetime.get(Calendar.MINUTE)+" "+am_pm );
-                    to=true;
+                    timeto.setText(strHrsToShow + ":" + datetime.get(Calendar.MINUTE) + " " + am_pm);
+                    to = true;
 
                 }
             }, hour, minute, false);
@@ -450,7 +439,8 @@ public class Booking extends StepProgressBar implements View.OnClickListener, Ad
 
 
         }
-        if (v==timefrom){Calendar mcurrentTime = Calendar.getInstance();
+        if (v == timefrom) {
+            Calendar mcurrentTime = Calendar.getInstance();
             int hour = mcurrentTime.get(Calendar.HOUR_OF_DAY);
             int minute = mcurrentTime.get(Calendar.MINUTE);
             TimePickerDialog mTimePicker;
@@ -467,10 +457,10 @@ public class Booking extends StepProgressBar implements View.OnClickListener, Ad
                     else if (datetime.get(Calendar.AM_PM) == Calendar.PM)
                         am_pm = "PM";
 
-                    String strHrsToShow = (datetime.get(Calendar.HOUR) == 0) ?"12":datetime.get(Calendar.HOUR)+"";
+                    String strHrsToShow = (datetime.get(Calendar.HOUR) == 0) ? "12" : datetime.get(Calendar.HOUR) + "";
 
-                    timefrom.setText( strHrsToShow+":"+datetime.get(Calendar.MINUTE)+" "+am_pm );
-                    from=true;
+                    timefrom.setText(strHrsToShow + ":" + datetime.get(Calendar.MINUTE) + " " + am_pm);
+                    from = true;
 
                 }
             }, hour, minute, false);//Yes 24 hour time
@@ -487,94 +477,92 @@ public class Booking extends StepProgressBar implements View.OnClickListener, Ad
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
 
 
-
-              switch(parent.getId()) {
-            case R.id.booking_spinner_etime:
-            {
+        switch (parent.getId()) {
+            case R.id.booking_spinner_etime: {
                 String eTimedata;
-               if (position==1||position==2){
-                   sTime =eTimeSpinner.get(position);
+                if (position == 1 || position == 2) {
+                    sTime = eTimeSpinner.get(position);
 
-                   layout.setVisibility(View.GONE);
-                   timeto.setVisibility(View.GONE);
-                   timefrom.setVisibility(View.GONE);
-                   timeedit.setVisibility(View.GONE);
-                   booltime=true;
+                    layout.setVisibility(View.GONE);
+                    timeto.setVisibility(View.GONE);
+                    timefrom.setVisibility(View.GONE);
+                    timeedit.setVisibility(View.GONE);
+                    booltime = true;
 
-               }
-               else if (position==3)
-               {
-                   sTime =eTimeSpinner.get(position);
+                } else if (position == 3) {
+                    sTime = eTimeSpinner.get(position);
 
-                   layout.setVisibility(View.VISIBLE);
-                   timeto.setVisibility(View.VISIBLE);
-                   timefrom.setVisibility(View.VISIBLE);
-                   eTime.setVisibility(View.GONE);
-                   timeedit.setVisibility(View.VISIBLE);
-                   timefrom.setOnClickListener(this);
-                   timeto.setOnClickListener(this);
+                    layout.setVisibility(View.VISIBLE);
+                    timeto.setVisibility(View.VISIBLE);
+                    timefrom.setVisibility(View.VISIBLE);
+                    eTime.setVisibility(View.GONE);
+                    timeedit.setVisibility(View.VISIBLE);
+                    timefrom.setOnClickListener(this);
+                    timeto.setOnClickListener(this);
 
-               }
+                }
 
 
                 break;
             }
-            case R.id.booking_spiner_etype:
-                {
-                    if (position!=0){
+            case R.id.booking_spiner_etype: {
+                if (position != 0) {
                     sType = eTypeSpinner.get(position);
-                    boolType=true;
+                    boolType = true;
                     view_bookig.setVisibility(View.VISIBLE);
                     ePackage.setVisibility(View.VISIBLE);
-                    ePackageSpinner =new ArrayList<>();
-                    if (pro.getPackages()!=null){
-                    for (int i = 0;i<pro.getPackages().size();i++){
-                        if (pro.getPackages().get(i).getEventTypeId()==sType.getId()){ePackageSpinner.add(pro.getPackages().get(i));}
-                    }
-
-                    ArrayAdapter<PackageModel> typePackage = new ArrayAdapter<PackageModel>(getContext(), android.R.layout.simple_spinner_item, ePackageSpinner);
-
-                    typePackage.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                    ePackage.setAdapter(typePackage);}}
-
-
-
-                    break;
-                }
-                  case R.id.booking_spiner_package:{
-                      packageData = ePackageSpinner.get(position);
-
-
-                  }
-            case R.id.booking_spinner_photoshare:
-                {
-
-                        sSharingOption = photoShareSpinner.get(position);
-                        boolshareable=true;
-
-
-                    break;
-                }
-            case R.id.booking_spinner_eloction:
-                {
-                    if (position==2){addressLine.setVisibility(View.VISIBLE);
-                    sAddress=addressLine.getText().toString();
-                    if (addressLine.length()>5){boolAddress=true;}
-                    }
-                    else if (position==1){
-                        addressLine.setVisibility(View.VISIBLE);
-                        PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
-
-                        try {
-                            startActivityForResult(builder.build(getActivity()), PLACE_PICKER_REQUEST);
-                        } catch (GooglePlayServicesRepairableException e) {
-                            e.printStackTrace();
-                        } catch (GooglePlayServicesNotAvailableException e) {
-                            e.printStackTrace();
+                    ePackageSpinner = new ArrayList<>();
+                    if (pro.getPackages() != null) {
+                        for (int i = 0; i < pro.getPackages().size(); i++) {
+                            if (pro.getPackages().get(i).getEventTypeId() == sType.getId()) {
+                                ePackageSpinner.add(pro.getPackages().get(i));
+                            }
                         }
+
+                        ArrayAdapter<PackageModel> typePackage = new ArrayAdapter<PackageModel>(getContext(), android.R.layout.simple_spinner_item, ePackageSpinner);
+
+                        typePackage.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        ePackage.setAdapter(typePackage);
                     }
-                    break;
                 }
+
+
+                break;
+            }
+            case R.id.booking_spiner_package: {
+                packageData = ePackageSpinner.get(position);
+
+
+            }
+            case R.id.booking_spinner_photoshare: {
+
+                sSharingOption = photoShareSpinner.get(position);
+                boolshareable = true;
+
+
+                break;
+            }
+            case R.id.booking_spinner_eloction: {
+                if (position == 2) {
+                    addressLine.setVisibility(View.VISIBLE);
+                    sAddress = addressLine.getText().toString();
+                    if (addressLine.length() > 5) {
+                        boolAddress = true;
+                    }
+                } else if (position == 1) {
+                    addressLine.setVisibility(View.VISIBLE);
+                    PlacePicker.IntentBuilder builder = new PlacePicker.IntentBuilder();
+
+                    try {
+                        startActivityForResult(builder.build(getActivity()), PLACE_PICKER_REQUEST);
+                    } catch (GooglePlayServicesRepairableException e) {
+                        e.printStackTrace();
+                    } catch (GooglePlayServicesNotAvailableException e) {
+                        e.printStackTrace();
+                    }
+                }
+                break;
+            }
 
         }
 
@@ -585,11 +573,12 @@ public class Booking extends StepProgressBar implements View.OnClickListener, Ad
 
     }
 
-    protected Dialog onCreateDialog(int id){
-        if (id ==Did ){DatePickerDialog c = new DatePickerDialog( getContext(),dlistener ,dpyear , dpmonth, dpday);
+    protected Dialog onCreateDialog(int id) {
+        if (id == Did) {
+            DatePickerDialog c = new DatePickerDialog(getContext(), dlistener, dpyear, dpmonth, dpday);
             c.getDatePicker().setMinDate(new Date().getTime());
-            return c;}
-        else return null;
+            return c;
+        } else return null;
 
 
     }
@@ -598,9 +587,9 @@ public class Booking extends StepProgressBar implements View.OnClickListener, Ad
     @Override
     public void onActivityResult(int requestCode, int resultCode, Intent data) {
 
-        if (requestCode == PLACE_PICKER_REQUEST ) {
-            if(resultCode == Activity.RESULT_OK && data != null){
-                String result=data.getStringExtra("result");
+        if (requestCode == PLACE_PICKER_REQUEST) {
+            if (resultCode == Activity.RESULT_OK && data != null) {
+                String result = data.getStringExtra("result");
                 place = PlacePicker.getPlace(data, getContext());
                 List<Address> addresses = null;
                 try {
@@ -609,15 +598,17 @@ public class Booking extends StepProgressBar implements View.OnClickListener, Ad
                     e.printStackTrace();
                 }
                 String toastMsg = String.format("Place: %s", place.getName());
-                if (place.getLatLng()!=null){if (addresses!=null){
+                if (place.getLatLng() != null) {
+                    if (addresses != null) {
 
-                final String address = addresses.get(0).getAddressLine(0); // If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
-                final String city = addresses.get(0).getLocality();
-                Log.i("1",toastMsg);
-                Log.i("2",address+"\n"+city);
-                addressLine.setText(address);}
-                else addressLine.setText(toastMsg   );
-                boolAddress=true;}
+                        final String address = addresses.get(0).getAddressLine(0); // If any additional address line present than only, check with max available address lines by getMaxAddressLineIndex()
+                        final String city = addresses.get(0).getLocality();
+                        Log.i("1", toastMsg);
+                        Log.i("2", address + "\n" + city);
+                        addressLine.setText(address);
+                    } else addressLine.setText(toastMsg);
+                    boolAddress = true;
+                }
 
             }
             if (resultCode == Activity.RESULT_CANCELED) {
@@ -626,24 +617,37 @@ public class Booking extends StepProgressBar implements View.OnClickListener, Ad
         }
     }
 
-    public boolean proceedbtn(Boolean boolDate,Boolean booltime,Boolean boolType,Boolean boolAddress,Boolean fromto,Boolean from,boolean to,Boolean boolshareable){
-       Boolean tfinal=false;
-        if (booltime==false)
-        {
-            if (from==true&&to==true){tfinal=true;}
-            else {tfinal=false;
-                Toast.makeText(getContext(), "Please Select Event Time", Toast.LENGTH_LONG).show();}
+    public boolean proceedbtn(Boolean boolDate, Boolean booltime, Boolean boolType, Boolean boolAddress, Boolean fromto, Boolean from, boolean to, Boolean boolshareable) {
+        Boolean tfinal = false;
+        if (booltime == false) {
+            if (from == true && to == true) {
+                tfinal = true;
+            } else {
+                tfinal = false;
+                Toast.makeText(getContext(), "Please Select Event Time", Toast.LENGTH_LONG).show();
+            }
+        } else if (booltime == true) {
+            tfinal = true;
         }
-        else if (booltime==true){tfinal=true;}
-        if (boolAddress==false){ Toast.makeText(getContext(), "Please Select Event Loction", Toast.LENGTH_LONG).show();}
-        if (boolDate==false){Toast.makeText(getContext(), "Please Select Event Date", Toast.LENGTH_LONG).show();}
-        if (boolshareable==false){Toast.makeText(getContext(), "Please Select Event Share Option", Toast.LENGTH_LONG).show();}
-        if (boolType==false){Toast.makeText(getContext(), "Please Select Event Type", Toast.LENGTH_LONG).show();}
-        if (boolAddress==true&&boolDate==true&&boolshareable==true&&boolType==true&&tfinal==true){return true;}
-        else {return false;}
+        if (boolAddress == false) {
+            Toast.makeText(getContext(), "Please Select Event Loction", Toast.LENGTH_LONG).show();
+        }
+        if (boolDate == false) {
+            Toast.makeText(getContext(), "Please Select Event Date", Toast.LENGTH_LONG).show();
+        }
+        if (boolshareable == false) {
+            Toast.makeText(getContext(), "Please Select Event Share Option", Toast.LENGTH_LONG).show();
+        }
+        if (boolType == false) {
+            Toast.makeText(getContext(), "Please Select Event Type", Toast.LENGTH_LONG).show();
+        }
+        if (boolAddress == true && boolDate == true && boolshareable == true && boolType == true && tfinal == true) {
+            return true;
+        } else {
+            return false;
+        }
 
     }
-
 
 
 }
