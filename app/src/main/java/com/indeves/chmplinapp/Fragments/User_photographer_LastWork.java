@@ -18,6 +18,7 @@ import com.indeves.chmplinapp.API.ReadData;
 import com.indeves.chmplinapp.Activities.StuLandingPage;
 import com.indeves.chmplinapp.Activities.UserProfileMain;
 import com.indeves.chmplinapp.Adapters.LastWorkImagesAdapter;
+import com.indeves.chmplinapp.Adapters.UserProLastWorkImagesAdapter;
 import com.indeves.chmplinapp.Models.EventModel;
 import com.indeves.chmplinapp.R;
 
@@ -27,7 +28,7 @@ import java.util.ArrayList;
 public class User_photographer_LastWork extends Fragment implements FirebaseEventsListener {
     Context attachedActivityContext;
     ArrayList<String> images;
-    LastWorkImagesAdapter lastWorkImagesAdapter;
+    UserProLastWorkImagesAdapter lastWorkImagesAdapter;
     RecyclerView recyclerView;
     ProgressDialog progressDialog;
 
@@ -60,11 +61,11 @@ public class User_photographer_LastWork extends Fragment implements FirebaseEven
         View rootView = inflater.inflate(R.layout.fragment_pro_last_work, container, false);
         recyclerView = (RecyclerView) rootView.findViewById(R.id.card_recycler_view);
         recyclerView.setHasFixedSize(true);
-        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getContext(), 2);
+        RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getContext(), 3);
         recyclerView.setLayoutManager(layoutManager);
 
         images = new ArrayList<>();
-        lastWorkImagesAdapter = new LastWorkImagesAdapter(getContext(), images);
+        lastWorkImagesAdapter = new UserProLastWorkImagesAdapter(getContext(), images);
         return rootView;
 
     }
@@ -90,7 +91,7 @@ public class User_photographer_LastWork extends Fragment implements FirebaseEven
         if (dataSnapshot != null) {
             for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
                 EventModel eventModel = dataSnapshot1.getValue(EventModel.class);
-                if (eventModel != null && eventModel.getPhotographerId() != null && eventModel.getPhotographerId().equals(FirebaseAuth.getInstance().getCurrentUser().getUid()) && eventModel.getEventStatus().equals("finished")) {
+                if (eventModel != null && eventModel.getPhotographerId() != null && eventModel.getPhotographerId().equals(Uid) && eventModel.getEventStatus().equals("finished")) {
                     if (eventModel.getEventImagesUrls() != null) {
                         images.addAll(eventModel.getEventImagesUrls());
                     }

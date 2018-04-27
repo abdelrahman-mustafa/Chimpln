@@ -10,6 +10,7 @@ import android.support.v4.view.ViewPager;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.TextView;
 
 import com.indeves.chmplinapp.R;
 
@@ -35,11 +36,21 @@ public class UserProfilePhotographersTab extends android.support.v4.app.Fragment
         View rootView = inflater.inflate(R.layout.activity_user_profile_tab_photographers, container, false);
         viewPager = (ViewPager) rootView.findViewById(R.id.container_special);
         setupViewPager(viewPager);
+
         tabLayout= rootView.findViewById(R.id.tabs);
-        tabLayout.setSelectedTabIndicatorHeight(0);
         tabLayout.setupWithViewPager(viewPager);
+        tabLayout.setSelectedTabIndicatorHeight(4);
+
+        setupTabIcons();
+        //tabLayout.setupWithViewPager(viewPager);
 
         return rootView;
+    }
+    private void setupTabIcons() {
+
+
+        tabLayout.getTabAt(0).setCustomView(R.layout.tab_item_2);
+        tabLayout.getTabAt(1).setCustomView(R.layout.tab_item);
     }
 
     private void setupViewPager(ViewPager viewPager) {

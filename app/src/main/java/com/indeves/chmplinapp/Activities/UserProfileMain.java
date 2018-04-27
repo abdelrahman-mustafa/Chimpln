@@ -63,6 +63,7 @@ public class UserProfileMain extends AppCompatActivity {
 //        ReadData readData = new ReadData(firebaseEventsListener);
 //        readData.getEventsByProId("dvim55FWlihlaQeOfJ9JETomdki1");
 
+        setTitle(FirebaseAuth.getInstance().getCurrentUser().getDisplayName());
         fragmentManager = getSupportFragmentManager();
         initialFragment = new UserProfilePhotographersTab();
         FragmentTransaction transaction = fragmentManager.beginTransaction();

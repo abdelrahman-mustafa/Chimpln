@@ -13,6 +13,7 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -27,6 +28,7 @@ import com.indeves.chmplinapp.Adapters.EventTypeAdapter;
 import com.indeves.chmplinapp.Adapters.ProEventHistoryAdapter;
 import com.indeves.chmplinapp.Models.EventModel;
 import com.indeves.chmplinapp.Models.EventType;
+import com.indeves.chmplinapp.Models.LookUpModel;
 import com.indeves.chmplinapp.R;
 import com.indeves.chmplinapp.Utility.ClickListener;
 
@@ -34,7 +36,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 @SuppressLint("ValidFragment")
-public class UserProfSelectEventType  extends android.support.v4.app.Fragment implements FirebaseEventsListener {
+public class UserProfSelectEventType extends android.support.v4.app.Fragment implements FirebaseEventsListener {
 
     private static final String KEY_LAYOUT_MANAGER = "layoutManager";
     private static final int SPAN_COUNT = 2;
@@ -46,6 +48,7 @@ public class UserProfSelectEventType  extends android.support.v4.app.Fragment im
     private ProgressDialog progressDialog;
     String Uid;
     String type;
+    List<LookUpModel> eventTypesList;
 
     @SuppressLint("ValidFragment")
     public UserProfSelectEventType(String Uid, String type) {
@@ -59,6 +62,20 @@ public class UserProfSelectEventType  extends android.support.v4.app.Fragment im
         progressDialog = new ProgressDialog(getContext());
         progressDialog.setMessage("Please wait");
         progressDialog.setCanceledOnTouchOutside(false);
+        eventTypesList = new ArrayList<>();
+        ReadData readData = new ReadData(this);
+        eventTypesList.add(0, new LookUpModel(0, getResources().getString(R.string.selectPackTy)));
+        readData.getLookupsByType("eventTypesLookups", new ReadData.LookUpsListener() {
+            @Override
+            public void onLookUpsResponse(List<LookUpModel> eventTypeLookups) {
+                Log.v("EventTypeLookupsArr", eventTypeLookups.toString());
+                eventTypesList.addAll(eventTypeLookups);
+            }
+        });
+        Log.v("type",type);
+
+        // Log.v("list",eventTypesList.get(eventModel.getTypeId()).getEnglishName());
+        Log.v("list",eventTypesList.toString());
     }
 
     @Nullable
@@ -85,6 +102,7 @@ public class UserProfSelectEventType  extends android.support.v4.app.Fragment im
         ReadData readData = new ReadData(this);
         progressDialog.show();
         readData.getAllEvents();
+
 
 
         return rootView;
@@ -129,9 +147,12 @@ public class UserProfSelectEventType  extends android.support.v4.app.Fragment im
 
             for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
                 EventModel eventModel = dataSnapshot1.getValue(EventModel.class);
-                if (eventModel != null && eventModel.getPhotographerId() != null && eventModel.getPhotographerId().equals(Uid) && eventModel.getEventStatus() != null && eventModel.getEventStatus().equals("finished")) {
-                    eventsList.add(eventModel);
+               // Log.i("type",type);
+                Log.i("item",eventTypesList.get(eventModel.getTypeId()).getEnglishName());
 
+                if (eventModel != null && eventModel.getPhotographerId() != null && eventModel.getPhotographerId().equals(Uid) && eventModel.getEventStatus() != null  && type.equals(eventTypesList.get(eventModel.getTypeId()).getEnglishName())) {
+                    eventsList.add(eventModel);
+                    Log.i("type",eventModel.toString());
                 }
             }
             recyclerView.setAdapter(userProfEventsAdaptor);

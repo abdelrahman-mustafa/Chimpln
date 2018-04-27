@@ -11,6 +11,7 @@ import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.indeves.chmplinapp.Fragments.ProEditProfileFragment;
 import com.indeves.chmplinapp.Fragments.ProEvents;
 import com.indeves.chmplinapp.Fragments.ProLastWork;
@@ -29,8 +30,11 @@ public class ProLandingPage extends AppCompatActivity {
         setContentView(R.layout.activity_pro_landing_page);
         BottomNavigationView bottomNavigation = (BottomNavigationView) findViewById(R.id.bottom_navigation);
         fragmentManager = getSupportFragmentManager();
+        setTitle(FirebaseAuth.getInstance().getCurrentUser().getDisplayName());
         Fragment initialFragment = new ProLastWork();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
+
+
         transaction.replace(R.id.main_container, initialFragment).commit();
 
         bottomNavigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {

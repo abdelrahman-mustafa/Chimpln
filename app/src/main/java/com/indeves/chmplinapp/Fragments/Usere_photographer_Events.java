@@ -17,6 +17,7 @@ import android.support.v7.widget.DividerItemDecoration;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.LinearLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.util.Log;
 import android.view.GestureDetector;
 import android.view.LayoutInflater;
 import android.view.MotionEvent;
@@ -31,6 +32,7 @@ import com.indeves.chmplinapp.Activities.StuLandingPage;
 import com.indeves.chmplinapp.Adapters.EventTypeAdapter;
 import com.indeves.chmplinapp.Adapters.ProEventHistoryAdapter;
 import com.indeves.chmplinapp.Models.EventModel;
+import com.indeves.chmplinapp.Models.EventOfTypeModel;
 import com.indeves.chmplinapp.Models.EventType;
 import com.indeves.chmplinapp.R;
 import com.indeves.chmplinapp.Utility.ClickListener;
@@ -41,7 +43,7 @@ import java.util.List;
 import static android.view.View.GONE;
 
 @SuppressLint("ValidFragment")
-public class Usere_photographer_Events extends android.support.v4.app.Fragment {
+public class Usere_photographer_Events extends android.support.v4.app.Fragment implements  FirebaseEventsListener {
 
 
     ArrayList<EventType> eventsList = new ArrayList<>();
@@ -67,20 +69,41 @@ public class Usere_photographer_Events extends android.support.v4.app.Fragment {
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_user_select_pro_events, container, false);
          recyclerView = rootView.findViewById(R.id.event_type_list);
+
+
+        ReadData readData = new ReadData(this);
+
+                readData.getProEventsBasedOnType(Uid, new ReadData.ProEventsBasedOnTypeListener() {
+            @Override
+            public void onResponse(ArrayList<EventOfTypeModel> eventOfTypeModels) {
+                if (eventOfTypeModels != null) {
+                    Log.v("EventsBasedOntTypes", eventOfTypeModels.toString());
+                    for (EventOfTypeModel eventOfTypeModel : eventOfTypeModels){
+                        if (eventOfTypeModel.getEvents().size()>0){
+                            Log.i(  "evemn",eventOfTypeModel.getEventType());
+                            EventType eventType = new EventType(eventOfTypeModel.getEventType());
+
+                            eventsList.add(eventType);
+
+                        }
+
+
+                    }
+                }
+
+            }
+        });
         userProfEventsAdaptor = new EventTypeAdapter(eventsList);
 
 
-        GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 2);
-        gridLayoutManager.setOrientation(LinearLayoutManager.VERTICAL); // set Horizontal Orientation
-        recyclerView.setLayoutManager(gridLayoutManager); // set LayoutManager to RecyclerView
-        recyclerView.setAdapter(userProfEventsAdaptor);
-        EventType eventType = new EventType("Wedding");
+     /*   EventType eventType = new EventType("Wedding");
         EventType eventType1 = new EventType("Birthday");
         EventType eventType2 = new EventType("Business Event");
         EventType eventType3 = new EventType("Casual Event");
         EventType eventType4 = new EventType("Graduation");
         EventType eventType5 = new EventType("Celebrities");
         EventType eventType6 = new EventType("Products");
+        EventType eventType7 = new EventType("Kids");
 
 
         eventsList.add(eventType);
@@ -90,7 +113,13 @@ public class Usere_photographer_Events extends android.support.v4.app.Fragment {
         eventsList.add(eventType4);
         eventsList.add(eventType5);
         eventsList.add(eventType6);
-        userProfEventsAdaptor.notifyDataSetChanged();
+        eventsList.add(eventType7);
+*/
+
+        GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 2);
+        gridLayoutManager.setOrientation(LinearLayoutManager.VERTICAL); // set Horizontal Orientation
+        recyclerView.setLayoutManager(gridLayoutManager); // set LayoutManager to RecyclerView
+        recyclerView.setAdapter(userProfEventsAdaptor);
         recyclerView.addOnItemTouchListener(new RecyclerTouchListener(
                 recyclerView, new ClickListener() {
             @Override
@@ -110,8 +139,21 @@ public class Usere_photographer_Events extends android.support.v4.app.Fragment {
 
             }
         }));
+        userProfEventsAdaptor.notifyDataSetChanged();
+
+
 
         return rootView;
+    }
+
+    @Override
+    public void onWriteDataCompleted(boolean writeSuccessful) {
+
+    }
+
+    @Override
+    public void onReadDataResponse(DataSnapshot dataSnapshot) {
+
     }
 
 

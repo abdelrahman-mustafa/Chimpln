@@ -11,6 +11,7 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.indeves.chmplinapp.API.ReadData;
 import com.indeves.chmplinapp.Fragments.ProEvents;
 import com.indeves.chmplinapp.Fragments.ProLastWork;
@@ -37,6 +38,7 @@ public class StuLandingPage extends AppCompatActivity {
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.replace(R.id.main_container, initialFragment).commit();
 
+        setTitle(FirebaseAuth.getInstance().getCurrentUser().getDisplayName());
         ReadData readData = new ReadData();
         readData.searchPros();
 
