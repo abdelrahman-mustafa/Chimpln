@@ -1,127 +1,160 @@
 package com.indeves.chmplinapp.Fragments;
 
+import android.annotation.SuppressLint;
 import android.content.Context;
+import android.graphics.Canvas;
 import android.graphics.Color;
+import android.graphics.Paint;
+import android.graphics.RectF;
 import android.os.Bundle;
+import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentPagerAdapter;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v4.view.ViewPager;
+import android.support.v7.widget.GridLayoutManager;
+import android.support.v7.widget.LinearLayoutManager;
+import android.support.v7.widget.RecyclerView;
+import android.support.v7.widget.helper.ItemTouchHelper;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.indeves.chmplinapp.API.FirebaseEventsListener;
+import com.indeves.chmplinapp.API.ReadData;
+import com.indeves.chmplinapp.API.WriteData;
 import com.indeves.chmplinapp.Activities.StuLandingPage;
+import com.indeves.chmplinapp.Adapters.ProProfPackageAdaptor;
+import com.indeves.chmplinapp.Models.PackageModel;
+import com.indeves.chmplinapp.Models.ProUserModel;
 import com.indeves.chmplinapp.R;
+import com.indeves.chmplinapp.Utility.SwipeController;
+import com.indeves.chmplinapp.Utility.SwipeControllerActions;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class User_photographer_Packages extends Fragment {
-    // TODO: Rename parameter arguments, choose names that match
-    // the fragment initialization parameters, e.g. ARG_ITEM_NUMBER
-    private static final String ARG_PARAM1 = "param1";
-    private static final String ARG_PARAM2 = "param2";
-    TabLayout tabLayout;
-    Context attachedActivityContext;
-    // TODO: Rename and change types of parameters
-    private String mParam1;
-    private String mParam2;
-    private ViewPager viewPager;
+@SuppressLint("ValidFragment")
+public class User_photographer_Packages  extends android.support.v4.app.Fragment implements FirebaseEventsListener {
+    //    private static final String TAG = "RecyclerViewFragment";
+    private static final String KEY_LAYOUT_MANAGER = "layoutManager";
+    private static final int SPAN_COUNT = 2;
+    private static final float buttonWidth = 300;
+    protected LayoutManagerType mCurrentLayoutManagerType;
+    protected RecyclerView.LayoutManager mLayoutManager;
+    ProProfPackageAdaptor userProfEventsAdaptor;
 
+    ProUserModel proUserModel;
+    private List<PackageModel> list;
+    private RecyclerView recyclerView;
+    private Paint p = new Paint();
 
-    /**
-     * Use this factory method to create a new instance of
-     * this fragment using the provided parameters.
-     *
-     * @param param1 Parameter 1.
-     * @param param2 Parameter 2.
-     * @return A new instance of fragment ProPackages.
-     */
-    // TODO: Rename and change types and number of parameters
-    public static User_photographer_Packages newInstance(String param1, String param2) {
-        User_photographer_Packages fragment = new User_photographer_Packages();
-        Bundle args = new Bundle();
-        args.putString(ARG_PARAM1, param1);
-        args.putString(ARG_PARAM2, param2);
-        fragment.setArguments(args);
-        return fragment;
-    }
+    private String Uid;
+    private StuProfilePackageTabMyPackages.ButtonsState buttonShowedState = StuProfilePackageTabMyPackages.ButtonsState.GONE;
 
     @Override
-    public void onCreate(Bundle savedInstanceState) {
+    public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        if (getArguments() != null) {
-            mParam1 = getArguments().getString(ARG_PARAM1);
-            mParam2 = getArguments().getString(ARG_PARAM2);
-        }
+
     }
 
+    @SuppressLint("ValidFragment")
+    public User_photographer_Packages(String uid) {
+        Uid = uid;
+    }
+
+    @Nullable
     @Override
-    public View onCreateView(LayoutInflater inflater, ViewGroup container,
-                             Bundle savedInstanceState) {
-        // Inflate the layout for this fragment
-        View rootView = inflater.inflate(R.layout.pro_packages_tab, container, false);
+    public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
+        View rootView = inflater.inflate(R.layout.activity_user_profile_tab_events_upcoming, container, false);
+        recyclerView = rootView.findViewById(R.id.userProfile_event_recycler_view);
+        ;
+        recyclerView.setHasFixedSize(true);
 
-        viewPager = (ViewPager) rootView.findViewById(R.id.packages_container);
+        list = new ArrayList<PackageModel>();
 
-//        setupViewPager(viewPager);
+        mLayoutManager = new LinearLayoutManager(getActivity());
 
-        tabLayout = rootView.findViewById(R.id.tabs);
-        tabLayout.setupWithViewPager(viewPager);
-        //tabLayout.setSelectedTabIndicatorHeight(0);
+        mCurrentLayoutManagerType = LayoutManagerType.LINEAR_LAYOUT_MANAGER;
 
-        tabLayout.setTabTextColors(Color.parseColor("#727272"), Color.parseColor("#545454"));
-        setupViewPager(viewPager);
+        if (savedInstanceState != null) {
+            // Restore saved layout manager type.
+            mCurrentLayoutManagerType = (LayoutManagerType) savedInstanceState
+                    .getSerializable(KEY_LAYOUT_MANAGER);
+        }
+        setRecyclerViewLayoutManager(mCurrentLayoutManagerType);
+
+
+
+        userProfEventsAdaptor = new ProProfPackageAdaptor(list);
+        ReadData readData = new ReadData(this);
+        readData.getUserInfoById(Uid);
         return rootView;
     }
 
-    private void setupViewPager(ViewPager viewPager) {
-        ViewPagerAdapter adapter = new ViewPagerAdapter(getChildFragmentManager());
-        adapter.addFragment(new StuProfilePackageTabMyPackages(), "My Packages");
-        adapter.addFragment(new StuProfilePackageTabAddPackage(), "+ Add New Package");
-        viewPager.setAdapter(adapter);
+    public void setRecyclerViewLayoutManager(LayoutManagerType layoutManagerType) {
+        int scrollPosition = 0;
+
+        // If a layout manager has already been set, get current scroll position.
+        if (recyclerView.getLayoutManager() != null) {
+            scrollPosition = ((LinearLayoutManager) recyclerView.getLayoutManager())
+                    .findFirstCompletelyVisibleItemPosition();
+        }
+
+        switch (layoutManagerType) {
+            case GRID_LAYOUT_MANAGER:
+                mLayoutManager = new GridLayoutManager(getActivity(), SPAN_COUNT);
+                mCurrentLayoutManagerType = LayoutManagerType.GRID_LAYOUT_MANAGER;
+                break;
+            case LINEAR_LAYOUT_MANAGER:
+                mLayoutManager = new LinearLayoutManager(getActivity());
+                mCurrentLayoutManagerType = LayoutManagerType.LINEAR_LAYOUT_MANAGER;
+                break;
+            default:
+                mLayoutManager = new LinearLayoutManager(getActivity());
+                mCurrentLayoutManagerType = LayoutManagerType.LINEAR_LAYOUT_MANAGER;
+        }
+
+        recyclerView.setLayoutManager(mLayoutManager);
+        recyclerView.scrollToPosition(scrollPosition);
+    }
+
+
+    @Override
+    public void onWriteDataCompleted(boolean writeSuccessful) {
+
     }
 
     @Override
-    public void onAttach(Context context) {
-        super.onAttach(context);
-        this.attachedActivityContext = context;
+    public void onReadDataResponse(DataSnapshot dataSnapshot) {
+        if (dataSnapshot != null && dataSnapshot.getValue() != null) {
+            proUserModel = dataSnapshot.getValue(ProUserModel.class);
+            if (proUserModel != null) {
+                if (proUserModel.getPackages() != null) {
+                    list.addAll(proUserModel.getPackages());
+                    recyclerView.setAdapter(userProfEventsAdaptor);
+                    userProfEventsAdaptor.notifyDataSetChanged();
+                } else {
+                    Toast.makeText(getContext(), "You don't have any packages yet", Toast.LENGTH_SHORT).show();
+                }
+            }
+        }
+
     }
 
-    @Override
-    public void onDetach() {
-        super.onDetach();
+    enum ButtonsState {
+        GONE,
+        LEFT_VISIBLE,
+        RIGHT_VISIBLE
     }
 
-
-    class ViewPagerAdapter extends FragmentPagerAdapter {
-        private final List<Fragment> mFragmentList = new ArrayList<>();
-        private final List<String> mFragmentTitleList = new ArrayList<>();
-
-        public ViewPagerAdapter(FragmentManager manager) {
-            super(manager);
-        }
-
-        @Override
-        public Fragment getItem(int position) {
-            return mFragmentList.get(position);
-        }
-
-        @Override
-        public int getCount() {
-            return mFragmentList.size();
-        }
-
-        public void addFragment(Fragment fragment, String title) {
-            mFragmentList.add(fragment);
-            mFragmentTitleList.add(title);
-        }
-
-        @Override
-        public CharSequence getPageTitle(int position) {
-            return mFragmentTitleList.get(position);
-        }
+    private enum LayoutManagerType {
+        GRID_LAYOUT_MANAGER,
+        LINEAR_LAYOUT_MANAGER
     }
 }

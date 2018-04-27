@@ -194,8 +194,8 @@ public class UserProfilePhotographersTabSearchOutputSelectPhotographer extends a
         ViewPagerAdapter adapter = new ViewPagerAdapter(getChildFragmentManager());
 
         adapter.addFragment(new User_photographer_LastWork(), "Last Work");
-        adapter.addFragment(new Usere_photographer_Events(), "Events");
-        adapter.addFragment(new User_photographer_Packages(), "Packages");
+        adapter.addFragment(new Usere_photographer_Events(pros.getUid()), "Events");
+        adapter.addFragment(new User_photographer_Packages(pros.getUid()), "Packages");
         viewPager.setAdapter(adapter);
     }
     class ViewPagerAdapter extends FragmentPagerAdapter {
