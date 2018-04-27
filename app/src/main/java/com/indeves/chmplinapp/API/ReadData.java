@@ -12,6 +12,8 @@ import com.google.firebase.database.GenericTypeIndicator;
 import com.google.firebase.database.Query;
 import com.google.firebase.database.ValueEventListener;
 import com.indeves.chmplinapp.Models.CityLookUpModel;
+import com.indeves.chmplinapp.Models.EventModel;
+import com.indeves.chmplinapp.Models.EventOfTypeModel;
 import com.indeves.chmplinapp.Models.LookUpModel;
 import com.indeves.chmplinapp.Models.ProUserModel;
 import com.indeves.chmplinapp.Models.UserData;
@@ -270,6 +272,57 @@ public class ReadData {
         });
     }
 
+    public void getProEventsBasedOnType(final String proId, final ProEventsBasedOnTypeListener proEventsBasedOnTypeListener) {
+        getLookupsByType("eventTypesLookups", new LookUpsListener() {
+            @Override
+            public void onLookUpsResponse(final List<LookUpModel> lookups) {
+                if (lookups != null) {
+                    mDatabase = FirebaseDatabase.getInstance().getReference("events");
+                    mDatabase.orderByChild("photographerId").equalTo(proId).addListenerForSingleValueEvent(new ValueEventListener() {
+                        @Override
+                        public void onDataChange(DataSnapshot dataSnapshot) {
+                            Log.v("AllProEvents", dataSnapshot.toString());
+                            if (dataSnapshot.getValue() != null) {
+                                ArrayList<EventOfTypeModel> eventOfTypeModels = new ArrayList<>();
+                                List<EventModel> proEvents = new ArrayList<>();
+                                for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
+                                    EventModel eventModel = dataSnapshot1.getValue(EventModel.class);
+                                    proEvents.add(eventModel);
+                                }
+                                for (LookUpModel lookUpModel : lookups) {
+                                    EventOfTypeModel eventOfTypeModel = new EventOfTypeModel();
+                                    eventOfTypeModel.setEventType(lookUpModel.getEnglishName());
+                                    ArrayList<EventModel> eventTypeEvents = new ArrayList<>();
+                                    for (EventModel eventModel : proEvents) {
+                                        if (lookUpModel.getId() == eventModel.getTypeId()) {
+                                            eventTypeEvents.add(eventModel);
+                                        }
+                                    }
+                                    eventOfTypeModel.setEvents(eventTypeEvents);
+                                    eventOfTypeModels.add(eventOfTypeModel);
+                                }
+                                proEventsBasedOnTypeListener.onResponse(eventOfTypeModels);
+
+                            } else {
+                                proEventsBasedOnTypeListener.onResponse(null);
+                            }
+                        }
+
+                        @Override
+                        public void onCancelled(DatabaseError error) {
+                            // Failed to read value
+                            Log.v("AllEvents_error", error.toString());
+                            proEventsBasedOnTypeListener.onResponse(null);
+                        }
+                    });
+
+                } else {
+                    proEventsBasedOnTypeListener.onResponse(null);
+                }
+            }
+        });
+    }
+
     public interface AllProsListener {
         void onProsResponse(ArrayList<ProUserModel> pros);
     }
@@ -280,5 +333,9 @@ public class ReadData {
 
     public interface CityLookUpsListener {
         void onLookUpsResponse(List<CityLookUpModel> citiesList);
+    }
+
+    public interface ProEventsBasedOnTypeListener {
+        void onResponse(ArrayList<EventOfTypeModel> eventOfTypeModels);
     }
 }

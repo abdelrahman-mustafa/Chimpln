@@ -17,6 +17,7 @@ import android.widget.TextView;
 
 import com.indeves.chmplinapp.API.ReadData;
 import com.indeves.chmplinapp.Models.CityLookUpModel;
+import com.indeves.chmplinapp.Models.EventOfTypeModel;
 import com.indeves.chmplinapp.Models.LookUpModel;
 import com.indeves.chmplinapp.Models.ProUserModel;
 import com.indeves.chmplinapp.R;
@@ -222,6 +223,16 @@ public class UserProfilePhotographersTabSearchSelect extends android.support.v4.
                 eventTimeArrayAdapter.notifyDataSetChanged();
             }
         });
+        //K.A: example of getting events based on type
+//        readData.getProEventsBasedOnType("dvim55FWlihlaQeOfJ9JETomdki1", new ReadData.ProEventsBasedOnTypeListener() {
+//            @Override
+//            public void onResponse(ArrayList<EventOfTypeModel> eventOfTypeModels) {
+//                if (eventOfTypeModels != null) {
+//                    Log.v("EventsBasedOntTypes", eventOfTypeModels.toString());
+//                }
+//
+//            }
+//        });
 
         return rootView;
     }
