@@ -38,15 +38,19 @@ public class Contactpro extends StepProgressBar implements View.OnClickListener,
     Button button;
     String proId;
     ProUserModel proUserModel;
-
+    double paymentAmount;
+    String paymentMethod;
+    TextView paymentDetailsTextView;
 
     public Contactpro() {
         // Required empty public constructor
     }
 
     @SuppressLint("ValidFragment")
-    public Contactpro(String id) {
+    public Contactpro(String id, double paymentAmount, String paymentMethod) {
         this.proId = id;
+        this.paymentAmount = paymentAmount;
+        this.paymentMethod = paymentMethod;
     }
 
 
@@ -64,7 +68,12 @@ public class Contactpro extends StepProgressBar implements View.OnClickListener,
         button.setOnClickListener(this);
         ReadData readData = new ReadData(this);
         readData.getUserInfoById(proId);
-
+        paymentDetailsTextView = rootview.findViewById(R.id.contactPro_paymentDetails_textView);
+        if (paymentMethod.equals("booked-credit")) {
+            double paymentAmountInLE = paymentAmount / 100;
+            String paymentDetailText = "Your credit card will be charged for " + String.valueOf(paymentAmountInLE) + " L.E. to confirm your request";
+            paymentDetailsTextView.setText(paymentDetailText);
+        }
 
         return rootview;
     }
@@ -96,27 +105,24 @@ public class Contactpro extends StepProgressBar implements View.OnClickListener,
 
     @Override
     public void onClick(View v) {
-       if (v==button){
-makeCall();       }
+        if (v == button) {
+            makeCall();
+        }
 
         //callIntent.setData(Uri.parse("tel:" + proUserModel.getPhone()));
     }
 
-    private void requestPermission()
-    {
+    private void requestPermission() {
 
-        if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(),Manifest.permission.CALL_PHONE))
-        {
-        }
-        else {
+        if (ActivityCompat.shouldShowRequestPermissionRationale(getActivity(), Manifest.permission.CALL_PHONE)) {
+        } else {
 
-            ActivityCompat.requestPermissions(getActivity(),new String[]{Manifest.permission.ACCESS_FINE_LOCATION},PERMISSION_REQUEST_CODE);
+            ActivityCompat.requestPermissions(getActivity(), new String[]{Manifest.permission.ACCESS_FINE_LOCATION}, PERMISSION_REQUEST_CODE);
         }
     }
 
     @Override
-    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults)
-    {
+    public void onRequestPermissionsResult(int requestCode, String permissions[], int[] grantResults) {
         switch (requestCode) {
             case PERMISSION_REQUEST_CODE:
                 if (grantResults.length > 0 && grantResults[0] == PackageManager.PERMISSION_GRANTED) {
@@ -125,12 +131,12 @@ makeCall();       }
                 break;
         }
     }
-    public void makeCall()
-    {
+
+    public void makeCall() {
         Intent intent = new Intent(Intent.ACTION_CALL);
-        intent.setData(Uri.parse("tel:" +proUserModel.getPhone()));
+        intent.setData(Uri.parse("tel:" + proUserModel.getPhone()));
         int result = ContextCompat.checkSelfPermission(getContext(), Manifest.permission.CALL_PHONE);
-        if (result == PackageManager.PERMISSION_GRANTED){
+        if (result == PackageManager.PERMISSION_GRANTED) {
 
             startActivity(intent);
 
@@ -138,7 +144,6 @@ makeCall();       }
             Toast.makeText(getContext(), "We need call permission", Toast.LENGTH_SHORT).show();
         }
     }
-
 
 
 }

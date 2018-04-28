@@ -14,11 +14,12 @@ import java.util.Map;
 public class EventModel implements Serializable {
     private String bookerUserId, photographerId, eventDate, bookerUserName, photographerName, startTime, endTime, noteToPro, eventCity, eventId, rejectionReason;
     private long eventLocationLong, eventLocationLat;
-    //eventStatus is one of these values "pending, accepted, rejected, finished,cancelled"
+    //eventStatus is one of these values "pending, accepted, rejected, finished, cancelled, booked-cash, booked-credit"
     private String eventStatus;
     private int typeId, timeId, sharingOptionId;
     private PackageModel selectedPackage;
     private List<String> eventImagesUrls;
+    private double paidAmount;
 
     public EventModel() {
     }
@@ -64,7 +65,7 @@ public class EventModel implements Serializable {
 
 
     //This constructor contains all data to be retrieved.
-    public EventModel(String bookerUserId, String photographerId, String eventDate, String bookerUserName, String photographerName, String startTime, String endTime, String noteToPro, String eventCity, String eventId, String rejectionReason, long eventLocationLong, long eventLocationLat, String eventStatus, int typeId, int timeId, int sharingOptionId, PackageModel selectedPackage, List<String> eventImagesUrls) {
+    public EventModel(String bookerUserId, String photographerId, String eventDate, String bookerUserName, String photographerName, String startTime, String endTime, String noteToPro, String eventCity, String eventId, String rejectionReason, long eventLocationLong, long eventLocationLat, String eventStatus, int typeId, int timeId, int sharingOptionId, PackageModel selectedPackage, List<String> eventImagesUrls, double paidAmount) {
         this.bookerUserId = bookerUserId;
         this.photographerId = photographerId;
         this.eventDate = eventDate;
@@ -84,6 +85,7 @@ public class EventModel implements Serializable {
         this.sharingOptionId = sharingOptionId;
         this.selectedPackage = selectedPackage;
         this.eventImagesUrls = eventImagesUrls;
+        this.paidAmount = paidAmount;
     }
 
     public String getBookerUserId() {
@@ -238,6 +240,14 @@ public class EventModel implements Serializable {
         this.rejectionReason = rejectionReason;
     }
 
+    public double getPaidAmount() {
+        return paidAmount;
+    }
+
+    public void setPaidAmount(double paidAmount) {
+        this.paidAmount = paidAmount;
+    }
+
     @Exclude
     public Map<String, Object> toMap() {
         HashMap<String, Object> result = new HashMap<>();
@@ -247,6 +257,9 @@ public class EventModel implements Serializable {
             result.put("eventImagesUrls", eventImagesUrls);
         if (rejectionReason != null)
             result.put("rejectionReason", rejectionReason);
+        if (paidAmount > 0) {
+            result.put("paidAmount", paidAmount);
+        }
         return result;
     }
 }

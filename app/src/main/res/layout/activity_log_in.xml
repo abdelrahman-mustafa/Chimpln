@@ -27,7 +27,7 @@
                 android:layout_margin="90dp"
                 android:id="@+id/splash"
                 android:layout_weight="1"
-                android:src="@drawable/logo" />
+                android:src="@drawable/chimp_logo" />
             <LinearLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"

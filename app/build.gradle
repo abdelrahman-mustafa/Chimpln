@@ -19,6 +19,14 @@ android {
     }
 }
 
+allprojects {
+    repositories {
+        mavenCentral()
+        jcenter()
+        maven { url "https://dl.bintray.com/paymobsolutions/paymob_accept_sdk" }
+    }
+}
+
 dependencies {
     implementation fileTree(dir: 'libs', include: ['*.jar'])
     //noinspection GradleCompatible
@@ -47,6 +55,7 @@ dependencies {
     implementation 'com.google.firebase:firebase-storage:15.0.0'
     implementation 'com.google.firebase:firebase-functions:15.0.0'
     implementation 'com.wang.avi:library:2.1.3'
+    implementation 'com.paymob:acceptsdk:1.0.2'
 
 }
 

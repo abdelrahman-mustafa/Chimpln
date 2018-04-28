@@ -137,13 +137,7 @@ public class Approval extends StepProgressBar {
         stateprogressbar.checkStateCompleted(true);
         if (model.getEventStatus().equals("pending")) {
             Toast.makeText(getContext(), "Your Event is Still pending", Toast.LENGTH_LONG).show();
-        } else if (model.getEventStatus().equals("accepted")) {
-            Contactpro output = new Contactpro(model.getPhotographerId());
-            android.support.v4.app.FragmentTransaction transaction = getFragmentManager().beginTransaction();
-
-            transaction.replace(R.id.container_o, output).addToBackStack(null).commit();
         }
-
     }
 
 

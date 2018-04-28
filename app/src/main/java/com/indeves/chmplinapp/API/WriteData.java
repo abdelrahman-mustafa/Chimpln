@@ -114,6 +114,26 @@ public class WriteData {
         }
     }
 
+    public void updateEventStatusAfterPayment(String status, String eventId, double paymentAmount) throws Exception {
+        EventModel eventModel = new EventModel();
+        eventModel.setEventStatus(status);
+        eventModel.setPaidAmount(paymentAmount);
+        if (mAuth.getCurrentUser() != null) {
+            eventsDatabaseReference.child(eventId).updateChildren(eventModel.toMap()).addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+                    if (task.isSuccessful()) {
+                        firebaseEventsListener.onWriteDataCompleted(true);
+                    } else {
+                        firebaseEventsListener.onWriteDataCompleted(false);
+                    }
+                }
+            });
+        } else {
+            throw new Exception("user is not authenticated");
+        }
+    }
+
     public void addNewProPackage(final PackageModel packageModel) throws Exception {
         //TODO: use push with key to handle the packages better
         //firstly, get pro data to check if it has packages

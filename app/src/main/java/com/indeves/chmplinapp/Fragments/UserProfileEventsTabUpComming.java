@@ -89,8 +89,12 @@ public class UserProfileEventsTabUpComming extends android.support.v4.app.Fragme
                     Approval frag = new Approval(list.get(position));
                     FragmentTransaction transaction = fragmentManager.beginTransaction();
                     transaction.replace(R.id.container_o, frag).addToBackStack(null).commit();
+                } else if (list.get(position).getEventStatus().contains("booked")) {
+                    Contactpro frag = new Contactpro(list.get(position).getPhotographerId(), list.get(position).getPaidAmount(), list.get(position).getEventStatus());
+                    FragmentTransaction transaction = fragmentManager.beginTransaction();
+                    transaction.replace(R.id.container_o, frag).addToBackStack(null).commit();
                 } else if (list.get(position).getEventStatus().equals("accepted")) {
-                    Contactpro frag = new Contactpro(list.get(position).getPhotographerId());
+                    PaymentFragment frag = new PaymentFragment(list.get(position).getPhotographerId(), list.get(position));
                     FragmentTransaction transaction = fragmentManager.beginTransaction();
                     transaction.replace(R.id.container_o, frag).addToBackStack(null).commit();
                 } else if (list.get(position).getEventStatus().equals("rejected")) {
@@ -109,8 +113,12 @@ public class UserProfileEventsTabUpComming extends android.support.v4.app.Fragme
                     Approval frag = new Approval(list.get(position));
                     FragmentTransaction transaction = fragmentManager.beginTransaction();
                     transaction.replace(R.id.container_o, frag).addToBackStack(null).commit();
+                } else if (list.get(position).getEventStatus().contains("booked")) {
+                    Contactpro frag = new Contactpro(list.get(position).getPhotographerId(), list.get(position).getPaidAmount(), list.get(position).getEventStatus());
+                    FragmentTransaction transaction = fragmentManager.beginTransaction();
+                    transaction.replace(R.id.container_o, frag).addToBackStack(null).commit();
                 } else if (list.get(position).getEventStatus().equals("accepted")) {
-                    Contactpro frag = new Contactpro(list.get(position).getPhotographerId());
+                    PaymentFragment frag = new PaymentFragment(list.get(position).getPhotographerId(), list.get(position));
                     FragmentTransaction transaction = fragmentManager.beginTransaction();
                     transaction.replace(R.id.container_o, frag).addToBackStack(null).commit();
                 } else if (list.get(position).getEventStatus().equals("rejected")) {
@@ -118,7 +126,6 @@ public class UserProfileEventsTabUpComming extends android.support.v4.app.Fragme
                     FragmentTransaction transaction = fragmentManager.beginTransaction();
                     transaction.replace(R.id.container_o, frag).addToBackStack(null).commit();
                 }
-
             }
         }));
 
