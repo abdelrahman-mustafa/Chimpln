@@ -10,16 +10,21 @@ import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.indeves.chmplinapp.API.FirebaseEventsListener;
+import com.indeves.chmplinapp.API.ReadData;
 import com.indeves.chmplinapp.Fragments.ProEditProfileFragment;
 import com.indeves.chmplinapp.Fragments.ProEvents;
 import com.indeves.chmplinapp.Fragments.ProLastWork;
 import com.indeves.chmplinapp.Fragments.ProPackages;
 import com.indeves.chmplinapp.Fragments.ProProfile;
+import com.indeves.chmplinapp.Models.ProUserModel;
 import com.indeves.chmplinapp.R;
 
-public class ProLandingPage extends AppCompatActivity {
+public class ProLandingPage extends AppCompatActivity implements FirebaseEventsListener {
     private static final String TAG = MainActivity.class.getSimpleName();
     private Fragment fragment;
     private FragmentManager fragmentManager;
@@ -30,7 +35,9 @@ public class ProLandingPage extends AppCompatActivity {
         setContentView(R.layout.activity_pro_landing_page);
         BottomNavigationView bottomNavigation = (BottomNavigationView) findViewById(R.id.bottom_navigation);
         fragmentManager = getSupportFragmentManager();
-        setTitle(FirebaseAuth.getInstance().getCurrentUser().getDisplayName());
+        ReadData readData = new ReadData(this);
+        readData.getUserInfoById(FirebaseAuth.getInstance().getCurrentUser().getUid());
+
         Fragment initialFragment = new ProLastWork();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
 
@@ -89,5 +96,20 @@ public class ProLandingPage extends AppCompatActivity {
             startMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(startMain);
         }
+    }
+
+    @Override
+    public void onWriteDataCompleted(boolean writeSuccessful) {
+
+    }
+
+    @Override
+    public void onReadDataResponse(DataSnapshot dataSnapshot) {
+
+        if (dataSnapshot != null && dataSnapshot.getValue() != null) {
+            ProUserModel proUserModel = dataSnapshot.getValue(ProUserModel.class);
+            setTitle(proUserModel.getName());
+        }
+
     }
 }

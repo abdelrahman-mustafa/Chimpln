@@ -29,13 +29,14 @@ import com.indeves.chmplinapp.API.ReadData;
 import com.indeves.chmplinapp.Fragments.*;
 import com.indeves.chmplinapp.Fragments.UserProfileEventsTab;
 import com.indeves.chmplinapp.Models.ProUserModel;
+import com.indeves.chmplinapp.Models.UserData;
 import com.indeves.chmplinapp.R;
 import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
 import java.util.List;
 
-public class UserProfileMain extends AppCompatActivity {
+public class UserProfileMain extends AppCompatActivity implements FirebaseEventsListener{
     BottomNavigationView bottomNavigation;
     LinearLayout userProLayout;
     TextView userName;
@@ -68,6 +69,9 @@ public class UserProfileMain extends AppCompatActivity {
         initialFragment = new UserProfilePhotographersTab();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.replace(R.id.container_o, initialFragment).commit();
+
+        ReadData readData = new ReadData(this);
+        readData.getUserInfoById(FirebaseAuth.getInstance().getCurrentUser().getUid());
 
         bottomNavigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -122,4 +126,18 @@ public class UserProfileMain extends AppCompatActivity {
     }
 
 
+    @Override
+    public void onWriteDataCompleted(boolean writeSuccessful) {
+
+    }
+
+    @Override
+    public void onReadDataResponse(DataSnapshot dataSnapshot) {
+
+        if (dataSnapshot != null && dataSnapshot.getValue() != null) {
+            UserData proUserModel = dataSnapshot.getValue(ProUserModel.class);
+            setTitle(proUserModel.getName());
+        }
+
+    }
 }

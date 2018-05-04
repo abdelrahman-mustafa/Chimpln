@@ -12,6 +12,8 @@ import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
 
 import com.google.firebase.auth.FirebaseAuth;
+import com.google.firebase.database.DataSnapshot;
+import com.indeves.chmplinapp.API.FirebaseEventsListener;
 import com.indeves.chmplinapp.API.ReadData;
 import com.indeves.chmplinapp.Fragments.ProEvents;
 import com.indeves.chmplinapp.Fragments.ProLastWork;
@@ -21,9 +23,10 @@ import com.indeves.chmplinapp.Fragments.StuEvents;
 import com.indeves.chmplinapp.Fragments.StuLastWork;
 import com.indeves.chmplinapp.Fragments.StuPackages;
 import com.indeves.chmplinapp.Fragments.StuProProfile;
+import com.indeves.chmplinapp.Models.ProUserModel;
 import com.indeves.chmplinapp.R;
 
-public class StuLandingPage extends AppCompatActivity {
+public class StuLandingPage extends AppCompatActivity implements FirebaseEventsListener {
     private static final String TAG = MainActivity.class.getSimpleName();
     private Fragment fragment;
     private FragmentManager fragmentManager;
@@ -38,9 +41,10 @@ public class StuLandingPage extends AppCompatActivity {
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.replace(R.id.main_container, initialFragment).commit();
 
-        setTitle(FirebaseAuth.getInstance().getCurrentUser().getDisplayName());
         ReadData readData = new ReadData();
         readData.searchPros();
+        readData.getUserInfoById(FirebaseAuth.getInstance().getCurrentUser().getUid());
+
 
         bottomNavigation.setOnNavigationItemSelectedListener(new BottomNavigationView.OnNavigationItemSelectedListener() {
             @Override
@@ -93,5 +97,20 @@ public class StuLandingPage extends AppCompatActivity {
             startMain.setFlags(Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(startMain);
         }
+    }
+
+    @Override
+    public void onWriteDataCompleted(boolean writeSuccessful) {
+
+    }
+
+    @Override
+    public void onReadDataResponse(DataSnapshot dataSnapshot) {
+
+        if (dataSnapshot != null && dataSnapshot.getValue() != null) {
+            ProUserModel proUserModel = dataSnapshot.getValue(ProUserModel.class);
+            setTitle(proUserModel.getName());
+        }
+
     }
 }
