@@ -27,13 +27,13 @@ public class UserProLastWorkImagesAdapter extends RecyclerView.Adapter<UserProLa
 
     @Override
     public UserProLastWorkImagesAdapter.ViewHolder onCreateViewHolder(ViewGroup viewGroup, int i) {
-        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.last_work_item, viewGroup, false);
+        View view = LayoutInflater.from(viewGroup.getContext()).inflate(R.layout.user_last_work_item, viewGroup, false);
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(UserProLastWorkImagesAdapter.ViewHolder viewHolder, int i) {
-        Picasso.with(context).load(imagesURLs.get(i)).resize(50,50).centerInside().into(viewHolder.img_android);
+        Picasso.with(context).load(imagesURLs.get(i)).resize(70,70).centerInside().into(viewHolder.img_android);
     }
 
     @Override

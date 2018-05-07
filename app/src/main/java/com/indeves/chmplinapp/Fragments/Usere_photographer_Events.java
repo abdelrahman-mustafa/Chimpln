@@ -51,6 +51,7 @@ public class Usere_photographer_Events extends android.support.v4.app.Fragment i
     ;
     EventTypeAdapter userProfEventsAdaptor;
     String Uid;
+    EventType eventType;
     RecyclerView recyclerView;
 
     @SuppressLint("ValidFragment")
@@ -70,7 +71,6 @@ public class Usere_photographer_Events extends android.support.v4.app.Fragment i
         View rootView = inflater.inflate(R.layout.fragment_user_select_pro_events, container, false);
          recyclerView = rootView.findViewById(R.id.event_type_list);
 
-
         ReadData readData = new ReadData(this);
 
                 readData.getProEventsBasedOnType(Uid, new ReadData.ProEventsBasedOnTypeListener() {
@@ -81,7 +81,7 @@ public class Usere_photographer_Events extends android.support.v4.app.Fragment i
                     for (EventOfTypeModel eventOfTypeModel : eventOfTypeModels){
                         if (eventOfTypeModel.getEvents().size()>0){
                             Log.i(  "evemn",eventOfTypeModel.getEventType());
-                            EventType eventType = new EventType(eventOfTypeModel.getEventType());
+                             eventType = new EventType(eventOfTypeModel.getEventType());
 
                             eventsList.add(eventType);
 
@@ -89,14 +89,19 @@ public class Usere_photographer_Events extends android.support.v4.app.Fragment i
 
 
                     }
+
+                    Log.i("gggg",eventsList.toString());
+                    userProfEventsAdaptor = new EventTypeAdapter(eventsList);
+                    userProfEventsAdaptor.notifyDataSetChanged();
+
                 }
 
             }
         });
-        userProfEventsAdaptor = new EventTypeAdapter(eventsList);
 
 
-     /*   EventType eventType = new EventType("Wedding");
+/*
+        EventType eventType = new EventType("Wedding");
         EventType eventType1 = new EventType("Birthday");
         EventType eventType2 = new EventType("Business Event");
         EventType eventType3 = new EventType("Casual Event");
@@ -113,8 +118,7 @@ public class Usere_photographer_Events extends android.support.v4.app.Fragment i
         eventsList.add(eventType4);
         eventsList.add(eventType5);
         eventsList.add(eventType6);
-        eventsList.add(eventType7);
-*/
+        eventsList.add(eventType7);*/
 
         GridLayoutManager gridLayoutManager = new GridLayoutManager(getContext(), 2);
         gridLayoutManager.setOrientation(LinearLayoutManager.VERTICAL); // set Horizontal Orientation
@@ -139,7 +143,6 @@ public class Usere_photographer_Events extends android.support.v4.app.Fragment i
 
             }
         }));
-        userProfEventsAdaptor.notifyDataSetChanged();
 
 
 
