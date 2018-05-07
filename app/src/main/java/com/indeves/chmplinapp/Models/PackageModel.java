@@ -63,6 +63,7 @@ public class PackageModel implements Serializable {
 
     @Override
     public String toString() {
-        return this.packageTitle + ",  " + this.price;
+        if (this.price==0){return this.packageTitle ;}
+        else{return this.packageTitle + ",  " + this.price;}
     }
 }
