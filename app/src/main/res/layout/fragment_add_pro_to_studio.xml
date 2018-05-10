@@ -33,7 +33,7 @@
             android:layout_below="@+id/add_pro_pic"
             android:background="@android:color/transparent"
             android:gravity="start"
-            android:hint="Name"
+            android:hint="@string/name"
             android:inputType="textPersonName"
             android:padding="10dp"
             android:textSize="20sp" />

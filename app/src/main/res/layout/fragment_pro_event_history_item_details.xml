@@ -30,7 +30,7 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_toEndOf="@+id/icon"
-            android:text="Back To history"
+            android:text="@string/back_history"
             android:textSize="23sp"
             android:textStyle="bold" />
     </RelativeLayout>
@@ -212,7 +212,7 @@
         android:layout_marginEnd="25dp"
         android:layout_marginStart="25dp"
         android:background="@drawable/button"
-        android:text="Save"
+        android:text="@string/save"
         android:textColor="@color/colorWhite" />
 
 

@@ -44,7 +44,7 @@
                     android:layout_width="45sp"
                     android:layout_height="match_parent"
                     android:layout_weight=".5"
-                    android:text="Date:" />
+                    android:text="@string/date" />
 
                 <TextView
                     android:id="@+id/approval_date_textView"
@@ -64,7 +64,7 @@
                     android:layout_width="45sp"
                     android:layout_height="match_parent"
                     android:layout_weight=".5"
-                    android:text="Time:" />
+                    android:text="@string/time" />
 
                 <TextView
                     android:id="@+id/approval_time"
@@ -85,7 +85,7 @@
                     android:layout_height="match_parent"
                     android:layout_weight=".5"
                     android:width="45sp"
-                    android:text="Location:" />
+                    android:text="@string/Location" />
 
                 <TextView
                     android:id="@+id/approval_location"
@@ -108,7 +108,7 @@
                     android:layout_width="45sp"
                     android:layout_height="match_parent"
                     android:layout_weight=".5"
-                    android:text="Photograper:" />
+                    android:text="@string/photographer" />
 
                 <TextView
                     android:id="@+id/approval__pro"
@@ -128,7 +128,7 @@
                     android:layout_width="45sp"
                     android:layout_height="match_parent"
                     android:layout_weight=".5"
-                    android:text="Event type:" />
+                    android:text="@string/event_type" />
 
                 <TextView
                     android:id="@+id/approval_type"
@@ -148,7 +148,7 @@
                     android:layout_width="45sp"
                     android:layout_height="match_parent"
                     android:layout_weight=".5"
-                    android:text="Sharing:" />
+                    android:text="@string/sharing" />
 
                 <TextView
                     android:id="@+id/approval_sharing"
@@ -168,7 +168,7 @@
                     android:layout_width="45sp"
                     android:layout_height="match_parent"
                     android:layout_weight=".5"
-                    android:text="Notes:" />
+                    android:text="@string/notes" />
 
                 <TextView
                     android:id="@+id/approval_notes"
@@ -194,7 +194,7 @@
             android:layout_marginBottom="79dp"
             android:background="@drawable/button_package"
             android:gravity="center"
-            android:text="Pending Event"
+            android:text="@string/pending"
             android:textColor="@color/colorWhite" />
 
 

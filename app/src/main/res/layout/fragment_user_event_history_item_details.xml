@@ -30,7 +30,7 @@
             android:layout_height="wrap_content"
             android:layout_centerVertical="true"
             android:layout_toEndOf="@+id/icon"
-            android:text="Back To history"
+            android:text="@string/back_history"
             android:textSize="23sp"
             android:textStyle="bold" />
     </RelativeLayout>

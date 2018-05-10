@@ -21,7 +21,7 @@
         android:layout_height="wrap_content"
         android:layout_below="@+id/include"
         android:layout_centerHorizontal="true"
-        android:text="Thank you!"
+        android:text="@string/thank"
         android:textColor="@color/black"
         android:textSize="20sp"
         android:textStyle="bold" />
@@ -34,7 +34,7 @@
         android:layout_marginEnd="40dp"
         android:layout_marginStart="40dp"
         android:layout_marginTop="10dp"
-        android:text="The pro accepted your event and it's booked, you can contact the photographer now."
+        android:text="@string/booking_accept_mess"
         android:textColor="@color/black" />
 
     <TextView
@@ -45,7 +45,7 @@
         android:layout_marginEnd="40dp"
         android:layout_marginStart="40dp"
         android:layout_marginTop="10dp"
-        android:text="A collector will call you to collect the deposit to confirm your request."
+        android:text="@string/booking_mess_collect_call"
         android:textColor="@color/black" />
 
     <TextView
@@ -55,8 +55,7 @@
         android:layout_marginEnd="40dp"
         android:layout_marginStart="40dp"
         android:layout_marginTop="30dp"
-        android:text="Please note: \n - 20% deposit must be paid whithin 48 hours. If not, the request will be cancelled automatically. \n - You can refund the full deposit up till 1 week before the event, 10% back till 48 hours. Zero before 48 hours only." />
-
+        android:text="@string/booking_note_mess" />
 
     <Button
         android:id="@+id/button4"
@@ -68,7 +67,7 @@
         android:background="@drawable/button_package"
         android:paddingEnd="50dp"
         android:paddingStart="50dp"
-        android:text="Contact Photographer"
+        android:text="@string/contact_photo"
         android:textAllCaps="false"
         android:textColor="@color/colorWhite" />
 

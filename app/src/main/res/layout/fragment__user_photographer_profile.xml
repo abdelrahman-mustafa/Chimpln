@@ -74,7 +74,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="Photos" />
+                android:text="@string/photo" />
         </LinearLayout>
 
         <ImageView
@@ -107,7 +107,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="Events" />
+                android:text="@string/events" />
         </LinearLayout>
     </LinearLayout>
 
@@ -195,6 +195,6 @@
         android:layout_margin="10dp"
         android:background="@drawable/button_package"
         android:textColor="@color/colorWhite"
-        android:text="Create New Event"
+        android:text="@string/create_event"
         android:visibility="visible"/>
 </RelativeLayout>

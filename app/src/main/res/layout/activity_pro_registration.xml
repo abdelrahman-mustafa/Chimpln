@@ -42,7 +42,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="left"
-                android:text="Email"
+                android:text="@string/Email"
                 android:textColor="#ffff"
                 android:textSize="16sp"
                 android:textStyle="bold" />
@@ -53,7 +53,7 @@
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
                 android:gravity="center"
-                android:text="Phone"
+                android:text="@string/phone"
                 android:textColor="#ffff"
                 android:textSize="16sp"
                 android:textStyle="bold" />
@@ -76,7 +76,7 @@
                 android:layout_weight="1"
                 android:backgroundTint="@color/colorWhite"
                 android:gravity="left"
-                android:hint="First Name"
+                android:hint="@string/first_name"
                 android:inputType="textPersonName"
                 android:textColor="#ffff"
                 android:textColorHint="#fff"
@@ -89,7 +89,7 @@
                 android:layout_weight="1"
                 android:backgroundTint="@color/colorWhite"
                 android:gravity="left"
-                android:hint="Last Name"
+                android:hint="@string/last_name"
                 android:inputType="textPersonName"
                 android:textColor="#ffff"
                 android:textColorHint="#fff"
@@ -112,7 +112,7 @@
                 android:layout_gravity="center"
 
                 android:layout_weight="1"
-                android:text="Age"
+                android:text="@string/age"
                 android:textColor="#ffff"
                 android:textStyle="bold" />
 
@@ -155,7 +155,7 @@
                 android:layout_gravity="center"
                 android:layout_weight="1"
 
-                android:text="Gender"
+                android:text="@string/gender"
                 android:textColor="#ffff"
                 android:textStyle="bold" />
 
@@ -191,7 +191,7 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="5dp"
             android:background="@android:color/transparent"
-            android:hint="Years of Experiences"
+            android:hint="@string/years_exp"
             android:inputType="number"
             android:textColor="#ffff"
             android:textColorHint="#fff"
@@ -225,7 +225,7 @@
                 android:layout_gravity="center"
 
                 android:layout_weight="1"
-                android:text="Country"
+                android:text="@string/country"
                 android:textColor="#ffff"
                 android:textColorHint="#fff"
                 android:textStyle="bold" />
@@ -266,7 +266,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_weight="1"
-                android:text="City"
+                android:text="@string/city"
 
                 android:textColor="#ffff"
                 android:textColorHint="#fff"
@@ -301,7 +301,7 @@
             android:layout_marginStart="8dp"
             android:layout_marginTop="5dp"
             android:background="@android:color/transparent"
-            android:hint="Area"
+            android:hint="@string/area"
             android:inputType="textPersonName"
             android:textColor="#ffff"
             android:textColorHint="#fff"
@@ -333,7 +333,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
                 android:layout_weight="1"
-                android:text="Working Hours"
+                android:text="@string/work_hours"
                 android:textColor="#ffff"
                 android:textColorHint="#fff"
                 android:textStyle="bold" />
@@ -346,7 +346,7 @@
                 android:layout_weight="1"
                 android:background="@android:color/transparent"
                 android:gravity="center"
-                android:hint="From"
+                android:hint="@string/from"
                 android:inputType="number"
                 android:textColor="#ffff"
                 android:textColorHint="@android:color/darker_gray" />
@@ -366,7 +366,7 @@
                 android:layout_weight="1"
                 android:background="@android:color/transparent"
                 android:gravity="center_vertical"
-                android:hint="To"
+                android:hint="@string/to"
                 android:inputType="number"
                 android:textColor="#ffff"
                 android:textColorHint="@android:color/darker_gray" />
@@ -433,7 +433,7 @@
             android:layout_below="@id/linearLayout11"
             android:layout_margin="20dp"
             android:background="@drawable/button"
-            android:text="Complete the account"
+            android:text="@string/complete_acc"
             android:textAllCaps="false"
             android:textColor="@color/colorWhite" />
 

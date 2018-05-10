@@ -67,7 +67,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center"
-                android:text="Events" />
+                android:text="@string/events" />
         </LinearLayout>
 
         <ImageView
@@ -100,7 +100,7 @@
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
-                android:text="Photographers" />
+                android:text="@string/photographer" />
 
             <TextView
                 android:id="@+id/stu_profile_addPro_textView"
@@ -108,7 +108,7 @@
                 android:layout_height="wrap_content"
                 android:layout_gravity="center_horizontal"
                 android:layout_marginTop="3dp"
-                android:text="+ Add pro"
+                android:text="@string/add_pro"
                 android:textColor="@color/colorPrimary"
                 android:textSize="15sp"
                 android:visibility="gone" />
