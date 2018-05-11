@@ -15,6 +15,7 @@
 
     <LinearLayout
         android:id="@+id/linear"
+
         android:layout_width="match_parent"
         android:layout_height="wrap_content"
         android:layout_marginLeft="50dp"
@@ -25,13 +26,14 @@
         <LinearLayout
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
+            android:visibility="gone"
             android:orientation="horizontal">
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Event Date" />
+                android:text="@string/event_date" />
 
             <Spinner
                 android:id="@+id/userProfile_phot_spinner_event_date"
@@ -44,6 +46,7 @@
         <View
             android:layout_width="match_parent"
             android:layout_height="1dp"
+            android:visibility="gone"
             android:background="#c2c2c2" />
 
         <LinearLayout
@@ -56,7 +59,7 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_weight="1"
-                android:text="Event Type" />
+                android:text="@string/event_type" />
 
             <Spinner
                 android:id="@+id/userProfile_phot_spinner_event_type"
@@ -80,7 +83,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="Gender" />
+            android:text="@string/gender" />
         <Spinner
             android:layout_weight="1"
             android:id="@+id/userProfile_phot_spinner_gender"
@@ -104,7 +107,7 @@
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_weight="1"
-            android:text="City" />
+            android:text="@string/city" />
         <Spinner
             android:id="@+id/userProfile_phot_spinner_city"
             android:layout_width="match_parent"

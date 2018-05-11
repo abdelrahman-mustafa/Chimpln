@@ -171,7 +171,7 @@ public class UserProfileEventsTabUpComming extends android.support.v4.app.Fragme
             for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
                 EventModel eventModel = dataSnapshot1.getValue(EventModel.class);
 
-                if (eventModel != null && eventModel.getBookerUserId().equals(FirebaseAuth.getInstance().getCurrentUser().getUid())) {
+                if (eventModel != null && eventModel.getBookerUserId().equals(FirebaseAuth.getInstance().getCurrentUser().getUid()) && eventModel.getEventStatus() != null &! eventModel.getEventStatus().equals("finished")) {
                     list.add(eventModel);
 
                 }

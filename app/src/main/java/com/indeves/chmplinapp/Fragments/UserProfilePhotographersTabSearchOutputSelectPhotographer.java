@@ -1,6 +1,7 @@
 package com.indeves.chmplinapp.Fragments;
 
 import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
@@ -15,6 +16,7 @@ import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
@@ -158,6 +160,20 @@ public class UserProfilePhotographersTabSearchOutputSelectPhotographer extends a
             }
 
         });*/
+        imageView.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+                Dialog settingsDialog = new Dialog(getContext());
+                settingsDialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+                settingsDialog.setContentView(getLayoutInflater().inflate(R.layout.image_layout
+                        , null));
+                ImageView imageVie = settingsDialog.findViewById(R.id.photo_pic_image);
+                Picasso.with(getContext()).load(pros.getProfilePicUrl()).into(imageVie);
+                settingsDialog.show();
+            }
+        });
+
+
 
 
         createEvent.setOnClickListener(new View.OnClickListener() {

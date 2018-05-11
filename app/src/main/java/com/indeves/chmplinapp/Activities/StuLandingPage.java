@@ -10,6 +10,7 @@ import android.support.v4.app.FragmentManager;
 import android.support.v4.app.FragmentTransaction;
 import android.support.v7.app.AppCompatActivity;
 import android.view.MenuItem;
+import android.view.WindowManager;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -35,9 +36,11 @@ public class StuLandingPage extends AppCompatActivity implements FirebaseEventsL
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_stu_landing_page);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE);
+
         BottomNavigationView bottomNavigation = (BottomNavigationView) findViewById(R.id.bottom_navigation);
         fragmentManager = getSupportFragmentManager();
-        Fragment initialFragment = new StuLastWork();
+        Fragment initialFragment = new StuEvents();
         FragmentTransaction transaction = fragmentManager.beginTransaction();
         transaction.replace(R.id.main_container, initialFragment).commit();
 
