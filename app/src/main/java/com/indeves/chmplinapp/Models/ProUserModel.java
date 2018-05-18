@@ -17,6 +17,7 @@ public class ProUserModel extends UserData implements Serializable {
     private List<PackageModel> packages;
     private String country, city, area, workDayStart, workDayEnd, experience;
     private ArrayList<StudioTeamMember> studioTeamMembers;
+    private ArrayList<String> eventAvailablity;
 
     // Default constructor required for calls to
     // DataSnapshot.getValue(User.class)
@@ -24,6 +25,13 @@ public class ProUserModel extends UserData implements Serializable {
 
     }
 
+    public ArrayList<String> getEventAvailablity() {
+        return eventAvailablity;
+    }
+
+    public void setEventAvailablity(ArrayList<String> eventAvailablity) {
+        this.eventAvailablity = eventAvailablity;
+    }
 
     public ProUserModel(String email, String phone, String type, String uid) {
         super(email, phone, type, uid);

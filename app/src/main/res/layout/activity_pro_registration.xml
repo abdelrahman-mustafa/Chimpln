@@ -319,10 +319,62 @@
             android:background="@color/colorWhite" />
 
         <LinearLayout
-            android:id="@+id/linearLayout10"
+            android:id="@+id/linearLayout101"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/view"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:baselineAligned="true"
+            android:orientation="horizontal">
+            <TextView
+                android:layout_weight="1"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/eve_avail"
+                android:textSize="12dp"
+                android:paddingBottom="10dp"
+                android:textColor="@color/colorWhite"/>
+            <CheckBox
+                android:layout_weight="1"
+                android:id="@+id/pro_reg_avail_hour"
+                android:layout_width="match_parent"
+                android:text="@string/per_hour"
+                android:textSize="10dp"
+                android:textColor="@color/colorWhite"
+                android:layout_height="wrap_content" />
+            <CheckBox
+                android:layout_weight="1"
+                android:textSize="10dp"
+                android:id="@+id/pro_reg_avail_half"
+                android:layout_width="match_parent"
+                android:text="@string/half_day"
+                android:textColor="@color/colorWhite"
+                android:layout_height="wrap_content" />
+            <CheckBox
+                android:layout_weight="1"
+                android:id="@+id/pro_reg_avail_full"
+                android:textSize="10dp"
+                android:layout_width="match_parent"
+                android:text="@string/full_day"
+                android:textColor="@color/colorWhite"
+                android:layout_height="wrap_content" />
+        </LinearLayout>
+        <View
+            android:id="@+id/view303"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@id/linearLayout101"
+            android:layout_marginBottom="15dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="5dp"
+            android:background="@color/colorWhite" />
+        <LinearLayout
+            android:id="@+id/linearLayout10"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/view303"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
             android:baselineAligned="true"

@@ -96,9 +96,10 @@ public class UserProfilePhotographersTabSearchSelect extends android.support.v4.
                     public void onProsResponse(ArrayList<ProUserModel> pros) {
                         //deal with pros
                         //    Log.v("ALlPros", pros.toString());
+
                         linear.setVisibility(View.GONE);
                         search.setVisibility(View.GONE);
-                        if (spinCity.getSelectedItemPosition() == 0 && spinGender.getSelectedItemPosition() == 0) {
+                        if (spinCity.getSelectedItemPosition() == 0 && spinGender.getSelectedItemPosition() == 0 && selectedEventTime.getEnglishName()==null) {
                             UserProfilePhotographersTabSearchOutput output = new UserProfilePhotographersTabSearchOutput(pros);
                             android.support.v4.app.FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
 
@@ -108,7 +109,11 @@ public class UserProfilePhotographersTabSearchSelect extends android.support.v4.
                         } else if (spinCity.getSelectedItemPosition() != 0) {
                             ArrayList<ProUserModel> customList = new ArrayList<>();
 
+
                             for (int i = 0; i < pros.size(); i++) {
+                                ArrayList<String> avaList = new ArrayList<>();
+                                avaList = pros.get(i).getEventAvailablity();
+
                                 if (pros.get(i).getCity() != null && pros.get(i).getCity().equals(spinCity.getSelectedItem().toString())) {
                                     customList.add(pros.get(i));
                                 }
@@ -123,8 +128,11 @@ public class UserProfilePhotographersTabSearchSelect extends android.support.v4.
                         } else if (spinGender.getSelectedItemPosition() != 0) {
                             ArrayList<ProUserModel> customList = new ArrayList<>();
 
+
                             for (int i = 0; i < pros.size(); i++) {
-                                if (pros.get(i).getGender()!= null && pros.get(i).getGender().equals(spinGender.getSelectedItem().toString())) {
+                                ArrayList<String> avaList = new ArrayList<>();
+                                avaList = pros.get(i).getEventAvailablity();
+                                if (pros.get(i).getGender() != null && pros.get(i).getGender().equals(spinGender.getSelectedItem().toString())) {
                                     customList.add(pros.get(i));
 
 
@@ -138,11 +146,14 @@ public class UserProfilePhotographersTabSearchSelect extends android.support.v4.
                             transaction.addToBackStack(null);
                             transaction.commit();
 
-                        }else {
+                        } else {
                             ArrayList<ProUserModel> customList = new ArrayList<>();
 
                             for (int i = 0; i < pros.size(); i++) {
-                                if (pros.get(i).getCity() != null && pros.get(i).getCity().contains(spinCity.getSelectedItem().toString())&& pros.get(i).getGender().contains(spinGender.getSelectedItem().toString())) {
+
+                                ArrayList<String> avaList = new ArrayList<>();
+                                avaList = pros.get(i).getEventAvailablity();
+                                if (pros.get(i).getCity() != null && pros.get(i).getCity().contains(spinCity.getSelectedItem().toString()) && pros.get(i).getGender().contains(spinGender.getSelectedItem().toString())) {
                                     customList.add(pros.get(i));
 
 

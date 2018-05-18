@@ -89,6 +89,7 @@
     <string name="keywords">Keywords</string>
     <string name="date">Date</string>
     <string name="time">Time</string>
+    <string name="eve_avail">Event Availability</string>
     <string name="Location">Location</string>
     <string name="photographer">Photographer</string>
     <string name="event_type">Event Type</string>
@@ -121,6 +122,9 @@
     <string name="back_history">Back To History</string>
     <string name="resp_to_event">Respont To Event</string>
     <string name="logput">Logout</string>
+    <string name="full_day">Full day</string>
+    <string name="half_day">Half day</string>
+    <string name="per_hour">Per hour</string>
     <string name="add_pro">+ Add pro</string>
     <string name="delete">delete</string>
     <string name="save">Save</string>

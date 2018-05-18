@@ -16,6 +16,7 @@ import android.view.View;
 import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
+import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -57,6 +58,7 @@ public class ProRegActivity extends AppCompatActivity implements View.OnClickLis
     Button saveData;
     ImageView pic;
     Bitmap selectImage;
+    CheckBox full_day, half_day, per_hour;
     String selectedGender, selectedCountry, selectedCity, selectedWorkingHoursStart, selectedWorkingHoursEnd, selectedBirthDate;
     List<CityLookUpModel> citiesList;
     List<LookUpModel> countriesList;
@@ -91,6 +93,12 @@ public class ProRegActivity extends AppCompatActivity implements View.OnClickLis
         year = calendar.get(Calendar.YEAR);
         month = calendar.get(Calendar.MONTH);
         day = calendar.get(Calendar.DAY_OF_MONTH);
+        //-----------------------------------------------
+        //event availablity for the pro
+
+        full_day = findViewById(R.id.pro_reg_avail_full);
+        half_day = findViewById(R.id.pro_reg_avail_half);
+        per_hour = findViewById(R.id.pro_reg_avail_hour);
         //-----------------------------------------------
         pic = findViewById(R.id.pro_reg_pic);
         firstName = findViewById(R.id.pro_reg_first_name);
@@ -205,6 +213,18 @@ public class ProRegActivity extends AppCompatActivity implements View.OnClickLis
                     public void onImageUpload(String downloadUrl) {
                         if (downloadUrl != null) {
                             ProUserModel proUserModel = new ProUserModel();
+
+                            ArrayList<String> list = new ArrayList<>();
+                            if (full_day.isClickable()){
+                                list.add("full");
+                            }
+                            if (half_day.isClickable()){
+                                list.add("half");
+                            }
+                            if (per_hour.isClickable()){
+                                list.add("hour");
+                            }
+                            proUserModel.setEventAvailablity(list);
                             proUserModel.setName(firstName.getText().toString());
                             proUserModel.setLastName(lastName.getText().toString());
                             proUserModel.setBirthDate(selectedBirthDate);
