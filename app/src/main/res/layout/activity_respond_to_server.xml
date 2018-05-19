@@ -1,0 +1,38 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    xmlns:tools="http://schemas.android.com/tools"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent"
+    tools:context="com.indeves.chmplinapp.Activities.RespondToServerActivity">
+
+    <TextView
+        android:layout_marginTop="50dp"
+        android:id="@+id/tex"
+        android:gravity="center"
+        android:textStyle="bold"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:text="@string/wait_mess"
+        android:textSize="15dp"/>
+
+    <ImageView
+        android:layout_marginTop="20dp"
+        android:layout_below="@id/tex"
+        android:foregroundGravity="center"
+        android:layout_centerHorizontal="true"
+        android:layout_width="100dp"
+        android:layout_height="130dp"
+        android:src="@drawable/pending"/>
+    <Button
+        android:id="@+id/check"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_alignParentBottom="true"
+        android:background="@drawable/button"
+        android:text="@string/check"
+        android:layout_marginLeft="15dp"
+        android:layout_marginRight="15dp"
+        android:textColor="@color/colorWhite"/>
+
+</RelativeLayout>

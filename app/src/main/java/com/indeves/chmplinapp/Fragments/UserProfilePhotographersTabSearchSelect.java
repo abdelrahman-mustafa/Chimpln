@@ -99,7 +99,7 @@ public class UserProfilePhotographersTabSearchSelect extends android.support.v4.
 
                         linear.setVisibility(View.GONE);
                         search.setVisibility(View.GONE);
-                        if (spinCity.getSelectedItemPosition() == 0 && spinGender.getSelectedItemPosition() == 0 && selectedEventTime.getEnglishName()==null) {
+                        if (spinCity.getSelectedItemPosition() == 0 && spinGender.getSelectedItemPosition() == 0 && eventTimesSpinner.getSelectedItem().toString() == null) {
                             UserProfilePhotographersTabSearchOutput output = new UserProfilePhotographersTabSearchOutput(pros);
                             android.support.v4.app.FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
 
@@ -114,7 +114,28 @@ public class UserProfilePhotographersTabSearchSelect extends android.support.v4.
                                 ArrayList<String> avaList = new ArrayList<>();
                                 avaList = pros.get(i).getEventAvailablity();
 
+
                                 if (pros.get(i).getCity() != null && pros.get(i).getCity().equals(spinCity.getSelectedItem().toString())) {
+                                    customList.add(pros.get(i));
+                                }
+                            }
+                            UserProfilePhotographersTabSearchOutput output = new UserProfilePhotographersTabSearchOutput(customList);
+                            android.support.v4.app.FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+
+                            transaction.replace(R.id.container_o, output);
+                            transaction.addToBackStack(null);
+                            transaction.commit();
+
+                        } else if (spinCity.getSelectedItemPosition() != 0 && eventTimesSpinner.getSelectedItemPosition() != 0) {
+                            ArrayList<ProUserModel> customList = new ArrayList<>();
+
+
+                            for (int i = 0; i < pros.size(); i++) {
+                                ArrayList<String> avaList = new ArrayList<>();
+                                avaList = pros.get(i).getEventAvailablity();
+
+
+                                if (pros.get(i).getCity() != null && pros.get(i).getCity().equals(spinCity.getSelectedItem().toString()) && check(eventTimesSpinner.getSelectedItem().toString(), avaList)) {
                                     customList.add(pros.get(i));
                                 }
                             }
@@ -146,6 +167,27 @@ public class UserProfilePhotographersTabSearchSelect extends android.support.v4.
                             transaction.addToBackStack(null);
                             transaction.commit();
 
+                        } else if (spinGender.getSelectedItemPosition() != 0 && eventTimesSpinner.getSelectedItemPosition() != 0 ) {
+                            ArrayList<ProUserModel> customList = new ArrayList<>();
+
+
+                            for (int i = 0; i < pros.size(); i++) {
+                                ArrayList<String> avaList = new ArrayList<>();
+                                avaList = pros.get(i).getEventAvailablity();
+                                if (pros.get(i).getGender() != null && pros.get(i).getGender().equals(spinGender.getSelectedItem().toString()) && check(eventTimesSpinner.getSelectedItem().toString(), avaList)) {
+                                    customList.add(pros.get(i));
+
+
+                                }
+
+                            }
+                            UserProfilePhotographersTabSearchOutput output = new UserProfilePhotographersTabSearchOutput(customList);
+                            android.support.v4.app.FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+
+                            transaction.replace(R.id.container_o, output);
+                            transaction.addToBackStack(null);
+                            transaction.commit();
+
                         } else {
                             ArrayList<ProUserModel> customList = new ArrayList<>();
 
@@ -153,7 +195,7 @@ public class UserProfilePhotographersTabSearchSelect extends android.support.v4.
 
                                 ArrayList<String> avaList = new ArrayList<>();
                                 avaList = pros.get(i).getEventAvailablity();
-                                if (pros.get(i).getCity() != null && pros.get(i).getCity().contains(spinCity.getSelectedItem().toString()) && pros.get(i).getGender().contains(spinGender.getSelectedItem().toString())) {
+                                if (pros.get(i).getCity() != null && pros.get(i).getCity().contains(spinCity.getSelectedItem().toString()) && pros.get(i).getGender().contains(spinGender.getSelectedItem().toString())&& check(eventTimesSpinner.getSelectedItem().toString(), avaList)) {
                                     customList.add(pros.get(i));
 
 
@@ -273,6 +315,14 @@ public class UserProfilePhotographersTabSearchSelect extends android.support.v4.
 
     }
 
+
+    private Boolean check(String search, ArrayList<String> myList) {
+        for (String str : myList) {
+            if (str.trim().contains(search))
+                return true;
+        }
+        return false;
+    }
 
     @Override
     public void onItemSelected(AdapterView<?> parent, View view, int position, long id) {
