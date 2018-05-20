@@ -1,5 +1,6 @@
 package com.indeves.chmplinapp.Fragments;
 
+import android.app.ActionBar;
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
@@ -14,6 +15,7 @@ import android.view.MenuInflater;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.Button;
 import android.widget.DatePicker;
 import android.widget.EditText;
 import android.widget.ImageView;
@@ -45,6 +47,8 @@ public class ProEditProfileFragment extends Fragment implements FirebaseEventsLi
     private int year;
     private int month;
     private int day;
+    Button saveChanges;
+
     private DatePickerDialog.OnDateSetListener datePickerListener
             = new DatePickerDialog.OnDateSetListener() {
 
@@ -90,21 +94,21 @@ public class ProEditProfileFragment extends Fragment implements FirebaseEventsLi
         profileImage = rootView.findViewById(R.id.pro_profile_pic);
         mobileNumber = rootView.findViewById(R.id.proProfile_mobileNumber);
         firstName = rootView.findViewById(R.id.editProfile_user_firstName_textView);
-        firstName.setEnabled(false);
+        //firstName.setEnabled(false);
         lastName = rootView.findViewById(R.id.editProfile_user_lastName_textView);
-        lastName.setEnabled(false);
+        //lastName.setEnabled(false);
         birthDate = rootView.findViewById(R.id.editProfile_user_birthDate_textView);
-        birthDate.setEnabled(false);
+        //birthDate.setEnabled(false);
         gender = rootView.findViewById(R.id.editProfile_user_gender);
-        gender.setEnabled(false);
+        //gender.setEnabled(false);
         experience = rootView.findViewById(R.id.editProfile_user_experience);
-        experience.setEnabled(false);
+        //experience.setEnabled(false);
         country = rootView.findViewById(R.id.editProfile_user_country);
-        country.setEnabled(false);
+        //country.setEnabled(false);
         city = rootView.findViewById(R.id.editProfile_user_City);
-        city.setEnabled(false);
+        //city.setEnabled(false);
         area = rootView.findViewById(R.id.editProfile_user_state);
-        area.setEnabled(false);
+        //area.setEnabled(false);
         editFirstName = rootView.findViewById(R.id.editProfile_edit_firstName_textView);
         editLastName = rootView.findViewById(R.id.editProfile_edit_lastName_textView);
         editBirthDate = rootView.findViewById(R.id.editProfile_edit_birthDate_textView);
@@ -115,18 +119,30 @@ public class ProEditProfileFragment extends Fragment implements FirebaseEventsLi
         editArea = rootView.findViewById(R.id.editProfile_edit_state_textView);
         editFirstName.setOnClickListener(this);
         editLastName.setOnClickListener(this);
-        editBirthDate.setOnClickListener(this);
+        birthDate.setOnClickListener(this);
         editExperience.setOnClickListener(this);
         editCountry.setOnClickListener(this);
         editCity.setOnClickListener(this);
         editArea.setOnClickListener(this);
         editGender.setOnClickListener(this);
+        saveChanges = rootView.findViewById(R.id.userEditProfile_save_button);
+        saveChanges.setOnClickListener(this);
+
         progressDialog = new ProgressDialog(getContext());
         progressDialog.setMessage("Loading profile data");
         progressDialog.setCanceledOnTouchOutside(false);
         progressDialog.show();
-        ReadData readData = new ReadData(this);
-        readData.getUserInfoById(FirebaseAuth.getInstance().getCurrentUser().getUid());
+        ActionBar ab = getActivity().getActionBar();
+        if (ab != null) {
+            ab.setNavigationMode(ActionBar.NAVIGATION_MODE_STANDARD);
+            ab.setDisplayHomeAsUpEnabled(true);
+            ab.setDisplayShowHomeEnabled(true);
+        }
+        if (FirebaseAuth.getInstance().getCurrentUser() != null) {
+            ReadData readData = new ReadData(this);
+            readData.getUserInfoById(FirebaseAuth.getInstance().getCurrentUser().getUid());
+        }
+
 
         final Calendar c = Calendar.getInstance();
         year = c.get(Calendar.YEAR);
@@ -247,37 +263,32 @@ public class ProEditProfileFragment extends Fragment implements FirebaseEventsLi
 
     @Override
     public void onClick(View v) {
-        if (v == editFirstName) {
-            firstName.setEnabled(true);
-            firstName.requestFocus();
-
-        } else if (v == editLastName) {
-            lastName.setEnabled(true);
-            lastName.requestFocus();
-
-        } else if (v == editBirthDate) {
+        if (v == birthDate) {
             DatePickerDialog datePickerDialog = new DatePickerDialog(getContext(), datePickerListener, year, month, day);
             datePickerDialog.show();
 
-        } else if (v == editGender) {
-            gender.setEnabled(true);
-            gender.requestFocus();
-        } else if (v == editExperience) {
-            experience.setEnabled(true);
-            experience.requestFocus();
+        }
+        else if (v == saveChanges) {
 
-        } else if (v == editCountry) {
-            country.setEnabled(true);
-            country.requestFocus();
+            Log.v("Edit profile", "Edit profile save button clicked");
+            WriteData writeData = new WriteData(this);
+            ProUserModel userData = new ProUserModel();
+            userData.setName(firstName.getText().toString());
+            userData.setLastName(lastName.getText().toString());
+            userData.setGender(gender.getText().toString());
+            userData.setCity(city.getText().toString());
+            userData.setCity(country.getText().toString());
+            userData.setCity(area.getText().toString());
+            userData.setCity(experience.getText().toString());
+            userData.setCity(birthDate.getText().toString());
 
-        } else if (v == editCity) {
-            city.setEnabled(true);
-            city.requestFocus();
-
-
-        } else if (v == editArea) {
-            area.setEnabled(true);
-            area.requestFocus();
+            try {
+             //   writeData.updateUserProfileData(userData);
+                writeData.updateUserProfileData(userData);
+            } catch (Exception e) {
+                Toast.makeText(getContext(), getResources().getString(R.string.error_not_authenticated), Toast.LENGTH_SHORT).show();
+                e.printStackTrace();
+            }
         }
 
     }

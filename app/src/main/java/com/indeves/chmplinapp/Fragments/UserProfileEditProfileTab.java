@@ -49,19 +49,19 @@ public class UserProfileEditProfileTab extends android.support.v4.app.Fragment i
         email = rootView.findViewById(R.id.email);
         mobileNumber = rootView.findViewById(R.id.userMobileNumber_textView);
         firstName = rootView.findViewById(R.id.editProf_TextView_first_name);
-        firstName.setEnabled(false);
+       // firstName.setEnabled(false);
         editFirstName = rootView.findViewById(R.id.editFirstName_textView);
         editFirstName.setOnClickListener(this);
         lastName = rootView.findViewById(R.id.editProf_TextView_last_name);
-        lastName.setEnabled(false);
+       // lastName.setEnabled(false);
         editLastName = rootView.findViewById(R.id.editLastName_textView);
         editLastName.setOnClickListener(this);
         location = rootView.findViewById(R.id.editProf_TextView_location);
-        location.setEnabled(false);
+       // location.setEnabled(false);
         editLocation = rootView.findViewById(R.id.editLocation_textView);
         editLocation.setOnClickListener(this);
         gender = rootView.findViewById(R.id.editProf_TextView_gender);
-        gender.setEnabled(false);
+       // gender.setEnabled(false);
         editGender = rootView.findViewById(R.id.editGender_textView);
         editGender.setOnClickListener(this);
         saveChanges = rootView.findViewById(R.id.userEditProfile_save_button);
@@ -118,7 +118,7 @@ public class UserProfileEditProfileTab extends android.support.v4.app.Fragment i
 
     @Override
     public void onClick(View v) {
-        if (v == editFirstName) {
+       /* if (v == editFirstName) {
             firstName.setEnabled(true);
             firstName.requestFocus();
 
@@ -133,11 +133,8 @@ public class UserProfileEditProfileTab extends android.support.v4.app.Fragment i
         } else if (v == editGender) {
             gender.setEnabled(true);
             gender.requestFocus();
-        } else if (v == saveChanges) {
-            firstName.setEnabled(false);
-            lastName.setEnabled(false);
-            location.setEnabled(false);
-            gender.setEnabled(false);
+        } else*/ if (v == saveChanges) {
+
             Log.v("Edit profile", "Edit profile save button clicked");
             WriteData writeData = new WriteData(this);
             UserData userData = new UserData();

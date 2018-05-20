@@ -216,13 +216,13 @@ public class ProRegActivity extends AppCompatActivity implements View.OnClickLis
 
                             ArrayList<String> list = new ArrayList<>();
                             if (full_day.isClickable()){
-                                list.add("full");
+                                list.add("Full day");
                             }
                             if (half_day.isClickable()){
-                                list.add("half");
+                                list.add("Half day");
                             }
                             if (per_hour.isClickable()){
-                                list.add("hour");
+                                list.add("Per hour");
                             }
                             proUserModel.setEventAvailablity(list);
                             proUserModel.setName(firstName.getText().toString());

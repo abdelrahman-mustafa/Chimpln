@@ -78,6 +78,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/edit"
+            android:visibility="invisible"
             android:textColor="@android:color/holo_red_light"
             android:textSize="18sp"
             app:layout_constraintBaseline_toBaselineOf="@+id/editProfile_user_firstName_textView"
@@ -102,6 +103,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/edit"
+            android:visibility="invisible"
             android:textColor="@android:color/holo_red_light"
             android:textSize="18sp"
             app:layout_constraintBaseline_toBaselineOf="@+id/editProfile_user_lastName_textView"
@@ -135,6 +137,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/edit"
+            android:visibility="invisible"
             android:textColor="@android:color/holo_red_light"
             android:textSize="18sp"
             app:layout_constraintBaseline_toBaselineOf="@+id/editProfile_user_birthDate_textView"
@@ -171,6 +174,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/edit"
+            android:visibility="invisible"
             android:textColor="@android:color/holo_red_light"
             android:textSize="18sp"
             app:layout_constraintBaseline_toBaselineOf="@+id/editProfile_user_gender"
@@ -207,6 +211,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/edit"
+            android:visibility="invisible"
             android:textColor="@android:color/holo_red_light"
             android:textSize="18sp"
             app:layout_constraintBaseline_toBaselineOf="@+id/editProfile_user_experience"
@@ -231,6 +236,7 @@
             android:layout_marginTop="15dp"
             android:background="@android:color/transparent"
             android:hint="@string/country"
+
             android:inputType="textPersonName"
             android:textSize="20sp"
             app:layout_constraintStart_toStartOf="@id/editProfile_user_firstName_textView"
@@ -243,6 +249,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/edit"
+            android:visibility="invisible"
             android:textColor="@android:color/holo_red_light"
             android:textSize="18sp"
             app:layout_constraintBaseline_toBaselineOf="@+id/editProfile_user_country"
@@ -279,6 +286,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/edit"
+            android:visibility="invisible"
             android:textColor="@android:color/holo_red_light"
             android:textSize="18sp"
             app:layout_constraintBaseline_toBaselineOf="@+id/editProfile_user_City"
@@ -315,6 +323,7 @@
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
             android:text="@string/edit"
+            android:visibility="invisible"
             android:textColor="@android:color/holo_red_light"
             android:textSize="18sp"
             app:layout_constraintBaseline_toBaselineOf="@+id/editProfile_user_state"
@@ -357,6 +366,22 @@
         <!--app:layout_constraintEnd_toEndOf="parent"-->
         <!--app:layout_constraintHorizontal_bias="0.95"-->
         <!--app:layout_constraintStart_toStartOf="parent" />-->
+
+        <Button
+            android:id="@+id/userEditProfile_save_button"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_marginBottom="8dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="10dp"
+            android:background="@drawable/button_package"
+            android:text="@string/button_save"
+            android:textColor="@color/colorWhite"
+            app:layout_constraintBottom_toBottomOf="parent"
+            app:layout_constraintEnd_toEndOf="parent"
+            app:layout_constraintStart_toStartOf="parent"
+            app:layout_constraintTop_toBottomOf="@id/separator7" />
 
     </android.support.constraint.ConstraintLayout>
 
