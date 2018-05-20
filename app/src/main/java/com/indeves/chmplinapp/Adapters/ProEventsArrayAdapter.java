@@ -53,6 +53,7 @@ public class ProEventsArrayAdapter extends RecyclerView.Adapter<ProEventsArrayAd
         } else {
             holder.name.setText(pData.getBookerUserName());
         }
+        holder.eventStatus.setText(pData.getEventStatus());
 
         String[] eventDateParts = pData.getEventDate().split("-");
         holder.day.setText(eventDateParts[0]);
@@ -125,7 +126,7 @@ public class ProEventsArrayAdapter extends RecyclerView.Adapter<ProEventsArrayAd
 
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
-        public TextView name, type, time, day, month, share, location, eventType;
+        public TextView name, type, time, day, month, share, location, eventType,eventStatus;
 
         public MyViewHolder(View view) {
             super(view);
@@ -136,6 +137,7 @@ public class ProEventsArrayAdapter extends RecyclerView.Adapter<ProEventsArrayAd
             share = view.findViewById(R.id.userProfile_event_shareOption);
             location = view.findViewById(R.id.userProfile_event_location);
             eventType = view.findViewById(R.id.userProfile_event_type);
+            eventStatus=view.findViewById(R.id.userProfile_event_status);
 
         }
     }

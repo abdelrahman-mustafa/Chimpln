@@ -158,7 +158,9 @@ public class ProProfileEventsTabComingSelectedEvent extends android.support.v4.a
                 if (checkIfUserCanEndEvent(eventModel.getEventDate())) {
                     finishEvent.respondToEvent("finished", eventId);
                 } else {
-                    AlertDialog dialog = new AlertDialog.Builder(getContext())
+                    finishEvent.respondToEvent("cancelled", eventId);
+
+                  /*  AlertDialog dialog = new AlertDialog.Builder(getContext())
                             .setTitle(getResources().getString(R.string.cancel_event_button))
                             .setMessage(getResources().getString(R.string.cancel_event_confirmation))
                             .setPositiveButton(getResources().getString(R.string.cancel_event_button), new DialogInterface.OnClickListener() {
@@ -175,7 +177,7 @@ public class ProProfileEventsTabComingSelectedEvent extends android.support.v4.a
                                 public void onClick(DialogInterface dialogInterface, int i) {
                                 }
                             }).setCancelable(false).create();
-                    dialog.show();
+                    dialog.show();*/
                 }
             } catch (ParseException e) {
                 e.printStackTrace();

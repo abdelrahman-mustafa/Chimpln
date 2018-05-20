@@ -66,6 +66,16 @@
                 android:textColor="#afabab"
                 android:textSize="15sp"
                 android:textStyle="normal" />
+            <TextView
+                android:id="@+id/userProfile_event_status"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:shadowColor="#d7d3d3"
+                android:text="Accepted"
+                android:textColor="#afabab"
+                android:textSize="8sp"
+                android:textStyle="bold" />
+
 
             <LinearLayout
                 android:layout_width="match_parent"

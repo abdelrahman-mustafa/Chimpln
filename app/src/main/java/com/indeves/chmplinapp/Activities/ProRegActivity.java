@@ -19,6 +19,7 @@ import android.widget.Button;
 import android.widget.CheckBox;
 import android.widget.DatePicker;
 import android.widget.EditText;
+import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
@@ -67,6 +68,7 @@ public class ProRegActivity extends AppCompatActivity implements View.OnClickLis
     ArrayAdapter<LookUpModel> countriesArrayAdapter;
     ArrayAdapter<CityLookUpModel> citiesArrayAdapter;
     LinearLayout ageLayout;
+    ImageButton getFrontId, getBackId;
     ProgressDialog progressDialog;
     private Calendar calendar;
     private int year, month, day;
@@ -100,6 +102,10 @@ public class ProRegActivity extends AppCompatActivity implements View.OnClickLis
         half_day = findViewById(R.id.pro_reg_avail_half);
         per_hour = findViewById(R.id.pro_reg_avail_hour);
         //-----------------------------------------------
+        getFrontId = findViewById(R.id.pro_reg_get_id_front);
+        getFrontId.setOnClickListener(this);
+        getBackId = findViewById(R.id.pro_reg_get_id_back);
+        getBackId.setOnClickListener(this);
         pic = findViewById(R.id.pro_reg_pic);
         firstName = findViewById(R.id.pro_reg_first_name);
         lastName = findViewById(R.id.pro_reg_last_name);
@@ -203,7 +209,11 @@ public class ProRegActivity extends AppCompatActivity implements View.OnClickLis
         if (v == ageLayout || v == age) {
             showDialog(999);
         } else if (v == pic) {
-            getImage();
+            getImage(1);
+        } else if (v == getFrontId) {
+            getImage(2);
+        } else if (v == getBackId) {
+            getImage(3);
         } else if (v == saveData) {
             progressDialog.show();
             if (ValidateRegistrationForm()) {
@@ -215,13 +225,13 @@ public class ProRegActivity extends AppCompatActivity implements View.OnClickLis
                             ProUserModel proUserModel = new ProUserModel();
 
                             ArrayList<String> list = new ArrayList<>();
-                            if (full_day.isClickable()){
+                            if (full_day.isClickable()) {
                                 list.add("Full day");
                             }
-                            if (half_day.isClickable()){
+                            if (half_day.isClickable()) {
                                 list.add("Half day");
                             }
-                            if (per_hour.isClickable()){
+                            if (per_hour.isClickable()) {
                                 list.add("Per hour");
                             }
                             proUserModel.setEventAvailablity(list);
@@ -264,11 +274,11 @@ public class ProRegActivity extends AppCompatActivity implements View.OnClickLis
         return null;
     }
 
-    private void getImage() {
+    private void getImage(int RESULT_LOAD) {
 
         Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
         photoPickerIntent.setType("image/*");
-        startActivityForResult(photoPickerIntent, RESULT_LOAD_IMAGE);
+        startActivityForResult(photoPickerIntent, RESULT_LOAD);
     }
 
     @Override
@@ -276,13 +286,39 @@ public class ProRegActivity extends AppCompatActivity implements View.OnClickLis
         super.onActivityResult(reqCode, resultCode, data);
 
 
-        if (resultCode == RESULT_OK && reqCode == RESULT_LOAD_IMAGE) {
+        if (resultCode == RESULT_OK && reqCode == 1) {
             try {
                 final Uri imageUri = data.getData();
                 final InputStream imageStream = getContentResolver().openInputStream(imageUri);
                 selectImage = BitmapFactory.decodeStream(imageStream);
 //                pic.setImageBitmap(Bitmap.createScaledBitmap(selectImage, 300, 300, false));
                 Picasso.with(this).load(imageUri).resize(300, 300).transform(new CircleTransform()).into(pic);
+
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+                Toast.makeText(ProRegActivity.this, "Something went wrong", Toast.LENGTH_LONG).show();
+            }
+
+        } else if (resultCode == RESULT_OK && reqCode == 2) {
+            try {
+                final Uri imageUri = data.getData();
+                final InputStream imageStream = getContentResolver().openInputStream(imageUri);
+                selectImage = BitmapFactory.decodeStream(imageStream);
+//                pic.setImageBitmap(Bitmap.createScaledBitmap(selectImage, 300, 300, false));
+                Picasso.with(this).load(imageUri).resize(50, 50).transform(new CircleTransform()).into(getFrontId);
+
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+                Toast.makeText(ProRegActivity.this, "Something went wrong", Toast.LENGTH_LONG).show();
+            }
+
+        } else if (resultCode == RESULT_OK && reqCode == 3) {
+            try {
+                final Uri imageUri = data.getData();
+                final InputStream imageStream = getContentResolver().openInputStream(imageUri);
+                selectImage = BitmapFactory.decodeStream(imageStream);
+//                pic.setImageBitmap(Bitmap.createScaledBitmap(selectImage, 300, 300, false));
+                Picasso.with(this).load(imageUri).resize(50, 50).transform(new CircleTransform()).into(getBackId);
 
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
