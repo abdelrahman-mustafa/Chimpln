@@ -1,7 +1,9 @@
 package com.indeves.chmplinapp.Fragments;
 
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -38,6 +40,8 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
 
+import android.content.ClipData;
+
 import static android.app.Activity.RESULT_OK;
 
 public class ProEventHistoryItemDetails extends Fragment implements FirebaseEventsListener, View.OnClickListener, AddImagesArrayAdapter.ItemClickListener {
@@ -46,7 +50,6 @@ public class ProEventHistoryItemDetails extends Fragment implements FirebaseEven
     List<LookUpModel> eventTypes, eventTimes, sharingOptions;
     ReadData readData;
     ProgressDialog progressDialog;
-    RelativeLayout backButtonLayout;
     RecyclerView imagesRecycleView;
     Button saveImages;
     AddImagesArrayAdapter addImagesArrayAdapter;
@@ -94,8 +97,6 @@ public class ProEventHistoryItemDetails extends Fragment implements FirebaseEven
         share = rootView.findViewById(R.id.userProfile_event_shareOption);
         location = rootView.findViewById(R.id.userProfile_event_location);
         eventType = rootView.findViewById(R.id.userProfile_event_type);
-        backButtonLayout = rootView.findViewById(R.id.backButtonLayout);
-        backButtonLayout.setOnClickListener(this);
         saveImages = rootView.findViewById(R.id.save_event_photos_button);
         saveImages.setOnClickListener(this);
         imagesRecycleView = rootView.findViewById(R.id.card_recycler_view);
@@ -214,12 +215,7 @@ public class ProEventHistoryItemDetails extends Fragment implements FirebaseEven
 
     @Override
     public void onClick(View v) {
-        if (v == backButtonLayout) {
-            FragmentManager fragmentManager = getFragmentManager();
-            if (fragmentManager != null) {
-                fragmentManager.popBackStack();
-            }
-        } else if (v == saveImages) {
+        if (v == saveImages) {
             if (eventImages != null && eventImages.size() > 1) {
                 //TODO: @khalid This is wrong, upload icon should be isolated from the array from the beginning, let this go now and modify it ASAP
                 ArrayList<Bitmap> imagesToSend = eventImages;
@@ -257,7 +253,7 @@ public class ProEventHistoryItemDetails extends Fragment implements FirebaseEven
     }
 
     @Override
-    public void onItemClick(View view, int position) {
+    public void onItemClick(View view, final int position) {
         if (eventImages.get(position) == null) {
             if (eventImages.size() < 11) {
                 getImage();
@@ -265,13 +261,16 @@ public class ProEventHistoryItemDetails extends Fragment implements FirebaseEven
                 Toast.makeText(getContext(), "You are not allowed to add more than 10 pics", Toast.LENGTH_SHORT).show();
             }
         }
-
     }
 
     private void getImage() {
         Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
         photoPickerIntent.setType("image/*");
-        startActivityForResult(photoPickerIntent, RESULT_LOAD_IMAGE);
+        photoPickerIntent.putExtra(Intent.EXTRA_ALLOW_MULTIPLE, true);
+        photoPickerIntent.setAction(Intent.ACTION_GET_CONTENT);
+        startActivityForResult(Intent.createChooser(photoPickerIntent, "Select Picture"), RESULT_LOAD_IMAGE);
+
+//        startActivityForResult(photoPickerIntent, RESULT_LOAD_IMAGE);
     }
 
     @Override
@@ -281,13 +280,25 @@ public class ProEventHistoryItemDetails extends Fragment implements FirebaseEven
 
         if (resultCode == RESULT_OK && reqCode == RESULT_LOAD_IMAGE) {
             try {
-                final Uri imageUri = data.getData();
-                final InputStream imageStream = getActivity().getContentResolver().openInputStream(imageUri);
-                Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
+                if (data.getData() != null) {
+                    final Uri imageUri = data.getData();
+                    final InputStream imageStream = getActivity().getContentResolver().openInputStream(imageUri);
+                    Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
 //                Bitmap.createScaledBitmap(selectedImage, 120, 120, false);
-                eventImages.add(0, selectedImage);
-                addImagesArrayAdapter.notifyDataSetChanged();
+                    eventImages.add(0, selectedImage);
+                    addImagesArrayAdapter.notifyDataSetChanged();
+                } else if (data.getClipData() != null) {
+                    ClipData clip = data.getClipData();
 
+                    for (int i = 0; i < clip.getItemCount(); i++) {
+                        ClipData.Item item = clip.getItemAt(i);
+                        Uri uri = item.getUri();
+                        final InputStream imageStream = getActivity().getContentResolver().openInputStream(uri);
+                        Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
+                        eventImages.add(0, selectedImage);
+                        addImagesArrayAdapter.notifyDataSetChanged();
+                    }
+                }
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
                 Toast.makeText(getContext(), "Something went wrong", Toast.LENGTH_LONG).show();

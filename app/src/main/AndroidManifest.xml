@@ -16,6 +16,7 @@
     <uses-permission android:name="android.permission.CALL_PHONE" />
 
     <application
+        android:name=".Utility.AppController"
         android:allowBackup="true"
         android:icon="@drawable/chimp_logo"
         android:label="@string/app_name"

@@ -23,7 +23,7 @@ import java.util.Random;
 public class CloudStorageAPI {
     private StorageReference imagesRef, eventsImages;
     private ArrayList<String> imagesURLs;
-    private int counter;
+//    private int counter;
 
     public CloudStorageAPI() {
         this.imagesRef = FirebaseStorage.getInstance().getReference().child("usersImages");
@@ -65,15 +65,15 @@ public class CloudStorageAPI {
     public void UploadEventImages(String eventId, final ArrayList<Bitmap> images, final CloudStorageListener.UploadEventImagesListener uploadEventImagesListener) {
         //Firebase cloud storage SDK doesn't have a multiple files upload method, so we will make it manually
         imagesURLs = new ArrayList<>();
-        counter = 1;
+//        counter = 1;
         StorageReference eventImagesIds = eventsImages.child(eventId);
         for (Bitmap image : images) {
             if (image != null) {
                 ByteArrayOutputStream baos = new ByteArrayOutputStream();
                 image.compress(Bitmap.CompressFormat.JPEG, 100, baos);
                 byte[] data = baos.toByteArray();
-                String imageId = counter + ".jpg";
-                counter++;
+                String imageId = getSaltString() + ".jpg";
+//                counter++;
                 StorageReference imageRef = eventImagesIds.child(imageId);
                 UploadTask uploadTask = imageRef.putBytes(data);
                 uploadTask.addOnFailureListener(new OnFailureListener() {
