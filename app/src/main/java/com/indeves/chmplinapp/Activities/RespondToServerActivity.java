@@ -48,23 +48,22 @@ public class RespondToServerActivity extends AppCompatActivity implements Fireba
         setContentView(R.layout.activity_respond_to_server);
         check = findViewById(R.id.check);
 
-        String id = getIntent().getStringExtra("id");
-        SharedPreferences.Editor editor = getSharedPreferences("checkDate", MODE_PRIVATE).edit();
-        editor.putString("id", id);
-        editor.apply();
+      //  String id = getIntent().getStringExtra("id");
+        SharedPreferences editor = getSharedPreferences("checkDate", MODE_PRIVATE);
+       String id =  editor.getString("id", "0");
 
         check.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
                 Log.i("ll","2222222");
-                if (FirebaseAuth.getInstance().getCurrentUser() != null) {
-                    ReadData readData = new ReadData();
-                    readData.getUserInfoById(FirebaseAuth.getInstance().getCurrentUser().getUid());
+                if (FirebaseAuth.getInstance().getCurrentUser() != null) {/*
+                    ReadData readData = new ReadData(RespondToServerActivity.this);
+                    readData.getUserInfoById(FirebaseAuth.getInstance().getCurrentUser().getUid());*/
                 }
                // String s = FirebaseAuth.getInstance().getCurrentUser().getUid();
             //    ReadData readData = new ReadData();
               //  readData.readUserInfo(s);
-               /* SharedPreferences prefs = getSharedPreferences("checkDate", MODE_PRIVATE);
+                SharedPreferences prefs = getSharedPreferences("checkDate", MODE_PRIVATE);
 
                 String id = prefs.getString("id", "k");
                 // /"No name defined" is the default value.
@@ -106,16 +105,12 @@ public class RespondToServerActivity extends AppCompatActivity implements Fireba
                 });
 
                 AppController.getInstance().addToRequestQueue(stringRequest);
-*/
 
             }
         });
     }
 
-    @Override
-    public void onClick(View v) {
 
-    }
 
     @Override
     public void onWriteDataCompleted(boolean writeSuccessful) {
@@ -126,17 +121,17 @@ public class RespondToServerActivity extends AppCompatActivity implements Fireba
     public void onReadDataResponse( DataSnapshot dataSnapshot) {
 
 
+        Log.i("lll",dataSnapshot.toString());
+
         if (dataSnapshot != null) {
             // we need to send the data of user to the url
             ProUserModel proUserModel = dataSnapshot.getValue(ProUserModel.class);
 
             String encoded = proUserModel.getProfilePicUrl();
-            Log.i("lll",encoded);
             String params_Date =
-                    ("{"
-                            + " \"name\":" + "\"" + proUserModel.getName() + "\"" + ","
+                    ("{" + " \"name\":" + "\"" + proUserModel.getName() + "\"" + ","
                             + " \"description\":" + "\"" + proUserModel.getGender() + "," + proUserModel.getCity() + "," + proUserModel.getExperience() + "," + proUserModel.getEmail() + "\"" + ","
-                            + "\"Image\":" + encoded
+                            + "\"image\":" +  "\"" + encoded+ "\""
                             + "}");
             try {
                 jsonObject = new JSONObject(params_Date);
@@ -152,7 +147,12 @@ public class RespondToServerActivity extends AppCompatActivity implements Fireba
                         @Override
                         public void onResponse(JSONObject response) {
 
-                            Toast.makeText(RespondToServerActivity.this, "gggggg", Toast.LENGTH_SHORT).show();
+                            try {
+
+                                Toast.makeText(RespondToServerActivity.this, response.getString("id"), Toast.LENGTH_SHORT).show();
+                            } catch (JSONException e) {
+                                e.printStackTrace();
+                            }
 
 
                         }

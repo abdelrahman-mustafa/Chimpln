@@ -37,7 +37,7 @@ public class SplashActivity extends AppCompatActivity {
                 if (prefGet.getLogInStatus() && FirebaseAuth.getInstance().getCurrentUser() != null && prefGet.getUserType() != null) {
                     switch (prefGet.getUserType()) {
                         case "stu":
-                            startActivity(new Intent(SplashActivity.this, RespondToServerActivity.class));
+                            startActivity(new Intent(SplashActivity.this, StuLandingPage.class));
                             SplashActivity.this.finish();
                             break;
                         case "user":
@@ -45,7 +45,7 @@ public class SplashActivity extends AppCompatActivity {
                             SplashActivity.this.finish();
                             break;
                         case "pro":
-                            startActivity(new Intent(SplashActivity.this, RespondToServerActivity.class));
+                            startActivity(new Intent(SplashActivity.this, ProLandingPage.class));
                             SplashActivity.this.finish();
                             break;
                     }

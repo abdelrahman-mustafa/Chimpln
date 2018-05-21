@@ -4,6 +4,7 @@ import android.app.DatePickerDialog;
 import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.PorterDuff;
@@ -26,6 +27,9 @@ import android.widget.Spinner;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.indeves.chmplinapp.API.CloudStorageAPI;
@@ -39,8 +43,12 @@ import com.indeves.chmplinapp.Models.ProUserModel;
 import com.indeves.chmplinapp.PrefsManager.PrefGet;
 import com.indeves.chmplinapp.PrefsManager.PrefsManager;
 import com.indeves.chmplinapp.R;
+import com.indeves.chmplinapp.Utility.AppController;
 import com.indeves.chmplinapp.Utility.CircleTransform;
 import com.squareup.picasso.Picasso;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.io.FileNotFoundException;
 import java.io.InputStream;
@@ -48,6 +56,8 @@ import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
+
+import static com.android.volley.Request.Method.POST;
 
 public class ProRegActivity extends AppCompatActivity implements View.OnClickListener, AdapterView.OnItemSelectedListener, View.OnTouchListener, FirebaseEventsListener {
 
@@ -57,6 +67,7 @@ public class ProRegActivity extends AppCompatActivity implements View.OnClickLis
     TextView mail, phone, gender, country, city, age;
     Spinner sGender, sCountry, sCity, sDate, sDate1, birthPicker;
     Button saveData;
+    ProUserModel proUserModel = new ProUserModel();
     ImageView pic;
     Bitmap selectImage;
     CheckBox full_day, half_day, per_hour;
@@ -71,6 +82,7 @@ public class ProRegActivity extends AppCompatActivity implements View.OnClickLis
     ImageButton getFrontId, getBackId;
     ProgressDialog progressDialog;
     private Calendar calendar;
+    JSONObject jsonObject;
     private int year, month, day;
     private DatePickerDialog.OnDateSetListener myDateListener = new
             DatePickerDialog.OnDateSetListener() {
@@ -222,7 +234,7 @@ public class ProRegActivity extends AppCompatActivity implements View.OnClickLis
                     @Override
                     public void onImageUpload(String downloadUrl) {
                         if (downloadUrl != null) {
-                            ProUserModel proUserModel = new ProUserModel();
+                          //  ProUserModel proUserModel = new ProUserModel();
 
                             ArrayList<String> list = new ArrayList<>();
                             if (full_day.isClickable()) {
@@ -437,10 +449,68 @@ public class ProRegActivity extends AppCompatActivity implements View.OnClickLis
                     ProRegActivity.this.finish();
                     break;
                 case "pro":
-                    startActivity(new Intent(ProRegActivity.this, RespondToServerActivity.class));
+                    startActivity(new Intent(ProRegActivity.this, ProLandingPage.class));
                     ProRegActivity.this.finish();
                     break;
             }
+
+/*
+
+
+                String encoded = proUserModel.getProfilePicUrl();
+                String params_Date =
+                        ("{" + " \"name\":" + "\"" + proUserModel.getName() + "\"" + ","
+                                + " \"description\":" + "\"" + proUserModel.getGender() + "," + proUserModel.getCity() + "," + proUserModel.getExperience() + "," + proUserModel.getEmail() + "\"" + ","
+                                + "\"image\":" +  "\"" + encoded+ "\""
+                                + "}");
+                try {
+                    jsonObject = new JSONObject(params_Date);
+
+                    Log.i("request", jsonObject.toString());
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                String url = "http://206.189.96.67/v1/request";
+                JsonObjectRequest stringRequest = new JsonObjectRequest(POST, url, jsonObject,
+                        new Response.Listener<JSONObject>() {
+                            @Override
+                            public void onResponse(JSONObject response) {
+
+                                try {
+                                    Toast.makeText(ProRegActivity.this, response.getString("id"), Toast.LENGTH_SHORT).show();
+                                    SharedPreferences.Editor editor = getSharedPreferences("checkDate", MODE_PRIVATE).edit();
+                                    editor.putString("id", response.getString("id"));
+                                    editor.apply();
+                                    startActivity(new Intent(ProRegActivity.this, RespondToServerActivity.class));
+                                    ProRegActivity.this.finish();
+
+                                } catch (JSONException e) {
+                                    e.printStackTrace();
+                                }
+
+
+                            }
+                        }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+
+
+                    }
+                });
+
+                AppController.getInstance().addToRequestQueue(stringRequest);
+
+
+*/
+
+
+
+
+
+
+
+
         } else {
             Toast.makeText(this, "Error in saving your data", Toast.LENGTH_SHORT).show();
         }
