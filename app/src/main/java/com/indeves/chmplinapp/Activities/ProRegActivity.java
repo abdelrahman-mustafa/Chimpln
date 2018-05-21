@@ -437,7 +437,7 @@ public class ProRegActivity extends AppCompatActivity implements View.OnClickLis
                     ProRegActivity.this.finish();
                     break;
                 case "pro":
-                    startActivity(new Intent(ProRegActivity.this, ProLandingPage.class));
+                    startActivity(new Intent(ProRegActivity.this, RespondToServerActivity.class));
                     ProRegActivity.this.finish();
                     break;
             }

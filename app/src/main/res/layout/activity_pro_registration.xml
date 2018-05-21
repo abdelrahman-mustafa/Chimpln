@@ -209,13 +209,69 @@
             android:background="@color/colorWhite" />
 
         <LinearLayout
-            android:id="@+id/linearLayout8"
+            android:id="@+id/linearLayout80"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"
             android:layout_below="@id/view7"
             android:layout_marginEnd="8dp"
             android:layout_marginStart="8dp"
             android:layout_marginTop="5dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+
+                android:layout_weight=".0009"
+                android:text="@string/en_over_booking"
+                android:textColor="#ffff"
+                android:textColorHint="#fff"
+                android:textStyle="bold" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight=".9"
+                android:layout_gravity="right"
+                android:gravity="right"
+                android:text="@string/on"
+                android:textColor="#ffff"
+                android:textColorHint="#fff"
+                android:textStyle="bold" />
+            <SeekBar
+                android:layout_weight=".1"
+                android:layout_width="40dp"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight=".1"
+                android:text="@string/off"
+                android:textColor="#ffff"
+                android:textColorHint="#fff"
+                android:textStyle="bold" />
+
+
+        </LinearLayout>
+
+        <View
+            android:id="@+id/view60"
+            android:layout_width="match_parent"
+            android:layout_height="1dp"
+            android:layout_below="@id/linearLayout80"
+            android:layout_marginBottom="10dp"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="5dp"
+            android:background="@color/colorWhite" />
+
+        <LinearLayout
+            android:id="@+id/linearLayout8"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:layout_below="@id/view60"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
             android:orientation="horizontal">
 
             <TextView
@@ -453,7 +509,7 @@
             android:layout_marginTop="8dp"
             android:layout_marginBottom="10dp"
             android:orientation="horizontal"
-            android:visibility="visible">
+            android:visibility="gone">
 
             <TextView
                 android:layout_width="wrap_content"

@@ -1,6 +1,10 @@
 package com.indeves.chmplinapp.Fragments;
 
 import android.app.ActionBar;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
+import android.net.Uri;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 import android.support.design.widget.TabLayout;
@@ -14,6 +18,7 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
+import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -24,15 +29,24 @@ import com.indeves.chmplinapp.API.ReadData;
 import com.indeves.chmplinapp.API.WriteData;
 import com.indeves.chmplinapp.Models.UserData;
 import com.indeves.chmplinapp.R;
+import com.indeves.chmplinapp.Utility.CircleTransform;
+import com.squareup.picasso.Picasso;
 
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.List;
+
+import static android.app.Activity.RESULT_OK;
 
 public class UserProfileEditProfileTab extends android.support.v4.app.Fragment implements FirebaseEventsListener, View.OnClickListener {
 
     TextView email, mobileNumber, editFirstName, editLastName, editLocation, editGender;
     EditText firstName, lastName, gender, location;
     Button saveChanges;
+    ImageView image;
+    Bitmap selectedImage;
+    private static int RESULT_LOAD_IMAGE = 1;
 
     public UserProfileEditProfileTab() {
     }
@@ -64,6 +78,8 @@ public class UserProfileEditProfileTab extends android.support.v4.app.Fragment i
        // gender.setEnabled(false);
         editGender = rootView.findViewById(R.id.editGender_textView);
         editGender.setOnClickListener(this);
+        image = rootView.findViewById(R.id.user_image);
+        image.setOnClickListener(this);
         saveChanges = rootView.findViewById(R.id.userEditProfile_save_button);
         saveChanges.setOnClickListener(this);
         ActionBar ab = getActivity().getActionBar();
@@ -148,7 +164,37 @@ public class UserProfileEditProfileTab extends android.support.v4.app.Fragment i
                 Toast.makeText(getContext(), getResources().getString(R.string.error_not_authenticated), Toast.LENGTH_SHORT).show();
                 e.printStackTrace();
             }
+        }else if (v == image){
+            getImage();
         }
 
+    }
+    private void getImage() {
+
+        Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
+        photoPickerIntent.setType("image/*");
+        startActivityForResult(photoPickerIntent, RESULT_LOAD_IMAGE);
+    }
+
+    @Override
+    public void onActivityResult(int reqCode, int resultCode, Intent data) {
+        super.onActivityResult(reqCode, resultCode, data);
+
+        if (resultCode == RESULT_OK && reqCode == RESULT_LOAD_IMAGE) {
+            try {
+                final Uri imageUri = data.getData();
+                final InputStream imageStream = getActivity().getContentResolver().openInputStream(imageUri);
+                selectedImage = BitmapFactory.decodeStream(imageStream);
+            //   image.setImageBitmap(Bitmap.createScaledBitmap(selectedImage, 300, 300, false));
+                Picasso.with(getContext()).load(imageUri).resize(300, 300).transform(new CircleTransform()).into(image);
+
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+                Toast.makeText(getContext(), "Something went wrong", Toast.LENGTH_LONG).show();
+            }
+
+        } else {
+            Toast.makeText(getContext(), "You haven't picked Image", Toast.LENGTH_LONG).show();
+        }
     }
 }

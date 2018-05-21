@@ -300,12 +300,8 @@ public class Booking extends StepProgressBar implements View.OnClickListener, Ad
     @Override
     public void onClick(View v) {
         if (v == proedit) {
-            UserProfilePhotographersTabSearch output = new UserProfilePhotographersTabSearch();
+            UserProfilePhotographersTabSearchSelect output = new UserProfilePhotographersTabSearchSelect();
             android.support.v4.app.FragmentTransaction transaction = getFragmentManager().beginTransaction();
-
-            getActivity().findViewById(R.id.userProfile_LinearLayout).setVisibility(View.VISIBLE);
-
-
             transaction.replace(R.id.container_o, output).commit();
 
         }

@@ -13,14 +13,31 @@
         <RelativeLayout
             android:id="@+id/relativeLayout"
             android:layout_width="fill_parent"
-            android:layout_height="wrap_content"
-            android:padding="20dp">
+            android:layout_height="wrap_content">
+
+
+            <ImageView
+                android:id="@+id/user_image"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_centerHorizontal="true"
+                android:padding="20dp"
+                android:src="@drawable/photo" />
+
+            <View
+                android:id="@+id/f"
+                android:layout_width="match_parent"
+                android:layout_height="6dp"
+                android:layout_below="@id/user_image"
+                android:background="#dad5d5" />
 
             <LinearLayout
                 android:id="@+id/view"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                android:orientation="horizontal">
+                android:layout_below="@+id/f"
+                android:orientation="horizontal"
+                android:padding="10dp">
 
                 <TextView
                     android:id="@+id/email"
@@ -29,6 +46,7 @@
                     android:layout_weight="1"
                     android:padding="13dp"
                     android:text="user@chimpln.com"
+                    android:textColor="@color/colorUser"
                     android:textSize="18sp"
                     android:textStyle="bold" />
 
@@ -39,7 +57,8 @@
                     android:layout_weight="1"
                     android:gravity="center_horizontal"
                     android:padding="13dp"
-                    android:text="+010000000"
+                    android:text="     +010000000"
+                    android:textColor="@color/colorUser"
                     android:textSize="18sp"
                     android:textStyle="bold" />
 
@@ -49,7 +68,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:layout_below="@id/view"
-                android:orientation="vertical">
+                android:orientation="vertical"
+                android:padding="20dp">
 
                 <TableLayout
                     android:id="@+id/myProfile"
@@ -89,9 +109,9 @@
                             android:layout_column="2"
                             android:layout_gravity="end"
                             android:layout_marginEnd="13dp"
-                            android:visibility="gone"
                             android:text="Edit"
-                            android:textSize="17sp" />
+                            android:textSize="17sp"
+                            android:visibility="gone" />
 
 
                     </TableRow>
@@ -100,7 +120,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
                         android:layout_gravity="bottom"
-                        android:layout_marginTop="17dp"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginTop="5dp"
                         android:background="#dad5d5" />
 
                     <TableRow
@@ -127,10 +149,10 @@
                             android:layout_height="wrap_content"
                             android:layout_column="2"
                             android:layout_gravity="end"
-                            android:visibility="gone"
                             android:layout_marginEnd="13dp"
                             android:text="@string/edit"
-                            android:textSize="17sp" />
+                            android:textSize="17sp"
+                            android:visibility="gone" />
 
                     </TableRow>
 
@@ -138,7 +160,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
                         android:layout_gravity="bottom"
-                        android:layout_marginTop="17dp"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginTop="5dp"
                         android:background="#dad5d5" />
 
                     <TableRow
@@ -166,9 +190,9 @@
                             android:layout_column="2"
                             android:layout_gravity="end"
                             android:layout_marginEnd="13dp"
-                            android:visibility="gone"
                             android:text="@string/edit"
-                            android:textSize="17sp" />
+                            android:textSize="17sp"
+                            android:visibility="gone" />
 
                     </TableRow>
 
@@ -176,7 +200,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
                         android:layout_gravity="bottom"
-                        android:layout_marginTop="17dp"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginTop="5dp"
                         android:background="#dad5d5" />
 
                     <TableRow
@@ -202,11 +228,11 @@
                             android:layout_width="wrap_content"
                             android:layout_height="wrap_content"
                             android:layout_column="2"
-                            android:visibility="gone"
                             android:layout_gravity="end"
                             android:layout_marginEnd="13dp"
                             android:text="@string/edit"
-                            android:textSize="17sp" />
+                            android:textSize="17sp"
+                            android:visibility="gone" />
 
                     </TableRow>
 
@@ -214,7 +240,9 @@
                         android:layout_width="match_parent"
                         android:layout_height="1dp"
                         android:layout_gravity="bottom"
-                        android:layout_marginTop="17dp"
+                        android:layout_marginLeft="20dp"
+                        android:layout_marginRight="10dp"
+                        android:layout_marginTop="5dp"
                         android:background="#dad5d5" />
 
                 </TableLayout>
@@ -228,7 +256,7 @@
             android:layout_marginEnd="32dp"
             android:layout_marginStart="32dp"
             android:layout_marginTop="16dp"
-            android:background="@drawable/button_package"
+            android:background="@drawable/button"
             android:text="@string/button_save"
             android:textColor="@color/colorWhite"
             app:layout_constraintTop_toBottomOf="@+id/relativeLayout"

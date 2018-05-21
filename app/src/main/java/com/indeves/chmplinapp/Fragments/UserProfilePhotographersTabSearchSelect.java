@@ -1,8 +1,10 @@
 package com.indeves.chmplinapp.Fragments;
 
+import android.annotation.SuppressLint;
 import android.app.DatePickerDialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
+import android.support.v4.app.DialogFragment;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
@@ -11,9 +13,12 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.ImageButton;
+import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.Spinner;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import com.indeves.chmplinapp.API.ReadData;
 import com.indeves.chmplinapp.Models.CityLookUpModel;
@@ -21,12 +26,16 @@ import com.indeves.chmplinapp.Models.EventOfTypeModel;
 import com.indeves.chmplinapp.Models.LookUpModel;
 import com.indeves.chmplinapp.Models.ProUserModel;
 import com.indeves.chmplinapp.R;
+import com.indeves.chmplinapp.Utility.MyDatePickerFragment;
 
+import java.text.DateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
+import java.util.Locale;
 
-public class UserProfilePhotographersTabSearchSelect extends android.support.v4.app.Fragment implements View.OnClickListener, AdapterView.OnItemSelectedListener {
+public class UserProfilePhotographersTabSearchSelect extends android.support.v4.app.Fragment implements View.OnClickListener, AdapterView.OnItemSelectedListener, DatePickerDialog.OnDateSetListener {
     Spinner spinGender, spinCity, eventTimesSpinner, spinEventType;
     Button search;
     List<CityLookUpModel> citiesList;
@@ -38,9 +47,11 @@ public class UserProfilePhotographersTabSearchSelect extends android.support.v4.
     TextView selectedDate;
     String selectedBirthDate;
     Calendar calendar;
+    ImageView getDate;
     int year, month, day;
     String selectedGender;
     String selectedCity;
+    TextView date;
     LookUpModel selectedEventType, selectedEventTime;
     LinearLayout linear;
     private DatePickerDialog.OnDateSetListener myDateListener = new
@@ -77,6 +88,7 @@ public class UserProfilePhotographersTabSearchSelect extends android.support.v4.
         spinCity = rootView.findViewById(R.id.userProfile_phot_spinner_city);
         spinCity.setOnItemSelectedListener(this);
 
+        date = rootView.findViewById(R.id.date);
         spinGender = rootView.findViewById(R.id.userProfile_phot_spinner_gender);
         spinGender.setOnItemSelectedListener(this);
         //This spinner wil be used for event times
@@ -84,6 +96,18 @@ public class UserProfilePhotographersTabSearchSelect extends android.support.v4.
         eventTimesSpinner.setOnItemSelectedListener(this);
         spinEventType = rootView.findViewById(R.id.userProfile_phot_spinner_event_type);
         spinEventType.setOnItemSelectedListener(this);
+        getDate = rootView.findViewById(R.id.get_date);
+
+        getDate.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+
+                DialogFragment newFragment = new MyDatePickerFragment();
+                newFragment.show(getFragmentManager(), "DatePicker");
+
+            }
+        });
         search = rootView.findViewById(R.id.userProfile_button_search);
         search.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -99,7 +123,7 @@ public class UserProfilePhotographersTabSearchSelect extends android.support.v4.
 
                         linear.setVisibility(View.GONE);
                         search.setVisibility(View.GONE);
-                        if (spinCity.getSelectedItemPosition() == 0 && spinGender.getSelectedItemPosition() == 0 && eventTimesSpinner.getSelectedItem().toString() == null) {
+                        if (spinCity.getSelectedItemPosition() == 0 && spinGender.getSelectedItemPosition() == 0 && eventTimesSpinner.getSelectedItemPosition()== 0) {
                             UserProfilePhotographersTabSearchOutput output = new UserProfilePhotographersTabSearchOutput(pros);
                             android.support.v4.app.FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
 
@@ -346,4 +370,29 @@ public class UserProfilePhotographersTabSearchSelect extends android.support.v4.
 
     }
 
+    @Override
+    public void onDateSet(DatePicker view, int year, int month, int dayOfMonth) {
+
+        // Create a Date variable/object with user chosen date
+        Calendar cal = Calendar.getInstance();
+        cal.setTimeInMillis(0);
+        cal.set(year, month, day, 0, 0, 0);
+        Date chosenDate = cal.getTime();
+
+        // Format the date using style and locale
+        DateFormat df = DateFormat.getDateInstance(DateFormat.MEDIUM, Locale.US);
+        String formattedDate = df.format(chosenDate);
+
+        // Display the chosen date to app interface
+        date.setText(formattedDate);
+    }
+    private DatePickerDialog.OnDateSetListener dateSetListener =
+            new DatePickerDialog.OnDateSetListener() {
+                @SuppressLint("SetTextI18n")
+                public void onDateSet(DatePicker view, int year, int month, int day) {
+                    date.setText(  view.getYear() +
+                            " / " + (view.getMonth()+1) +
+                            " / " + view.getDayOfMonth());
+                }
+            };
 }

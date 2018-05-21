@@ -72,7 +72,9 @@ public class ReadData {
             @Override
             public void onDataChange(DataSnapshot dataSnapshot) {
                 Log.v("returnedUser", dataSnapshot.toString());
+
                 if (firebaseEventsListener != null) {
+                    Log.v("returned", dataSnapshot.toString());
                     firebaseEventsListener.onReadDataResponse(dataSnapshot);
                 }
 

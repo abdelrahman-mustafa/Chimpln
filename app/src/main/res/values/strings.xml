@@ -88,6 +88,9 @@
     <string name="complete_acc">Complete the account</string>
     <string name="keywords">Keywords</string>
     <string name="date">Date</string>
+    <string name="en_over_booking">Enable Overbooking</string>
+    <string name="on">on</string>
+    <string name="off">off</string>
     <string name="time">Time</string>
     <string name="eve_avail">Event Availability</string>
     <string name="Location">Location</string>

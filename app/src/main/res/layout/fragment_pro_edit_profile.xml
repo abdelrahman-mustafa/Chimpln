@@ -367,6 +367,46 @@
         <!--app:layout_constraintHorizontal_bias="0.95"-->
         <!--app:layout_constraintStart_toStartOf="parent" />-->
 
+        <LinearLayout
+            android:id="@+id/linearLayout80"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            app:layout_constraintTop_toBottomOf="@id/separator7"
+            android:layout_marginEnd="8dp"
+            android:layout_marginStart="8dp"
+            android:layout_marginTop="15dp"
+            android:orientation="horizontal">
+
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_gravity="center"
+
+                android:layout_weight=".0009"
+                android:text="@string/en_over_booking"
+
+                android:textStyle="bold" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight=".9"
+                android:layout_gravity="right"
+                android:gravity="right"
+                android:text="@string/on"
+                android:textStyle="bold" />
+            <SeekBar
+                android:layout_weight=".1"
+                android:layout_width="40dp"
+                android:layout_height="wrap_content" />
+            <TextView
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:layout_weight=".1"
+                android:text="@string/off"
+                android:textStyle="bold" />
+
+
+        </LinearLayout>
         <Button
             android:id="@+id/userEditProfile_save_button"
             android:layout_width="match_parent"
@@ -381,7 +421,7 @@
             app:layout_constraintBottom_toBottomOf="parent"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@id/separator7" />
+            app:layout_constraintTop_toBottomOf="@id/linearLayout80" />
 
     </android.support.constraint.ConstraintLayout>
 
