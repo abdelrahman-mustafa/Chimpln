@@ -15,7 +15,7 @@ public class ProUserModel extends UserData implements Serializable {
     private long rate, locationLat, locationLong;
     private List<String> lastWorkPicsUrls;
     private List<PackageModel> packages;
-    private String country, city, area, workDayStart, workDayEnd, experience;
+    private String country, city, area, workDayStart, workDayEnd, experience, idFrontImageUrl, idBackImageUrl;
     private ArrayList<StudioTeamMember> studioTeamMembers;
     private ArrayList<String> eventAvailablity;
 
@@ -66,6 +66,25 @@ public class ProUserModel extends UserData implements Serializable {
         this.workDayEnd = workDayEnd;
         this.experience = experience;
         this.studioTeamMembers = studioTeamMembers;
+    }
+
+    public ProUserModel(String name, String email, String phone, String type, String lastName, String birthDate, String gender, String uid, String profilePicUrl, String location, List<String> eventsIds, long rate, long locationLat, long locationLong, List<String> lastWorkPicsUrls, List<PackageModel> packages, String country, String city, String area, String workDayStart, String workDayEnd, String experience, String idFrontImageUrl, String idBackImageUrl, ArrayList<StudioTeamMember> studioTeamMembers, ArrayList<String> eventAvailablity) {
+        super(name, email, phone, type, lastName, birthDate, gender, uid, profilePicUrl, location, eventsIds);
+        this.rate = rate;
+        this.locationLat = locationLat;
+        this.locationLong = locationLong;
+        this.lastWorkPicsUrls = lastWorkPicsUrls;
+        this.packages = packages;
+        this.country = country;
+        this.city = city;
+        this.area = area;
+        this.workDayStart = workDayStart;
+        this.workDayEnd = workDayEnd;
+        this.experience = experience;
+        this.idFrontImageUrl = idFrontImageUrl;
+        this.idBackImageUrl = idBackImageUrl;
+        this.studioTeamMembers = studioTeamMembers;
+        this.eventAvailablity = eventAvailablity;
     }
 
     public long getRate() {
@@ -164,6 +183,22 @@ public class ProUserModel extends UserData implements Serializable {
         this.studioTeamMembers = studioTeamMembers;
     }
 
+    public String getIdFrontImageUrl() {
+        return idFrontImageUrl;
+    }
+
+    public void setIdFrontImageUrl(String idFrontImageUrl) {
+        this.idFrontImageUrl = idFrontImageUrl;
+    }
+
+    public String getIdBackImageUrl() {
+        return idBackImageUrl;
+    }
+
+    public void setIdBackImageUrl(String idBackImageUrl) {
+        this.idBackImageUrl = idBackImageUrl;
+    }
+
     @Override
     public Map<String, Object> toMap() {
         Map<String, Object> result = super.toMap();
@@ -191,6 +226,12 @@ public class ProUserModel extends UserData implements Serializable {
             result.put("experience", experience);
         if (studioTeamMembers != null)
             result.put("studioTeamMembers", studioTeamMembers);
+        if (idFrontImageUrl != null) {
+            result.put("idFrontImageUrl", idFrontImageUrl);
+        }
+        if (idBackImageUrl != null) {
+            result.put("idBackImageUrl", idBackImageUrl);
+        }
         return result;
     }
 }

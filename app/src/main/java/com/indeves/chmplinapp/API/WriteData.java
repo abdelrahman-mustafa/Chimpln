@@ -95,6 +95,26 @@ public class WriteData {
 
     }
 
+    public void setProIdImagesUrls(String frontImageUrl, String backImageUrl) throws Exception {
+        if (mAuth.getCurrentUser() != null) {
+            ProUserModel userData = new ProUserModel();
+            userData.setIdFrontImageUrl(frontImageUrl);
+            userData.setIdBackImageUrl(backImageUrl);
+            mDatabaseUserReference.child(mAuth.getCurrentUser().getUid()).updateChildren(userData.toMap()).addOnCompleteListener(new OnCompleteListener<Void>() {
+                @Override
+                public void onComplete(@NonNull Task<Void> task) {
+                    if (task.isSuccessful()) {
+                        firebaseEventsListener.onWriteDataCompleted(true);
+                    } else {
+                        firebaseEventsListener.onWriteDataCompleted(false);
+                    }
+                }
+            });
+        } else {
+            throw new Exception("user is not authenticated");
+        }
+    }
+
     public void respondToEvent(String status, String eventId) throws Exception {
         EventModel eventModel = new EventModel();
         eventModel.setEventStatus(status);
