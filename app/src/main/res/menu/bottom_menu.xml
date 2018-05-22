@@ -2,17 +2,18 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools">
-    <item
-        android:id="@+id/action_lastWork"
-        android:enabled="true"
-        android:icon="@mipmap/latest_work_default"
-        android:title="@string/bottom_menu_last_work"
-        app:showAsAction="always" />
+
     <item
         android:id="@+id/action_events"
         android:enabled="true"
         android:icon="@mipmap/events_default"
         android:title="@string/bottom_menu_events"
+        app:showAsAction="always" />
+    <item
+        android:id="@+id/action_lastWork"
+        android:enabled="true"
+        android:icon="@mipmap/latest_work_default"
+        android:title="@string/bottom_menu_last_work"
         app:showAsAction="always" />
     <item
         android:id="@+id/action_packages"

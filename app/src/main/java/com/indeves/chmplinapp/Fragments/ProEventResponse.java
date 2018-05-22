@@ -1,11 +1,12 @@
 package com.indeves.chmplinapp.Fragments;
 
 
+import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.DialogInterface;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
-import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -13,6 +14,7 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.indeves.chmplinapp.API.FirebaseEventsListener;
 import com.indeves.chmplinapp.API.ReadData;
@@ -33,6 +35,7 @@ public class ProEventResponse extends Fragment implements View.OnClickListener, 
     private EventModel selectedEvent;
     private Button accept, reject;
     private TextView name, time, day, month, share, location, eventType;
+    ArrayList<EventModel> proEvents;
 
     public ProEventResponse() {
         // Required empty public constructor
@@ -60,6 +63,7 @@ public class ProEventResponse extends Fragment implements View.OnClickListener, 
         progressDialog.setMessage("Please wait.. ");
         progressDialog.show();
         loadLookups();
+        getProEvents();
     }
 
     @Override
@@ -83,16 +87,44 @@ public class ProEventResponse extends Fragment implements View.OnClickListener, 
 
     @Override
     public void onClick(View v) {
-        progressDialog.show();
         if (v == accept) {
-            WriteData writeData = new WriteData(this);
-            try {
-                writeData.respondToEvent("accepted", selectedEvent.getEventId());
-            } catch (Exception e) {
-                e.printStackTrace();
+            int eventsCount = 0;
+            for (EventModel eventModel : proEvents) {
+                if (eventModel.getEventDate().equals(selectedEvent.getEventDate())) {
+                    eventsCount++;
+                }
+            }
+            if (eventsCount > 0) {
+                AlertDialog alertDialog = new AlertDialog.Builder(getContext()).create();
+                alertDialog.setTitle("Reminder");
+                alertDialog.setMessage("You have " + String.valueOf(eventsCount) + "accepted events in the same day of this event!");
+                alertDialog.setButton(AlertDialog.BUTTON_NEUTRAL, "OK",
+                        new DialogInterface.OnClickListener() {
+                            public void onClick(DialogInterface dialog, int which) {
+                                dialog.dismiss();
+                                progressDialog.show();
+                                WriteData writeData = new WriteData(ProEventResponse.this);
+                                try {
+                                    writeData.respondToEvent("accepted", selectedEvent.getEventId());
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                            }
+                        });
+                alertDialog.show();
+
+            } else {
+                progressDialog.show();
+                WriteData writeData = new WriteData(this);
+                try {
+                    writeData.respondToEvent("accepted", selectedEvent.getEventId());
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
             }
 
         } else if (v == reject) {
+            progressDialog.show();
             WriteData writeData = new WriteData(this);
             try {
                 writeData.respondToEvent("rejected", selectedEvent.getEventId());
@@ -187,6 +219,11 @@ public class ProEventResponse extends Fragment implements View.OnClickListener, 
 
     }
 
+    void getProEvents() {
+        ReadData readData = new ReadData(this);
+        readData.getEventsByProId(FirebaseAuth.getInstance().getCurrentUser().getUid());
+    }
+
     @Override
     public void onWriteDataCompleted(boolean writeSuccessful) {
         progressDialog.dismiss();
@@ -201,6 +238,14 @@ public class ProEventResponse extends Fragment implements View.OnClickListener, 
 
     @Override
     public void onReadDataResponse(DataSnapshot dataSnapshot) {
-
+        if (dataSnapshot != null) {
+            proEvents = new ArrayList<>();
+            for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
+                EventModel eventModel = dataSnapshot1.getValue(EventModel.class);
+                if (eventModel != null && eventModel.getEventStatus().equals("accepted")) {
+                    proEvents.add(eventModel);
+                }
+            }
+        }
     }
 }

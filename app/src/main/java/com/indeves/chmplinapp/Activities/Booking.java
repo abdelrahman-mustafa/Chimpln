@@ -336,7 +336,7 @@ public class Booking extends StepProgressBar implements View.OnClickListener, Ad
                     sDate = eDate.getText().toString();
                     sNote = note.getText().toString();
                     // if (fromto==true){sTime=timefrom.getText().toString()+"  to  "+timeto.getText().toString();}
-                    Toast.makeText(getContext(), sAddress + "\n" + sType + "\n" + sTime + "\n" + sNote + "\n" + sDate + "\n" + sShareable, Toast.LENGTH_LONG).show();
+//                    Toast.makeText(getContext(), sAddress + "\n" + sType + "\n" + sTime + "\n" + sNote + "\n" + sDate + "\n" + sShareable, Toast.LENGTH_LONG).show();
                /* Intent intent=new Intent(this,Approval.class);
                 intent.putExtra("address",sAddress);
                 intent.putExtra("date",sDate);
