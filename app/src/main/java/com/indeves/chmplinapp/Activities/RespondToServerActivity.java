@@ -52,6 +52,10 @@ public class RespondToServerActivity extends AppCompatActivity implements Fireba
         SharedPreferences editor = getSharedPreferences("checkDate", MODE_PRIVATE);
        String id =  editor.getString("id", "0");
 
+        SharedPreferences shre = PreferenceManager.getDefaultSharedPreferences(RespondToServerActivity.this);
+        SharedPreferences.Editor edit = shre.edit();
+        edit.putBoolean("proToServ",true);
+        edit.apply();
         check.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
@@ -75,7 +79,11 @@ public class RespondToServerActivity extends AppCompatActivity implements Fireba
                             @Override
                             public void onResponse(JSONObject response) {
                                 try {
-                                    if (response.get("status").equals("accepted")) {
+                                    if (response.getString("status").toLowerCase().equals("accepted")) {
+                                        SharedPreferences shre = PreferenceManager.getDefaultSharedPreferences(RespondToServerActivity.this);
+                                        SharedPreferences.Editor edit = shre.edit();
+                                        edit.putBoolean("proToServ",false);
+                                        edit.apply();
                                         PrefGet prefGet = new PrefGet(RespondToServerActivity.this);
                                         switch (prefGet.getUserType()) {
                                             case "stu":

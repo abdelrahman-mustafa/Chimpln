@@ -9,6 +9,7 @@ import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.graphics.PorterDuff;
 import android.net.Uri;
+import android.preference.PreferenceManager;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
@@ -37,6 +38,7 @@ import com.indeves.chmplinapp.API.CloudStorageListener;
 import com.indeves.chmplinapp.API.FirebaseEventsListener;
 import com.indeves.chmplinapp.API.ReadData;
 import com.indeves.chmplinapp.API.WriteData;
+import com.indeves.chmplinapp.Fragments.StuEditProfileFragment;
 import com.indeves.chmplinapp.Models.CityLookUpModel;
 import com.indeves.chmplinapp.Models.LookUpModel;
 import com.indeves.chmplinapp.Models.ProUserModel;
@@ -69,7 +71,7 @@ public class ProRegActivity extends AppCompatActivity implements View.OnClickLis
     Button saveData;
     ProUserModel proUserModel = new ProUserModel();
     ImageView pic;
-    Bitmap selectImage;
+    Bitmap selectImage,front,back;
     CheckBox full_day, half_day, per_hour;
     String selectedGender, selectedCountry, selectedCity, selectedWorkingHoursStart, selectedWorkingHoursEnd, selectedBirthDate;
     List<CityLookUpModel> citiesList;
@@ -84,6 +86,26 @@ public class ProRegActivity extends AppCompatActivity implements View.OnClickLis
     private Calendar calendar;
     JSONObject jsonObject;
     private int year, month, day;
+
+    int i = 0;
+
+    private CloudStorageListener.UploadUserImageListener cloudStorageListener = new CloudStorageListener.UploadUserImageListener() {
+        @Override
+        public void onImageUpload(String downloadUrl) {
+            if (downloadUrl != null) {
+                if (i == 2){
+                    proUserModel.setIdFrontImageUrl(downloadUrl);
+                }else if (i == 3){
+                    proUserModel.setIdBackImageUrl(downloadUrl);
+                }
+
+            } else {
+            }
+
+        }
+    };
+
+
     private DatePickerDialog.OnDateSetListener myDateListener = new
             DatePickerDialog.OnDateSetListener() {
                 @Override
@@ -234,7 +256,7 @@ public class ProRegActivity extends AppCompatActivity implements View.OnClickLis
                     @Override
                     public void onImageUpload(String downloadUrl) {
                         if (downloadUrl != null) {
-                          //  ProUserModel proUserModel = new ProUserModel();
+                            //  ProUserModel proUserModel = new ProUserModel();
 
                             ArrayList<String> list = new ArrayList<>();
                             if (full_day.isClickable()) {
@@ -313,11 +335,16 @@ public class ProRegActivity extends AppCompatActivity implements View.OnClickLis
 
         } else if (resultCode == RESULT_OK && reqCode == 2) {
             try {
+                i = 2;
                 final Uri imageUri = data.getData();
                 final InputStream imageStream = getContentResolver().openInputStream(imageUri);
-                selectImage = BitmapFactory.decodeStream(imageStream);
+                front = BitmapFactory.decodeStream(imageStream);
+
+                CloudStorageAPI cloudStorageAPI = new CloudStorageAPI();
+                cloudStorageAPI.UploadImage(front, false, cloudStorageListener);
+
 //                pic.setImageBitmap(Bitmap.createScaledBitmap(selectImage, 300, 300, false));
-                Picasso.with(this).load(imageUri).resize(50, 50).transform(new CircleTransform()).into(getFrontId);
+                //   Picasso.with(this).load(imageUri).resize(50, 50).transform(new CircleTransform()).into(getFrontId);
 
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
@@ -326,11 +353,16 @@ public class ProRegActivity extends AppCompatActivity implements View.OnClickLis
 
         } else if (resultCode == RESULT_OK && reqCode == 3) {
             try {
+                i=3;
                 final Uri imageUri = data.getData();
                 final InputStream imageStream = getContentResolver().openInputStream(imageUri);
-                selectImage = BitmapFactory.decodeStream(imageStream);
+                back = BitmapFactory.decodeStream(imageStream);
 //                pic.setImageBitmap(Bitmap.createScaledBitmap(selectImage, 300, 300, false));
-                Picasso.with(this).load(imageUri).resize(50, 50).transform(new CircleTransform()).into(getBackId);
+//                Picasso.with(this).load(imageUri).resize(50, 50).transform(new CircleTransform()).into(getBackId);
+
+
+                CloudStorageAPI cloudStorageAPI = new CloudStorageAPI();
+                cloudStorageAPI.UploadImage(back, false, cloudStorageListener);
 
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
@@ -438,7 +470,7 @@ public class ProRegActivity extends AppCompatActivity implements View.OnClickLis
     public void onWriteDataCompleted(boolean writeSuccessful) {
         progressDialog.dismiss();
         if (writeSuccessful) {
-            PrefGet prefGet = new PrefGet(ProRegActivity.this);
+   /*         PrefGet prefGet = new PrefGet(ProRegActivity.this);
             switch (prefGet.getUserType()) {
                 case "stu":
                     startActivity(new Intent(ProRegActivity.this, StuLandingPage.class));
@@ -452,15 +484,18 @@ public class ProRegActivity extends AppCompatActivity implements View.OnClickLis
                     startActivity(new Intent(ProRegActivity.this, ProLandingPage.class));
                     ProRegActivity.this.finish();
                     break;
-            }
+            }*/
 
-/*
+            SharedPreferences shre = PreferenceManager.getDefaultSharedPreferences(ProRegActivity.this);
+            SharedPreferences.Editor edit = shre.edit();
+            edit.putBoolean("proReg",true);
+            edit.apply();
 
 
                 String encoded = proUserModel.getProfilePicUrl();
                 String params_Date =
                         ("{" + " \"name\":" + "\"" + proUserModel.getName() + "\"" + ","
-                                + " \"description\":" + "\"" + proUserModel.getGender() + "," + proUserModel.getCity() + "," + proUserModel.getExperience() + "," + proUserModel.getEmail() + "\"" + ","
+                                + " \"description\":" + "\"" + proUserModel.getGender() + "\n" + proUserModel.getCity() + "," + proUserModel.getExperience() + "\n" + proUserModel.getEmail() + proUserModel.getIdFrontImageUrl()+ "\n"+ proUserModel.getIdBackImageUrl()+ "\n"+"\""
                                 + "\"image\":" +  "\"" + encoded+ "\""
                                 + "}");
                 try {
@@ -482,6 +517,11 @@ public class ProRegActivity extends AppCompatActivity implements View.OnClickLis
                                     SharedPreferences.Editor editor = getSharedPreferences("checkDate", MODE_PRIVATE).edit();
                                     editor.putString("id", response.getString("id"));
                                     editor.apply();
+                                    SharedPreferences shre = PreferenceManager.getDefaultSharedPreferences(ProRegActivity.this);
+                                    SharedPreferences.Editor edit = shre.edit();
+                                    edit.putBoolean("proReg",false);
+                                    edit.apply();
+
                                     startActivity(new Intent(ProRegActivity.this, RespondToServerActivity.class));
                                     ProRegActivity.this.finish();
 
@@ -500,13 +540,6 @@ public class ProRegActivity extends AppCompatActivity implements View.OnClickLis
                 });
 
                 AppController.getInstance().addToRequestQueue(stringRequest);
-
-
-*/
-
-
-
-
 
 
 

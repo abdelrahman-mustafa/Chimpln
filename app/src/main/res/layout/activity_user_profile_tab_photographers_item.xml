@@ -24,7 +24,7 @@
             android:layout_gravity="center|center_horizontal"
             android:layout_marginLeft="10dp"
             android:layout_weight="0"
-            android:background="@drawable/user"
+            android:src="@drawable/user"
             android:paddingRight="5dp" />
 
 

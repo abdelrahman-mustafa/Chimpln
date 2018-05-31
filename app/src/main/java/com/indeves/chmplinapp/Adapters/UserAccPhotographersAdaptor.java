@@ -1,22 +1,28 @@
 package com.indeves.chmplinapp.Adapters;
 
+import android.content.Context;
 import android.support.v7.widget.RecyclerView;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.indeves.chmplinapp.Models.ProUserModel;
 import com.indeves.chmplinapp.Models.UserAccPhotographerData;
 import com.indeves.chmplinapp.R;
+import com.indeves.chmplinapp.Utility.CircleTransform;
+import com.squareup.picasso.Picasso;
 
 import java.util.List;
 
 public class UserAccPhotographersAdaptor extends RecyclerView.Adapter<UserAccPhotographersAdaptor.MyViewHolder> {
     List<ProUserModel> list;
 
-    public UserAccPhotographersAdaptor(List<ProUserModel> list) {
+    Context context;
+    public UserAccPhotographersAdaptor(Context context, List<ProUserModel> list) {
         this.list = list;
+        this.context = context;
     }
 
     @Override
@@ -37,6 +43,8 @@ public class UserAccPhotographersAdaptor extends RecyclerView.Adapter<UserAccPho
         holder.Gender.setText(pData.getGender());
         holder.Currency.setText("");
         holder.Currency.setVisibility(View.INVISIBLE);
+        Picasso.with(context).load(pData.getProfilePicUrl()).resize(170,200).transform(new CircleTransform()).into(holder.imageView);
+
     }
 
     @Override
@@ -48,6 +56,7 @@ public class UserAccPhotographersAdaptor extends RecyclerView.Adapter<UserAccPho
     public class MyViewHolder extends RecyclerView.ViewHolder {
 
         public TextView Name, Location, Gender, Price, Currency;
+        ImageView imageView;
 
         public MyViewHolder(View view) {
             super(view);
@@ -56,6 +65,7 @@ public class UserAccPhotographersAdaptor extends RecyclerView.Adapter<UserAccPho
             Location = view.findViewById(R.id.userProfile_phot_search_location);
             Currency = view.findViewById(R.id.userProfile_phot_search_currency);
             Price = view.findViewById(R.id.userProfile_phot_search_price);
+            imageView = view.findViewById(R.id.userProfile_phot_search_pic);
 
         }
     }

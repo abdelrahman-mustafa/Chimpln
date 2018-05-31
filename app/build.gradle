@@ -59,7 +59,7 @@ dependencies {
     implementation 'com.android.volley:volley:1.0.0'
 
     implementation 'com.paymob:acceptsdk:1.0.2'
-
+    compile 'com.joooonho:selectableroundedimageview:1.0.1'
 
 }
 

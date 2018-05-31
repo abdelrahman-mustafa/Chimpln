@@ -101,6 +101,7 @@
     <string name="pending">Pending Event</string>
     <string name="edit">Edit</string>
     <string name="event_date">Event Date</string>
+    <string name="sel_event_date">Select Event Date</string>
     <string name="address_note">Address more than 5 letters</string>
     <string name="note_pro">Note To Pro</string>
     <string name="proceed">Proceed</string>

@@ -85,7 +85,7 @@ public class Booking extends StepProgressBar implements View.OnClickListener, Ad
     String sShareable;
     String sAddress;
     String sNote;
-    Boolean boolDate = false, booltime = false, boolType = false, boolAddress = false, fromto = true, from = false, to = false, boolshareable = false,boolPackageType=false;
+    Boolean boolDate = false, booltime = false, boolType = false, boolAddress = false, fromto = true, from = false, to = false, boolshareable = false, boolPackageType = false;
     int REQUST = 1;
     int PLACE_PICKER_REQUEST = 5;
     Geocoder geocoder;
@@ -321,7 +321,7 @@ public class Booking extends StepProgressBar implements View.OnClickListener, Ad
             Log.i("8", String.valueOf(boolshareable));
             Log.i("9", sAddress + "hi" + "\n" + note.getText().toString());
             Log.i("10", String.valueOf(sAddress.length()));
-            if (proceedbtn(boolDate, booltime, boolType, boolAddress, fromto, from, to, boolshareable,boolPackageType)) {
+            if (proceedbtn(boolDate, booltime, boolType, boolAddress, fromto, from, to, boolshareable, boolPackageType)) {
                 if (sTime.getId() == 0) {
                     Toast.makeText(getContext(), "Please Select Event Time ", Toast.LENGTH_LONG).show();
                     booltime = false;
@@ -391,7 +391,6 @@ public class Booking extends StepProgressBar implements View.OnClickListener, Ad
             c.getDatePicker().setMinDate(new Date().getTime());
             c.show();
             boolDate = true;
-            dateedit.setVisibility(View.VISIBLE);
             eDate.setClickable(false);
 
         }
@@ -510,22 +509,23 @@ public class Booking extends StepProgressBar implements View.OnClickListener, Ad
                     ePackageSpinner = new ArrayList<>();
                     if (pro.getPackages() != null) {
 
-                            ePackageSpinner.add(new PackageModel("Please Select Package", "", 0, 0, 0));
-                            for (int i = 0; i < pro.getPackages().size(); i++) {
-                                if (pro.getPackages().get(i).getEventTypeId() == sType.getId()) {
-                                    ePackageSpinner.add(pro.getPackages().get(i));
-                                }
+                        ePackageSpinner.add(new PackageModel("Please Select Package", "", 0, 0, 0));
+                        for (int i = 0; i < pro.getPackages().size(); i++) {
+                            if (pro.getPackages().get(i).getEventTypeId() == sType.getId()) {
+                                ePackageSpinner.add(pro.getPackages().get(i));
                             }
+                        }
 
-                            ArrayAdapter<PackageModel> typePackage = new ArrayAdapter<PackageModel>(getContext(), android.R.layout.simple_spinner_item, ePackageSpinner);
+                        ArrayAdapter<PackageModel> typePackage = new ArrayAdapter<PackageModel>(getContext(), android.R.layout.simple_spinner_item, ePackageSpinner);
 
-                            typePackage.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
-                            ePackage.setAdapter(typePackage);
+                        typePackage.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+                        ePackage.setAdapter(typePackage);
 
-                        if (ePackageSpinner.size()==1){
+                        if (ePackageSpinner.size() == 1) {
                             ePackage.setVisibility(View.GONE);
                             view_bookig.setVisibility(View.GONE);
-                            Toast.makeText(getContext(), "Sorry the Photographer doesn`t have packages ", Toast.LENGTH_LONG).show();}
+                            Toast.makeText(getContext(), "Sorry the Photographer doesn`t have packages ", Toast.LENGTH_LONG).show();
+                        }
 
                     }
 
@@ -535,12 +535,13 @@ public class Booking extends StepProgressBar implements View.OnClickListener, Ad
                 break;
             }
             case R.id.booking_spiner_package: {
-                if (position>0){
-                packageData = ePackageSpinner.get(position);
-                boolPackageType=true;
+                if (position > 0) {
+                    packageData = ePackageSpinner.get(position);
+                    boolPackageType = true;
 
 
-            }}
+                }
+            }
             case R.id.booking_spinner_photoshare: {
 
                 sSharingOption = photoShareSpinner.get(position);
@@ -624,7 +625,7 @@ public class Booking extends StepProgressBar implements View.OnClickListener, Ad
         }
     }
 
-    public boolean proceedbtn(Boolean boolDate, Boolean booltime, Boolean boolType, Boolean boolAddress, Boolean fromto, Boolean from, boolean to, Boolean boolshareable,Boolean x) {
+    public boolean proceedbtn(Boolean boolDate, Boolean booltime, Boolean boolType, Boolean boolAddress, Boolean fromto, Boolean from, boolean to, Boolean boolshareable, Boolean x) {
         Boolean tfinal = false;
         if (booltime == false) {
             if (from == true && to == true) {
@@ -648,8 +649,10 @@ public class Booking extends StepProgressBar implements View.OnClickListener, Ad
         if (boolType == false) {
             Toast.makeText(getContext(), "Please Select Event Type", Toast.LENGTH_LONG).show();
         }
-        if (x==false){ Toast.makeText(getContext(), "Please Select Package", Toast.LENGTH_LONG).show();}
-        if (boolAddress == true && boolDate == true && boolshareable == true && boolType == true && tfinal == true&&x==true) {
+        if (x == false) {
+            Toast.makeText(getContext(), "Please Select Package", Toast.LENGTH_LONG).show();
+        }
+        if (boolAddress == true && boolDate == true && boolshareable == true && boolType == true && tfinal == true && x == true) {
             return true;
         } else {
             return false;

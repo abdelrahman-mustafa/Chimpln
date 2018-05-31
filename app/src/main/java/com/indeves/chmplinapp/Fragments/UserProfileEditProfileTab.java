@@ -1,24 +1,22 @@
 package com.indeves.chmplinapp.Fragments;
 
 import android.app.ActionBar;
+import android.content.Context;
+import android.content.ContextWrapper;
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.annotation.Nullable;
-import android.support.design.widget.TabLayout;
-import android.support.v4.app.FragmentManager;
-import android.support.v4.app.FragmentPagerAdapter;
-import android.support.v4.view.ViewPager;
-import android.text.method.KeyListener;
 import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
 import android.widget.EditText;
-import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -29,22 +27,23 @@ import com.indeves.chmplinapp.API.ReadData;
 import com.indeves.chmplinapp.API.WriteData;
 import com.indeves.chmplinapp.Models.UserData;
 import com.indeves.chmplinapp.R;
-import com.indeves.chmplinapp.Utility.CircleTransform;
-import com.squareup.picasso.Picasso;
 
+import java.io.File;
+import java.io.FileInputStream;
 import java.io.FileNotFoundException;
+import java.io.FileOutputStream;
+import java.io.IOException;
 import java.io.InputStream;
-import java.util.ArrayList;
-import java.util.List;
+import java.util.Date;
 
 import static android.app.Activity.RESULT_OK;
 
 public class UserProfileEditProfileTab extends android.support.v4.app.Fragment implements FirebaseEventsListener, View.OnClickListener {
-
     TextView email, mobileNumber, editFirstName, editLastName, editLocation, editGender;
     EditText firstName, lastName, gender, location;
     Button saveChanges;
-    ImageView image;
+    //   ImageView image;
+    com.joooonho.SelectableRoundedImageView image;
     Bitmap selectedImage;
     private static int RESULT_LOAD_IMAGE = 1;
 
@@ -63,21 +62,21 @@ public class UserProfileEditProfileTab extends android.support.v4.app.Fragment i
         email = rootView.findViewById(R.id.email);
         mobileNumber = rootView.findViewById(R.id.userMobileNumber_textView);
         firstName = rootView.findViewById(R.id.editProf_TextView_first_name);
-       // firstName.setEnabled(false);
-        editFirstName = rootView.findViewById(R.id.editFirstName_textView);
-        editFirstName.setOnClickListener(this);
+        // firstName.setEnabled(false);
+        //editFirstName = rootView.findViewById(R.id.editFirstName_textView);
+        //editFirstName.setOnClickListener(this);
         lastName = rootView.findViewById(R.id.editProf_TextView_last_name);
-       // lastName.setEnabled(false);
-        editLastName = rootView.findViewById(R.id.editLastName_textView);
-        editLastName.setOnClickListener(this);
+        // lastName.setEnabled(false);
+        //editLastName = rootView.findViewById(R.id.editLastName_textView);
+        //editLastName.setOnClickListener(this);
         location = rootView.findViewById(R.id.editProf_TextView_location);
-       // location.setEnabled(false);
-        editLocation = rootView.findViewById(R.id.editLocation_textView);
-        editLocation.setOnClickListener(this);
+        // location.setEnabled(false);
+       // editLocation = rootView.findViewById(R.id.editLocation_textView);
+        //editLocation.setOnClickListener(this);
         gender = rootView.findViewById(R.id.editProf_TextView_gender);
-       // gender.setEnabled(false);
-        editGender = rootView.findViewById(R.id.editGender_textView);
-        editGender.setOnClickListener(this);
+        // gender.setEnabled(false);
+        //editGender = rootView.findViewById(R.id.editGender_textView);
+        //editGender.setOnClickListener(this);
         image = rootView.findViewById(R.id.user_image);
         image.setOnClickListener(this);
         saveChanges = rootView.findViewById(R.id.userEditProfile_save_button);
@@ -91,6 +90,22 @@ public class UserProfileEditProfileTab extends android.support.v4.app.Fragment i
         if (FirebaseAuth.getInstance().getCurrentUser() != null) {
             ReadData readData = new ReadData(this);
             readData.getUserInfoById(FirebaseAuth.getInstance().getCurrentUser().getUid());
+        }
+
+
+        SharedPreferences shre = PreferenceManager.getDefaultSharedPreferences(getContext());
+        String imagePath = shre.getString("imagepath", "0");
+
+        if (!imagePath.equals("0")) {
+            File fp = new File(imagePath);
+            Bitmap b = null;
+            try {
+                b = BitmapFactory.decodeStream(new FileInputStream(fp));
+                image.setImageBitmap(b);
+
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+            }
         }
         return rootView;
 
@@ -149,7 +164,8 @@ public class UserProfileEditProfileTab extends android.support.v4.app.Fragment i
         } else if (v == editGender) {
             gender.setEnabled(true);
             gender.requestFocus();
-        } else*/ if (v == saveChanges) {
+        } else*/
+        if (v == saveChanges) {
 
             Log.v("Edit profile", "Edit profile save button clicked");
             WriteData writeData = new WriteData(this);
@@ -164,11 +180,12 @@ public class UserProfileEditProfileTab extends android.support.v4.app.Fragment i
                 Toast.makeText(getContext(), getResources().getString(R.string.error_not_authenticated), Toast.LENGTH_SHORT).show();
                 e.printStackTrace();
             }
-        }else if (v == image){
+        } else if (v == image) {
             getImage();
         }
 
     }
+
     private void getImage() {
 
         Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
@@ -182,11 +199,19 @@ public class UserProfileEditProfileTab extends android.support.v4.app.Fragment i
 
         if (resultCode == RESULT_OK && reqCode == RESULT_LOAD_IMAGE) {
             try {
-                final Uri imageUri = data.getData();
-                final InputStream imageStream = getActivity().getContentResolver().openInputStream(imageUri);
-                selectedImage = BitmapFactory.decodeStream(imageStream);
-            //   image.setImageBitmap(Bitmap.createScaledBitmap(selectedImage, 300, 300, false));
-                Picasso.with(getContext()).load(imageUri).resize(300, 300).transform(new CircleTransform()).into(image);
+
+                Uri imageUri = data.getData();
+                final InputStream imageStream = getContext().getContentResolver().openInputStream(imageUri);
+                final Bitmap selectedImage = BitmapFactory.decodeStream(imageStream);
+                image.setImageBitmap(Bitmap.createScaledBitmap(selectedImage, 300, 500, false));
+                image.setImageBitmap(selectedImage);
+
+                String s = saveInInternalStorage(selectedImage);
+                SharedPreferences shre = PreferenceManager.getDefaultSharedPreferences(getContext());
+                SharedPreferences.Editor edit = shre.edit();
+                edit.putString("imagepath", s);
+                edit.apply();
+                //   Picasso.with(getContext()).load(imageUri).resize(300, 300).transform(new CircleTransform()).into(image);
 
             } catch (FileNotFoundException e) {
                 e.printStackTrace();
@@ -196,5 +221,34 @@ public class UserProfileEditProfileTab extends android.support.v4.app.Fragment i
         } else {
             Toast.makeText(getContext(), "You haven't picked Image", Toast.LENGTH_LONG).show();
         }
+    }
+
+
+    private String saveInInternalStorage(Bitmap bitmapImage) {
+        ContextWrapper cw = new ContextWrapper(getContext());
+        // path to /data/data/yourapp/app_data/imageDir
+        File directory = cw.getDir("imageDir", Context.MODE_PRIVATE);
+        // Create imageDir
+        Date date = new Date();
+        File mypath = new File(directory, String.valueOf(date.getDate()) + "profile.jpg");
+
+        FileOutputStream fos = null;
+        try {
+            fos = new FileOutputStream(mypath);
+            // Use the compress method on the BitMap object to write image to the OutputStream
+            bitmapImage.compress(Bitmap.CompressFormat.JPEG, 100, fos);
+        } catch (Exception e) {
+            e.printStackTrace();
+        } finally {
+            try {
+                assert fos != null;
+                fos.close();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+        }
+        return mypath.getAbsolutePath();
+
+
     }
 }

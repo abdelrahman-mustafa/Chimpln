@@ -4,6 +4,9 @@ import android.app.ActionBar;
 import android.app.DatePickerDialog;
 import android.app.ProgressDialog;
 import android.content.Context;
+import android.content.Intent;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.net.Uri;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
@@ -24,17 +27,23 @@ import android.widget.Toast;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
+import com.indeves.chmplinapp.API.CloudStorageAPI;
 import com.indeves.chmplinapp.API.FirebaseEventsListener;
 import com.indeves.chmplinapp.API.ReadData;
 import com.indeves.chmplinapp.API.WriteData;
 import com.indeves.chmplinapp.Activities.ProLandingPage;
+import com.indeves.chmplinapp.Activities.ProRegActivity;
 import com.indeves.chmplinapp.Models.ProUserModel;
 import com.indeves.chmplinapp.Models.UserData;
 import com.indeves.chmplinapp.R;
 import com.indeves.chmplinapp.Utility.CircleTransform;
 import com.squareup.picasso.Picasso;
 
+import java.io.FileNotFoundException;
+import java.io.InputStream;
 import java.util.Calendar;
+
+import static android.app.Activity.RESULT_OK;
 
 
 public class ProEditProfileFragment extends Fragment implements FirebaseEventsListener, View.OnClickListener {
@@ -48,6 +57,7 @@ public class ProEditProfileFragment extends Fragment implements FirebaseEventsLi
     private int month;
     private int day;
     Button saveChanges;
+    Bitmap selectImage;
 
     private DatePickerDialog.OnDateSetListener datePickerListener
             = new DatePickerDialog.OnDateSetListener() {
@@ -92,6 +102,7 @@ public class ProEditProfileFragment extends Fragment implements FirebaseEventsLi
         }
         email = rootView.findViewById(R.id.proProfile_mail);
         profileImage = rootView.findViewById(R.id.pro_profile_pic);
+        profileImage.setOnClickListener(this);
         mobileNumber = rootView.findViewById(R.id.proProfile_mobileNumber);
         firstName = rootView.findViewById(R.id.editProfile_user_firstName_textView);
         //firstName.setEnabled(false);
@@ -109,7 +120,7 @@ public class ProEditProfileFragment extends Fragment implements FirebaseEventsLi
         //city.setEnabled(false);
         area = rootView.findViewById(R.id.editProfile_user_state);
         //area.setEnabled(false);
-        editFirstName = rootView.findViewById(R.id.editProfile_edit_firstName_textView);
+   /*     editFirstName = rootView.findViewById(R.id.editProfile_edit_firstName_textView);
         editLastName = rootView.findViewById(R.id.editProfile_edit_lastName_textView);
         editBirthDate = rootView.findViewById(R.id.editProfile_edit_birthDate_textView);
         editGender = rootView.findViewById(R.id.editProfile_edit_gender_textView);
@@ -124,10 +135,9 @@ public class ProEditProfileFragment extends Fragment implements FirebaseEventsLi
         editCountry.setOnClickListener(this);
         editCity.setOnClickListener(this);
         editArea.setOnClickListener(this);
-        editGender.setOnClickListener(this);
+        editGender.setOnClickListener(this);*/
         saveChanges = rootView.findViewById(R.id.userEditProfile_save_button);
         saveChanges.setOnClickListener(this);
-
         progressDialog = new ProgressDialog(getContext());
         progressDialog.setMessage("Loading profile data");
         progressDialog.setCanceledOnTouchOutside(false);
@@ -161,14 +171,7 @@ public class ProEditProfileFragment extends Fragment implements FirebaseEventsLi
     @Override
     public boolean onOptionsItemSelected(MenuItem item) {
         if (item.getItemId() == R.id.pro_profile_menu_save) {
-            editFirstName.setEnabled(false);
-            editArea.setEnabled(false);
-            editCity.setEnabled(false);
-            editCountry.setEnabled(false);
-            editExperience.setEnabled(false);
-            editGender.setEnabled(false);
-            editLastName.setEnabled(false);
-            editBirthDate.setEnabled(false);
+
             WriteData writeData = new WriteData(ProEditProfileFragment.this);
             ProUserModel userData = new ProUserModel();
             userData.setName(firstName.getText().toString());
@@ -289,7 +292,40 @@ public class ProEditProfileFragment extends Fragment implements FirebaseEventsLi
                 Toast.makeText(getContext(), getResources().getString(R.string.error_not_authenticated), Toast.LENGTH_SHORT).show();
                 e.printStackTrace();
             }
+        }else  if (v==profileImage){
+
+            getImage(0);
         }
 
     }
+    private void getImage(int RESULT_LOAD) {
+
+        Intent photoPickerIntent = new Intent(Intent.ACTION_PICK);
+        photoPickerIntent.setType("image/*");
+        startActivityForResult(photoPickerIntent, RESULT_LOAD);
+    }
+
+    @Override
+    public void onActivityResult(int reqCode, int resultCode, Intent data) {
+        super.onActivityResult(reqCode, resultCode, data);
+
+
+        if (resultCode == RESULT_OK && reqCode == 0) {
+            try {
+                final Uri imageUri = data.getData();
+                final InputStream imageStream = getActivity().getContentResolver().openInputStream(imageUri);
+                selectImage = BitmapFactory.decodeStream(imageStream);
+//                pic.setImageBitmap(Bitmap.createScaledBitmap(selectImage, 300, 300, false));
+                Picasso.with(getContext()).load(imageUri).resize(300, 300).transform(new CircleTransform()).into(profileImage);
+
+            } catch (FileNotFoundException e) {
+                e.printStackTrace();
+                Toast.makeText(getContext(), "Something went wrong", Toast.LENGTH_LONG).show();
+            }
+
+        }else {
+            Toast.makeText(getContext(), "You haven't picked Image", Toast.LENGTH_LONG).show();
+        }
+    }
+
 }

@@ -265,7 +265,7 @@ public class UserProfilePhotographersTabSearchOutput extends android.support.v4.
 
 
         setRecyclerViewLayoutManager(mCurrentLayoutManagerType);
-        userAccPhotographersAdaptor = new UserAccPhotographersAdaptor(pros);
+        userAccPhotographersAdaptor = new UserAccPhotographersAdaptor(getContext(),pros);
         recyclerView.addOnItemTouchListener(new RecyclerTouchListener(
                 recyclerView, new ClickListener() {
             @Override

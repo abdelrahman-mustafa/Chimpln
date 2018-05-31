@@ -1,15 +1,21 @@
 package com.indeves.chmplinapp.Fragments;
 
 import android.annotation.SuppressLint;
+import android.app.Dialog;
 import android.app.ProgressDialog;
 import android.content.Context;
 import android.os.Bundle;
 import android.support.v4.app.Fragment;
+import android.support.v4.app.FragmentTransaction;
 import android.support.v7.widget.GridLayoutManager;
 import android.support.v7.widget.RecyclerView;
+import android.view.GestureDetector;
 import android.view.LayoutInflater;
+import android.view.MotionEvent;
 import android.view.View;
 import android.view.ViewGroup;
+import android.view.Window;
+import android.widget.ImageView;
 
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
@@ -21,8 +27,12 @@ import com.indeves.chmplinapp.Adapters.LastWorkImagesAdapter;
 import com.indeves.chmplinapp.Adapters.UserProLastWorkImagesAdapter;
 import com.indeves.chmplinapp.Models.EventModel;
 import com.indeves.chmplinapp.R;
+import com.indeves.chmplinapp.Utility.ClickListener;
+import com.squareup.picasso.Picasso;
 
 import java.util.ArrayList;
+
+import static android.view.View.GONE;
 
 
 public class User_photographer_LastWork extends Fragment implements FirebaseEventsListener {
@@ -33,6 +43,7 @@ public class User_photographer_LastWork extends Fragment implements FirebaseEven
     ProgressDialog progressDialog;
 
     String Uid;
+
     @SuppressLint("ValidFragment")
     public User_photographer_LastWork(String Uid) {
 
@@ -43,6 +54,7 @@ public class User_photographer_LastWork extends Fragment implements FirebaseEven
     public User_photographer_LastWork() {
         // Required empty public constructor
     }
+
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
@@ -64,6 +76,27 @@ public class User_photographer_LastWork extends Fragment implements FirebaseEven
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getContext(), 3);
         recyclerView.setLayoutManager(layoutManager);
 
+        recyclerView.addOnItemTouchListener(new User_photographer_LastWork.RecyclerTouchListener(
+                recyclerView, new ClickListener() {
+            @Override
+            public void onClick(View view, final int position) {
+
+                // inlarge the view of the selected image from last work
+                Dialog settingsDialog = new Dialog(getContext());
+                settingsDialog.getWindow().requestFeature(Window.FEATURE_NO_TITLE);
+                settingsDialog.setContentView(getLayoutInflater().inflate(R.layout.image_layout
+                        , null));
+                ImageView imageVie = settingsDialog.findViewById(R.id.photo_pic_image);
+                Picasso.with(getContext()).load(images.get(position)).into(imageVie);
+                settingsDialog.show();
+
+            }
+
+            @Override
+            public void onLongClick(View view, int position) {
+
+            }
+        }));
         images = new ArrayList<>();
         lastWorkImagesAdapter = new UserProLastWorkImagesAdapter(getContext(), images);
         return rootView;
@@ -101,6 +134,51 @@ public class User_photographer_LastWork extends Fragment implements FirebaseEven
             progressDialog.dismiss();
             recyclerView.setAdapter(lastWorkImagesAdapter);
             lastWorkImagesAdapter.notifyDataSetChanged();
+        }
+    }
+
+    class RecyclerTouchListener implements RecyclerView.OnItemTouchListener {
+
+        private ClickListener clicklistener;
+        private GestureDetector gestureDetector;
+
+        public RecyclerTouchListener(final RecyclerView recycleView, final ClickListener clicklistener) {
+
+            this.clicklistener = clicklistener;
+            gestureDetector = new GestureDetector(getContext(), new GestureDetector.SimpleOnGestureListener() {
+                @Override
+                public boolean onSingleTapUp(MotionEvent e) {
+                    return true;
+                }
+
+                @Override
+                public void onLongPress(MotionEvent e) {
+                    View child = recycleView.findChildViewUnder(e.getX(), e.getY());
+                    if (child != null && clicklistener != null) {
+                        clicklistener.onLongClick(child, recycleView.getChildAdapterPosition(child));
+                    }
+                }
+            });
+        }
+
+        @Override
+        public boolean onInterceptTouchEvent(RecyclerView rv, MotionEvent e) {
+            View child = rv.findChildViewUnder(e.getX(), e.getY());
+            if (child != null && clicklistener != null && gestureDetector.onTouchEvent(e)) {
+                clicklistener.onClick(child, rv.getChildAdapterPosition(child));
+            }
+
+            return false;
+        }
+
+        @Override
+        public void onTouchEvent(RecyclerView rv, MotionEvent e) {
+
+        }
+
+        @Override
+        public void onRequestDisallowInterceptTouchEvent(boolean disallowIntercept) {
+
         }
     }
 }
