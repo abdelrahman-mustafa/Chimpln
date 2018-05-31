@@ -49,24 +49,23 @@ public class UserProfilePhotographersTabSearchSelect extends android.support.v4.
     Calendar calendar;
     ImageView getDate;
     int year, month, day;
+    int dpyear, dpday, dpmonth;
     String selectedGender;
     String selectedCity;
     TextView date;
     LookUpModel selectedEventType, selectedEventTime;
     LinearLayout linear;
-    private DatePickerDialog.OnDateSetListener myDateListener = new
-            DatePickerDialog.OnDateSetListener() {
-                @Override
-                public void onDateSet(DatePicker arg0,
-                                      int arg1, int arg2, int arg3) {
-                    // TODO Auto-generated method stub
-                    // arg1 = year
-                    // arg2 = month
-                    // arg3 = day
-//                    String ageString = String.valueOf(arg3) + "-" + String.valueOf(arg2) + "-" + String.valueOf(arg1);
-                    selectedBirthDate = String.valueOf(arg3) + "-" + String.valueOf(arg2 + 1) + "-" + String.valueOf(arg1);
-                }
-            };
+    private DatePickerDialog.OnDateSetListener dlistener = new DatePickerDialog.OnDateSetListener() {
+        @Override
+        public void onDateSet(DatePicker datePicker, int i, int i1, int i2) {
+            dpyear = i;
+            dpmonth = i1 + 1;
+            dpday = i2;
+            String[] months = {"Jan", "Feb", "Mar", "Apr", "May", "Jun", "Jul", "Aug", "Sep", "Oct", "Nov", "Dec"};
+            date.setText(String.valueOf(dpday) + "-" + months[dpmonth - 1] + "-" + String.valueOf(dpyear));
+
+        }
+    };
 
     public UserProfilePhotographersTabSearchSelect() {
     }
@@ -87,7 +86,7 @@ public class UserProfilePhotographersTabSearchSelect extends android.support.v4.
         day = calendar.get(Calendar.DAY_OF_MONTH);
         spinCity = rootView.findViewById(R.id.userProfile_phot_spinner_city);
         spinCity.setOnItemSelectedListener(this);
-
+        selectedDate =  rootView.findViewById(R.id.date);
         date = rootView.findViewById(R.id.date);
         spinGender = rootView.findViewById(R.id.userProfile_phot_spinner_gender);
         spinGender.setOnItemSelectedListener(this);
@@ -101,10 +100,9 @@ public class UserProfilePhotographersTabSearchSelect extends android.support.v4.
         getDate.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-
-
-                DialogFragment newFragment = new MyDatePickerFragment();
-                newFragment.show(getFragmentManager(), "DatePicker");
+                DatePickerDialog c = new DatePickerDialog(getContext(), dlistener, dpyear, dpmonth, dpday);
+                c.getDatePicker().setMinDate(new Date().getTime());
+                c.show();
 
             }
         });

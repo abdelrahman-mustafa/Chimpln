@@ -55,7 +55,9 @@ public class PaymentFragment extends StepProgressBar implements View.OnClickList
     public PaymentFragment(String proId, EventModel selectedEvent) {
         this.selectedProId = proId;
         this.selectedEvent = selectedEvent;
-        this.selectedPackagePrice = selectedEvent.getSelectedPackage().getPrice();
+        if (selectedEvent.getSelectedPackage() != null) {
+            this.selectedPackagePrice = selectedEvent.getSelectedPackage().getPrice();
+        }
     }
 
 

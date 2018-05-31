@@ -203,7 +203,9 @@ public class UserEventHistoryItemDetails extends Fragment implements FirebaseEve
     private void displayEventData() {
 
         if (selectedEvent != null) {
-            images.addAll(selectedEvent.getEventImagesUrls());
+            if (selectedEvent.getEventImagesUrls()!=null) {
+                images.addAll(selectedEvent.getEventImagesUrls());
+            }
             name.setText(selectedEvent.getBookerUserName());
             String[] eventDateParts = selectedEvent.getEventDate().split("-");
             day.setText(eventDateParts[0]);

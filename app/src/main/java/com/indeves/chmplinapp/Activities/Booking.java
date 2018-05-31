@@ -169,10 +169,10 @@ public class Booking extends StepProgressBar implements View.OnClickListener, Ad
         proName = (TextView) rootview.findViewById(R.id.booking_textView_proname);
         proDetails = (TextView) rootview.findViewById(R.id.booking_textview_prodetails);
         proPhoto = (ImageView) rootview.findViewById(R.id.booking_imageView_prophoto);
-        proedit = (Button) rootview.findViewById(R.id.booking_button_edit);
+      //  proedit = (Button) rootview.findViewById(R.id.booking_button_edit);
         proceed = (Button) rootview.findViewById(R.id.booking_proceed_button);
         proceed.setOnClickListener(this);
-        proedit.setOnClickListener(this);
+     //   proedit.setOnClickListener(this);
         eTime = (Spinner) rootview.findViewById(R.id.booking_spinner_etime);
         eType = (Spinner) rootview.findViewById(R.id.booking_spiner_etype);
         photoShare = (Spinner) rootview.findViewById(R.id.booking_spinner_photoshare);
@@ -511,7 +511,7 @@ public class Booking extends StepProgressBar implements View.OnClickListener, Ad
 
                         ePackageSpinner.add(new PackageModel("Please Select Package", "", 0, 0, 0));
                         for (int i = 0; i < pro.getPackages().size(); i++) {
-                            if (pro.getPackages().get(i).getEventTypeId() == sType.getId()) {
+                            if (pro.getPackages().get(i).getEventTypeId() == sType.getId()&& pro.getPackages().get(i).getEventTimeId() == sTime.getId()) {
                                 ePackageSpinner.add(pro.getPackages().get(i));
                             }
                         }

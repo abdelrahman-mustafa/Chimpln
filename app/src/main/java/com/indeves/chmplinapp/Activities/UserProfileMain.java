@@ -17,6 +17,7 @@ import android.util.Log;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
+import android.view.WindowManager;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
 import android.widget.RatingBar;
@@ -51,6 +52,7 @@ public class UserProfileMain extends AppCompatActivity implements FirebaseEvents
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_profile_main);
+        getWindow().setFlags(WindowManager.LayoutParams.FLAG_SECURE, WindowManager.LayoutParams.FLAG_SECURE);
         //  viewPager = (ViewPager) findViewById(R.id.container);
         imageView = findViewById(R.id.userProfile_pic);
         bottomNavigation = (BottomNavigationView) findViewById(R.id.navigation);
