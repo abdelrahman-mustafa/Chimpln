@@ -4,9 +4,13 @@ package com.indeves.chmplinapp.Fragments;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
 import android.content.DialogInterface;
+import android.content.Intent;
+import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.preference.PreferenceManager;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
+import android.util.Log;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -14,23 +18,36 @@ import android.widget.Button;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import com.android.volley.Response;
+import com.android.volley.VolleyError;
+import com.android.volley.toolbox.JsonObjectRequest;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
 import com.indeves.chmplinapp.API.FirebaseEventsListener;
 import com.indeves.chmplinapp.API.ReadData;
 import com.indeves.chmplinapp.API.WriteData;
+import com.indeves.chmplinapp.Activities.ProRegActivity;
+import com.indeves.chmplinapp.Activities.RespondToServerActivity;
 import com.indeves.chmplinapp.Models.EventModel;
 import com.indeves.chmplinapp.Models.LookUpModel;
 import com.indeves.chmplinapp.R;
+import com.indeves.chmplinapp.Utility.AppController;
+
+import org.json.JSONException;
+import org.json.JSONObject;
 
 import java.util.ArrayList;
 import java.util.List;
+
+import static android.content.Context.MODE_PRIVATE;
+import static com.android.volley.Request.Method.POST;
 
 
 public class ProEventResponse extends Fragment implements View.OnClickListener, FirebaseEventsListener {
     private static final String ARG_PARAM1 = "selectedEvent";
     List<LookUpModel> eventTypes, eventTimes, sharingOptions;
     ReadData readData;
+    JSONObject jsonObject;
     ProgressDialog progressDialog;
     private EventModel selectedEvent;
     private Button accept, reject;
@@ -88,6 +105,11 @@ public class ProEventResponse extends Fragment implements View.OnClickListener, 
     @Override
     public void onClick(View v) {
         if (v == accept) {
+
+
+
+
+
             int eventsCount = 0;
             for (EventModel eventModel : proEvents) {
                 if (eventModel.getEventDate().equals(selectedEvent.getEventDate())) {
@@ -106,6 +128,38 @@ public class ProEventResponse extends Fragment implements View.OnClickListener, 
                                 WriteData writeData = new WriteData(ProEventResponse.this);
                                 try {
                                     writeData.respondToEvent("accepted", selectedEvent.getEventId());
+
+                                    String params_Date =
+                                            ("{" + " \"name\":" + "\"" + selectedEvent.getPhotographerName() + "\"" + ","
+                                                    + " \"description\":" + "\"" + "user name:"+ selectedEvent.getBookerUserName() + "\n" + "date:"+selectedEvent.getEventDate() + ","+ "city:"+ selectedEvent.getEventCity() + "\n"  +"status:" +selectedEvent.getEventStatus()+ "\n"+ selectedEvent.getEndTime()+ "\n"+"\""
+                                                    + "\"image\":" +  "\"" + ""+ "\""
+                                                    + "}");
+                                    try {
+                                        jsonObject = new JSONObject(params_Date);
+
+                                        Log.i("request", jsonObject.toString());
+                                    } catch (JSONException e) {
+                                        e.printStackTrace();
+                                    }
+
+                                    String url = "http://206.189.96.67/v1/request";
+                                    JsonObjectRequest stringRequest = new JsonObjectRequest(POST, url, jsonObject,
+                                            new Response.Listener<JSONObject>() {
+                                                @Override
+                                                public void onResponse(JSONObject response) {
+                                                    // here do what we want with the response
+                                                }
+                                            }, new Response.ErrorListener() {
+                                        @Override
+                                        public void onErrorResponse(VolleyError error) {
+
+
+                                        }
+                                    });
+
+                                    AppController.getInstance().addToRequestQueue(stringRequest);
+
+
                                 } catch (Exception e) {
                                     e.printStackTrace();
                                 }
@@ -118,6 +172,38 @@ public class ProEventResponse extends Fragment implements View.OnClickListener, 
                 WriteData writeData = new WriteData(this);
                 try {
                     writeData.respondToEvent("accepted", selectedEvent.getEventId());
+
+                    String params_Date =
+                            ("{" + " \"name\":" + "\"" + selectedEvent.getPhotographerName() + "\"" + ","
+                                    + " \"description\":" + "\"" + "user name:"+ selectedEvent.getBookerUserName() + "\n" + "date:"+selectedEvent.getEventDate() + ","+ "city:"+ selectedEvent.getEventCity() + "\n"  +"status:" +selectedEvent.getEventStatus()+ "\n"+ selectedEvent.getEndTime()+ "\n"+"\""
+                                    + "\"image\":" +  "\"" + ""+ "\""
+                                    + "}");
+                    try {
+                        jsonObject = new JSONObject(params_Date);
+
+                        Log.i("request", jsonObject.toString());
+                    } catch (JSONException e) {
+                        e.printStackTrace();
+                    }
+
+                    String url = "http://206.189.96.67/v1/request";
+                    JsonObjectRequest stringRequest = new JsonObjectRequest(POST, url, jsonObject,
+                            new Response.Listener<JSONObject>() {
+                                @Override
+                                public void onResponse(JSONObject response) {
+                                    // here do what we want with the response
+                                }
+                            }, new Response.ErrorListener() {
+                        @Override
+                        public void onErrorResponse(VolleyError error) {
+
+
+                        }
+                    });
+
+                    AppController.getInstance().addToRequestQueue(stringRequest);
+
+
                 } catch (Exception e) {
                     e.printStackTrace();
                 }
@@ -128,6 +214,38 @@ public class ProEventResponse extends Fragment implements View.OnClickListener, 
             WriteData writeData = new WriteData(this);
             try {
                 writeData.respondToEvent("rejected", selectedEvent.getEventId());
+
+                String params_Date =
+                        ("{" + " \"name\":" + "\"" + selectedEvent.getPhotographerName() + "\"" + ","
+                                + " \"description\":" + "\"" + "user name:"+ selectedEvent.getBookerUserName() + "\n" + "date:"+selectedEvent.getEventDate() + ","+ "city:"+ selectedEvent.getEventCity() + "\n"  +"status:" +selectedEvent.getEventStatus()+ "\n"+ selectedEvent.getEndTime()+ "\n"+"\""
+                                + "\"image\":" +  "\"" + ""+ "\""
+                                + "}");
+                try {
+                    jsonObject = new JSONObject(params_Date);
+
+                    Log.i("request", jsonObject.toString());
+                } catch (JSONException e) {
+                    e.printStackTrace();
+                }
+
+                String url = "http://206.189.96.67/v1/request";
+                JsonObjectRequest stringRequest = new JsonObjectRequest(POST, url, jsonObject,
+                        new Response.Listener<JSONObject>() {
+                            @Override
+                            public void onResponse(JSONObject response) {
+                                // here do what we want with the response
+                            }
+                        }, new Response.ErrorListener() {
+                    @Override
+                    public void onErrorResponse(VolleyError error) {
+
+
+                    }
+                });
+
+                AppController.getInstance().addToRequestQueue(stringRequest);
+
+
             } catch (Exception e) {
                 e.printStackTrace();
             }
