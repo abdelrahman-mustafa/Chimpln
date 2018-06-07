@@ -45,6 +45,7 @@ public class Auth implements FirebaseEventsListener {
     private FirebaseAuth mAuth;
     private AuthenticationInterface.SignInWithPhoneAuthCredentialListener signInWithPhoneAuthCredentialListener;
     private AuthenticationInterface.LoginListener loginListener;
+    private AuthenticationInterface.ForgetPassListener forgetPassListener;
     private AuthenticationInterface.SinUpListener sinUpListener;
     private AuthenticationInterface.PhoneVerificationListener phoneVerificationListener;
 
@@ -168,6 +169,23 @@ public class Auth implements FirebaseEventsListener {
 
     public void setContext(Context context) {
         this.context = context;
+    }
+
+    public void forgetPass(String email) {
+        FirebaseAuth auth = FirebaseAuth.getInstance();
+
+        auth.sendPasswordResetEmail(email)
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            Log.d("g", "Email sent.");
+                            if (forgetPassListener != null) {
+                                forgetPassListener.onForgetPassListener(true);
+                            }
+                        }
+                    }
+                });
     }
 
     public void signInWithPhoneAuthCredential(PhoneAuthCredential credential) {

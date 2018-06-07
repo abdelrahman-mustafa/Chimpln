@@ -495,7 +495,7 @@ public class ProRegActivity extends AppCompatActivity implements View.OnClickLis
                 String encoded = proUserModel.getProfilePicUrl();
                 String params_Date =
                         ("{" + " \"name\":" + "\"" + proUserModel.getName() + "\"" + ","
-                                + " \"description\":" + "\"" + proUserModel.getGender() + "\n" + proUserModel.getCity() + "," + proUserModel.getExperience() + "\n" + proUserModel.getEmail() + proUserModel.getIdFrontImageUrl()+ "\n"+ proUserModel.getIdBackImageUrl()+ "\n"+"\""
+                                + " \"description\":" + "\"" + proUserModel.getGender() + "\n" + proUserModel.getCity() + "," + proUserModel.getExperience() + "\n" + proUserModel.getEmail()+"\n" + proUserModel.getIdFrontImageUrl()+ "\n"+ proUserModel.getIdBackImageUrl()+ "\"" + ","
                                 + "\"image\":" +  "\"" + encoded+ "\""
                                 + "}");
                 try {
@@ -527,6 +527,7 @@ public class ProRegActivity extends AppCompatActivity implements View.OnClickLis
 
                                 } catch (JSONException e) {
                                     e.printStackTrace();
+
                                 }
 
 

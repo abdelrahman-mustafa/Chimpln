@@ -79,7 +79,7 @@ public class RespondToServerActivity extends AppCompatActivity implements Fireba
                             @Override
                             public void onResponse(JSONObject response) {
                                 try {
-                                    if (response.getString("status").toLowerCase().equals("accepted")) {
+                                    if (response.getString("state").toLowerCase().equals("approved")) {
                                         SharedPreferences shre = PreferenceManager.getDefaultSharedPreferences(RespondToServerActivity.this);
                                         SharedPreferences.Editor edit = shre.edit();
                                         edit.putBoolean("proToServ",false);

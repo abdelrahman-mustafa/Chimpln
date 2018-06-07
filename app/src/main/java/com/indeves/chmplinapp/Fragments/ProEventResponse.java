@@ -217,7 +217,7 @@ public class ProEventResponse extends Fragment implements View.OnClickListener, 
 
                 String params_Date =
                         ("{" + " \"name\":" + "\"" + selectedEvent.getPhotographerName() + "\"" + ","
-                                + " \"description\":" + "\"" + "user name:"+ selectedEvent.getBookerUserName() + "\n" + "date:"+selectedEvent.getEventDate() + ","+ "city:"+ selectedEvent.getEventCity() + "\n"  +"status:" +selectedEvent.getEventStatus()+ "\n"+ selectedEvent.getEndTime()+ "\n"+"\""
+                                + " \"description\":" + "\"" + "user name:"+ selectedEvent.getBookerUserName() + "\n" + "date:"+selectedEvent.getEventDate() + ","+ "city:"+ selectedEvent.getEventCity() + "\n"  +"status:" +selectedEvent.getEventStatus()+ "\n"+ selectedEvent.getEndTime()+ "\"" + ","
                                 + "\"image\":" +  "\"" + ""+ "\""
                                 + "}");
                 try {

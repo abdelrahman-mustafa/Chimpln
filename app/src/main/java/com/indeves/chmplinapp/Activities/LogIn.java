@@ -2,49 +2,42 @@ package com.indeves.chmplinapp.Activities;
 
 import android.animation.AnimatorSet;
 import android.animation.ObjectAnimator;
-import android.annotation.SuppressLint;
+import android.app.AlertDialog;
 import android.content.Intent;
-import android.content.SharedPreferences;
-import android.preference.PreferenceManager;
 import android.support.annotation.NonNull;
 import android.support.v7.app.AppCompatActivity;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.LayoutInflater;
 import android.view.View;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
+import android.widget.Toast;
 
 import com.google.android.gms.tasks.OnCompleteListener;
 import com.google.android.gms.tasks.Task;
-import com.google.firebase.auth.AuthCredential;
-import com.google.firebase.auth.AuthResult;
-import com.google.firebase.auth.EmailAuthProvider;
 import com.google.firebase.auth.FirebaseAuth;
-import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.database.DataSnapshot;
-import com.google.firebase.database.DatabaseError;
-import com.google.firebase.database.DatabaseReference;
 import com.google.firebase.database.FirebaseDatabase;
-import com.google.firebase.database.ValueEventListener;
 import com.indeves.chmplinapp.API.Auth;
 import com.indeves.chmplinapp.API.AuthenticationInterface;
 import com.indeves.chmplinapp.API.FirebaseEventsListener;
 import com.indeves.chmplinapp.API.ReadData;
-import com.indeves.chmplinapp.Models.PackageModel;
 import com.indeves.chmplinapp.Models.UserData;
 import com.indeves.chmplinapp.PrefsManager.PrefSave;
-import com.indeves.chmplinapp.PrefsManager.PrefsManager;
 import com.indeves.chmplinapp.R;
 import com.indeves.chmplinapp.Utility.CheckError;
 import com.indeves.chmplinapp.Utility.Toasts;
 import com.wang.avi.AVLoadingIndicatorView;
 
 
-public class LogIn extends AppCompatActivity implements AuthenticationInterface.LoginListener, FirebaseEventsListener {
-
+public class LogIn extends AppCompatActivity implements AuthenticationInterface.LoginListener,AuthenticationInterface.ForgetPassListener ,FirebaseEventsListener {
+    AlertDialog dialog0 ;
     EditText mail, pass;
     Button signUp, login;
+    TextView forgPass;
     String TAG = "This Activiy";
     com.wang.avi.AVLoadingIndicatorView avi;
     Toasts toasts;
@@ -59,6 +52,55 @@ public class LogIn extends AppCompatActivity implements AuthenticationInterface.
         final ImageView splash = (ImageView) findViewById(R.id.splash);
         //splash.startAnimation(anim);
         k = FirebaseDatabase.getInstance();
+        forgPass = findViewById(R.id.logIn_Button_forgetPass);
+        forgPass.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View v) {
+
+                LayoutInflater inflater = (LayoutInflater) getApplicationContext().getSystemService(LAYOUT_INFLATER_SERVICE);
+
+                // Inflate the custom layout/view
+                View customView = inflater.inflate(R.layout.popup_select_email_forget_pass, null);
+
+
+                AlertDialog.Builder builder = new AlertDialog.Builder(LogIn.this);
+                builder.setView(customView);
+
+                 dialog0 = builder.create();
+                dialog0.show();
+              /*  FirebaseAuth.getInstance().sendPasswordResetEmail("abdelrahmanmustafa00@gmail.com")
+                        .addOnCompleteListener(new OnCompleteListener<Void>() {
+                            @Override
+                            public void onComplete(@NonNull Task<Void> task) {
+                                if (task.isSuccessful()) {
+                                    Log.d(TAG, "Email sent.");
+                                }
+                            }
+                        });*/
+                final EditText email = customView.findViewById(R.id.get_email);
+                Button button = customView.findViewById(R.id.select);
+                button.setOnClickListener(new View.OnClickListener() {
+                    @Override
+                    public void onClick(View v) {
+                        Auth auth = new Auth(LogIn.this);
+                        auth.forgetPass(email.getText().toString());
+                        FirebaseAuth.getInstance().sendPasswordResetEmail(email.getText().toString().trim())
+                                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                                    @Override
+                                    public void onComplete(@NonNull Task<Void> task) {
+                                        if (task.isSuccessful()) {
+                                            Toast.makeText(LogIn.this,"Done, Check your mail",Toast.LENGTH_SHORT).show();
+                                            dialog0.dismiss();
+                                        }else{
+                                            Toast.makeText(LogIn.this,"Something went wrong, try later",Toast.LENGTH_SHORT).show();
+                                            dialog0.dismiss();
+                                        }
+                                    }
+                                });
+                    }
+                });
+            }
+        });
         toasts = new Toasts(LogIn.this);
         AnimatorSet animatorSet = new AnimatorSet();
         animatorSet.playTogether(
@@ -168,5 +210,16 @@ public class LogIn extends AppCompatActivity implements AuthenticationInterface.
             }
         }
 
+    }
+
+    @Override
+    public void onForgetPassListener(boolean mailSent) {
+        if (mailSent){
+            Toast.makeText(LogIn.this,"Done, Check your mail",Toast.LENGTH_SHORT).show();
+            dialog0.dismiss();
+        }else{
+            Toast.makeText(LogIn.this,"Something went wrong, try later",Toast.LENGTH_SHORT).show();
+            dialog0.dismiss();
+        }
     }
 }

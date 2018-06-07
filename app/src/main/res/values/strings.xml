@@ -25,6 +25,8 @@
     <string name="shareOption">Share Option</string>
     <string name="selectEvDate">Select event date</string>
     <string name="selectEvType">Select event type</string>
+    <string name="set_email">Enter your Email</string>
+
     <string name="city">City</string>
     <string name="search">Search</string>
     <string name="gender">Gender</string>
@@ -135,7 +137,7 @@
     <string name="next">Next</string>
     <string name="booking_note_mess">Please note: \n - 20% deposit must be paid whithin 48 hours. If not, the request will be cancelled automatically. \n - You can refund the full deposit up till 1 week before the event, 10% back till 48 hours. Zero before 48 hours only. /></string>
     <string name="booking_mess_collect_call">A collector will call you to collect the deposit to confirm your request.</string>
-    <string name="wait_mess">Waith the respond from our side to confirm your registration....</string>
+    <string name="wait_mess">Wait the respond from our side to confirm your registration....</string>
     <string name="check">Check with us</string>
 
 

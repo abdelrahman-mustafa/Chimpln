@@ -20,6 +20,10 @@ public class AuthenticationInterface {
     public interface SignInWithPhoneAuthCredentialListener {
         void onSignInWithPhoneAuthCredentialCompleted(boolean codeVerified);
     }
+    public interface ForgetPassListener {
+        void onForgetPassListener(boolean mailSent);
+    }
+
 
     public interface PhoneVerificationListener {
         void onVerificationCompleted(PhoneAuthCredential phoneAuthCredential);
