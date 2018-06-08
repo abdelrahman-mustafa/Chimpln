@@ -1,5 +1,5 @@
 <?xml version="1.0" encoding="utf-8"?>
-<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:app="http://schemas.android.com/apk/res-auto"
     xmlns:tools="http://schemas.android.com/tools"
     android:layout_width="match_parent"
@@ -7,19 +7,10 @@
     app:layout_behavior="@string/appbar_scrolling_view_behavior"
     tools:context="com.indeves.chmplinapp.Activities.Booking"
     tools:showIn="@layout/activity_booking">
-    <ScrollView
-        xmlns:android="http://schemas.android.com/apk/res/android"
-        android:layout_width="fill_parent"
-        android:layout_height="fill_parent">
-
-    </ScrollView>
 
     <RelativeLayout
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        android:layout_alignParentStart="true"
-        android:layout_alignParentTop="true"
-        android:layout_marginStart="23dp">
+        android:layout_height="wrap_content">
 
         <include
             layout="@layout/usage_stateprogressbar"
@@ -33,13 +24,10 @@
             android:layout_width="match_parent"
             android:layout_height="match_parent"
             android:layout_gravity="center"
-            android:layout_marginBottom="0dp"
             android:layout_marginLeft="30dp"
             android:layout_marginRight="30dp"
-            android:layout_marginTop="60dp"
-            android:orientation="vertical"
-            tools:layout_editor_absoluteX="40dp"
-            tools:layout_editor_absoluteY="21dp">
+            android:layout_marginTop="50dp"
+            android:orientation="vertical">
 
 
             <LinearLayout
@@ -60,40 +48,38 @@
                     android:src="@drawable/user" />
 
                 <TextView
-                    android:layout_weight=".0"
                     android:id="@+id/booking_textView_proname"
                     android:layout_width="wrap_content"
                     android:layout_height="fill_parent"
-                    android:paddingLeft="15sp"
                     android:layout_gravity="center"
+                    android:layout_weight=".0"
                     android:gravity="center|left"
+                    android:paddingLeft="15sp"
                     android:text="Ahmed"
                     android:textColor="@color/background_color"
                     android:textSize="17sp"
                     android:textStyle="bold" />
 
                 <TextView
-                    android:gravity="center"
-                    android:layout_gravity="center"
-                    android:layout_weight=".05"
                     android:id="@+id/booking_textview_prodetails"
                     android:layout_width="wrap_content"
                     android:layout_height="wrap_content"
+                    android:layout_gravity="center"
+                    android:layout_weight=".05"
+                    android:gravity="center"
                     android:paddingLeft="15sp"
                     android:text="cairo-male" />
 
 
-
-
             </LinearLayout>
 
-            <View
-                android:layout_width="match_parent"
-                android:layout_height="1dp"
-                android:layout_marginLeft="20dp"
-                android:layout_marginRight="20dp"
-                android:layout_marginTop="5dp"
-                android:background="@color/colorProfile" />
+            <!--<View-->
+            <!--android:layout_width="match_parent"-->
+            <!--android:layout_height="1dp"-->
+            <!--android:layout_marginLeft="20dp"-->
+            <!--android:layout_marginRight="20dp"-->
+            <!--android:layout_marginTop="5dp"-->
+            <!--android:background="@color/colorProfile" />-->
 
             <LinearLayout
                 android:layout_width="match_parent"
@@ -116,7 +102,6 @@
                         android:id="@+id/booking_textview_edate"
                         android:layout_width="90sp"
                         android:layout_height="30sp"
-
                         android:layout_weight="1"
                         android:clickable="true"
                         android:text="@string/sel_event_date"
@@ -133,8 +118,7 @@
                         android:text="@string/edit"
                         android:textColor="@color/colorAccent"
                         android:textDirection="inherit"
-                        android:textSize="10sp"
-                         />
+                        android:textSize="10sp" />
 
 
                 </LinearLayout>
@@ -267,8 +251,8 @@
                     android:hint="@string/address_note"
                     android:inputType="text"
                     android:lines="2"
-                    android:textSize="15sp"
-                    android:maxLines="4" />
+                    android:maxLines="4"
+                    android:textSize="15sp" />
 
                 <EditText
                     android:id="@+id/booking_editText_note"
@@ -299,6 +283,4 @@
         </android.support.design.widget.CoordinatorLayout>
     </RelativeLayout>
 
-</RelativeLayout>
-
-
+</ScrollView>
