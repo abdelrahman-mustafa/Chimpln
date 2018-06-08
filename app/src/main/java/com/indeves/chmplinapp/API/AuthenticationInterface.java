@@ -13,6 +13,9 @@ public class AuthenticationInterface {
         void onUserLoginComplete(boolean loginSuccessful);
     }
 
+    public interface DelUserListner {
+        void onDelUserListner(boolean delSuccessful);
+    }
     public interface SinUpListener {
         void onSignUpWithEmailAndPasswordComplete(boolean signUpSuccessful);
     }

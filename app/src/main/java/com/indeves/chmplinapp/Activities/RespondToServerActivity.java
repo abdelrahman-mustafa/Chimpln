@@ -19,6 +19,8 @@ import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
+import com.indeves.chmplinapp.API.Auth;
+import com.indeves.chmplinapp.API.AuthenticationInterface;
 import com.indeves.chmplinapp.API.FirebaseEventsListener;
 import com.indeves.chmplinapp.API.ReadData;
 import com.indeves.chmplinapp.Models.ProUserModel;
@@ -36,7 +38,7 @@ import java.io.ByteArrayOutputStream;
 import static com.android.volley.Request.Method.GET;
 import static com.android.volley.Request.Method.POST;
 
-public class RespondToServerActivity extends AppCompatActivity implements FirebaseEventsListener {
+public class RespondToServerActivity extends AppCompatActivity implements FirebaseEventsListener, AuthenticationInterface.DelUserListner {
 
     Button check;
     JSONObject jsonObject;
@@ -48,32 +50,32 @@ public class RespondToServerActivity extends AppCompatActivity implements Fireba
         setContentView(R.layout.activity_respond_to_server);
         check = findViewById(R.id.check);
 
-      //  String id = getIntent().getStringExtra("id");
+        //  String id = getIntent().getStringExtra("id");
         SharedPreferences editor = getSharedPreferences("checkDate", MODE_PRIVATE);
-       String id =  editor.getString("id", "0");
+        String id = editor.getString("id", "0");
 
         SharedPreferences shre = PreferenceManager.getDefaultSharedPreferences(RespondToServerActivity.this);
         SharedPreferences.Editor edit = shre.edit();
-        edit.putBoolean("proToServ",true);
+        edit.putBoolean("proToServ", true);
         edit.apply();
         check.setOnClickListener(new View.OnClickListener() {
             @Override
             public void onClick(View v) {
-                Log.i("ll","2222222");
+                Log.i("ll", "2222222");
                 if (FirebaseAuth.getInstance().getCurrentUser() != null) {/*
                     ReadData readData = new ReadData(RespondToServerActivity.this);
                     readData.getUserInfoById(FirebaseAuth.getInstance().getCurrentUser().getUid());*/
                 }
-               // String s = FirebaseAuth.getInstance().getCurrentUser().getUid();
-            //    ReadData readData = new ReadData();
-              //  readData.readUserInfo(s);
+                // String s = FirebaseAuth.getInstance().getCurrentUser().getUid();
+                //    ReadData readData = new ReadData();
+                //  readData.readUserInfo(s);
                 SharedPreferences prefs = getSharedPreferences("checkDate", MODE_PRIVATE);
 
                 String id = prefs.getString("id", "k");
                 // /"No name defined" is the default value.
 
 
-                String url = "http://206.189.96.67/v1/request/" + id  ;
+                String url = "http://206.189.96.67/v1/request/" + id;
                 JsonObjectRequest stringRequest = new JsonObjectRequest(GET, url, jsonObject,
                         new Response.Listener<JSONObject>() {
                             @Override
@@ -82,7 +84,7 @@ public class RespondToServerActivity extends AppCompatActivity implements Fireba
                                     if (response.getString("state").toLowerCase().equals("approved")) {
                                         SharedPreferences shre = PreferenceManager.getDefaultSharedPreferences(RespondToServerActivity.this);
                                         SharedPreferences.Editor edit = shre.edit();
-                                        edit.putBoolean("proToServ",false);
+                                        edit.putBoolean("proToServ", false);
                                         edit.apply();
                                         PrefGet prefGet = new PrefGet(RespondToServerActivity.this);
                                         switch (prefGet.getUserType()) {
@@ -99,6 +101,9 @@ public class RespondToServerActivity extends AppCompatActivity implements Fireba
                                                 RespondToServerActivity.this.finish();
                                                 break;
                                         }
+                                    } else if (response.getString("state").toLowerCase().equals("rejected")) {
+                                        Auth auth = new Auth(RespondToServerActivity.this);
+                                        auth.deleteAcount();
                                     }
                                 } catch (JSONException e) {
                                     e.printStackTrace();
@@ -119,17 +124,16 @@ public class RespondToServerActivity extends AppCompatActivity implements Fireba
     }
 
 
-
     @Override
     public void onWriteDataCompleted(boolean writeSuccessful) {
 
     }
 
     @Override
-    public void onReadDataResponse( DataSnapshot dataSnapshot) {
+    public void onReadDataResponse(DataSnapshot dataSnapshot) {
 
 
-        Log.i("lll",dataSnapshot.toString());
+        Log.i("lll", dataSnapshot.toString());
 
         if (dataSnapshot != null) {
             // we need to send the data of user to the url
@@ -139,7 +143,7 @@ public class RespondToServerActivity extends AppCompatActivity implements Fireba
             String params_Date =
                     ("{" + " \"name\":" + "\"" + proUserModel.getName() + "\"" + ","
                             + " \"description\":" + "\"" + proUserModel.getGender() + "," + proUserModel.getCity() + "," + proUserModel.getExperience() + "," + proUserModel.getEmail() + "\"" + ","
-                            + "\"image\":" +  "\"" + encoded+ "\""
+                            + "\"image\":" + "\"" + encoded + "\""
                             + "}");
             try {
                 jsonObject = new JSONObject(params_Date);
@@ -175,10 +179,20 @@ public class RespondToServerActivity extends AppCompatActivity implements Fireba
             AppController.getInstance().addToRequestQueue(stringRequest);
 
 
-
-
         } else {
             Toast.makeText(RespondToServerActivity.this, "Failed to load your data", Toast.LENGTH_SHORT).show();
+        }
+    }
+
+    @Override
+    public void onDelUserListner(boolean delSuccessful) {
+        if (delSuccessful){
+            Toast.makeText(RespondToServerActivity.this, "Your Account is rejected", Toast.LENGTH_SHORT).show();
+            SharedPreferences shre = PreferenceManager.getDefaultSharedPreferences(RespondToServerActivity.this);
+            SharedPreferences.Editor edit = shre.edit();
+            edit.putBoolean("proToServ", false);
+            edit.apply();
+            startActivity(new Intent(RespondToServerActivity.this,LogIn.class));
         }
     }
 }

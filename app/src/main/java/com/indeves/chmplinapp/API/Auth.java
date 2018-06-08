@@ -17,6 +17,7 @@ import com.google.firebase.FirebaseTooManyRequestsException;
 import com.google.firebase.auth.AuthResult;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.auth.FirebaseAuthInvalidCredentialsException;
+import com.google.firebase.auth.FirebaseUser;
 import com.google.firebase.auth.PhoneAuthCredential;
 import com.google.firebase.auth.PhoneAuthProvider;
 import com.google.firebase.database.DataSnapshot;
@@ -47,7 +48,13 @@ public class Auth implements FirebaseEventsListener {
     private AuthenticationInterface.LoginListener loginListener;
     private AuthenticationInterface.ForgetPassListener forgetPassListener;
     private AuthenticationInterface.SinUpListener sinUpListener;
+    private AuthenticationInterface.DelUserListner delUserListner;
     private AuthenticationInterface.PhoneVerificationListener phoneVerificationListener;
+
+    public Auth(AuthenticationInterface.ForgetPassListener forgetPassListener) {
+        this.mAuth = FirebaseAuth.getInstance();
+        this.forgetPassListener = forgetPassListener;
+    }
 
     public Auth(AuthenticationInterface.SinUpListener sinUpListener, AuthenticationInterface.PhoneVerificationListener phoneVerificationListener) {
         this.sinUpListener = sinUpListener;
@@ -58,6 +65,11 @@ public class Auth implements FirebaseEventsListener {
     public Auth(AuthenticationInterface.LoginListener loginListener) {
         this.mAuth = FirebaseAuth.getInstance();
         this.loginListener = loginListener;
+    }
+
+    public Auth(AuthenticationInterface.DelUserListner delUserListner) {
+        this.mAuth = FirebaseAuth.getInstance();
+        this.delUserListner = delUserListner;
     }
 
     //K.A: overloading constructor to avoid making any conflict with existing code
@@ -172,9 +184,7 @@ public class Auth implements FirebaseEventsListener {
     }
 
     public void forgetPass(String email) {
-        FirebaseAuth auth = FirebaseAuth.getInstance();
-
-        auth.sendPasswordResetEmail(email)
+        mAuth.sendPasswordResetEmail(email)
                 .addOnCompleteListener(new OnCompleteListener<Void>() {
                     @Override
                     public void onComplete(@NonNull Task<Void> task) {
@@ -226,6 +236,26 @@ public class Auth implements FirebaseEventsListener {
                             Log.w("PhoneVERifier", "signInWithCredential:failure", task.getException());
                             if (signInWithPhoneAuthCredentialListener != null) {
                                 signInWithPhoneAuthCredentialListener.onSignInWithPhoneAuthCredentialCompleted(false);
+                            }
+                        }
+                    }
+                });
+    }
+
+    public void deleteAcount() {
+        FirebaseUser user = FirebaseAuth.getInstance().getCurrentUser();
+
+        user.delete()
+                .addOnCompleteListener(new OnCompleteListener<Void>() {
+                    @Override
+                    public void onComplete(@NonNull Task<Void> task) {
+                        if (task.isSuccessful()) {
+                            if (delUserListner != null) {
+                                delUserListner.onDelUserListner(true);
+                            }
+                        } else if (!task.isSuccessful()) {
+                            if (delUserListner != null) {
+                                delUserListner.onDelUserListner(false);
                             }
                         }
                     }

@@ -33,8 +33,8 @@ import com.indeves.chmplinapp.Utility.Toasts;
 import com.wang.avi.AVLoadingIndicatorView;
 
 
-public class LogIn extends AppCompatActivity implements AuthenticationInterface.LoginListener,AuthenticationInterface.ForgetPassListener ,FirebaseEventsListener {
-    AlertDialog dialog0 ;
+public class LogIn extends AppCompatActivity implements AuthenticationInterface.LoginListener, FirebaseEventsListener {
+    AlertDialog dialog0;
     EditText mail, pass;
     Button signUp, login;
     TextView forgPass;
@@ -66,17 +66,9 @@ public class LogIn extends AppCompatActivity implements AuthenticationInterface.
                 AlertDialog.Builder builder = new AlertDialog.Builder(LogIn.this);
                 builder.setView(customView);
 
-                 dialog0 = builder.create();
+                dialog0 = builder.create();
                 dialog0.show();
-              /*  FirebaseAuth.getInstance().sendPasswordResetEmail("abdelrahmanmustafa00@gmail.com")
-                        .addOnCompleteListener(new OnCompleteListener<Void>() {
-                            @Override
-                            public void onComplete(@NonNull Task<Void> task) {
-                                if (task.isSuccessful()) {
-                                    Log.d(TAG, "Email sent.");
-                                }
-                            }
-                        });*/
+
                 final EditText email = customView.findViewById(R.id.get_email);
                 Button button = customView.findViewById(R.id.select);
                 button.setOnClickListener(new View.OnClickListener() {
@@ -89,10 +81,10 @@ public class LogIn extends AppCompatActivity implements AuthenticationInterface.
                                     @Override
                                     public void onComplete(@NonNull Task<Void> task) {
                                         if (task.isSuccessful()) {
-                                            Toast.makeText(LogIn.this,"Done, Check your mail",Toast.LENGTH_SHORT).show();
+                                            Toast.makeText(LogIn.this, "Done, Check your mail", Toast.LENGTH_SHORT).show();
                                             dialog0.dismiss();
-                                        }else{
-                                            Toast.makeText(LogIn.this,"Something went wrong, try later",Toast.LENGTH_SHORT).show();
+                                        } else {
+                                            Toast.makeText(LogIn.this, "Something went wrong, try later", Toast.LENGTH_SHORT).show();
                                             dialog0.dismiss();
                                         }
                                     }
@@ -212,14 +204,5 @@ public class LogIn extends AppCompatActivity implements AuthenticationInterface.
 
     }
 
-    @Override
-    public void onForgetPassListener(boolean mailSent) {
-        if (mailSent){
-            Toast.makeText(LogIn.this,"Done, Check your mail",Toast.LENGTH_SHORT).show();
-            dialog0.dismiss();
-        }else{
-            Toast.makeText(LogIn.this,"Something went wrong, try later",Toast.LENGTH_SHORT).show();
-            dialog0.dismiss();
-        }
-    }
 }
+
