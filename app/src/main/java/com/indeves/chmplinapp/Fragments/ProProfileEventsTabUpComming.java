@@ -1,5 +1,6 @@
 package com.indeves.chmplinapp.Fragments;
 
+import android.app.ProgressDialog;
 import android.os.Bundle;
 import android.support.annotation.Nullable;
 
@@ -44,10 +45,14 @@ public class ProProfileEventsTabUpComming extends android.support.v4.app.Fragmen
     FragmentManager fragmentManager;
     private List<EventModel> eventModels;
     private RecyclerView recyclerView;
+    ProgressDialog progressDialog;
 
     @Override
     public void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        progressDialog = new ProgressDialog(getContext());
+        progressDialog.setCanceledOnTouchOutside(false);
+        progressDialog.setMessage("Please wait...");
 
     }
 
@@ -73,6 +78,7 @@ public class ProProfileEventsTabUpComming extends android.support.v4.app.Fragmen
         }
         setRecyclerViewLayoutManager(mCurrentLayoutManagerType);
         userProfEventsAdaptor = new ProEventsArrayAdapter(eventModels, "pro");
+        progressDialog.show();
         ReadData readData = new ReadData(this);
         readData.getAllEvents();
 
@@ -92,7 +98,7 @@ public class ProProfileEventsTabUpComming extends android.support.v4.app.Fragmen
 
             @Override
             public void onLongClick(View view, int position) {
-               // linearLayout.setVisibility(GONE);
+                // linearLayout.setVisibility(GONE);
 
             }
         }));
@@ -152,12 +158,14 @@ public class ProProfileEventsTabUpComming extends android.support.v4.app.Fragmen
 
     @Override
     public void onReadDataResponse(DataSnapshot dataSnapshot) {
+        progressDialog.dismiss();
         if (dataSnapshot != null) {
             for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
                 EventModel eventModel = dataSnapshot1.getValue(EventModel.class);
-                if (eventModel != null && eventModel.getPhotographerId() != null && eventModel.getPhotographerId().equals(FirebaseAuth.getInstance().getCurrentUser().getUid()) && eventModel.getEventStatus() != null && eventModel.getEventStatus().equals("accepted")) {
-                    eventModels.add(eventModel);
-
+                if (eventModel != null && eventModel.getPhotographerId() != null && eventModel.getPhotographerId().equals(FirebaseAuth.getInstance().getCurrentUser().getUid()) && eventModel.getEventStatus() != null) {
+                    if (eventModel.getEventStatus().equals("accepted") || eventModel.getEventStatus().equals("booked-cash") || eventModel.getEventStatus().equals("booked-credit")) {
+                        eventModels.add(eventModel);
+                    }
                 }
             }
             recyclerView.setAdapter(userProfEventsAdaptor);

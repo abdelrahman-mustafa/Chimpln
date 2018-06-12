@@ -97,7 +97,7 @@ public class Contactpro extends StepProgressBar implements View.OnClickListener,
         if (dataSnapshot != null && dataSnapshot.getValue() != null) {
             proUserModel = dataSnapshot.getValue(ProUserModel.class);
         } else {
-            Toast.makeText(getContext(), "Error loading your data", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), "Error loading pro data", Toast.LENGTH_SHORT).show();
         }
 
     }
@@ -133,15 +133,19 @@ public class Contactpro extends StepProgressBar implements View.OnClickListener,
     }
 
     public void makeCall() {
-        Intent intent = new Intent(Intent.ACTION_CALL);
-        intent.setData(Uri.parse("tel:" + proUserModel.getPhone()));
-        int result = ContextCompat.checkSelfPermission(getContext(), Manifest.permission.CALL_PHONE);
-        if (result == PackageManager.PERMISSION_GRANTED) {
+        if (proUserModel != null && getContext() != null) {
+            Intent intent = new Intent(Intent.ACTION_CALL);
+            intent.setData(Uri.parse("tel:" + proUserModel.getPhone()));
+            int result = ContextCompat.checkSelfPermission(getContext(), Manifest.permission.CALL_PHONE);
+            if (result == PackageManager.PERMISSION_GRANTED) {
 
-            startActivity(intent);
+                startActivity(intent);
 
+            } else {
+                Toast.makeText(getContext(), "We need call permission", Toast.LENGTH_SHORT).show();
+            }
         } else {
-            Toast.makeText(getContext(), "We need call permission", Toast.LENGTH_SHORT).show();
+            Toast.makeText(getContext(), "Failed to load Pro data", Toast.LENGTH_SHORT).show();
         }
     }
 

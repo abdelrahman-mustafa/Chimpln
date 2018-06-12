@@ -83,6 +83,7 @@ public class ReadData {
             @Override
             public void onCancelled(DatabaseError error) {
                 // Failed to read value
+                Log.e("Load_pro_data_error", error.getMessage());
                 if (firebaseEventsListener != null) {
                     firebaseEventsListener.onReadDataResponse(null);
                 }

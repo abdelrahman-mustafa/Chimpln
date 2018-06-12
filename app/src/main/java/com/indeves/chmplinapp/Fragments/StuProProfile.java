@@ -204,7 +204,7 @@ public class StuProProfile extends Fragment implements FirebaseEventsListener, V
             if (proUserModel.getArea() != null) {
                 subInfoRow.setText(proUserModel.getArea());
             }
-            if (proUserModel.getProfilePicUrl() != null) {
+            if (proUserModel.getProfilePicUrl() != null && getContext() != null) {
                 Picasso.with(getContext()).load(proUserModel.getProfilePicUrl()).resize(300, 300).placeholder(R.drawable.user).transform(new CircleTransform()).error(R.drawable.user).into(profileImage);
             }
             if (proUserModel.getStudioTeamMembers() != null) {
