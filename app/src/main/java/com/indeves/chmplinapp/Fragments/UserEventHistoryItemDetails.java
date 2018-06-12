@@ -117,15 +117,92 @@ public class UserEventHistoryItemDetails extends Fragment implements FirebaseEve
 
             @Override
             public void onClick(View v) {
-                if (selectedEvent.isRated()){
+                if (selectedEvent.isRated()) {
 
-                    Toast.makeText(getContext(), "you can't rate more than one time",Toast.LENGTH_SHORT).show();
+                    Toast.makeText(getContext(), "you can't rate more than one time", Toast.LENGTH_SHORT).show();
 
-                }else {
+                } else {
                     // upload rate
-                    ReadData readData = new ReadData(UserEventHistoryItemDetails.this);
-                    readData.getUserInfoById(selectedEvent.getPhotographerId());
+                    ReadData readData = new ReadData(new FirebaseEventsListener() {
+                        @Override
+                        public void onWriteDataCompleted(boolean writeSuccessful) {
 
+                        }
+
+                        @Override
+                        public void onReadDataResponse(DataSnapshot dataSnapshot) {
+
+                            if (dataSnapshot != null && dataSnapshot.getValue() != null) {
+                                ProUserModel proUserModel = dataSnapshot.getValue(ProUserModel.class);
+                                List<Integer> rates = new ArrayList<>();
+                                if (proUserModel.getRates() == null) {
+                                    proUserModel.setRate(Math.round(ratingBar.getRating()));
+                                    Log.d("ds", String.valueOf(Math.round(ratingBar.getRating())));
+                                    rates.add(Math.round(ratingBar.getRating()));
+                                    proUserModel.setRates(rates);
+
+                                }else{
+                                    rates.addAll(proUserModel.getRates());
+                                    double totalRate = calculateAverage(rates);
+                                    proUserModel.setRate(totalRate);
+                                    Log.d("tota", String.valueOf(totalRate));
+                                    rates.add(Math.round(ratingBar.getRating()));
+                                    proUserModel.setRates(rates);
+
+                                }
+
+                                WriteData writeData = new WriteData(new FirebaseEventsListener() {
+                                    @Override
+                                    public void onWriteDataCompleted(boolean writeSuccessful) {
+                                        if (writeSuccessful) {
+                                            Toast.makeText(getContext(), "Thanks for rating", Toast.LENGTH_SHORT).show();
+
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onReadDataResponse(DataSnapshot dataSnapshot) {
+
+                                    }
+                                });
+                                try {
+                                    writeData.updateUserProfileData(proUserModel);
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+
+                                WriteData writeData1 = new WriteData(new FirebaseEventsListener() {
+                                    @Override
+                                    public void onWriteDataCompleted(boolean writeSuccessful) {
+                                        if (writeSuccessful) {
+                                            Toast.makeText(getContext(), "Thanks for rating1", Toast.LENGTH_SHORT).show();
+
+                                        }
+                                    }
+
+                                    @Override
+                                    public void onReadDataResponse(DataSnapshot dataSnapshot) {
+
+                                    }
+                                });
+                                try {
+                                    selectedEvent.setRated(true);
+                                    writeData1.updateEventData(selectedEvent);
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                                Toast.makeText(getContext(), String.valueOf(ratingBar.getRating()), Toast.LENGTH_SHORT).show();
+
+
+                            } else {
+                                Toast.makeText(getContext(), "Failed to load your data", Toast.LENGTH_SHORT).show();
+                            }
+                        }
+                    });
+                    Log.i("id", selectedEvent.getPhotographerId().toString());
+                    Log.i("id", selectedEvent.getEventId().toString());
+
+                    readData.readUserInfo(selectedEvent.getPhotographerId());
 
                 }
 
@@ -224,38 +301,13 @@ public class UserEventHistoryItemDetails extends Fragment implements FirebaseEve
 
     @Override
     public void onReadDataResponse(DataSnapshot dataSnapshot) {
-        if (dataSnapshot != null && dataSnapshot.getValue() != null) {
-            ProUserModel proUserModel = dataSnapshot.getValue(ProUserModel.class);
-            if (proUserModel.getRates()!=null) {
-                List<Integer> rates = new ArrayList<>();
-                rates.addAll(proUserModel.getRates());
-                double totalRate = calculateAverage(rates);
-                proUserModel.setRate(totalRate);
-                WriteData writeData = new WriteData(UserEventHistoryItemDetails.this);
-                try {
-                    writeData.updateUserProfileData(proUserModel);
-                    selectedEvent.setRated(true);
-                    Toast.makeText(getContext(), String.valueOf(ratingBar.getRating()),Toast.LENGTH_SHORT).show();
-                    try {
-                        writeData.updateEventData(selectedEvent);
-                    } catch (Exception e) {
-                        e.printStackTrace();
-                    }
-                } catch (Exception e) {
-                    e.printStackTrace();
-                }
-            }
-
-        } else {
-            Toast.makeText(getContext(), "Failed to load your data", Toast.LENGTH_SHORT).show();
-        }
 
 
     }
 
-    private double calculateAverage(List <Integer> marks) {
+    private double calculateAverage(List<Integer> marks) {
         Integer sum = 0;
-        if(!marks.isEmpty()) {
+        if (!marks.isEmpty()) {
             for (Integer mark : marks) {
                 sum += mark;
             }
@@ -267,7 +319,7 @@ public class UserEventHistoryItemDetails extends Fragment implements FirebaseEve
     private void displayEventData() {
 
         if (selectedEvent != null) {
-            if (selectedEvent.getEventImagesUrls()!=null) {
+            if (selectedEvent.getEventImagesUrls() != null) {
                 images.addAll(selectedEvent.getEventImagesUrls());
             }
             name.setText(selectedEvent.getBookerUserName());
@@ -369,7 +421,6 @@ public class UserEventHistoryItemDetails extends Fragment implements FirebaseEve
 
         }
     }
-
 
 
 }
