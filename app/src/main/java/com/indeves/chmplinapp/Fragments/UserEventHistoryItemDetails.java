@@ -123,6 +123,7 @@ public class UserEventHistoryItemDetails extends Fragment implements FirebaseEve
 
                 } else {
                     // upload rate
+                    // get data of photographer tp get his rates
                     ReadData readData = new ReadData(new FirebaseEventsListener() {
                         @Override
                         public void onWriteDataCompleted(boolean writeSuccessful) {
@@ -134,6 +135,7 @@ public class UserEventHistoryItemDetails extends Fragment implements FirebaseEve
 
                             if (dataSnapshot != null && dataSnapshot.getValue() != null) {
                                 ProUserModel proUserModel = dataSnapshot.getValue(ProUserModel.class);
+                                // here retuturned all rates of this photographer
                                 List<Integer> rates = new ArrayList<>();
                                 if (proUserModel.getRates() == null) {
                                     proUserModel.setRate(Math.round(ratingBar.getRating()));
@@ -150,6 +152,7 @@ public class UserEventHistoryItemDetails extends Fragment implements FirebaseEve
                                     proUserModel.setRates(rates);
 
                                 }
+                                // update the list of rate with new rate
 
                                 WriteData writeData = new WriteData(new FirebaseEventsListener() {
                                     @Override
@@ -171,6 +174,7 @@ public class UserEventHistoryItemDetails extends Fragment implements FirebaseEve
                                     e.printStackTrace();
                                 }
 
+                                // here update the event (is rated ) to be true to prevent multiple ratings
                                 WriteData writeData1 = new WriteData(new FirebaseEventsListener() {
                                     @Override
                                     public void onWriteDataCompleted(boolean writeSuccessful) {
