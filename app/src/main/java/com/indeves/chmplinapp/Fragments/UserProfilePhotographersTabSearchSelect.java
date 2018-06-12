@@ -13,6 +13,7 @@ import android.widget.AdapterView;
 import android.widget.ArrayAdapter;
 import android.widget.Button;
 import android.widget.DatePicker;
+import android.widget.EditText;
 import android.widget.ImageButton;
 import android.widget.ImageView;
 import android.widget.LinearLayout;
@@ -46,6 +47,7 @@ public class UserProfilePhotographersTabSearchSelect extends android.support.v4.
     ArrayAdapter<LookUpModel> eventTypeArrayAdapter, eventTimeArrayAdapter;
     TextView selectedDate;
     String selectedBirthDate;
+    EditText keyword;
     Calendar calendar;
     ImageView getDate;
     int year, month, day;
@@ -86,7 +88,7 @@ public class UserProfilePhotographersTabSearchSelect extends android.support.v4.
         day = calendar.get(Calendar.DAY_OF_MONTH);
         spinCity = rootView.findViewById(R.id.userProfile_phot_spinner_city);
         spinCity.setOnItemSelectedListener(this);
-        selectedDate =  rootView.findViewById(R.id.date);
+        selectedDate = rootView.findViewById(R.id.date);
         date = rootView.findViewById(R.id.date);
         spinGender = rootView.findViewById(R.id.userProfile_phot_spinner_gender);
         spinGender.setOnItemSelectedListener(this);
@@ -96,6 +98,7 @@ public class UserProfilePhotographersTabSearchSelect extends android.support.v4.
         spinEventType = rootView.findViewById(R.id.userProfile_phot_spinner_event_type);
         spinEventType.setOnItemSelectedListener(this);
         getDate = rootView.findViewById(R.id.get_date);
+        keyword = rootView.findViewById(R.id.keyword);
 
         getDate.setOnClickListener(new View.OnClickListener() {
             @Override
@@ -121,13 +124,33 @@ public class UserProfilePhotographersTabSearchSelect extends android.support.v4.
 
                         linear.setVisibility(View.GONE);
                         search.setVisibility(View.GONE);
-                        if (spinCity.getSelectedItemPosition() == 0 && spinGender.getSelectedItemPosition() == 0 && eventTimesSpinner.getSelectedItemPosition()== 0) {
-                            UserProfilePhotographersTabSearchOutput output = new UserProfilePhotographersTabSearchOutput(pros);
-                            android.support.v4.app.FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+                        if (spinCity.getSelectedItemPosition() == 0 && spinGender.getSelectedItemPosition() == 0 && eventTimesSpinner.getSelectedItemPosition() == 0) {
+                            if (keyword.getText().toString().isEmpty()) {
+                                UserProfilePhotographersTabSearchOutput output = new UserProfilePhotographersTabSearchOutput(pros);
+                                android.support.v4.app.FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
 
-                            transaction.replace(R.id.container_o, output);
-                            transaction.addToBackStack(null);
-                            transaction.commit();
+                                transaction.replace(R.id.container_o, output);
+                                transaction.addToBackStack(null);
+                                transaction.commit();
+                            } else {
+                                ArrayList<ProUserModel> customList = new ArrayList<>();
+
+
+                                for (int i = 0; i < pros.size(); i++) {
+                                    if (pros.get(i).getLastName() !=null && pros.get(i).getName()!=null && pros.get(i).getLastName().toLowerCase().contains(keyword.getText().toString()) && pros.get(i).getName().toLowerCase().contains(keyword.getText().toString()))
+                                    {
+                                        customList.add(pros.get(i));
+                                    }
+
+
+                                }
+                                UserProfilePhotographersTabSearchOutput output = new UserProfilePhotographersTabSearchOutput(customList);
+                                android.support.v4.app.FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
+
+                                transaction.replace(R.id.container_o, output);
+                                transaction.addToBackStack(null);
+                                transaction.commit();
+                            }
                         } else if (spinCity.getSelectedItemPosition() != 0) {
                             ArrayList<ProUserModel> customList = new ArrayList<>();
 
@@ -136,10 +159,13 @@ public class UserProfilePhotographersTabSearchSelect extends android.support.v4.
                                 ArrayList<String> avaList = new ArrayList<>();
                                 avaList = pros.get(i).getEventAvailablity();
 
-
-                                if (pros.get(i).getCity() != null && pros.get(i).getCity().equals(spinCity.getSelectedItem().toString())) {
+                                if (pros.get(i).getCity() != null && pros.get(i).getCity().equals(spinCity.getSelectedItem().toString()) && keyword.getText().toString().isEmpty()) {
+                                    customList.add(pros.get(i));
+                                } else if (pros.get(i).getCity() != null && pros.get(i).getCity().equals(spinCity.getSelectedItem().toString()) && pros.get(i).getName().contains(keyword.getText().toString())) {
                                     customList.add(pros.get(i));
                                 }
+
+
                             }
                             UserProfilePhotographersTabSearchOutput output = new UserProfilePhotographersTabSearchOutput(customList);
                             android.support.v4.app.FragmentTransaction transaction = getActivity().getSupportFragmentManager().beginTransaction();
@@ -157,7 +183,9 @@ public class UserProfilePhotographersTabSearchSelect extends android.support.v4.
                                 avaList = pros.get(i).getEventAvailablity();
 
 
-                                if (pros.get(i).getCity() != null && pros.get(i).getCity().equals(spinCity.getSelectedItem().toString()) && check(eventTimesSpinner.getSelectedItem().toString(), avaList)) {
+                                if (pros.get(i).getCity() != null && pros.get(i).getCity().equals(spinCity.getSelectedItem().toString()) && check(eventTimesSpinner.getSelectedItem().toString(), avaList) && keyword.getText().toString().isEmpty()) {
+                                    customList.add(pros.get(i));
+                                } else if (pros.get(i).getCity() != null && pros.get(i).getCity().equals(spinCity.getSelectedItem().toString()) && check(eventTimesSpinner.getSelectedItem().toString(), avaList) && pros.get(i).getName().contains(keyword.getText().toString())) {
                                     customList.add(pros.get(i));
                                 }
                             }
@@ -175,10 +203,11 @@ public class UserProfilePhotographersTabSearchSelect extends android.support.v4.
                             for (int i = 0; i < pros.size(); i++) {
                                 ArrayList<String> avaList = new ArrayList<>();
                                 avaList = pros.get(i).getEventAvailablity();
-                                if (pros.get(i).getGender() != null && pros.get(i).getGender().equals(spinGender.getSelectedItem().toString())) {
+
+                                if (pros.get(i).getGender() != null && pros.get(i).getGender().equals(spinGender.getSelectedItem().toString()) && keyword.getText().toString().isEmpty()) {
                                     customList.add(pros.get(i));
-
-
+                                } else if (pros.get(i).getGender() != null && pros.get(i).getGender().equals(spinGender.getSelectedItem().toString()) && pros.get(i).getName().contains(keyword.getText().toString())) {
+                                    customList.add(pros.get(i));
                                 }
 
                             }
@@ -189,17 +218,17 @@ public class UserProfilePhotographersTabSearchSelect extends android.support.v4.
                             transaction.addToBackStack(null);
                             transaction.commit();
 
-                        } else if (spinGender.getSelectedItemPosition() != 0 && eventTimesSpinner.getSelectedItemPosition() != 0 ) {
+                        } else if (spinGender.getSelectedItemPosition() != 0 && eventTimesSpinner.getSelectedItemPosition() != 0) {
                             ArrayList<ProUserModel> customList = new ArrayList<>();
 
 
                             for (int i = 0; i < pros.size(); i++) {
                                 ArrayList<String> avaList = new ArrayList<>();
                                 avaList = pros.get(i).getEventAvailablity();
-                                if (pros.get(i).getGender() != null && pros.get(i).getGender().equals(spinGender.getSelectedItem().toString()) && check(eventTimesSpinner.getSelectedItem().toString(), avaList)) {
+                                if (pros.get(i).getGender() != null && pros.get(i).getGender().equals(spinGender.getSelectedItem().toString()) && check(eventTimesSpinner.getSelectedItem().toString(), avaList) && keyword.getText().toString().isEmpty()) {
                                     customList.add(pros.get(i));
-
-
+                                } else if (pros.get(i).getGender() != null && pros.get(i).getGender().equals(spinGender.getSelectedItem().toString()) && check(eventTimesSpinner.getSelectedItem().toString(), avaList) && pros.get(i).getName().toLowerCase().contains(keyword.getText().toString().trim())) {
+                                    customList.add(pros.get(i));
                                 }
 
                             }
@@ -217,7 +246,7 @@ public class UserProfilePhotographersTabSearchSelect extends android.support.v4.
 
                                 ArrayList<String> avaList = new ArrayList<>();
                                 avaList = pros.get(i).getEventAvailablity();
-                                if (pros.get(i).getCity() != null && pros.get(i).getCity().contains(spinCity.getSelectedItem().toString()) && pros.get(i).getGender().contains(spinGender.getSelectedItem().toString())&& check(eventTimesSpinner.getSelectedItem().toString(), avaList)) {
+                                if (pros.get(i).getCity() != null && pros.get(i).getCity().contains(spinCity.getSelectedItem().toString()) && pros.get(i).getGender().contains(spinGender.getSelectedItem().toString()) && check(eventTimesSpinner.getSelectedItem().toString(), avaList)) {
                                     customList.add(pros.get(i));
 
 
@@ -242,7 +271,11 @@ public class UserProfilePhotographersTabSearchSelect extends android.support.v4.
 
 
         genderCategories = new ArrayList<String>();
-        genderCategories.add(getResources().getString(R.string.gender));
+        genderCategories.add(
+
+                getResources().
+
+                        getString(R.string.gender));
         genderCategories.add("Male");
         genderCategories.add("Female");
         // Creating adapter for spinner
@@ -254,11 +287,17 @@ public class UserProfilePhotographersTabSearchSelect extends android.support.v4.
         ReadData readData = new ReadData();
 
         citiesList = new ArrayList<CityLookUpModel>();
-        citiesList.add(new CityLookUpModel(0, 0, "City"));
-        citiesArrayAdapter = new ArrayAdapter<CityLookUpModel>(getContext(), android.R.layout.simple_spinner_item, citiesList);
+        citiesList.add(new
+
+                CityLookUpModel(0, 0, "City"));
+        citiesArrayAdapter = new ArrayAdapter<CityLookUpModel>(
+
+                getContext(), android.R.layout.simple_spinner_item, citiesList);
         citiesArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         spinCity.setAdapter(citiesArrayAdapter);
-        readData.getCitiesLookUpsWithCountryId(-1, new ReadData.CityLookUpsListener() {
+        readData.getCitiesLookUpsWithCountryId(-1, new ReadData.CityLookUpsListener()
+
+        {
             @Override
             public void onLookUpsResponse(List<CityLookUpModel> returnedCitiesList) {
                 citiesList.addAll(returnedCitiesList);
@@ -267,15 +306,23 @@ public class UserProfilePhotographersTabSearchSelect extends android.support.v4.
         });
         //-------------------------------------------------
         eventTypesList = new ArrayList<>();
-        eventTypesList.add(0, new LookUpModel(0, getResources().getString(R.string.selectPackTy)));
+        eventTypesList.add(0, new
+
+                LookUpModel(0, getResources().
+
+                getString(R.string.selectPackTy)));
         // Creating adapter for spinner
-        eventTypeArrayAdapter = new ArrayAdapter<LookUpModel>(getContext(), android.R.layout.simple_spinner_item, eventTypesList);
+        eventTypeArrayAdapter = new ArrayAdapter<LookUpModel>(
+
+                getContext(), android.R.layout.simple_spinner_item, eventTypesList);
         // Drop down layout style - list view with radio button
         eventTypeArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
 
         spinEventType.setAdapter(eventTypeArrayAdapter);
 
-        readData.getLookupsByType("eventTypesLookups", new ReadData.LookUpsListener() {
+        readData.getLookupsByType("eventTypesLookups", new ReadData.LookUpsListener()
+
+        {
             @Override
             public void onLookUpsResponse(List<LookUpModel> eventTypeLookups) {
                 Log.v("EventTypeLookupsArr", eventTypeLookups.toString());
@@ -286,12 +333,18 @@ public class UserProfilePhotographersTabSearchSelect extends android.support.v4.
 
         //-------------------------------------------------
         eventTimesList = new ArrayList<>();
-        eventTimesList.add(new LookUpModel(0, "Event time"));
-        eventTimeArrayAdapter = new ArrayAdapter<LookUpModel>(getContext(), android.R.layout.simple_spinner_item, eventTimesList);
+        eventTimesList.add(new
+
+                LookUpModel(0, "Event time"));
+        eventTimeArrayAdapter = new ArrayAdapter<LookUpModel>(
+
+                getContext(), android.R.layout.simple_spinner_item, eventTimesList);
         eventTimeArrayAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
         eventTimesSpinner.setAdapter(eventTimeArrayAdapter);
 
-        readData.getLookupsByType("eventTimesLookups", new ReadData.LookUpsListener() {
+        readData.getLookupsByType("eventTimesLookups", new ReadData.LookUpsListener()
+
+        {
             @Override
             public void onLookUpsResponse(List<LookUpModel> lookups) {
                 eventTimesList.addAll(lookups);
@@ -384,12 +437,13 @@ public class UserProfilePhotographersTabSearchSelect extends android.support.v4.
         // Display the chosen date to app interface
         date.setText(formattedDate);
     }
+
     private DatePickerDialog.OnDateSetListener dateSetListener =
             new DatePickerDialog.OnDateSetListener() {
                 @SuppressLint("SetTextI18n")
                 public void onDateSet(DatePicker view, int year, int month, int day) {
-                    date.setText(  view.getYear() +
-                            " / " + (view.getMonth()+1) +
+                    date.setText(view.getYear() +
+                            " / " + (view.getMonth() + 1) +
                             " / " + view.getDayOfMonth());
                 }
             };

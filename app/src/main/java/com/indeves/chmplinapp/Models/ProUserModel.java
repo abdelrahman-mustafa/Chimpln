@@ -12,8 +12,10 @@ import java.util.Map;
 
 public class ProUserModel extends UserData implements Serializable {
     //pro could be a single photographer or a studio
-    private long rate, locationLat, locationLong;
+    private long  locationLat, locationLong;
+    private double rate;
     private List<String> lastWorkPicsUrls;
+    private List<Integer> rates;
     private List<PackageModel> packages;
     private String country, city, area, workDayStart, workDayEnd, experience, idFrontImageUrl, idBackImageUrl;
     private ArrayList<StudioTeamMember> studioTeamMembers;
@@ -23,6 +25,14 @@ public class ProUserModel extends UserData implements Serializable {
     // DataSnapshot.getValue(User.class)
     public ProUserModel() {
 
+    }
+
+    public List<Integer> getRates() {
+        return rates;
+    }
+
+    public void setRates(List<Integer> rates) {
+        this.rates = rates;
     }
 
     public ArrayList<String> getEventAvailablity() {
@@ -37,7 +47,7 @@ public class ProUserModel extends UserData implements Serializable {
         super(email, phone, type, uid);
     }
 
-    public ProUserModel(String name, String email, String phone, String type, String lastName, String birthDate, String gender, String uid, String profilePicUrl, String location, List<String> eventsIds, long rate, long locationLat, long locationLong, List<String> lastWorkPicsUrls, List<PackageModel> packages, String country, String city, String area, String workDayStart, String workDayEnd, String experience) {
+    public ProUserModel(String name, String email, String phone, String type, String lastName, String birthDate, String gender, String uid, String profilePicUrl, String location, List<String> eventsIds, double rate, long locationLat, long locationLong, List<String> lastWorkPicsUrls, List<PackageModel> packages, String country, String city, String area, String workDayStart, String workDayEnd, String experience) {
         super(name, email, phone, type, lastName, birthDate, gender, uid, profilePicUrl, location, eventsIds);
         this.rate = rate;
         this.locationLat = locationLat;
@@ -52,7 +62,7 @@ public class ProUserModel extends UserData implements Serializable {
         this.experience = experience;
     }
 
-    public ProUserModel(String name, String email, String phone, String type, String lastName, String birthDate, String gender, String uid, String profilePicUrl, String location, List<String> eventsIds, long rate, long locationLat, long locationLong, List<String> lastWorkPicsUrls, List<PackageModel> packages, String country, String city, String area, String workDayStart, String workDayEnd, String experience, ArrayList<StudioTeamMember> studioTeamMembers) {
+    public ProUserModel(String name, String email, String phone, String type, String lastName, String birthDate, String gender, String uid, String profilePicUrl, String location, List<String> eventsIds, double rate, long locationLat, long locationLong, List<String> lastWorkPicsUrls, List<PackageModel> packages, String country, String city, String area, String workDayStart, String workDayEnd, String experience, ArrayList<StudioTeamMember> studioTeamMembers) {
         super(name, email, phone, type, lastName, birthDate, gender, uid, profilePicUrl, location, eventsIds);
         this.rate = rate;
         this.locationLat = locationLat;
@@ -68,7 +78,7 @@ public class ProUserModel extends UserData implements Serializable {
         this.studioTeamMembers = studioTeamMembers;
     }
 
-    public ProUserModel(String name, String email, String phone, String type, String lastName, String birthDate, String gender, String uid, String profilePicUrl, String location, List<String> eventsIds, long rate, long locationLat, long locationLong, List<String> lastWorkPicsUrls, List<PackageModel> packages, String country, String city, String area, String workDayStart, String workDayEnd, String experience, String idFrontImageUrl, String idBackImageUrl, ArrayList<StudioTeamMember> studioTeamMembers, ArrayList<String> eventAvailablity) {
+    public ProUserModel(String name, String email, String phone, String type, String lastName, String birthDate, String gender, String uid, String profilePicUrl, String location, List<String> eventsIds, double rate, long locationLat, long locationLong, List<String> lastWorkPicsUrls, List<PackageModel> packages, String country, String city, String area, String workDayStart, String workDayEnd, String experience, String idFrontImageUrl, String idBackImageUrl, ArrayList<StudioTeamMember> studioTeamMembers, ArrayList<String> eventAvailablity) {
         super(name, email, phone, type, lastName, birthDate, gender, uid, profilePicUrl, location, eventsIds);
         this.rate = rate;
         this.locationLat = locationLat;
@@ -87,11 +97,11 @@ public class ProUserModel extends UserData implements Serializable {
         this.eventAvailablity = eventAvailablity;
     }
 
-    public long getRate() {
+    public double getRate() {
         return rate;
     }
 
-    public void setRate(long rate) {
+    public void setRate(double rate) {
         this.rate = rate;
     }
 
@@ -226,6 +236,8 @@ public class ProUserModel extends UserData implements Serializable {
             result.put("experience", experience);
         if (studioTeamMembers != null)
             result.put("studioTeamMembers", studioTeamMembers);
+        if (rates != null)
+            result.put("rates", rates);
         if (idFrontImageUrl != null) {
             result.put("idFrontImageUrl", idFrontImageUrl);
         }

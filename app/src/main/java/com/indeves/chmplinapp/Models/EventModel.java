@@ -20,12 +20,21 @@ public class EventModel implements Serializable {
     private PackageModel selectedPackage;
     private List<String> eventImagesUrls;
     private double paidAmount;
+    private boolean isRated;
 
     public EventModel() {
     }
 
+    public boolean isRated() {
+        return isRated;
+    }
+
+    public void setRated(boolean rated) {
+        isRated = rated;
+    }
+
     //this constructor contains the main data that user booking must have
-    public EventModel(String bookerUserId, String photographerId, String eventDate, String bookerUserName, String photographerName, String startTime, String endTime, String noteToPro, String eventCity, long eventLocationLong, long eventLocationLat, String eventStatus, int typeId, int timeId, int sharingOptionId, PackageModel selectedPackage) {
+    public EventModel(String bookerUserId, String photographerId, String eventDate, String bookerUserName, String photographerName, String startTime, String endTime, String noteToPro, String eventCity, long eventLocationLong, long eventLocationLat, String eventStatus, int typeId, int timeId, int sharingOptionId, PackageModel selectedPackage, Boolean isRated) {
         this.bookerUserId = bookerUserId;
         this.photographerId = photographerId;
         this.eventDate = eventDate;
@@ -42,6 +51,7 @@ public class EventModel implements Serializable {
         this.timeId = timeId;
         this.sharingOptionId = sharingOptionId;
         this.selectedPackage = selectedPackage;
+        this.isRated = isRated;
     }
 
     //this constructor contains the main data that user booking must have
@@ -260,6 +270,7 @@ public class EventModel implements Serializable {
         if (paidAmount > 0) {
             result.put("paidAmount", paidAmount);
         }
+        result.put("isRated", isRated);
         return result;
     }
 }

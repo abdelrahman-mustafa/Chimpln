@@ -3,11 +3,11 @@
     <string name="signIN">Sign in</string>
     <string name="userSign">User Sign up</string>
     <string name="proSign">Professional Sign up</string>
-    <string name="logInUser">User name or Email</string>
+    <string name="logInUser">Email</string>
     <string name="pass">Password</string>
     <string name="signUp">Sign Up</string>
     <string name="remMe">Remember me</string>
-    <string name="forgPass">Forget Password</string>
+    <string name="forgPass">Forgot Password</string>
     <string name="Email">Email</string>
     <string name="userName">User Name</string>
     <string name="signFace">Sign up with Facebook</string>

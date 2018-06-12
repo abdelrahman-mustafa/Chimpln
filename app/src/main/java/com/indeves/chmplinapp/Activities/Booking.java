@@ -366,7 +366,7 @@ public class Booking extends StepProgressBar implements View.OnClickListener, Ad
                         longitude = (long) place.getLatLng().longitude;
                     }
 
-                    eventModel = new EventModel(FirebaseAuth.getInstance().getCurrentUser().getUid(), pro.getUid(), sDate, bookerName, pro.getName(), timefrom.getText().toString(), timeto.getText().toString(), sNote, sAddress, longitude, latitude, "pending", sType.getId(), sTime.getId(), sSharingOption.getId(), packageData);
+                    eventModel = new EventModel(FirebaseAuth.getInstance().getCurrentUser().getUid(), pro.getUid(), sDate, bookerName, pro.getName(), timefrom.getText().toString(), timeto.getText().toString(), sNote, sAddress, longitude, latitude, "pending", sType.getId(), sTime.getId(), sSharingOption.getId(), packageData,false);
                     WriteData writeData = new WriteData(firebaseEventsListener);
                     try {
                         writeData.bookNewEvent(eventModel);

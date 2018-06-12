@@ -149,8 +149,7 @@ public class LogIn extends AppCompatActivity implements AuthenticationInterface.
             ReadData readData = new ReadData(this);
             readData.readUserInfo(mAuth.getCurrentUser().getUid());
         } else {
-            toasts.wrongMe();
-            stopAnim();
+
         }
     }
 

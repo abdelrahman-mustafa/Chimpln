@@ -3,6 +3,7 @@ package com.indeves.chmplinapp.Fragments;
 
 import android.app.Dialog;
 import android.app.ProgressDialog;
+import android.arch.core.executor.DefaultTaskExecutor;
 import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
@@ -21,6 +22,7 @@ import android.view.ViewGroup;
 import android.view.Window;
 import android.widget.Button;
 import android.widget.ImageView;
+import android.widget.RatingBar;
 import android.widget.RelativeLayout;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -35,6 +37,7 @@ import com.indeves.chmplinapp.Adapters.AddImagesArrayAdapter;
 import com.indeves.chmplinapp.Adapters.UserProLastWorkImagesAdapter;
 import com.indeves.chmplinapp.Models.EventModel;
 import com.indeves.chmplinapp.Models.LookUpModel;
+import com.indeves.chmplinapp.Models.ProUserModel;
 import com.indeves.chmplinapp.R;
 import com.indeves.chmplinapp.Utility.ClickListener;
 import com.squareup.picasso.Picasso;
@@ -55,7 +58,8 @@ public class UserEventHistoryItemDetails extends Fragment implements FirebaseEve
     ProgressDialog progressDialog;
     RelativeLayout backButtonLayout;
     UserProLastWorkImagesAdapter lastWorkImagesAdapter;
-
+    private RatingBar ratingBar;
+    private Button btnSubmit;
     RecyclerView recyclerView;
     AddImagesArrayAdapter addImagesArrayAdapter;
     ArrayList<Bitmap> eventImages;
@@ -105,6 +109,29 @@ public class UserEventHistoryItemDetails extends Fragment implements FirebaseEve
         backButtonLayout = rootView.findViewById(R.id.backButtonLayout);
         backButtonLayout.setOnClickListener(this);
 
+        ratingBar = (RatingBar) rootView.findViewById(R.id.ratingBar);
+        btnSubmit = (Button) rootView.findViewById(R.id.btnSubmit);
+
+        //if click on me, then display the current rating value.
+        btnSubmit.setOnClickListener(new View.OnClickListener() {
+
+            @Override
+            public void onClick(View v) {
+                if (selectedEvent.isRated()){
+
+                    Toast.makeText(getContext(), "you can't rate more than one time",Toast.LENGTH_SHORT).show();
+
+                }else {
+                    // upload rate
+                    ReadData readData = new ReadData(UserEventHistoryItemDetails.this);
+                    readData.getUserInfoById(selectedEvent.getPhotographerId());
+
+
+                }
+
+            }
+
+        });
 
         recyclerView = rootView.findViewById(R.id.card_recycler_view);
         int numberOfColumns = 4;
@@ -197,7 +224,44 @@ public class UserEventHistoryItemDetails extends Fragment implements FirebaseEve
 
     @Override
     public void onReadDataResponse(DataSnapshot dataSnapshot) {
+        if (dataSnapshot != null && dataSnapshot.getValue() != null) {
+            ProUserModel proUserModel = dataSnapshot.getValue(ProUserModel.class);
+            if (proUserModel.getRates()!=null) {
+                List<Integer> rates = new ArrayList<>();
+                rates.addAll(proUserModel.getRates());
+                double totalRate = calculateAverage(rates);
+                proUserModel.setRate(totalRate);
+                WriteData writeData = new WriteData(UserEventHistoryItemDetails.this);
+                try {
+                    writeData.updateUserProfileData(proUserModel);
+                    selectedEvent.setRated(true);
+                    Toast.makeText(getContext(), String.valueOf(ratingBar.getRating()),Toast.LENGTH_SHORT).show();
+                    try {
+                        writeData.updateEventData(selectedEvent);
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                    }
+                } catch (Exception e) {
+                    e.printStackTrace();
+                }
+            }
 
+        } else {
+            Toast.makeText(getContext(), "Failed to load your data", Toast.LENGTH_SHORT).show();
+        }
+
+
+    }
+
+    private double calculateAverage(List <Integer> marks) {
+        Integer sum = 0;
+        if(!marks.isEmpty()) {
+            for (Integer mark : marks) {
+                sum += mark;
+            }
+            return sum.doubleValue() / marks.size();
+        }
+        return sum;
     }
 
     private void displayEventData() {
@@ -305,5 +369,7 @@ public class UserEventHistoryItemDetails extends Fragment implements FirebaseEve
 
         }
     }
+
+
 
 }
