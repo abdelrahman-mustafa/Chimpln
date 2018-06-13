@@ -95,6 +95,19 @@ public class WriteData {
 
     }
 
+    public void updateProData(ProUserModel proUserModel) {
+        mDatabaseUserReference.child(proUserModel.getUid()).updateChildren(proUserModel.toMap()).addOnCompleteListener(new OnCompleteListener<Void>() {
+            @Override
+            public void onComplete(@NonNull Task<Void> task) {
+                if (task.isSuccessful()) {
+                    firebaseEventsListener.onWriteDataCompleted(true);
+                } else {
+                    firebaseEventsListener.onWriteDataCompleted(false);
+                }
+            }
+        });
+    }
+
     public void setProIdImagesUrls(String frontImageUrl, String backImageUrl) throws Exception {
         if (mAuth.getCurrentUser() != null) {
             ProUserModel userData = new ProUserModel();

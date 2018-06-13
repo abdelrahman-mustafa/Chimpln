@@ -25,12 +25,32 @@ public class EventModel implements Serializable {
     public EventModel() {
     }
 
-    public boolean isRated() {
-        return isRated;
+    public EventModel(String bookerUserId, String photographerId, String eventDate, String bookerUserName, String photographerName, String startTime, String endTime, String noteToPro, String eventCity, String eventId, String rejectionReason, long eventLocationLong, long eventLocationLat, String eventStatus, int typeId, int timeId, int sharingOptionId, PackageModel selectedPackage, List<String> eventImagesUrls, double paidAmount, boolean isRated) {
+        this.bookerUserId = bookerUserId;
+        this.photographerId = photographerId;
+        this.eventDate = eventDate;
+        this.bookerUserName = bookerUserName;
+        this.photographerName = photographerName;
+        this.startTime = startTime;
+        this.endTime = endTime;
+        this.noteToPro = noteToPro;
+        this.eventCity = eventCity;
+        this.eventId = eventId;
+        this.rejectionReason = rejectionReason;
+        this.eventLocationLong = eventLocationLong;
+        this.eventLocationLat = eventLocationLat;
+        this.eventStatus = eventStatus;
+        this.typeId = typeId;
+        this.timeId = timeId;
+        this.sharingOptionId = sharingOptionId;
+        this.selectedPackage = selectedPackage;
+        this.eventImagesUrls = eventImagesUrls;
+        this.paidAmount = paidAmount;
+        this.isRated = isRated;
     }
 
-    public void setRated(boolean rated) {
-        isRated = rated;
+    public boolean isIsRated() {
+        return isRated;
     }
 
     //this constructor contains the main data that user booking must have
@@ -96,6 +116,10 @@ public class EventModel implements Serializable {
         this.selectedPackage = selectedPackage;
         this.eventImagesUrls = eventImagesUrls;
         this.paidAmount = paidAmount;
+    }
+
+    public void setIsRated(boolean rated) {
+        this.isRated = rated;
     }
 
     public String getBookerUserId() {
@@ -270,7 +294,9 @@ public class EventModel implements Serializable {
         if (paidAmount > 0) {
             result.put("paidAmount", paidAmount);
         }
-        result.put("isRated", isRated);
+        if (isRated) {
+            result.put("isRated", true);
+        }
         return result;
     }
 }

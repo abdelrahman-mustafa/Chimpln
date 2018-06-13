@@ -23,10 +23,18 @@ import java.util.List;
 public class ProEventHistoryAdapter extends RecyclerView.Adapter<ProEventHistoryAdapter.MyViewHolder> {
     private List<EventModel> list;
     private Context mContext;
+    private boolean displayedInUser;
 
     public ProEventHistoryAdapter(List<EventModel> list, Context context) {
         this.list = list;
         this.mContext = context;
+        this.displayedInUser = false;
+    }
+
+    public ProEventHistoryAdapter(List<EventModel> list, Context context, boolean displayedInUser) {
+        this.list = list;
+        this.mContext = context;
+        this.displayedInUser = displayedInUser;
     }
 
     @Override
@@ -40,7 +48,11 @@ public class ProEventHistoryAdapter extends RecyclerView.Adapter<ProEventHistory
     @Override
     public void onBindViewHolder(MyViewHolder holder, int position) {
         EventModel pData = list.get(position);
-        holder.eventTitle.setText(pData.getBookerUserName());
+        if (displayedInUser) {
+            holder.eventTitle.setText(pData.getPhotographerName());
+        } else {
+            holder.eventTitle.setText(pData.getBookerUserName());
+        }
         holder.eventLocation.setText(pData.getEventCity());
         holder.eventDescription.setText(pData.getNoteToPro());
         if (pData.getEventImagesUrls() != null) {

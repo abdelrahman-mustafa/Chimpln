@@ -72,10 +72,10 @@ public class UserProfSelectEventType extends android.support.v4.app.Fragment imp
                 eventTypesList.addAll(eventTypeLookups);
             }
         });
-        Log.v("type",type);
+        Log.v("type", type);
 
         // Log.v("list",eventTypesList.get(eventModel.getTypeId()).getEnglishName());
-        Log.v("list",eventTypesList.toString());
+        Log.v("list", eventTypesList.toString());
     }
 
     @Nullable
@@ -94,7 +94,7 @@ public class UserProfSelectEventType extends android.support.v4.app.Fragment imp
         }
         eventsList = new ArrayList<>();
         setRecyclerViewLayoutManager(mCurrentLayoutManagerType);
-        userProfEventsAdaptor = new ProEventHistoryAdapter(eventsList, getContext());
+        userProfEventsAdaptor = new ProEventHistoryAdapter(eventsList, getContext(), true);
 //        recyclerView.setAdapter(userProfEventsAdaptor);
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(),
                 DividerItemDecoration.HORIZONTAL);
@@ -102,7 +102,6 @@ public class UserProfSelectEventType extends android.support.v4.app.Fragment imp
         ReadData readData = new ReadData(this);
         progressDialog.show();
         readData.getAllEvents();
-
 
 
         return rootView;
@@ -147,12 +146,12 @@ public class UserProfSelectEventType extends android.support.v4.app.Fragment imp
 
             for (DataSnapshot dataSnapshot1 : dataSnapshot.getChildren()) {
                 EventModel eventModel = dataSnapshot1.getValue(EventModel.class);
-               // Log.i("type",type);
-                Log.i("item",eventTypesList.get(eventModel.getTypeId()).getEnglishName());
+                // Log.i("type",type);
+                Log.i("item", eventTypesList.get(eventModel.getTypeId()).getEnglishName());
 
-                if (eventModel != null && eventModel.getPhotographerId() != null && eventModel.getPhotographerId().equals(Uid) && eventModel.getEventStatus() != null  && type.equals(eventTypesList.get(eventModel.getTypeId()).getEnglishName())) {
+                if (eventModel != null && eventModel.getPhotographerId() != null && eventModel.getPhotographerId().equals(Uid) && eventModel.getEventStatus() != null && type.equals(eventTypesList.get(eventModel.getTypeId()).getEnglishName())) {
                     eventsList.add(eventModel);
-                    Log.i("type",eventModel.toString());
+                    Log.i("type", eventModel.toString());
                 }
             }
             recyclerView.setAdapter(userProfEventsAdaptor);

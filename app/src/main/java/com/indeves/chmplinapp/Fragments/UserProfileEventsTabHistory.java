@@ -48,6 +48,7 @@ public class UserProfileEventsTabHistory extends android.support.v4.app.Fragment
         progressDialog.setMessage("Please wait");
         progressDialog.setCanceledOnTouchOutside(false);
     }
+
     @Nullable
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
@@ -64,7 +65,7 @@ public class UserProfileEventsTabHistory extends android.support.v4.app.Fragment
         }
         eventsList = new ArrayList<>();
         setRecyclerViewLayoutManager(mCurrentLayoutManagerType);
-        userProfEventsAdaptor = new ProEventHistoryAdapter(eventsList, getContext());
+        userProfEventsAdaptor = new ProEventHistoryAdapter(eventsList, getContext(), true);
 //        recyclerView.setAdapter(userProfEventsAdaptor);
         DividerItemDecoration dividerItemDecoration = new DividerItemDecoration(recyclerView.getContext(),
                 DividerItemDecoration.HORIZONTAL);

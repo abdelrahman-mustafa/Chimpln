@@ -56,13 +56,11 @@ public class UserEventHistoryItemDetails extends Fragment implements FirebaseEve
     ReadData readData;
     ArrayList<String> images;
     ProgressDialog progressDialog;
-    RelativeLayout backButtonLayout;
+    //    RelativeLayout backButtonLayout;
     UserProLastWorkImagesAdapter lastWorkImagesAdapter;
     private RatingBar ratingBar;
     private Button btnSubmit;
     RecyclerView recyclerView;
-    AddImagesArrayAdapter addImagesArrayAdapter;
-    ArrayList<Bitmap> eventImages;
     private EventModel selectedEvent;
     private TextView name, time, day, month, share, location, eventType;
 
@@ -106,8 +104,8 @@ public class UserEventHistoryItemDetails extends Fragment implements FirebaseEve
         share = rootView.findViewById(R.id.userProfile_event_shareOption);
         location = rootView.findViewById(R.id.userProfile_event_location);
         eventType = rootView.findViewById(R.id.userProfile_event_type);
-        backButtonLayout = rootView.findViewById(R.id.backButtonLayout);
-        backButtonLayout.setOnClickListener(this);
+//        backButtonLayout = rootView.findViewById(R.id.backButtonLayout);
+//        backButtonLayout.setOnClickListener(this);
 
         ratingBar = (RatingBar) rootView.findViewById(R.id.ratingBar);
         btnSubmit = (Button) rootView.findViewById(R.id.btnSubmit);
@@ -117,7 +115,7 @@ public class UserEventHistoryItemDetails extends Fragment implements FirebaseEve
 
             @Override
             public void onClick(View v) {
-                if (selectedEvent.isRated()) {
+                if (selectedEvent.isIsRated()) {
 
                     Toast.makeText(getContext(), "you can't rate more than one time", Toast.LENGTH_SHORT).show();
 
@@ -143,7 +141,7 @@ public class UserEventHistoryItemDetails extends Fragment implements FirebaseEve
                                     rates.add(Math.round(ratingBar.getRating()));
                                     proUserModel.setRates(rates);
 
-                                }else{
+                                } else {
                                     rates.addAll(proUserModel.getRates());
                                     double totalRate = calculateAverage(rates);
                                     proUserModel.setRate(totalRate);
@@ -169,7 +167,7 @@ public class UserEventHistoryItemDetails extends Fragment implements FirebaseEve
                                     }
                                 });
                                 try {
-                                    writeData.updateUserProfileData(proUserModel);
+                                    writeData.updateProData(proUserModel);
                                 } catch (Exception e) {
                                     e.printStackTrace();
                                 }
@@ -190,7 +188,7 @@ public class UserEventHistoryItemDetails extends Fragment implements FirebaseEve
                                     }
                                 });
                                 try {
-                                    selectedEvent.setRated(true);
+                                    selectedEvent.setIsRated(true);
                                     writeData1.updateEventData(selectedEvent);
                                 } catch (Exception e) {
                                     e.printStackTrace();
@@ -203,8 +201,8 @@ public class UserEventHistoryItemDetails extends Fragment implements FirebaseEve
                             }
                         }
                     });
-                    Log.i("id", selectedEvent.getPhotographerId().toString());
-                    Log.i("id", selectedEvent.getEventId().toString());
+                    Log.i("id", selectedEvent.getPhotographerId());
+                    Log.i("id", selectedEvent.getEventId());
 
                     readData.readUserInfo(selectedEvent.getPhotographerId());
 
@@ -216,10 +214,9 @@ public class UserEventHistoryItemDetails extends Fragment implements FirebaseEve
 
         recyclerView = rootView.findViewById(R.id.card_recycler_view);
         int numberOfColumns = 4;
-        eventImages = new ArrayList<>();
-        eventImages.add(null);
+//        eventImages = new ArrayList<>();
+//        eventImages.add(null);
         recyclerView.setLayoutManager(new GridLayoutManager(getContext(), numberOfColumns));
-        recyclerView = (RecyclerView) rootView.findViewById(R.id.card_recycler_view);
         recyclerView.setHasFixedSize(true);
         RecyclerView.LayoutManager layoutManager = new GridLayoutManager(getContext(), 3);
         recyclerView.setLayoutManager(layoutManager);
@@ -247,6 +244,7 @@ public class UserEventHistoryItemDetails extends Fragment implements FirebaseEve
         }));
         images = new ArrayList<>();
         lastWorkImagesAdapter = new UserProLastWorkImagesAdapter(getContext(), images);
+        recyclerView.setAdapter(lastWorkImagesAdapter);
         return rootView;
     }
 
@@ -324,9 +322,11 @@ public class UserEventHistoryItemDetails extends Fragment implements FirebaseEve
 
         if (selectedEvent != null) {
             if (selectedEvent.getEventImagesUrls() != null) {
+                Log.v("EventHistoryImages", selectedEvent.getEventImagesUrls().toString());
                 images.addAll(selectedEvent.getEventImagesUrls());
+                lastWorkImagesAdapter.notifyDataSetChanged();
             }
-            name.setText(selectedEvent.getBookerUserName());
+            name.setText(selectedEvent.getPhotographerName());
             String[] eventDateParts = selectedEvent.getEventDate().split("-");
             day.setText(eventDateParts[0]);
 //        month.setText(eventDateParts[1]);
@@ -371,12 +371,12 @@ public class UserEventHistoryItemDetails extends Fragment implements FirebaseEve
 
     @Override
     public void onClick(View v) {
-        if (v == backButtonLayout) {
-            FragmentManager fragmentManager = getFragmentManager();
-            if (fragmentManager != null) {
-                fragmentManager.popBackStack();
-            }
-        }
+//        if (v == backButtonLayout) {
+//            FragmentManager fragmentManager = getFragmentManager();
+//            if (fragmentManager != null) {
+//                fragmentManager.popBackStack();
+//            }
+//        }
 
     }
 
