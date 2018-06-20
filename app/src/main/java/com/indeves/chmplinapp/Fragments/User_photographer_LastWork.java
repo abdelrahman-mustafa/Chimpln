@@ -58,12 +58,7 @@ public class User_photographer_LastWork extends Fragment implements FirebaseEven
     @Override
     public void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        progressDialog = new ProgressDialog(getContext());
-        progressDialog.setCanceledOnTouchOutside(false);
-        progressDialog.setMessage("Please wait.. ");
-        progressDialog.show();
-        ReadData readData = new ReadData(this);
-        readData.getAllEvents();
+
     }
 
     @Override
@@ -99,6 +94,12 @@ public class User_photographer_LastWork extends Fragment implements FirebaseEven
         }));
         images = new ArrayList<>();
         lastWorkImagesAdapter = new UserProLastWorkImagesAdapter(getContext(), images);
+        progressDialog = new ProgressDialog(getContext());
+        progressDialog.setCanceledOnTouchOutside(false);
+        progressDialog.setMessage("Please wait.. ");
+        progressDialog.show();
+        ReadData readData = new ReadData(this);
+        readData.getAllEvents();
         return rootView;
 
     }

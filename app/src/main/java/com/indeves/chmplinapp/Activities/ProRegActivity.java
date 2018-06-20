@@ -71,7 +71,7 @@ public class ProRegActivity extends AppCompatActivity implements View.OnClickLis
     Button saveData;
     ProUserModel proUserModel = new ProUserModel();
     ImageView pic;
-    Bitmap selectImage,front,back;
+    Bitmap selectImage, front, back;
     CheckBox full_day, half_day, per_hour;
     String selectedGender, selectedCountry, selectedCity, selectedWorkingHoursStart, selectedWorkingHoursEnd, selectedBirthDate;
     List<CityLookUpModel> citiesList;
@@ -83,19 +83,17 @@ public class ProRegActivity extends AppCompatActivity implements View.OnClickLis
     LinearLayout ageLayout;
     ImageButton getFrontId, getBackId;
     ProgressDialog progressDialog;
-    private Calendar calendar;
     JSONObject jsonObject;
-    private int year, month, day;
-
     int i = 0;
-
+    private Calendar calendar;
+    private int year, month, day;
     private CloudStorageListener.UploadUserImageListener cloudStorageListener = new CloudStorageListener.UploadUserImageListener() {
         @Override
         public void onImageUpload(String downloadUrl) {
             if (downloadUrl != null) {
-                if (i == 2){
+                if (i == 2) {
                     proUserModel.setIdFrontImageUrl(downloadUrl);
-                }else if (i == 3){
+                } else if (i == 3) {
                     proUserModel.setIdBackImageUrl(downloadUrl);
                 }
 
@@ -353,7 +351,7 @@ public class ProRegActivity extends AppCompatActivity implements View.OnClickLis
 
         } else if (resultCode == RESULT_OK && reqCode == 3) {
             try {
-                i=3;
+                i = 3;
                 final Uri imageUri = data.getData();
                 final InputStream imageStream = getContentResolver().openInputStream(imageUri);
                 back = BitmapFactory.decodeStream(imageStream);
@@ -488,61 +486,61 @@ public class ProRegActivity extends AppCompatActivity implements View.OnClickLis
 
             SharedPreferences shre = PreferenceManager.getDefaultSharedPreferences(ProRegActivity.this);
             SharedPreferences.Editor edit = shre.edit();
-            edit.putBoolean("proReg",true);
+            edit.putBoolean("proReg", true);
             edit.apply();
 
 
-                String encoded = proUserModel.getProfilePicUrl();
-                String params_Date =
-                        ("{" + " \"name\":" + "\"" + proUserModel.getName() + "\"" + ","
-                                + " \"description\":" + "\"" + proUserModel.getGender() + "\n" + proUserModel.getCity() + "," + proUserModel.getExperience() + "\n" + proUserModel.getEmail()+"\n" + proUserModel.getIdFrontImageUrl()+ "\n"+ proUserModel.getIdBackImageUrl()+ "\"" + ","
-                                + "\"image\":" +  "\"" + encoded+ "\""
-                                + "}");
-                try {
-                    jsonObject = new JSONObject(params_Date);
+            String encoded = proUserModel.getProfilePicUrl();
+            String params_Date =
+                    ("{" + " \"name\":" + "\"" + proUserModel.getName() + "\"" + ","
+                            + " \"description\":" + "\"" + proUserModel.getGender() + "\n" + proUserModel.getCity() + "," + proUserModel.getExperience() + "\n" + proUserModel.getEmail() + "\n" + proUserModel.getIdFrontImageUrl() + "\n" + proUserModel.getIdBackImageUrl() + "\"" + ","
+                            + "\"image\":" + "\"" + encoded + "\""
+                            + "}");
+            try {
+                jsonObject = new JSONObject(params_Date);
 
-                    Log.i("request", jsonObject.toString());
-                } catch (JSONException e) {
-                    e.printStackTrace();
-                }
+                Log.i("request", jsonObject.toString());
+            } catch (JSONException e) {
+                e.printStackTrace();
+            }
 
-                String url = "http://206.189.96.67/v1/request";
-                JsonObjectRequest stringRequest = new JsonObjectRequest(POST, url, jsonObject,
-                        new Response.Listener<JSONObject>() {
-                            @Override
-                            public void onResponse(JSONObject response) {
+            String url = "http://206.189.96.67/v1/request";
+            JsonObjectRequest stringRequest = new JsonObjectRequest(POST, url, jsonObject,
+                    new Response.Listener<JSONObject>() {
+                        @Override
+                        public void onResponse(JSONObject response) {
+                            Log.v("ServerResponse", response.toString());
+                            try {
+                                Toast.makeText(ProRegActivity.this, response.getString("id"), Toast.LENGTH_SHORT).show();
+                                SharedPreferences.Editor editor = getSharedPreferences("checkDate", MODE_PRIVATE).edit();
+                                editor.putString("id", response.getString("id"));
+                                editor.apply();
+                                SharedPreferences shre = PreferenceManager.getDefaultSharedPreferences(ProRegActivity.this);
+                                SharedPreferences.Editor edit = shre.edit();
+                                edit.putBoolean("proReg", false);
+                                edit.apply();
 
-                                try {
-                                    Toast.makeText(ProRegActivity.this, response.getString("id"), Toast.LENGTH_SHORT).show();
-                                    SharedPreferences.Editor editor = getSharedPreferences("checkDate", MODE_PRIVATE).edit();
-                                    editor.putString("id", response.getString("id"));
-                                    editor.apply();
-                                    SharedPreferences shre = PreferenceManager.getDefaultSharedPreferences(ProRegActivity.this);
-                                    SharedPreferences.Editor edit = shre.edit();
-                                    edit.putBoolean("proReg",false);
-                                    edit.apply();
+                                startActivity(new Intent(ProRegActivity.this, RespondToServerActivity.class));
+                                ProRegActivity.this.finish();
 
-                                    startActivity(new Intent(ProRegActivity.this, RespondToServerActivity.class));
-                                    ProRegActivity.this.finish();
-
-                                } catch (JSONException e) {
-                                    e.printStackTrace();
-
-                                }
-
+                            } catch (JSONException e) {
+                                e.printStackTrace();
 
                             }
-                        }, new Response.ErrorListener() {
-                    @Override
-                    public void onErrorResponse(VolleyError error) {
 
 
-                    }
-                });
+                        }
+                    }, new Response.ErrorListener() {
+                @Override
+                public void onErrorResponse(VolleyError error) {
+                    Log.v("ServerError", error.toString());
+                    Toast.makeText(ProRegActivity.this, "Error in validating your data", Toast.LENGTH_SHORT).show();
 
-                AppController.getInstance().addToRequestQueue(stringRequest);
 
+                }
+            });
 
+            AppController.getInstance().addToRequestQueue(stringRequest);
 
 
         } else {
