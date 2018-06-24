@@ -216,37 +216,42 @@ public class ProEventHistoryItemDetails extends Fragment implements FirebaseEven
     @Override
     public void onClick(View v) {
         if (v == saveImages) {
-            if (eventImages != null && eventImages.size() > 1) {
-                //TODO: @khalid This is wrong, upload icon should be isolated from the array from the beginning, let this go now and modify it ASAP
-                ArrayList<Bitmap> imagesToSend = eventImages;
-                imagesToSend.remove(eventImages.size() - 1);
-                progressDialog.show();
-                CloudStorageAPI cloudStorageAPI = new CloudStorageAPI();
-                cloudStorageAPI.UploadEventImages(selectedEvent.getEventId(), imagesToSend, new CloudStorageListener.UploadEventImagesListener() {
-                    @Override
-                    public void onImagesUploaded(ArrayList<String> imagesUrls) {
-                        progressDialog.dismiss();
-                        if (imagesUrls != null) {
-                            Log.v("uploadImages", "Images uploaded successfully");
-                            Log.v("UrlsArr", imagesUrls.toString());
-                            EventModel eventModel = new EventModel();
-                            eventModel.setEventImagesUrls(imagesUrls);
-                            eventModel.setEventId(selectedEvent.getEventId());
-                            WriteData writeData = new WriteData(ProEventHistoryItemDetails.this);
-                            try {
-                                writeData.updateEventData(eventModel);
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                                Toast.makeText(getContext(), "You are not authenticated or your session is expired", Toast.LENGTH_SHORT).show();
-                            }
+            if (selectedEvent.getEventImagesUrls().size() < 10) {
+                if (eventImages != null && eventImages.size() > 1 && (eventImages.size() + selectedEvent.getEventImagesUrls().size()) < 10) {
+                    //TODO: @khalid This is wrong, upload icon should be isolated from the array from the beginning, let this go now and modify it ASAP
+                    ArrayList<Bitmap> imagesToSend = eventImages;
+                    imagesToSend.remove(eventImages.size() - 1);
+                    progressDialog.show();
+                    CloudStorageAPI cloudStorageAPI = new CloudStorageAPI();
+                    cloudStorageAPI.UploadEventImages(selectedEvent.getEventId(), imagesToSend, new CloudStorageListener.UploadEventImagesListener() {
+                        @Override
+                        public void onImagesUploaded(ArrayList<String> imagesUrls) {
+                            progressDialog.dismiss();
+                            if (imagesUrls != null) {
+                                Log.v("uploadImages", "Images uploaded successfully");
+                                Log.v("UrlsArr", imagesUrls.toString());
+                                EventModel eventModel = new EventModel();
+                                eventModel.setEventImagesUrls(imagesUrls);
+                                eventModel.setEventId(selectedEvent.getEventId());
+                                WriteData writeData = new WriteData(ProEventHistoryItemDetails.this);
+                                try {
+                                    writeData.updateEventData(eventModel);
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                    Toast.makeText(getContext(), "You are not authenticated or your session is expired", Toast.LENGTH_SHORT).show();
+                                }
 
-                        } else {
-                            Toast.makeText(getContext(), "oops! Something went wrong", Toast.LENGTH_SHORT).show();
+                            } else {
+                                Toast.makeText(getContext(), "oops! Something went wrong", Toast.LENGTH_SHORT).show();
+                            }
                         }
-                    }
-                });
+                    });
+                } else {
+                    Toast.makeText(getContext(), "Please pick the images you want to upload", Toast.LENGTH_SHORT).show();
+                }
             } else {
-                Toast.makeText(getContext(), "Please pick the images you want to upload", Toast.LENGTH_SHORT).show();
+                Toast.makeText(getContext(), "you have already upload images before ", Toast.LENGTH_SHORT).show();
+
             }
         }
 

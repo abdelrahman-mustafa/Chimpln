@@ -54,7 +54,7 @@ public class UserProfilePhotographersTabSearchOutputSelectPhotographer extends a
     List<LookUpModel> eventTypesList = new ArrayList<>();
     ArrayAdapter<LookUpModel> eventTypeArrayAdapter;
     Button createEvent;
-    TextView name, about, events, photos;
+    TextView name, about, events, photos, rate;
     ImageView imageView;
     ArrayList<String> images;
     LastWorkImagesAdapter lastWorkImagesAdapter;
@@ -80,6 +80,7 @@ public class UserProfilePhotographersTabSearchOutputSelectPhotographer extends a
         //eventTypeSpinner = rootView.findViewById(R.id.userProfile_phot_spinner_type);
         createEvent = rootView.findViewById(R.id.userProfile_button_create);
         name = rootView.findViewById(R.id.userProfile_pro_name);
+        rate = rootView.findViewById(R.id.userProfile_pro_rate);
         imageView = rootView.findViewById(R.id.pro_profile_pic);
         // recyclerView = rootView.findViewById(R.id.selected_pro_images);
         about = rootView.findViewById(R.id.userProfile_pro_about);
@@ -92,13 +93,19 @@ public class UserProfilePhotographersTabSearchOutputSelectPhotographer extends a
         name.setGravity(Gravity.CENTER_HORIZONTAL);
         images = new ArrayList<>();
         lastWorkImagesAdapter = new LastWorkImagesAdapter(getContext(), images);
-        viewPager = (ViewPager) rootView.findViewById(R.id.container_special);
+        viewPager =  rootView.findViewById(R.id.container_special);
         setupViewPager(viewPager);
         tabLayout = rootView.findViewById(R.id.tabs);
         tabLayout.setSelectedTabIndicatorHeight(25);
         tabLayout.setSelectedTabIndicatorColor(R.color.peach);
         tabLayout.setupWithViewPager(viewPager);
+        if (pros.getRates() != null && pros.getRates().size()>0) {
+            String rat = String.valueOf(calculateAverage(pros.getRates()));
 
+            rate.setText(rat);
+        }else{
+            rate.setText("0");
+        }
 
         about.setText(pros.getGender() + ", " + pros.getCity() + ", " + pros.getExperience());
         about.setGravity(Gravity.CENTER_HORIZONTAL);
@@ -227,6 +234,16 @@ public class UserProfilePhotographersTabSearchOutputSelectPhotographer extends a
         return rootView;
     }
 
+    private double calculateAverage(List<Integer> marks) {
+        Integer sum = 0;
+        if (!marks.isEmpty()) {
+            for (Integer mark : marks) {
+                sum += mark;
+            }
+            return sum.doubleValue() / marks.size();
+        }
+        return sum;
+    }
     private void setupViewPager(ViewPager viewPager) {
         ViewPagerAdapter adapter = new ViewPagerAdapter(getChildFragmentManager());
 

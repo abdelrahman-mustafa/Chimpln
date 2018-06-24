@@ -43,7 +43,7 @@ import java.util.List;
 import static android.view.View.GONE;
 
 @SuppressLint("ValidFragment")
-public class Usere_photographer_Events extends android.support.v4.app.Fragment implements  FirebaseEventsListener {
+public class Usere_photographer_Events extends android.support.v4.app.Fragment implements FirebaseEventsListener {
 
 
     ArrayList<EventType> eventsList = new ArrayList<>();
@@ -69,19 +69,19 @@ public class Usere_photographer_Events extends android.support.v4.app.Fragment i
     @Override
     public View onCreateView(LayoutInflater inflater, @Nullable ViewGroup container, Bundle savedInstanceState) {
         View rootView = inflater.inflate(R.layout.fragment_user_select_pro_events, container, false);
-         recyclerView = rootView.findViewById(R.id.event_type_list);
+        recyclerView = rootView.findViewById(R.id.event_type_list);
 
         ReadData readData = new ReadData(this);
 
-                readData.getProEventsBasedOnType(Uid, new ReadData.ProEventsBasedOnTypeListener() {
+        readData.getProEventsBasedOnType(Uid, new ReadData.ProEventsBasedOnTypeListener() {
             @Override
             public void onResponse(ArrayList<EventOfTypeModel> eventOfTypeModels) {
                 if (eventOfTypeModels != null) {
                     Log.v("EventsBasedOntTypes", eventOfTypeModels.toString());
-                    for (EventOfTypeModel eventOfTypeModel : eventOfTypeModels){
-                        if (eventOfTypeModel.getEvents().size()>0){
-                            Log.i(  "evemn",eventOfTypeModel.getEventType());
-                             eventType = new EventType(eventOfTypeModel.getEventType());
+                    for (EventOfTypeModel eventOfTypeModel : eventOfTypeModels) {
+                        if (eventOfTypeModel.getEvents().size() > 0) {
+                            Log.i("evemn", eventOfTypeModel.getEventType());
+                            eventType = new EventType(eventOfTypeModel.getEventType());
 
                             eventsList.add(eventType);
 
@@ -90,7 +90,7 @@ public class Usere_photographer_Events extends android.support.v4.app.Fragment i
 
                     }
 
-                    Log.i("gggg",eventsList.toString());
+                    Log.i("gggg", eventsList.toString());
                     userProfEventsAdaptor = new EventTypeAdapter(eventsList);
                     userProfEventsAdaptor.notifyDataSetChanged();
 
@@ -131,7 +131,7 @@ public class Usere_photographer_Events extends android.support.v4.app.Fragment i
                 //Values are passing to activity & to fragment as well
                 recyclerView.setVisibility(GONE);
                 fragmentManager = getActivity().getSupportFragmentManager();
-                UserProfSelectEventType frag = new UserProfSelectEventType(Uid,eventsList.get(position).getType());
+                UserProfSelectEventType frag = new UserProfSelectEventType(Uid, eventsList.get(position).getType());
                 FragmentTransaction transaction = fragmentManager.beginTransaction();
                 transaction.addToBackStack(null);
                 transaction.replace(R.id.container_events, frag).commit();
@@ -143,7 +143,6 @@ public class Usere_photographer_Events extends android.support.v4.app.Fragment i
 
             }
         }));
-
 
 
         return rootView;
