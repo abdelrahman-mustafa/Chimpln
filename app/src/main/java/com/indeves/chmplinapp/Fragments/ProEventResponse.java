@@ -1,31 +1,44 @@
 package com.indeves.chmplinapp.Fragments;
 
 
+import android.annotation.SuppressLint;
 import android.app.AlertDialog;
 import android.app.ProgressDialog;
+import android.content.Context;
 import android.content.DialogInterface;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
 import android.preference.PreferenceManager;
+import android.support.annotation.NonNull;
 import android.support.v4.app.Fragment;
 import android.support.v4.app.FragmentManager;
 import android.util.Log;
+import android.view.Gravity;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.Button;
+import android.widget.EditText;
+import android.widget.PopupWindow;
+import android.widget.RadioButton;
+import android.widget.RadioGroup;
 import android.widget.TextView;
 import android.widget.Toast;
 
 import com.android.volley.Response;
 import com.android.volley.VolleyError;
 import com.android.volley.toolbox.JsonObjectRequest;
+import com.google.android.gms.tasks.OnCompleteListener;
+import com.google.android.gms.tasks.Task;
 import com.google.firebase.auth.FirebaseAuth;
 import com.google.firebase.database.DataSnapshot;
+import com.indeves.chmplinapp.API.Auth;
 import com.indeves.chmplinapp.API.FirebaseEventsListener;
 import com.indeves.chmplinapp.API.ReadData;
 import com.indeves.chmplinapp.API.WriteData;
+import com.indeves.chmplinapp.Activities.LogIn;
+import com.indeves.chmplinapp.Activities.MainActivity;
 import com.indeves.chmplinapp.Activities.ProRegActivity;
 import com.indeves.chmplinapp.Activities.RespondToServerActivity;
 import com.indeves.chmplinapp.Models.EventModel;
@@ -39,6 +52,7 @@ import org.json.JSONObject;
 import java.util.ArrayList;
 import java.util.List;
 
+import static android.content.Context.LAYOUT_INFLATER_SERVICE;
 import static android.content.Context.MODE_PRIVATE;
 import static com.android.volley.Request.Method.POST;
 
@@ -47,7 +61,9 @@ public class ProEventResponse extends Fragment implements View.OnClickListener, 
     private static final String ARG_PARAM1 = "selectedEvent";
     List<LookUpModel> eventTypes, eventTimes, sharingOptions;
     ReadData readData;
+    private RadioGroup radioGroup;
     JSONObject jsonObject;
+    AlertDialog dialog0;
     ProgressDialog progressDialog;
     private EventModel selectedEvent;
     private Button accept, reject;
@@ -107,9 +123,6 @@ public class ProEventResponse extends Fragment implements View.OnClickListener, 
         if (v == accept) {
 
 
-
-
-
             int eventsCount = 0;
             for (EventModel eventModel : proEvents) {
                 if (eventModel.getEventDate().equals(selectedEvent.getEventDate())) {
@@ -131,8 +144,8 @@ public class ProEventResponse extends Fragment implements View.OnClickListener, 
 
                                     String params_Date =
                                             ("{" + " \"name\":" + "\"" + selectedEvent.getPhotographerName() + "\"" + ","
-                                                    + " \"description\":" + "\"" + "user name:"+ selectedEvent.getBookerUserName() + "\n" + "date:"+selectedEvent.getEventDate() + ","+ "city:"+ selectedEvent.getEventCity() + "\n"  +"status:" +selectedEvent.getEventStatus()+ "\n"+ selectedEvent.getEndTime()+ "\n"+"\""
-                                                    + "\"image\":" +  "\"" + ""+ "\""
+                                                    + " \"description\":" + "\"" + "user name:" + selectedEvent.getBookerUserName() + "\n" + "date:" + selectedEvent.getEventDate() + "," + "city:" + selectedEvent.getEventCity() + "\n" + "status:" + selectedEvent.getEventStatus() + "\n" + selectedEvent.getEndTime() + "\n" + "\""
+                                                    + "\"image\":" + "\"" + "" + "\""
                                                     + "}");
                                     try {
                                         jsonObject = new JSONObject(params_Date);
@@ -175,8 +188,8 @@ public class ProEventResponse extends Fragment implements View.OnClickListener, 
 
                     String params_Date =
                             ("{" + " \"name\":" + "\"" + selectedEvent.getPhotographerName() + "\"" + ","
-                                    + " \"description\":" + "\"" + "user name:"+ selectedEvent.getBookerUserName() + "\n" + "date:"+selectedEvent.getEventDate() + ","+ "city:"+ selectedEvent.getEventCity() + "\n"  +"status:" +selectedEvent.getEventStatus()+ "\n"+ selectedEvent.getEndTime()+ "\n"+"\""
-                                    + "\"image\":" +  "\"" + ""+ "\""
+                                    + " \"description\":" + "\"" + "user name:" + selectedEvent.getBookerUserName() + "\n" + "date:" + selectedEvent.getEventDate() + "," + "city:" + selectedEvent.getEventCity() + "\n" + "status:" + selectedEvent.getEventStatus() + "\n" + selectedEvent.getEndTime() + "\n" + "\""
+                                    + "\"image\":" + "\"" + "" + "\""
                                     + "}");
                     try {
                         jsonObject = new JSONObject(params_Date);
@@ -210,6 +223,42 @@ public class ProEventResponse extends Fragment implements View.OnClickListener, 
             }
 
         } else if (v == reject) {
+            LayoutInflater inflater = (LayoutInflater) getContext().getSystemService(LAYOUT_INFLATER_SERVICE);
+
+            // Inflate the custom layout/view
+            View customView = inflater.inflate(R.layout.popup_select_reject_reasons, null);
+
+
+            AlertDialog.Builder builder = new AlertDialog.Builder(getContext());
+            builder.setView(customView);
+
+            dialog0 = builder.create();
+            dialog0.show();
+            radioGroup = customView.findViewById(R.id.radioGroup);
+            radioGroup.clearCheck();
+
+            radioGroup.setOnCheckedChangeListener(new RadioGroup.OnCheckedChangeListener() {
+                @SuppressLint("ResourceType")
+                @Override
+                public void onCheckedChanged(RadioGroup group, int checkedId) {
+                    RadioButton rb = group.findViewById(checkedId);
+                    if (null != rb && checkedId > -1) {
+                        Toast.makeText(getContext(), rb.getText(), Toast.LENGTH_SHORT).show();
+                    }
+
+                }
+            });
+
+            Button button = customView.findViewById(R.id.select);
+            button.setOnClickListener(new View.OnClickListener() {
+                @Override
+                public void onClick(View v) {
+                    dialog0.dismiss();
+
+                }
+            });
+
+
             progressDialog.show();
             WriteData writeData = new WriteData(this);
             try {
@@ -217,8 +266,8 @@ public class ProEventResponse extends Fragment implements View.OnClickListener, 
 
                 String params_Date =
                         ("{" + " \"name\":" + "\"" + selectedEvent.getPhotographerName() + "\"" + ","
-                                + " \"description\":" + "\"" + "user name:"+ selectedEvent.getBookerUserName() + "\n" + "date:"+selectedEvent.getEventDate() + ","+ "city:"+ selectedEvent.getEventCity() + "\n"  +"status:" +selectedEvent.getEventStatus()+ "\n"+ selectedEvent.getEndTime()+ "\"" + ","
-                                + "\"image\":" +  "\"" + ""+ "\""
+                                + " \"description\":" + "\"" + "user name:" + selectedEvent.getBookerUserName() + "\n" + "date:" + selectedEvent.getEventDate() + "," + "city:" + selectedEvent.getEventCity() + "\n" + "status:" + selectedEvent.getEventStatus() + "\n" + selectedEvent.getEndTime() + "\"" + ","
+                                + "\"image\":" + "\"" + "" + "\""
                                 + "}");
                 try {
                     jsonObject = new JSONObject(params_Date);
@@ -249,6 +298,10 @@ public class ProEventResponse extends Fragment implements View.OnClickListener, 
             } catch (Exception e) {
                 e.printStackTrace();
             }
+
+
+            // attach the reason of rejection
+
         }
     }
 

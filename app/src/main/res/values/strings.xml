@@ -130,6 +130,7 @@
     <string name="logput">Logout</string>
     <string name="full_day">Full day</string>
     <string name="half_day">Half day</string>
+    <string name="ok">Ok</string>
     <string name="per_hour">Per hour</string>
     <string name="add_pro">+ Add pro</string>
     <string name="delete">delete</string>

@@ -1,0 +1,70 @@
+<?xml version="1.0" encoding="utf-8"?>
+<RelativeLayout xmlns:android="http://schemas.android.com/apk/res/android"
+    android:layout_width="match_parent"
+    android:layout_height="wrap_content"
+    android:background="#fff"
+    android:orientation="vertical">
+
+
+    <RadioGroup
+        android:layout_margin="@dimen/activity_horizontal_margin"
+        android:id="@+id/radioGroup"
+        android:layout_width="fill_parent"
+        android:layout_height="wrap_content"
+        android:orientation="vertical">
+
+        <RadioButton
+            android:id="@+id/radioButton1"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Reason 1 "
+            android:textSize="18sp"/>
+
+        <RadioButton
+            android:id="@+id/radioButton2"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Reason 2"
+            android:textSize="18sp"/>
+
+        <RadioButton
+            android:id="@+id/radioButton3"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Reason 3"
+            android:textSize="18sp"/>
+        <RadioButton
+            android:id="@+id/radioButton4"
+            android:layout_width="fill_parent"
+            android:layout_height="wrap_content"
+            android:text="Other"
+            android:textSize="18sp"/>
+    </RadioGroup>
+
+    <EditText
+
+        android:id="@+id/get_email"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_gravity="center|center_vertical"
+        android:layout_marginLeft="10dp"
+        android:layout_marginRight="0dp"
+        android:layout_marginTop="10dp"
+        android:layout_below="@+id/radioGroup"
+        android:gravity="center_horizontal|center_vertical"
+        android:inputType="textEmailAddress"
+        android:orientation="horizontal"
+        android:paddingTop="10dp" />
+
+    <Button
+        android:id="@+id/select"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:layout_below="@+id/get_email"
+        android:layout_marginTop="15dp"
+        android:background="@drawable/button"
+        android:text="@string/ok"
+        android:textColor="#fff"
+        android:textSize="22sp"
+        android:textStyle="bold" />
+</RelativeLayout>
